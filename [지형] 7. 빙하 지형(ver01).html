@@ -1,0 +1,1960 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빙하 지형 (ver01)</title>
+<style>.ds-page{margin:0}</style>
+</head>
+<body class="ds-page" style="margin:0">
+<div class="ds-lf-glacier">
+<style>
+.ds-lf-glacier{
+  --bg:#f4f3ee; --panel:#f7f7f4; --card:#fff; --ink:#1d2126; --ink2:#5b636d; --line:#e2e0d9;
+  --accent:#1f6feb; --accent-soft:#e7efff;
+  box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr) 320px;
+  height:100vh; min-height:560px; background:var(--bg); color:var(--ink);
+  font-family:Pretendard,'Pretendard Variable','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  font-size:15px; line-height:1.5; position:relative; overflow:hidden;
+}
+.ds-lf-glacier.gl-pos-left{grid-template-columns:320px minmax(0,1fr)}
+.ds-lf-glacier.gl-pos-float{grid-template-columns:minmax(0,1fr)}
+
+/* 무대 */
+.ds-lf-glacier .gl-stage{position:relative;min-width:0;min-height:0;overflow:hidden;background:linear-gradient(180deg,#f7f9fb 0%,#edf2f6 100%)}
+.ds-lf-glacier .gl-cv{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch-action:none;outline:none;cursor:grab}
+.ds-lf-glacier .gl-cv:focus-visible{box-shadow:inset 0 0 0 3px #74a7ff}
+.ds-lf-glacier .gl-cap{position:absolute;top:12px;left:18px;right:18px;pointer-events:none;display:flex;flex-direction:column;gap:2px}
+.ds-lf-glacier .gl-title{margin:0;font-size:19px;font-weight:700;line-height:1.3}
+.ds-lf-glacier .gl-guide{margin:0;font-size:14px;color:var(--ink2);line-height:1.4}
+.ds-lf-glacier .gl-legend{position:absolute;left:18px;bottom:12px;right:18px;pointer-events:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:12.5px;color:var(--ink2)}
+.ds-lf-glacier .gl-lg{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.ds-lf-glacier .gl-chip{width:14px;height:10px;border-radius:3px;border:1px solid rgba(0,0,0,.18);display:inline-block}
+.ds-lf-glacier .gl-model{font-size:11.5px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.85);border:1px solid var(--line);white-space:nowrap}
+
+/* 패널 */
+.ds-lf-glacier .gl-panel{box-sizing:border-box;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+.ds-lf-glacier.gl-pos-left .gl-panel{order:-1;border-left:0;border-right:1px solid var(--line)}
+.ds-lf-glacier.gl-pos-float .gl-panel{position:absolute;top:16px;left:16px;width:320px;max-width:calc(100% - 32px);max-height:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.12),0 12px 32px rgba(0,0,0,.16);z-index:20}
+.ds-lf-glacier .gl-head{display:flex;flex-direction:column;gap:2px;padding:12px 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+.ds-lf-glacier.gl-pos-float .gl-head{cursor:move;border-radius:14px 14px 0 0}
+.ds-lf-glacier.gl-pos-float.gl-collapsed .gl-head{border-bottom:0;border-radius:14px}
+.ds-lf-glacier .gl-head-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ds-lf-glacier .gl-ptitle{font-size:18px;margin:0;font-weight:700;line-height:1.35}
+.ds-lf-glacier .gl-src{font-size:12px;color:var(--ink2);margin:0}
+.ds-lf-glacier .gl-fold{display:none}
+.ds-lf-glacier.gl-pos-float .gl-fold{display:inline-block}
+.ds-lf-glacier.gl-collapsed .gl-body{display:none}
+.ds-lf-glacier .gl-body{display:flex;flex-direction:column;gap:8px;padding:10px}
+.ds-lf-glacier .gl-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.ds-lf-glacier .gl-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin:0}
+.ds-lf-glacier .gl-h::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--accent)}
+.ds-lf-glacier .gl-sub{font-size:12px;font-weight:600;color:var(--ink2)}
+.ds-lf-glacier .gl-line2{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ds-lf-glacier .gl-line2 .gl-seg{flex:1}
+.ds-lf-glacier .gl-seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.ds-lf-glacier .gl-seg.two{grid-template-columns:repeat(2,1fr)}
+.ds-lf-glacier .gl-segb{font:inherit;font-size:13px;padding:5px 0;border:0;background:#fff;color:var(--ink);cursor:pointer}
+.ds-lf-glacier .gl-segb + .gl-segb{border-left:1px solid var(--line)}
+.ds-lf-glacier .gl-segb[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:700}
+.ds-lf-glacier .gl-vlist{display:flex;flex-direction:column;gap:5px}
+.ds-lf-glacier .gl-vbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-size:13.5px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}
+.ds-lf-glacier .gl-vbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.ds-lf-glacier .gl-vno{flex:none;width:20px;height:20px;border-radius:50%;background:#f1f3f5;color:var(--ink2);font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-glacier .gl-vbtn[aria-pressed="true"] .gl-vno{background:var(--accent);color:#fff}
+.ds-lf-glacier .gl-vctl{display:flex;flex-direction:column;gap:7px;border-top:1px dashed var(--line);padding-top:8px}
+.ds-lf-glacier .gl-rangerow{display:flex;align-items:center;gap:8px}
+.ds-lf-glacier .gl-range{flex:1;min-width:0;margin:0;accent-color:var(--accent)}
+.ds-lf-glacier .gl-rv{flex:none;min-width:76px;text-align:right;font-size:12.5px;font-weight:700}
+.ds-lf-glacier .gl-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2);margin-top:-5px;padding-right:84px}
+.ds-lf-glacier .gl-mini{font:inherit;font-size:12px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.ds-lf-glacier .gl-row{display:flex;gap:4px}
+.ds-lf-glacier .gl-btn{font:inherit;font-size:12.5px;padding:5px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.ds-lf-glacier .gl-row .gl-btn{flex:1 1 auto}
+.ds-lf-glacier .gl-btn.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.ds-lf-glacier .gl-btn:hover,
+.ds-lf-glacier .gl-mini:hover,
+.ds-lf-glacier .gl-vbtn:hover,
+.ds-lf-glacier .gl-qbtn:hover,
+.ds-lf-glacier .gl-opt:hover{border-color:#b9bfc6}
+.ds-lf-glacier .gl-btn.main:hover{border-color:#1858c0}
+.ds-lf-glacier .gl-btn:focus-visible,
+.ds-lf-glacier .gl-mini:focus-visible,
+.ds-lf-glacier .gl-segb:focus-visible,
+.ds-lf-glacier .gl-vbtn:focus-visible,
+.ds-lf-glacier .gl-qbtn:focus-visible,
+.ds-lf-glacier .gl-opt:focus-visible,
+.ds-lf-glacier .gl-range:focus-visible,
+.ds-lf-glacier .gl-x:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-glacier .gl-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ds-lf-glacier .gl-stat{background:#f8f8f6;border-radius:8px;padding:5px 8px;display:flex;flex-direction:column;min-width:0}
+.ds-lf-glacier .gl-k{font-size:11.5px;color:var(--ink2);line-height:1.3}
+.ds-lf-glacier .gl-v{font-size:15px;font-weight:700;line-height:1.3}
+.ds-lf-glacier .gl-result{border-radius:8px;padding:8px 10px;border-left:4px solid #1c7ed6;background:#e7f5ff;display:flex;flex-direction:column;gap:2px}
+.ds-lf-glacier .gl-result.calm{border-left-color:#868e96;background:#f1f3f5}
+.ds-lf-glacier .gl-rk{font-size:15px;font-weight:700;color:#1864ab}
+.ds-lf-glacier .gl-result.calm .gl-rk{color:#495057}
+.ds-lf-glacier .gl-rt{font-size:12.5px;margin:0;line-height:1.45}
+.ds-lf-glacier .gl-note{font-size:11.5px;color:var(--ink2);margin:0}
+.ds-lf-glacier .gl-credit{font-size:11px;line-height:1.45;color:var(--ink2);margin:0;padding:2px 4px 4px}
+.ds-lf-glacier .gl-p{font-size:12.5px;margin:0;line-height:1.5}
+.ds-lf-glacier .gl-map{display:block;width:100%;height:auto;border-radius:8px;background:#e8f1f9}
+.ds-lf-glacier .gl-land{fill:#f3efe4;stroke:#9aa1a9;stroke-width:.8}
+.ds-lf-glacier .gl-pin{cursor:pointer}
+.ds-lf-glacier .gl-pin:focus{outline:none}
+.ds-lf-glacier .gl-pdot{fill:#fff;stroke:#495057;stroke-width:1.6}
+.ds-lf-glacier .gl-pin.hot .gl-pdot{fill:#1c7ed6;stroke:#fff;stroke-width:1.8}
+.ds-lf-glacier .gl-pin.on .gl-pring,
+.ds-lf-glacier .gl-pin:focus-visible .gl-pring{stroke:var(--accent);stroke-width:1.6;stroke-dasharray:2 2}
+.ds-lf-glacier .gl-pring{fill:none;stroke:none}
+.ds-lf-glacier .gl-pname{font-size:9.5px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3;stroke-linejoin:round;display:none}
+.ds-lf-glacier .gl-pin.hot .gl-pname,
+.ds-lf-glacier .gl-pin.on .gl-pname{display:inline}
+.ds-lf-glacier .gl-place{font-size:12.5px;margin:0;line-height:1.5;padding:6px 8px;border-radius:8px;background:#f8f8f6}
+.ds-lf-glacier .gl-more{display:flex;flex-direction:column;gap:6px;margin:0}
+.ds-lf-glacier .gl-mterm{font-size:13px;font-weight:700;margin:0}
+.ds-lf-glacier .gl-mdesc{font-size:12.5px;margin:0 0 2px;line-height:1.45;color:var(--ink2)}
+.ds-lf-glacier .gl-qlist{display:flex;flex-direction:column;gap:6px}
+.ds-lf-glacier .gl-qbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}
+.ds-lf-glacier .gl-qno{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-glacier .gl-qtt{flex:1;min-width:0}
+.ds-lf-glacier .gl-qst{flex:none;font-size:11.5px;color:var(--ink2)}
+.ds-lf-glacier .gl-qst.ok{color:#2b8a3e;font-weight:700}
+.ds-lf-glacier .gl-qst.no{color:#c92a2a;font-weight:700}
+
+/* 확인 문제 창 */
+.ds-lf-glacier .gl-modal{position:absolute;left:0;top:0;right:0;bottom:0;z-index:60;background:rgba(20,24,30,.5);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+.ds-lf-glacier .gl-modal[hidden]{display:none}
+.ds-lf-glacier .gl-dialog{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:100%;overflow:auto;box-sizing:border-box;padding:20px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.ds-lf-glacier .gl-dhead{display:flex;align-items:center;justify-content:space-between}
+.ds-lf-glacier .gl-dnum{font-size:13px;font-weight:700;color:var(--accent)}
+.ds-lf-glacier .gl-x{font:inherit;font-size:20px;line-height:1;width:34px;height:34px;border:0;border-radius:50%;background:#f1f3f5;color:var(--ink2);cursor:pointer}
+.ds-lf-glacier .gl-dq{font-size:18px;font-weight:700;margin:0;line-height:1.45}
+.ds-lf-glacier .gl-dopts{display:flex;flex-direction:column;gap:8px}
+.ds-lf-glacier .gl-opt{font:inherit;font-size:15px;text-align:left;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer;line-height:1.45}
+.ds-lf-glacier .gl-opt.ok{border-color:#2b8a3e;background:#ebfbee;color:#2b8a3e;font-weight:700}
+.ds-lf-glacier .gl-opt.no{border-color:#e03131;background:#fff5f5;color:#c92a2a}
+.ds-lf-glacier .gl-dfb{font-size:14px;margin:0;padding:10px 12px;border-radius:10px;background:#f8f9fa;color:var(--ink2)}
+.ds-lf-glacier .gl-dfb:empty{display:none}
+.ds-lf-glacier .gl-dfb.ok{background:#ebfbee;color:#2b8a3e}
+.ds-lf-glacier .gl-dfb.no{background:#fff5f5;color:#c92a2a}
+.ds-lf-glacier .gl-dfoot{display:flex;justify-content:space-between;gap:8px}
+.ds-lf-glacier .gl-dfoot .gl-btn{font-size:14px;padding:7px 14px}
+.ds-lf-glacier .gl-dfoot .gl-btn:disabled{opacity:.4;cursor:default}
+.ds-lf-glacier .gl-off{display:none}
+
+@media (max-width:820px){
+  .ds-lf-glacier,
+  .ds-lf-glacier.gl-pos-left{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
+  .ds-lf-glacier .gl-panel,
+  .ds-lf-glacier.gl-pos-left .gl-panel{order:0;border-left:0;border-right:0;border-top:1px solid var(--line);max-height:45vh}
+  .ds-lf-glacier .gl-cap{top:8px;left:10px}
+  .ds-lf-glacier .gl-title{font-size:17px}
+  .ds-lf-glacier .gl-guide{font-size:13px}
+  .ds-lf-glacier .gl-legend{left:10px;bottom:8px;font-size:12px}
+}
+/* 휴대폰: 패널을 줄여 무대를 키움(카르스트 완성본과 같음) */
+@media (max-width:560px){
+  .ds-lf-glacier .gl-panel,
+  .ds-lf-glacier.gl-pos-left .gl-panel{max-height:40vh}
+  .ds-lf-glacier .gl-legend{font-size:11px;gap:2px 8px}
+  .ds-lf-glacier .gl-title{font-size:16px}
+}
+.ds-lf-glacier .gl-zbtns{display:inline-flex;gap:4px;align-items:center}
+</style>
+
+<div class="gl-stage">
+  <canvas class="gl-cv" tabindex="0" role="img" aria-label="3D 빙하 지형 블록"></canvas>
+  <div class="gl-cap">
+    <p class="gl-title"></p>
+    <p class="gl-guide" aria-live="polite"></p>
+  </div>
+  <div class="gl-legend"></div>
+</div>
+
+<aside class="gl-panel" aria-label="조작 패널">
+  <div class="gl-head">
+    <div class="gl-head-row">
+      <h2 class="gl-ptitle">빙하 지형</h2>
+      <button type="button" class="gl-mini gl-fold" aria-expanded="true">접기</button>
+    </div>
+    <p class="gl-src">중학 사회 ① · 3단원 01(51쪽) · 5단원 01(88~89쪽) · 6단원 01 · 03(105 · 112 · 115쪽) · 통합사회 1 Ⅲ-01</p>
+  </div>
+
+  <div class="gl-body">
+    <section class="gl-card">
+      <h3 class="gl-h">조작</h3>
+      <div class="gl-line2">
+        <span class="gl-sub">패널 위치</span>
+        <div class="gl-seg gl-posseg" role="group" aria-label="패널 위치">
+          <button type="button" class="gl-segb" data-pos="right" aria-pressed="true">오른쪽</button>
+          <button type="button" class="gl-segb" data-pos="left" aria-pressed="false">왼쪽</button>
+          <button type="button" class="gl-segb" data-pos="float" aria-pressed="false">플로팅</button>
+        </div>
+      </div>
+      <span class="gl-sub">보기</span>
+      <div class="gl-vlist" role="group" aria-label="보기">
+        <button type="button" class="gl-vbtn" data-view="1" aria-pressed="true"><span class="gl-vno">1</span>빙하가 깎은 골짜기</button>
+        <button type="button" class="gl-vbtn" data-view="2" aria-pressed="false"><span class="gl-vno">2</span>피오르가 생기려면</button>
+        <button type="button" class="gl-vbtn" data-view="3" aria-pressed="false"><span class="gl-vno">3</span>빙하가 남긴 호수</button>
+        <button type="button" class="gl-vbtn" data-view="4" aria-pressed="false"><span class="gl-vno">4</span>극지방의 빙하</button>
+      </div>
+      <div class="gl-line2">
+        <span class="gl-sub">3D 보기</span>
+        <span class="gl-zbtns"><button type="button" class="gl-mini gl-zin" aria-label="확대">＋</button><button type="button" class="gl-mini gl-zout" aria-label="축소">－</button><button type="button" class="gl-mini gl-resetview">처음 시점으로</button></span>
+      </div>
+
+      <div class="gl-vctl" data-for="1">
+        <span class="gl-sub">빙기의 기온(얼마나 추워지는지)</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-coldrange" type="range" min="0" max="100" step="1" value="60" aria-label="빙기의 기온">
+          <span class="gl-rv gl-coldval"></span>
+        </div>
+        <div class="gl-ends"><span>조금 추움</span><span>매우 추움</span></div>
+        <span class="gl-sub">단면 자르는 위치</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-cutr" data-for="1" type="range" min="0" max="100" step="1" value="100" aria-label="블록을 자르는 위치(0 = 자르지 않음, 100 = 가운데)">
+          <span class="gl-rv gl-cutv" data-for="1"></span>
+        </div>
+        <span class="gl-sub">시간이 흐르면 (빙기 → 다시 따뜻해짐)</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-trange" data-for="1" type="range" min="0" max="100" step="1" value="0" aria-label="시간이 흐르면">
+          <span class="gl-rv gl-tval" data-for="1"></span>
+        </div>
+        <div class="gl-row">
+          <button type="button" class="gl-btn main gl-play" data-for="1">재생</button>
+          <button type="button" class="gl-btn gl-reset" data-for="1">처음으로</button>
+        </div>
+      </div>
+
+      <div class="gl-vctl gl-off" data-for="2">
+        <span class="gl-sub">해수면</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-searange" type="range" min="0" max="100" step="1" value="100" aria-label="해수면">
+          <span class="gl-rv gl-seaval"></span>
+        </div>
+        <div class="gl-ends"><span>빙기(낮음)</span><span>지금(높음)</span></div>
+        <span class="gl-sub">단면 자르는 위치</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-cutr" data-for="2" type="range" min="0" max="100" step="1" value="0" aria-label="블록을 자르는 위치(0 = 자르지 않음, 100 = 가운데)">
+          <span class="gl-rv gl-cutv" data-for="2"></span>
+        </div>
+        <span class="gl-sub">시간이 흐르면 (빙기 → 다시 따뜻해짐)</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-trange" data-for="2" type="range" min="0" max="100" step="1" value="0" aria-label="시간이 흐르면">
+          <span class="gl-rv gl-tval" data-for="2"></span>
+        </div>
+        <div class="gl-row">
+          <button type="button" class="gl-btn main gl-play" data-for="2">재생</button>
+          <button type="button" class="gl-btn gl-reset" data-for="2">처음으로</button>
+        </div>
+      </div>
+
+      <div class="gl-vctl gl-off" data-for="3">
+        <div class="gl-line2">
+          <span class="gl-sub">빙기의 세기</span>
+          <div class="gl-seg gl-iceseg" role="group" aria-label="빙기의 세기">
+            <button type="button" class="gl-segb" data-ice="1" aria-pressed="false">약함</button>
+            <button type="button" class="gl-segb" data-ice="2" aria-pressed="true">보통</button>
+            <button type="button" class="gl-segb" data-ice="3" aria-pressed="false">강함</button>
+          </div>
+        </div>
+        <span class="gl-sub">시간이 흐르면 (빙기 → 다시 따뜻해짐)</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-trange" data-for="3" type="range" min="0" max="100" step="1" value="0" aria-label="시간이 흐르면">
+          <span class="gl-rv gl-tval" data-for="3"></span>
+        </div>
+        <div class="gl-row">
+          <button type="button" class="gl-btn main gl-play" data-for="3">재생</button>
+          <button type="button" class="gl-btn gl-reset" data-for="3">처음으로</button>
+        </div>
+      </div>
+
+      <div class="gl-vctl gl-off" data-for="4">
+        <div class="gl-line2">
+          <span class="gl-sub">어디를 볼까요</span>
+          <div class="gl-seg two gl-poleseg" role="group" aria-label="어디를 볼까요">
+            <button type="button" class="gl-segb" data-pole="n" aria-pressed="true">북극</button>
+            <button type="button" class="gl-segb" data-pole="s" aria-pressed="false">남극</button>
+          </div>
+        </div>
+        <div class="gl-line2">
+          <span class="gl-sub">언제</span>
+          <div class="gl-seg two gl-monseg" role="group" aria-label="언제">
+            <button type="button" class="gl-segb" data-mon="9" aria-pressed="true">9월</button>
+            <button type="button" class="gl-segb" data-mon="3" aria-pressed="false">3월</button>
+          </div>
+        </div>
+        <span class="gl-sub">해마다 (1980년 → 2020년)</span>
+        <div class="gl-rangerow">
+          <input class="gl-range gl-trange" data-for="4" type="range" min="0" max="100" step="1" value="0" aria-label="해마다">
+          <span class="gl-rv gl-tval" data-for="4"></span>
+        </div>
+        <div class="gl-row">
+          <button type="button" class="gl-btn main gl-play" data-for="4">재생</button>
+          <button type="button" class="gl-btn gl-reset" data-for="4">처음으로</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="gl-card">
+      <h3 class="gl-h gl-readh">읽은 값</h3>
+      <div class="gl-stats">
+        <div class="gl-stat"><span class="gl-k gl-k1"></span><span class="gl-v gl-v1"></span></div>
+        <div class="gl-stat"><span class="gl-k gl-k2"></span><span class="gl-v gl-v2"></span></div>
+        <div class="gl-stat"><span class="gl-k gl-k3"></span><span class="gl-v gl-v3"></span></div>
+        <div class="gl-stat"><span class="gl-k gl-k4"></span><span class="gl-v gl-v4"></span></div>
+      </div>
+      <div class="gl-result" aria-live="polite">
+        <span class="gl-rk"></span>
+        <p class="gl-rt"></p>
+      </div>
+      <p class="gl-note gl-readnote"></p>
+    </section>
+
+    <section class="gl-card">
+      <h3 class="gl-h">사례와 이용</h3>
+      <svg class="gl-map" viewBox="0 0 270 128" role="group" aria-label="세계의 빙하 지형 사례 지도"></svg>
+      <p class="gl-place" aria-live="polite"></p>
+      <p class="gl-p">우리나라에는 빙하 지형이 없습니다. 지금도 빙하가 있거나, 과거 빙기에 빙하로 덮였던 곳에서 볼 수 있습니다.</p>
+      <p class="gl-p gl-use"></p>
+    </section>
+
+    <section class="gl-card">
+      <h3 class="gl-h">더 알아보기</h3>
+      <div class="gl-more">
+        <p class="gl-mterm">권곡 · 호른</p>
+        <p class="gl-mdesc">빙하가 시작되는 산 위쪽의 움푹한 곳을 권곡, 여러 권곡 사이에 남은 뾰족한 봉우리를 호른이라고 합니다. 알프스의 마터호른이 대표적입니다.</p>
+        <p class="gl-mterm">현곡</p>
+        <p class="gl-mdesc">옆 골짜기의 작은 빙하는 덜 깎아, 큰 골짜기보다 높은 곳에 걸린 골짜기(현곡)가 남습니다. 그 끝에 폭포가 생기기도 합니다.</p>
+        <p class="gl-mterm">모레인 · 드럼린 · 에스커</p>
+        <p class="gl-mdesc">빙하가 실어 온 흙과 돌이 쌓인 둑을 모레인, 빙하가 흐른 방향으로 길쭉한 언덕을 드럼린, 빙하 밑을 흐르던 물이 쌓은 좁고 긴 둑을 에스커라고 합니다.</p>
+        <p class="gl-mterm">극지방의 빙하와 해빙</p>
+        <p class="gl-mdesc">남극은 거대한 빙하로 덮인 대륙이고, 북극은 바닷물이 언 해빙과 바다로 이루어져 있습니다. 보기 4에서 두 곳을 비교해 봅니다.</p>
+        <p class="gl-mterm">빙하가 녹으면</p>
+        <p class="gl-mdesc">기후가 따뜻해지며 산악 빙하와 북극의 빙하가 줄어들고 있습니다. 북극에서는 새 뱃길이 열리기도 하지만, 해수면 상승과 생태계 변화가 걱정됩니다.</p>
+      </div>
+    </section>
+
+    <section class="gl-card">
+      <h3 class="gl-h">확인 문제</h3>
+      <div class="gl-qlist"></div>
+    </section>
+
+    <p class="gl-credit">자료: 빙하 모형은 예시 모형 · 북극 해빙 넓이 NSIDC Sea Ice Index(월평균, 대략) · 지도 해안선 Natural Earth · 장소 위치는 대략</p>
+  </div>
+</aside>
+
+<div class="gl-modal" hidden>
+  <div class="gl-dialog" role="dialog" aria-modal="true">
+    <div class="gl-dhead">
+      <span class="gl-dnum"></span>
+      <button type="button" class="gl-x" aria-label="닫기">×</button>
+    </div>
+    <p class="gl-dq"></p>
+    <div class="gl-dopts"></div>
+    <p class="gl-dfb" aria-live="polite"></p>
+    <div class="gl-dfoot">
+      <button type="button" class="gl-btn gl-prev">이전 문제</button>
+      <button type="button" class="gl-btn gl-next">다음 문제</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  function Up(root) {
+    var NS = "http://www.w3.org/2000/svg";
+    var uid = "gl" + Math.random().toString(36).slice(2, 8);
+
+    /* 세계 육지 윤곽: 자료발췌/로직/지형/land-world.js (land-50m.js를 0.9°로 더 줄임) */
+    var LAND_WORLD = "M-130 -55.5l-2 0 -3.5 -4 .5 1.5 -1.5 0 -3 -2 -8.5 -1 -4 1.5 2.5 -2 -7 4.5 -7 2 6 -2.5 .5 -1.5 -5 .5 0 -2 -3.5 0 2 -.5 -2.5 -1 5 -1.5 0 -1.5 -7 -.5 8 -1 -7 -2 5 -2 5.5 -1 21 3 6 -1.5 -3.5 1.5 5 -2 12.5 1.5 1.5 .5 -1 .5 5 0 2.5 1.5 -.5 -1.5 2 -.5 -2.5 0 2.5 -.5 3.5 1.5 5 -1 1.5 2 2.5 -2 -3 -1.5 2 -2 4.5 3.5 2 -.5 .5 2 2.5 -2 -.5 -1 3 .5 1 .5 -1 .5 1 1.5 -5 .5 -1 1 -4 -.5 4.5 1 -3 1.5 -3.5 -.5 3 .5 -4.5 3 2 3.5 10.5 2 .5 3 2.5 1 1 -1.5 -1 -2 3 -2 -2 -2 1 -1 -.5 -3 4.5 0 4 1.5 -1 1 2.5 1.5 -1 .5 3 -.5 1.5 -2 4 5.5 3 .5 -3 1 3 -.5 2 1.5 -4.5 2 -6.5 .5 -4.5 1.5 1 1 -4.5 2.5 9 -4.5 1.5 1 -2.5 .5 5.5 2.5 -4.5 2 -.5 -1 2.5 -1 -1 -.5 -5.5 2 -1 1.5 1 1 -4 .5 -2 4 0 -2.5 -.5 1.5 -.5 -1 .5 2 -1 -.5 2 1.5 -1 0 0 1 -1.5 1 -3.5 3 1 6 -3.5 -5 -4 -.5 -2 0 1 1.5 -5 -1 -2.5 1.5 -1.5 1 0 5 2 3.5 4.5 .5 1.5 -2.5 3 -.5 -2 5.5 6 1 -1 3.5 2 2.5 3.5 -.5 1.5 1.5 2 -3 3.5 -1.5 0 3.5 1.5 -3 2 1.5 6 0 -1 0 2 1 -.5 1 2.5 1 .5 1 7.5 2.5 1 3 -2.5 2.5 1.5 -.5 1.5 1.5 2 -2 3 1 0 1.5 4.5 0 4.5 2 .5 2.5 -4 5.5 -2 9 -7.5 3.5 -.5 3 -3 3.5 .5 -2 -2.5 4.5 -4 0 0 -2 -.5 2 2 2 -1 1.5 -5 1 0 2 -2.5 0 1.5 1.5 -1.5 0 -.5 2.5 -2 1 1.5 2 -3 2 .5 2.5 -4 1 1 -1 -1.5 .5 -1.5 -1 2 -.5 -2.5 -1 1.5 0 -1 -2.5 1 0 -2 -1.5 1.5 -1 0 1 1.5 -2 -1 -7 2 -5 1.5 -11 -.5 -3 -5.5 -4 -5 -8.5 1.5 -3.5 -1.5 -1.5 4 -5 -1 -4 -1.5 -1 -1.5 2 -4.5 -3 -2 -3.5 -16 -5 -10.5 -13 -1 -.5 .5 2 5 6.5 -2.5 -1 -3 -3 1 -1 -3.5 -5 -3 -1 -2 -3 1 -.5 -1.5 0 -1.5 -2.5 1.5 -5.5 -1.5 -2.5 2 1.5 0 -2 -2.5 -2 -2.5 0 .5 -2 -1 1 -.5 -2 -2 .5 .5 -2zM-178.5 -68.5l4.5 2.5 -.5 -1 1.5 0 3.5 1 -2 0 -1.5 1.5 -5.5 -2 -1.5 1.5 0 -4 1.5 .5zM-97 72l1.5 .5 -2.5 0 -4.5 -.5 5 0zM-125.5 -50.5l2 2 -2.5 -1 -2 -1.5zM-113.5 -72.5l3.5 -.5 2 1.5 0 -1.5 1.5 0 5.5 3 -1 .5 -11 1 -4 -1.5 5.5 -.5 -7.5 -1.5 4.5 -.5zM-97 -74l-1.5 1 2 1 -2 0 -4 -1 3.5 -.5zM-119 -74l3.5 .5 -7.5 2.5 -3 -1 2 -2 -.5 -.5 5.5 .5zM-108 -76l2.5 0 -1.5 1 -8.5 0 -2 -.5 1.5 -1 8.5 .5zM-97.5 -76l-.5 1 -3 -1 3 -.5zM-116 -77l-3.5 1 -3 -.5 6 -.5zM-102.5 -79l3.5 1 -6 -.5 2.5 -.5zM-80.5 -23l6.5 2.5 -3.5 .5 -2 -1.5 -2.5 -1 -3 .5 3 -1zM-84.5 -65.5l4 1.5 -4 .5 -2.5 0 1 -2.5 1 1zM-85 -71l-1 -1 1.5 0 -1 -1 1 -.5 3 0 .5 1.5 5.5 -.5 -.5 1 1.5 -.5 -.5 1 6.5 .5 -1.5 .5 3.5 .5 -3 .5 8 2.5 -2 1.5 -2 -1 1 -.5 -3 0 -1 .5 4 2.5 -.5 1 -4 -1.5 2.5 2 -7 -2.5 -3.5 .5 -1 -.5 .5 -1 4 0 -1 -.5 2.5 -1.5 -1.5 -1 -5.5 -2 -10 0 2 -.5 -2.5 -.5 .5 -1.5 4 -1 -1.5 1 1.5 1.5 -1.5 .5 1 0zM-90.5 -74l-3.5 2 -1.5 -1 4.5 -1zM-93 -76.5l13.5 1 -4 .5 -7.5 .5 -2 -2 -4 -.5 4 0zM-66.5 -83l5.5 .5 -17.5 3.5 4 .5 -7.5 1 3.5 1 -11 0 2.5 -.5 -1 -1 4.5 .5 -2 -.5 1.5 0 -3 -1 5 0 -4.5 -1.5 6 1 -2.5 -1 6 -1 -8 1 -6.5 -1 21.5 -1.5zM-90.5 -80.5l5.5 1 -8 1 -1 -.5 2.5 -.5 -5.5 -.5 5 -1zM-63 80.5l-4 0 7.5 -.5 -1 1zM-68.5 70.5l-.5 2 -5 -1 4 -.5 -2 -2 2.5 .5zM-69 52.5l4 2 -5.5 -.5 1.5 .5 -1.5 -1.5 1.5 -.5zM-71.5 -20l3 1.5 -3.5 .5 -2.5 -.5 2.5 -1zM-43.5 79l0 1 -9 0 3.5 -2 3.5 1zM-56 -51l-1 1.5 4 1 -1 1.5 0 -1 -1.5 1 -4 -.5 3.5 -4zM-14.5 -66.5l1 1.5 -4.5 1.5 -4.5 -.5 1 -.5 -2.5 -.5 2 -.5 -2.5 0 1.5 -1 2 1 5.5 -.5zM-26 -83.5l-6 .5 10.5 .5 -8.5 .5 8.5 0 -1.5 1 11.5 -.5 -8.5 1.5 1 1 -2.5 1.5 3 .5 -4 .5 3 .5 -2.5 1 2 0 .5 .5 -3 .5 2 .5 -7 .5 5.5 0 -4.5 .5 1.5 -.5 3.5 2.5 -5.5 -1 1.5 0 -3.5 1 7 .5 -18 4.5 -1.5 1 1 1 -2.5 1 1 .5 -1.5 2 -6 -1.5 -2 -2 1 -.5 -1 0 1.5 -.5 -2 .5 -.5 -1.5 1.5 -.5 -2.5 0 2.5 -1 -3 0 3.5 -.5 -3 0 3 -1.5 -4 -1.5 4 0 -2.5 -1 1 0 -3.5 0 1 -1.5 -4 -2.5 -10 -.5 -2.5 -1 4.5 -.5 -6 -1 6.5 -.5 2 -1 -3 -.5 6.5 -1.5 16 0 -1 -.5 4 -.5 -4.5 0 16 -.5zM-57 63.5l-4.5 1.5 -1 1 1.5 .5 -4.5 1 .5 1 2 0 2 2.5 -1.5 1 2.5 1 -2 0 1.5 1.5 -9.5 2 -7.5 0 3.5 1.5 -10 0 3 1.5 5 0 -3.5 .5 4.5 1 13 .5 -4 .5 5.5 0 -2 .5 3 1 36 -3.5 -12.5 -1 .5 -1 17 -2.5 8 -4.5 37 0 6 -1 1 -1.5 5.5 1.5 1 -1 8.5 -1 5 -2 3.5 .5 -1 1 13.5 .5 -.5 2 -1.5 .5 2 0 -2 3 11.5 -5.5 22.5 -2 8 1 3.5 -1 2.5 1 -1.5 .5 21.5 -1.5 35 5.5 -.5 1 -1.5 0 1 .5 -3 0 1 .5 -2.5 0 .5 1 -4.5 1 2 .5 1 2 3 .5 -5.5 0 -3 2 5 1.5 -2 .5 18.5 2 0 5.5 -360 0 0 -5.5 23.5 .5 -17.5 -2 14.5 .5 6.5 -1 -4 -1 9 -.5 -2.5 -.5 2.5 -.5 -10.5 -2 .5 -1 12.5 .5 -4 -1 1 -.5 34 -2 1 .5 -.5 .5 15 .5 -4 -1.5 4 -.5 -4 -1 33.5 .5 2.5 -1 -1.5 -2.5 1.5 -.5 -.5 -2 10.5 -3.5zM12 4.5l-3.5 -4 1.5 -.5 -1.5 -5 -2.5 .5 -2.5 -2 -11 2 -5.5 -3.5 -2 -4 -2 -.5 1.5 -1 -2 -1.5 1.5 -3 -1 -4 2.5 -4.5 4 -2.5 1.5 -3.5 3 -3.5 4 1 6 -2 7 0 -.5 3.5 8.5 3 2.5 -2.5 7.5 2 5 0 2 -6 -8.5 .5 -1.5 -3.5 7.5 -2 5 1 3.5 -1 -5.5 -3 2.5 -2.5 -4 1.5 1.5 .5 -2.5 1 -2 -2.5 -4.5 4.5 1.5 1.5 -6.5 .5 1.5 3 -1.5 1 -1.5 -1.5 2 0 -2 -.5 -1.5 -3.5 -6 -4 -1 2 6 4 -1.5 -.5 -1 2.5 -.5 -2 -6.5 -4.5 -5.5 1.5 -5.5 6 -3.5 1 -3.5 -1 0 -6 7 -.5 1.5 -1.5 -1 -2 -3 -1.5 5 -1 5 -4 4.5 0 -2 -2 .5 -1.5 2 -.5 -.5 3 4.5 1 6.5 -1.5 .5 -2.5 3 0 -1 -1.5 6.5 -1 -8.5 -.5 0 -2.5 4 -2 -3 -1 -5 3.5 0 2 1.5 .5 -3 1.5 0 2.5 -3 .5 -2.5 -4.5 -2.5 2 -2.5 -.5 1 -1 -1.5 0 2 -1 -2 1 0 -1.5 2.5 0 -2.5 0 1.5 -1 -1.5 0 6.5 -2 -2 .5 9 -6 6 -1.5 16.5 3.5 -2.5 1.5 -6.5 -1 5.5 3 -.5 -1 3 .5 2 -2 2 .5 -.5 -2.5 2.5 0 .5 .5 -1.5 .5 1.5 .5 7.5 -2 5.5 .5 1.5 -1.5 7.5 1.5 -2 -2.5 3 -2 3.5 .5 -1 1 1.5 3 -2 2 -2.5 -.5 3.5 .5 2.5 -2.5 4 1.5 -5 -1.5 .5 -1.5 -1.5 -1 2 -1.5 .5 1.5 5.5 -.5 2 .5 -1 .5 1 1 .5 -1.5 -3 -2 6 .5 1 -1 -1.5 -.5 1 -.5 12.5 -1 -.5 -.5 5 -1 10 1.5 -9 3 6 -1 2.5 1.5 .5 -1 10.5 -.5 4.5 1 .5 1 -2 -.5 3.5 2 1.5 -1.5 7.5 .5 -1 -1 2 -.5 18.5 2 1.5 2.5 2 -1 7.5 .5 0 -1 5.5 0 4 1 0 4 -5.5 .5 3 -.5 2 2 -9 3 -7 0 -1.5 2 1.5 2 -7 5 -.5 -5.5 7.5 -4.5 2 -1.5 -1 0 -4.5 2 .5 -1.5 -3.5 .5 -2.5 1.5 .5 1 -12.5 0 -7 4 6 1.5 -1.5 5 -5 5 -3 0 -4.5 3.5 1.5 5 -2.5 .5 0 -3.5 -2 0 1 -.5 -1 -1.5 -3.5 1.5 1 -2.5 -4 2 1.5 2 3 -.5 -3.5 2.5 3 3 -2 0 1.5 .5 -1.5 1.5 2 1 -5.5 6 -3 0 -3 2.5 -2 -1.5 -2 1 -1 2 3.5 3.5 0 4 -4 3 0 -1.5 -5 -3.5 -.5 4 3.5 4 1 4 -2.5 -1.5 -3 -5 -1 -8.5 -.5 -1 -3 1.5 0 -3.5 -3.5 -4 -.5 1.5 -2 -.5 -7.5 7 -1 6.5 -2 1 -4 -8.5 -.5 -5.5 -2.5 1 -1.5 -1.5 1.5 -.5 -4 -2.5 -9 -.5 -1 -1 -2 .5 -3 -1.5 -1.5 -2 -2 0 3 5 .5 -1 0 1.5 3 0 2 -2 0 2 3.5 2 -5 5.5 -11 4.5 -1.5 -5 -8 -10.5 .5 -1.5 -1 1.5 -1.5 -2 7 14.5 4 3 -1 1 2.5 1 6 -1.5 .5 1.5 -3.5 6 -9 9 1.5 11 -6 4 1 4.5 -2.5 1.5 -.5 3 -6 5.5 -8 .5 -6.5 -16.5 2 -7 -2 -5.5zM49 -41.5l1.5 1 -1.5 3 5 .5 -1.5 -3.5 2 -.5 -1.5 -1 -2.5 -2.5 2.5 -1 0 -1 -2 -.5 -4.5 2.5 2 2.5zM-6.5 -54l0 2 -3 .5 -1 -.5 1.5 -.5 -1 0 .5 -1.5 2 -1.5 2 1zM-3.5 -51.5l-2 -.5 3 -1.5 -.5 -1.5 -2 0 0 -1 -.5 .5 .5 -3 3 1 -2 1.5 5.5 3 -.5 2 -6.5 1 3 -1.5zM18 -79.5l3.5 1 -4.5 2 -3 -1 3 -.5 -3.5 0 3.5 -.5 -1.5 -.5 -2.5 1 -2.5 -2 7 0zM22.5 -80l4.5 0 -3 1 -5.5 -1 1 -.5zM50 13l.5 2.5 -3.5 9.5 -3 0 .5 -9 3.5 -1.5 1 -2.5zM56 -73l-.5 1 2 1.5 -5.5 -1 1.5 -1.5 2.5 0zM81 -9l.5 3 -1.5 0 0 -2 .5 -2zM68 -76.5l-11.5 3 -2.5 -.5 2 -1 13 -1.5zM97.5 -80l2.5 0 -.5 1 -6.5 -.5 5 -.5zM98 -81l-5.5 .5 4.5 -.5zM108.5 6.5l5.5 1 .5 1.5 -3 -.5 -6.5 -1.5 2.5 -1zM97.5 -5l6 4.5 1.5 2.5 1 1 -.5 3 -3 -2 -7 -8.5 -.5 -1 1.5 .5zM117.5 -4l1.5 3 -1 0 -2 4.5 -5.5 -.5 -1 -3 0 -2 1.5 .5 6 -5.5 2.5 1.5 -2 1zM121 -22l-1 -1.5 1.5 -2 -.5 3zM102.5 -79l2 .5 -4.5 0 3 -1zM124.5 -.5l-4.5 0 .5 2 3 -.5 -2 1 1.5 2.5 -1.5 .5 -.5 -2 -.5 2.5 -1.5 -2 1.5 -4.5 4.5 -.5zM126 -8.5l-.5 3 -2 -2 -1.5 .5 0 -1 3.5 -2 1 1zM122.5 -18.5l-1 3 2.5 2.5 -1.5 -1 -2 0 -.5 -2.5 .5 -2 1.5 0zM144.5 40.5l3.5 .5 0 2 -2 .5 -1.5 -2.5zM143.5 12.5l3 6.5 6.5 7 0 5.5 -3.5 6.5 -3 1 -1.5 -1 -3.5 .5 -3.5 -4.5 -1 1 1 -2.5 -2 2.5 -2 -2.5 -3 -1 -14.5 3.5 -1.5 -.5 .5 -3 -1.5 -5 0 -4.5 7 -2.5 5 -5.5 3 1 1.5 -2.5 2 -.5 -.5 -.5 4 .5 1 0 -1.5 3 4.5 2.5 2 -6.5 1 1.5zM141 2.5l6.5 3.5 -.5 1.5 4 2.5 -3 0 -3 -2.5 -3 .5 .5 1.5 -3.5 -2 -1.5 -2.5 -3.5 -2 -1 1 -1 -1 2 -1 -3 -.5 3 -.5 1 2.5 3 -2 2.5 1zM131.5 -33.5l0 2 -1.5 -.5 -.5 -1.5 2 0zM142 -40.5l-2 5.5 -3 0 -1.5 1.5 -1 -1.5 -2 .5 7 -3.5 1 -3 1 .5zM145.5 -44.5l.5 1 -3 1.5 -2.5 -.5 .5 .5 -1 -.5 1.5 -3 3 1.5zM143.5 -53l1 4.5 -1.5 -.5 .5 2.5 -1.5 0 -.5 -6 1.5 -1.5zM141 -75.5l4.5 0 -2.5 .5 -5 0 -1 -.5 .5 -.5 3 .5zM174 41l-3 5 -4.5 0 6 -5.5 .5 1zM173.5 35l2.5 2.5 2.5 0 -4 4 1 -1 -1.5 -1.5 1 -2 -1.5 -2z";
+
+    /* 사례 장소(위경도는 대략): 중학 사회 ① 51쪽(노르웨이 · 아이슬란드), 88~89쪽(캐나다 · 오대호), 105쪽(뉴질랜드 남섬), 112쪽(남극) */
+    var PLACES = [
+      { id: "no", name: "노르웨이", lon: 6.5, lat: 61.2, dx: 0, dy: -6, anchor: "middle", kinds: [2],
+        text: "노르웨이: 빙하가 U자 모양으로 깎은 골짜기에 바닷물이 들어온 피오르가 많습니다. 송네피오르는 길이가 200km가 넘습니다." },
+      { id: "is", name: "아이슬란드", lon: -18.5, lat: 64.9, dx: -5, dy: -5, anchor: "end", kinds: [2],
+        text: "아이슬란드: 빙하와 화산이 함께 있는 섬으로, 피오르와 빙하호를 볼 수 있습니다." },
+      { id: "al", name: "알프스", lon: 9.5, lat: 46.3, dx: 5, dy: 8, anchor: "start", kinds: [1],
+        text: "알프스산맥: 빙하가 깎은 U자 골짜기와 마터호른 같은 뾰족한 봉우리가 있습니다. 산악 빙하는 기후가 따뜻해지며 줄어들고 있습니다." },
+      { id: "ca", name: "캐나다 · 오대호", lon: -84, lat: 45.5, dx: 0, dy: 11, anchor: "middle", kinds: [3],
+        text: "캐나다와 미국 북부: 과거 두꺼운 빙하에 덮였던 곳으로, 오대호를 비롯한 수많은 빙하호가 있습니다." },
+      { id: "nz", name: "뉴질랜드 남섬", lon: 170.5, lat: -43.6, dx: -5, dy: -6, anchor: "end", kinds: [1, 2],
+        text: "뉴질랜드 남섬: 높은 산지에 빙하가 있고, 남서쪽 해안에는 밀퍼드 사운드 같은 피오르가 있습니다." },
+      { id: "gr", name: "그린란드", lon: -41, lat: 72, dx: 0, dy: -7, anchor: "middle", kinds: [4],
+        text: "그린란드: 섬의 대부분이 두꺼운 빙하(가장 두꺼운 곳 약 3km)로 덮여 있습니다. 기후가 따뜻해지며 녹는 얼음이 늘고 있습니다." },
+      { id: "ar", name: "북극해", lon: 160, lat: 77, dx: 0, dy: 11, anchor: "middle", kinds: [4],
+        text: "북극해: 바닷물이 얼어 생긴 해빙이 떠 있습니다. 여름 해빙이 줄어들며 배가 다니는 북극 항로가 열리고 있습니다." },
+      { id: "an", name: "남극", lon: 20, lat: -78, dx: 0, dy: -6, anchor: "middle", kinds: [3, 4],
+        text: "남극: 대륙 대부분이 두꺼운 빙하로 덮여 있습니다. 넓은 땅을 덮은 빙하는 보기 3의 대륙 빙하와 닮았습니다." }
+    ];
+
+    var QUIZ = [
+      {
+        title: "U자 골짜기가 생기는 까닭",
+        q: "빙하가 흘러간 골짜기가 U자 모양이 되는 까닭으로 알맞은 것은 무엇일까요?",
+        opts: ["빙하가 골짜기의 바닥과 양옆을 함께 넓고 깊게 깎기 때문입니다.", "바람이 골짜기 안의 모래를 날려 보내기 때문입니다.", "하천이 골짜기 바닥만 좁고 깊게 깎기 때문입니다."],
+        ans: 0,
+        ok: "맞습니다. 하천은 바닥을 좁게 깎아 V자 골짜기를 만들지만, 두꺼운 빙하는 바닥과 양옆을 함께 깎아 바닥이 넓고 양옆이 가파른 U자 골짜기를 만듭니다.",
+        no: "다시 생각해 보세요. 보기 1에서 「반으로 잘라 보기」로 자른 면을 보며 끝까지 재생해 봅니다."
+      },
+      {
+        title: "피오르가 생긴 과정",
+        q: "노르웨이 해안의 피오르는 어떻게 생겼을까요?",
+        opts: ["하천이 깎은 V자 골짜기에 모래가 쌓여 생겼습니다.", "빙하가 U자 모양으로 깎은 골짜기에 바닷물이 들어와 생겼습니다.", "화산 꼭대기가 무너진 곳에 바닷물이 고여 생겼습니다."],
+        ans: 1,
+        ok: "맞습니다. 빙기에 빙하가 바닷가 골짜기를 깊고 넓게 깎았고, 빙하가 녹은 뒤 바닷물이 들어와 좁고 긴 만이 되었습니다.",
+        no: "다시 생각해 보세요. 보기 2에서 끝까지 재생한 뒤 해수면 막대를 내렸다 올려 봅니다."
+      },
+      {
+        title: "오대호 같은 빙하호",
+        q: "캐나다와 미국 북부에 오대호 같은 호수가 많은 까닭으로 알맞은 것은 무엇일까요?",
+        opts: ["과거 두꺼운 빙하가 땅을 파고 흙과 돌을 쌓은 곳에 녹은 물이 고였기 때문입니다.", "석회암이 빗물에 녹아 움푹 파였기 때문입니다.", "바닷물이 들어왔다가 갇혔기 때문입니다."],
+        ans: 0,
+        ok: "맞습니다. 넓은 땅을 덮었던 대륙 빙하가 땅을 파내고 끝에 흙과 돌을 쌓았습니다. 빙하가 녹자 그 물이 고여 수많은 빙하호가 생겼습니다.",
+        no: "다시 생각해 보세요. 보기 3에서 빙기의 세기를 「강함」으로 두고 끝까지 재생해 봅니다."
+      },
+      {
+        title: "높이 걸린 골짜기(현곡)",
+        q: "큰 U자 골짜기 옆에 옆 골짜기가 높이 걸려 남는(현곡) 까닭으로 알맞은 것은 무엇일까요?",
+        opts: ["옆 골짜기에 화산이 분출해 땅이 높아졌기 때문입니다.", "옆 골짜기의 작은 빙하가 큰 빙하보다 덜 깎았기 때문입니다.", "옆 골짜기에 바닷물이 들어와 모래가 쌓였기 때문입니다."],
+        ans: 1,
+        ok: "맞습니다. 큰 빙하는 골짜기를 깊게 깎지만 옆 골짜기의 작은 빙하는 조금만 깎습니다. 빙하가 녹으면 옆 골짜기가 큰 골짜기보다 높은 곳에 걸려 남고, 그 끝에 폭포가 생기기도 합니다.",
+        no: "다시 생각해 보세요. 보기 1에서 「매우 추움」 쪽으로 두고 끝까지 재생한 뒤 오른쪽 옆 골짜기를 봅니다."
+      },
+      {
+        title: "북극의 해빙이 줄어들면",
+        q: "북극의 여름 해빙이 줄어들면서 나타난 변화로 알맞은 것은 무엇일까요?",
+        opts: ["북극 항로가 열려 배가 북극해를 지나 아시아와 유럽을 오갈 수 있게 되었습니다.", "남극 대륙을 덮은 빙하가 모두 사라졌습니다.", "북극해의 바닷물이 모두 민물로 바뀌었습니다."],
+        ans: 0,
+        ok: "맞습니다. 여름 해빙이 줄어 시베리아 앞바다에 배가 다닐 수 있는 기간이 늘었습니다. 뱃길은 짧아지지만 북극 생태계 변화와 사고 위험이 걱정됩니다.",
+        no: "다시 생각해 보세요. 보기 4에서 「9월」로 두고 1980년과 2020년을 비교해 봅니다."
+      }
+    ];
+
+    function $(sel) { return root.querySelector(sel); }
+    function $$(sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
+    function attrs(e, at) { for (var k in at) if (Object.prototype.hasOwnProperty.call(at, k)) e.setAttribute(k, at[k]); }
+    function S(tag, at, parent, text) {
+      var e = document.createElementNS(NS, tag);
+      attrs(e, at);
+      if (text != null) e.textContent = text;
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+    function E(tag, cls, parent, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+    function setText(e, s) { if (e.textContent !== s) e.textContent = s; }
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function mix(a, b, u) { u = clamp(u, 0, 1); return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
+    function rgb(c, k, al) {
+      k = k == null ? 1 : k;
+      var s = Math.round(clamp(c[0] * k, 0, 255)) + "," + Math.round(clamp(c[1] * k, 0, 255)) + "," + Math.round(clamp(c[2] * k, 0, 255));
+      return al == null ? "rgb(" + s + ")" : "rgba(" + s + "," + al + ")";
+    }
+    function sm(a, b, t) { var u = clamp((t - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); }
+    /* sm(0, 1, x) = y 의 x */
+    function smInv(y) { y = clamp(y, 0, 1); return 0.5 - Math.sin(Math.asin(1 - 2 * y) / 3); }
+    function rnd(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+    function round10(v) { return Math.round(v / 10) * 10; }
+
+    var RM = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var RAD = Math.PI / 180;
+    var cv = $(".gl-cv"), ctx = cv.getContext("2d");
+    var CW = 1, CH = 1, DPR = 1, TS = 1, FONT = "Pretendard,'Malgun Gothic',system-ui,sans-serif";
+    var view = 1;
+    /* 완성본(10-19 개선): 느린 컴퓨터면 저절로 가볍게 — 정지 화면 그리기가 0.07초 넘게 세 번 걸리면 화면 배율을 1로, 그래도 0.11초 넘으면 늘 성긴 칸 */
+    var DPRMAX = 2, slowN = 0, SLOW = false;
+    function noteSpeed(ms) {
+      if (ms > 70) slowN++; else slowN = Math.max(0, slowN - 1);
+      if (slowN < 3) return;
+      slowN = 0;
+      if (DPRMAX > 1 && DPR > 1) { DPRMAX = 1; sizeCanvas(); layerKey = ""; requestRender(); }
+      else if (!SLOW && ms > 110) { SLOW = true; layerKey = ""; requestRender(); }
+    }
+    function sizeCanvas() {
+      var r = cv.getBoundingClientRect();
+      CW = Math.max(1, r.width); CH = Math.max(1, r.height);
+      DPR = Math.min(DPRMAX, window.devicePixelRatio || 1);
+      cv.width = Math.round(CW * DPR); cv.height = Math.round(CH * DPR);
+    }
+    var LIGHT = (function () { var v = [-0.5, 0.8, -0.35], l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); return [v[0] / l, v[1] / l, v[2] / l]; })();
+
+    /* ================= 3D 부품: 「화산 지형」 1차본과 같음(Cam · 도는 중심 oz · makeSurf · 블록 옆면 부품) ================= */
+    function Cam(yaw, pitch) {
+      var C = { yaw: yaw, pitch: pitch, k: 1, cx: 0, cy: 0, oz: 0 }, cY = 1, sY = 0, cP = 1, sP = 0, DP = 5;
+      C.rot = function () { cY = Math.cos(C.yaw * RAD); sY = Math.sin(C.yaw * RAD); cP = Math.cos(C.pitch * RAD); sP = Math.sin(C.pitch * RAD); };
+      C.proj = function (x, y, z, out) {
+        z -= C.oz;
+        var x1 = cY * x - sY * z, z1 = sY * x + cY * z, up = y * cP + z1 * sP, d = z1 * cP - y * sP, s = DP / (DP + d);
+        out[0] = C.cx + x1 * s * C.k; out[1] = C.cy - up * s * C.k; out[2] = d; out[3] = s;
+        return out;
+      };
+      C.P = function (x, y, z) { return C.proj(x, y, z, [0, 0, 0, 1]); };
+      var fitKey = "", ext = null;
+      C.fit = function (rect, pts, yA, yB, fill, vy) {
+        C.rot();
+        var key = C.pitch.toFixed(1) + "|" + rect.w.toFixed(0) + "|" + rect.h.toFixed(0) + "|" + pts.length + "|" + pts[0].join(",");
+        if (key !== fitKey) {
+          fitKey = key;
+          var y0 = C.yaw, q = [0, 0, 0, 1], e = [1e9, -1e9, 1e9, -1e9];
+          C.k = 1; C.cx = 0; C.cy = 0;
+          for (var a = yA; a <= yB + 1e-6; a += (yB - yA) / 12) {
+            C.yaw = a; C.rot();
+            for (var i = 0; i < pts.length; i++) {
+              C.proj(pts[i][0], pts[i][1], pts[i][2], q);
+              if (q[0] < e[0]) e[0] = q[0]; if (q[0] > e[1]) e[1] = q[0]; if (q[1] < e[2]) e[2] = q[1]; if (q[1] > e[3]) e[3] = q[1];
+            }
+          }
+          C.yaw = y0; C.rot(); ext = e;
+        }
+        C.k = Math.min(rect.w * fill / (ext[1] - ext[0]), rect.h * fill / (ext[3] - ext[2])) * (C.zoom || 1);
+        C.cx = rect.x + rect.w / 2 - (ext[0] + ext[1]) / 2 * C.k;
+        C.cy = rect.y + rect.h * vy - (ext[2] + ext[3]) / 2 * C.k;
+      };
+      C.rot();
+      return C;
+    }
+    /* 높이 격자 겉면. 업그레이드(완성본): 층(눈 · 물 · 빙하)의 경계를 칸 안에서 잘라 칠해 톱니 없이 매끄럽게 그림
+       layers[k] = { s(x, z, h): 0보다 작으면 그 층, c(x, z): 색, line: 경계선 색, flat: 그늘 없이 }. 뒤에 있는 층이 위에 덮임
+       s는 hf를 부른 바로 뒤에 같은 점에서 부르므로, 장면이 hf에서 남긴 값을 써도 됨 */
+    function makeSurf(o) {
+      var NX = o.nx, NZ = o.nz, VX = NX + 1, N = VX * (NZ + 1), NC = NX * NZ, LY = o.layers || [], NL = LY.length;
+      var wx = new Float32Array(N), wy = new Float32Array(N), wz = new Float32Array(N);
+      var px = new Float32Array(N), py = new Float32Array(N), pd = new Float32Array(N);
+      var cd = new Float32Array(NC), col = new Array(NC), lamA = new Float32Array(NC), order = [], order2 = [];
+      var ls = LY.map(function () { return new Float32Array(N); }), lc = LY.map(function () { return new Array(NC); });
+      for (var j = 0; j <= NZ; j++) for (var i = 0; i <= NX; i++) {
+        var n = j * VX + i;
+        wx[n] = o.x0 + (o.x1 - o.x0) * i / NX; wz[n] = o.z0 + (o.z1 - o.z0) * j / NZ;
+      }
+      for (var c = 0; c < NC; c++) order.push(c);
+      for (var j2 = 0; j2 < NZ; j2 += 2) for (var i2 = 0; i2 < NX; i2 += 2) order2.push(j2 * NX + i2);
+      var T = { lod: false, NX: NX, NZ: NZ, VX: VX, wx: wx, wy: wy, wz: wz, px: px, py: py, x0: o.x0, x1: o.x1, z0: o.z0, z1: o.z1 };
+      T.reshape = function () {
+        var k;
+        for (var n2 = 0; n2 < N; n2++) {
+          wy[n2] = o.hf(wx[n2], wz[n2]);
+          for (k = 0; k < NL; k++) ls[k][n2] = LY[k].s(wx[n2], wz[n2], wy[n2]);
+        }
+        for (var jj = 0; jj < NZ; jj++) for (var ii = 0; ii < NX; ii++) {
+          var a = jj * VX + ii, b = a + 1, d = a + VX, e = d + 1, cc = jj * NX + ii;
+          var gx = (wy[b] + wy[e] - wy[a] - wy[d]) / 2 / (wx[b] - wx[a]), gz = (wy[d] + wy[e] - wy[a] - wy[b]) / 2 / (wz[d] - wz[a]);
+          var nl = Math.sqrt(gx * gx + 1 + gz * gz), lam = Math.max(0, (-gx * LIGHT[0] + LIGHT[1] - gz * LIGHT[2]) / nl);
+          lamA[cc] = lam;
+          col[cc] = rgb(o.color((wy[a] + wy[b] + wy[d] + wy[e]) / 4, (wx[a] + wx[e]) / 2, (wz[a] + wz[e]) / 2), 0.62 + 0.4 * lam);
+          for (k = 0; k < NL; k++) lc[k][cc] = null;
+        }
+      };
+      function lcol(k, cc) {
+        var v = lc[k][cc];
+        if (v == null) {
+          var jj = (cc / NX) | 0, a = jj * VX + cc - jj * NX;
+          v = lc[k][cc] = rgb(LY[k].c((wx[a] + wx[a + 1]) / 2, (wz[a] + wz[a + VX]) / 2), LY[k].flat ? 1 : 0.66 + 0.36 * lamA[cc]);
+        }
+        return v;
+      }
+      var XS = [0, 0, 0, 0], YS = [0, 0, 0, 0], SS = [0, 0, 0, 0], CR = [0, 0, 0, 0];
+      /* 네 꼭짓점 중 s < 0 인 부분만 남긴 다각형을 칠하고, 경계선 두 점을 CR에 남김(점 수를 돌려줌) */
+      function clipFill(fill, line) {
+        var nc = 0, first = true;
+        ctx.beginPath();
+        for (var q = 0; q < 4; q++) {
+          var r2 = (q + 1) & 3, s0 = SS[q], s1 = SS[r2];
+          if (s0 < 0) { if (first) { ctx.moveTo(XS[q], YS[q]); first = false; } else ctx.lineTo(XS[q], YS[q]); }
+          if ((s0 < 0) !== (s1 < 0)) {
+            var u = s0 / (s0 - s1), X = XS[q] + (XS[r2] - XS[q]) * u, Y = YS[q] + (YS[r2] - YS[q]) * u;
+            if (first) { ctx.moveTo(X, Y); first = false; } else ctx.lineTo(X, Y);
+            if (nc < 4) { CR[nc] = X; CR[nc + 1] = Y; } nc += 2;
+          }
+        }
+        ctx.closePath();
+        ctx.fillStyle = fill; ctx.fill();
+        ctx.strokeStyle = fill; ctx.lineWidth = 0.8; ctx.stroke();
+        if (line && nc === 4) { ctx.strokeStyle = line; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(CR[0], CR[1]); ctx.lineTo(CR[2], CR[3]); ctx.stroke(); }
+      }
+      T.draw = function (cam) {
+        var q = [0, 0, 0, 1], nn, cc, k;
+        for (nn = 0; nn < N; nn++) { cam.proj(wx[nn], wy[nn], wz[nn], q); px[nn] = q[0]; py[nn] = q[1]; pd[nn] = q[2]; }
+        var st = T.lod ? 2 : 1, ord = T.lod ? order2 : order;
+        for (var oi = 0; oi < ord.length; oi++) { cc = ord[oi]; var jj = (cc / NX) | 0, a = jj * VX + cc - jj * NX; cd[cc] = pd[a] + pd[a + st] + pd[a + st * VX] + pd[a + st * VX + st]; }
+        ord.sort(function (A1, B1) { return cd[B1] - cd[A1]; });
+        ctx.lineJoin = "round";
+        for (var t = 0; t < ord.length; t++) {
+          var c2 = ord[t], j3 = (c2 / NX) | 0, a2 = j3 * VX + c2 - j3 * NX, b2 = a2 + st, d2 = a2 + st * VX, e3 = d2 + st;
+          var F = -1;
+          if (T.lod) {
+            /* 재생 · 끄는 동안(성긴 칸): 칸 가운데 값으로 한 색만 칠함(빠르게) */
+            for (k = NL - 1; k >= 0; k--) { var L0 = ls[k]; if (L0[a2] + L0[b2] + L0[d2] + L0[e3] < 0) { F = k; break; } }
+            var fl = F < 0 ? col[c2] : lcol(F, c2);
+            ctx.beginPath(); ctx.moveTo(px[a2], py[a2]); ctx.lineTo(px[b2], py[b2]); ctx.lineTo(px[e3], py[e3]); ctx.lineTo(px[d2], py[d2]); ctx.closePath();
+            ctx.fillStyle = fl; ctx.fill(); ctx.strokeStyle = fl; ctx.lineWidth = 0.9; ctx.stroke();
+            continue;
+          }
+          for (k = NL - 1; k >= 0; k--) { var L = ls[k]; if (L[a2] < 0 && L[b2] < 0 && L[d2] < 0 && L[e3] < 0) { F = k; break; } }
+          var fc = F < 0 ? col[c2] : lcol(F, c2);
+          ctx.beginPath(); ctx.moveTo(px[a2], py[a2]); ctx.lineTo(px[b2], py[b2]); ctx.lineTo(px[e3], py[e3]); ctx.lineTo(px[d2], py[d2]); ctx.closePath();
+          ctx.fillStyle = fc; ctx.fill();
+          ctx.strokeStyle = fc; ctx.lineWidth = 0.9; ctx.stroke();
+          for (k = F + 1; k < NL; k++) {
+            var L2 = ls[k];
+            SS[0] = L2[a2]; SS[1] = L2[b2]; SS[2] = L2[e3]; SS[3] = L2[d2];
+            if (SS[0] >= 0 && SS[1] >= 0 && SS[2] >= 0 && SS[3] >= 0) continue;
+            XS[0] = px[a2]; XS[1] = px[b2]; XS[2] = px[e3]; XS[3] = px[d2];
+            YS[0] = py[a2]; YS[1] = py[b2]; YS[2] = py[e3]; YS[3] = py[d2];
+            clipFill(lcol(k, c2), LY[k].line);
+          }
+        }
+      };
+      T.edge = function (w) {
+        var out = [], k;
+        if (w < 2) for (k = 0; k <= NX; k++) out.push((w ? NZ * VX : 0) + k);
+        else for (k = 0; k <= NZ; k++) out.push(k * VX + (w === 3 ? NX : 0));
+        return out;
+      };
+      return T;
+    }
+    function wallPt(T, w, u, y) { return w === 0 ? [u, y, T.z0] : w === 1 ? [u, y, T.z1] : w === 2 ? [T.x0, y, u] : [T.x1, y, u]; }
+    function wallRange(T, w) { return w < 2 ? [T.x0, T.x1] : [T.z0, T.z1]; }
+    function wallOutline(cam, T, w, bot) {
+      var ed = T.edge(w), top = ed.map(function (n) { return [T.px[n], T.py[n]]; }), r = wallRange(T, w);
+      var a = wallPt(T, w, r[0], bot), b = wallPt(T, w, r[1], bot), pa = cam.P(a[0], a[1], a[2]), pb = cam.P(b[0], b[1], b[2]);
+      return top.concat([[pb[0], pb[1]], [pa[0], pa[1]]]);
+    }
+    function facingWalls(cam, T, ymid) {
+      var cx = (T.x0 + T.x1) / 2, cz = (T.z0 + T.z1) / 2, mid = cam.P(cx, ymid, cz)[2], out = [];
+      [[cx, T.z0], [cx, T.z1], [T.x0, cz], [T.x1, cz]].forEach(function (c, w) { var d = cam.P(c[0], ymid, c[1])[2]; if (d < mid) out.push([w, d]); });
+      out.sort(function (a, b) { return b[1] - a[1]; });
+      return out.map(function (q) { return q[0]; });
+    }
+    function band(P, us, top, bot, fill) {
+      var pts = [], i;
+      for (i = 0; i < us.length; i++) pts.push(P(us[i], top[i]));
+      for (i = us.length - 1; i >= 0; i--) pts.push(P(us[i], bot[i]));
+      poly(pts); ctx.fillStyle = fill; ctx.fill();
+    }
+    /* 업그레이드: 잘린 면의 바위 질감 — 가로 층(「화산 지형」 완성본과 같음) + 정해진 자리의 알갱이 · 틈 */
+    function strata(P, ua, ub, ytop, bot, cols, step) {
+      for (var k = 0, y = ytop; y > bot - 0.001; y -= step, k++) {
+        var q1 = P(ua, y), q2 = P(ub, y), q3 = P(ub, y - step), q4 = P(ua, y - step);
+        poly([q1, q2, q3, q4]); ctx.fillStyle = cols[k % 2]; ctx.fill();
+      }
+    }
+    function speckle(P, ua, ub, ytop, bot, n, seed) {
+      for (var i = 0; i < n; i++) {
+        var u = ua + (ub - ua) * rnd(i * 3.1 + seed), y = bot + (ytop - bot) * rnd(i * 7.7 + seed + 2), p = P(u, y);
+        if (i % 9 === 0) {
+          var p2 = P(u + (ub - ua) * 0.025 * (rnd(i + 5) - 0.5), y - (ytop - bot) * 0.06);
+          ctx.strokeStyle = "rgba(70,60,50,.28)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+        } else {
+          ctx.fillStyle = i % 3 ? "rgba(70,60,50,.22)" : "rgba(255,255,255,.3)";
+          ctx.fillRect(p[0], p[1], 1.6 + rnd(i + 1) * 2.4, 1.2 + rnd(i + 9) * 1.4);
+        }
+      }
+    }
+    /* 위에서 아래로 옅어지는 칠(얼음 · 물 단면) */
+    function vgrad(P, u, ytop, ybot, c0, c1) {
+      var a = P(u, ytop), b = P(u, ybot), g = ctx.createLinearGradient(a[0], a[1], b[0], b[1]);
+      g.addColorStop(0, c0); g.addColorStop(1, c1);
+      return g;
+    }
+    function ctext(text, x, y, o) {
+      o = o || {};
+      ctx.font = (o.bold ? "700 " : "") + ((o.size || 13) * TS).toFixed(1) + "px " + FONT;
+      ctx.textAlign = o.align || "left"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+      var w = ctx.measureText(text).width;
+      if (o.pill) {
+        var x0 = o.align === "center" ? x - w / 2 : o.align === "right" ? x - w : x;
+        ctx.fillStyle = o.bg || "rgba(255,255,255,.9)";
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(x0 - 7, y - 11 * TS, w + 14, 22 * TS, 8); else ctx.rect(x0 - 7, y - 11 * TS, w + 14, 22 * TS);
+        ctx.fill();
+      } else {
+        ctx.lineWidth = o.halo || 4; ctx.strokeStyle = "rgba(255,255,255,.92)"; ctx.strokeText(text, x, y);
+      }
+      ctx.fillStyle = o.color || "#1d2126"; ctx.fillText(text, x, y);
+      return w;
+    }
+    /* 업그레이드: 이름표는 모았다가(LQ) 겹치지 않게 위아래로 비켜 놓은 뒤 한꺼번에 그림. 먼저 넣은 이름표가 제자리를 지킴 */
+    var LQ = null;
+    function callout(text, ax, ay, lx, ly, o) {
+      o = Object.assign({ pill: true, bold: true, size: 13, align: "center" }, o || {});
+      if (LQ) { LQ.push({ t: text, ax: ax, ay: ay, lx: lx, ly: ly, o: o }); return; }
+      drawCallout({ t: text, ax: ax, ay: ay, lx: lx, ly: ly, o: o });
+    }
+    function drawLeader(L) {
+      ctx.strokeStyle = "rgba(29,33,38,.55)"; ctx.lineWidth = 1.2; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(L.ax, L.ay); ctx.lineTo(L.lx, L.ly); ctx.stroke();
+      ctx.fillStyle = "#1d2126"; ctx.beginPath(); ctx.arc(L.ax, L.ay, 2.6, 0, 2 * Math.PI); ctx.fill();
+    }
+    function drawCallout(L) { drawLeader(L); ctext(L.t, L.lx, L.ly, L.o); }
+    function flushLabels(rect) {
+      var q = LQ, placed = [];
+      LQ = null;
+      if (!q || !q.length) return;
+      q.forEach(function (L) {
+        ctx.font = (L.o.bold ? "700 " : "") + ((L.o.size || 13) * TS).toFixed(1) + "px " + FONT;
+        var w = ctx.measureText(L.t).width + 18, h = 22 * TS + 5;
+        L.lx = clamp(L.lx, rect.x + w / 2 + 2, rect.x + rect.w - w / 2 - 2);
+        var y0 = clamp(L.ly, rect.y + h / 2 + 2, rect.y + rect.h - h / 2 - 2), best = y0;
+        for (var i = 0; i < 13; i++) {
+          var off = (i % 2 ? 1 : -1) * Math.ceil(i / 2) * h * 0.8;
+          var y = clamp(y0 + off, rect.y + h / 2 + 2, rect.y + rect.h - h / 2 - 2), hit = false;
+          for (var j = 0; j < placed.length; j++) {
+            var P = placed[j];
+            if (L.lx - w / 2 < P.x + P.w / 2 && L.lx + w / 2 > P.x - P.w / 2 && y - h / 2 < P.y + P.h / 2 && y + h / 2 > P.y - P.h / 2) { hit = true; break; }
+          }
+          if (!hit) { best = y; break; }
+        }
+        L.ly = best;
+        placed.push({ x: L.lx, w: w, y: best, h: h });
+      });
+      q.forEach(drawLeader);
+      q.forEach(function (L) { ctext(L.t, L.lx, L.ly, L.o); });
+    }
+    function rrect(r, rad) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(r.x, r.y, r.w, r.h, rad); else ctx.rect(r.x, r.y, r.w, r.h); }
+    function backdrop(rect) {
+      var g = ctx.createLinearGradient(0, rect.y, 0, rect.y + rect.h);
+      g.addColorStop(0, "#f4f9fe"); g.addColorStop(1, "#e2edf7");
+      ctx.fillStyle = g; rrect(rect, 12); ctx.fill();
+    }
+    function poly(pts) { ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.closePath(); }
+    function fitBlock(cam, rect, T, top, bot, zA) {
+      var corners = [], za = zA == null ? T.z0 : zA;
+      cam.oz = (za + T.z1) / 2;
+      [T.x0, T.x1].forEach(function (x) { [za, T.z1].forEach(function (z) { corners.push([x, top, z]); corners.push([x, bot, z]); }); });
+      cam.fit(rect, corners, 0, 360, 0.86, 0.56);
+      var sh = cam.P((T.x0 + T.x1) / 2, bot, (T.z0 + T.z1) / 2);
+      ctx.fillStyle = "rgba(30,40,60,.07)";
+      ctx.beginPath(); ctx.ellipse(sh[0], sh[1] + 10, (T.x1 - T.x0) * 0.5 * cam.k, Math.max(8, (T.z1 - T.z0) * 0.5 * cam.k * Math.sin(cam.pitch * RAD)), 0, 0, 2 * Math.PI); ctx.fill();
+    }
+    /* 빙기 진행: 0~0.5 빙하가 늘어남, 0.5~1 줄어듦 */
+    function advOf(t, a1, b1, a2, b2) { return t < 0.5 ? sm(a1, b1, t) : 1 - sm(a2, b2, t); }
+    /* 빙하 뿌리에서 s만큼 떨어진 곳이 빙하에 덮였던 시간(최대 길이 Lmax, 늘어남 a1~b1 · 줄어듦 a2~b2) */
+    function coverDur(s, Lmax, t, a1, b1, a2, b2) {
+      var u = s / Lmax;
+      if (u >= 1 || Lmax <= 0) return 0;
+      var tin = a1 + (b1 - a1) * smInv(u), tout = a2 + (b2 - a2) * smInv(1 - u);
+      return t <= tin ? 0 : Math.max(0, Math.min(t, tout) - tin);
+    }
+    var ICE = [234, 243, 250], SNOW = [247, 249, 251], WATER = [80, 150, 205], GRASS = [134, 168, 96], ROCK = [140, 133, 124], MOR = [168, 145, 108], FOREST = [102, 140, 84];
+    /* 업그레이드: 빙하 겉면 색 — 두꺼울수록 푸른빛, 흐르는 방향 줄무늬, 가로 띠, 가장자리 흙 · 돌 */
+    function glacierCol(thick, along, across, edge) {
+      var c = mix([230, 239, 247], [192, 214, 236], thick);
+      c = mix(c, [242, 247, 252], 0.4 * (0.5 + 0.5 * Math.sin(across)));
+      c = mix(c, [206, 222, 238], 0.28 * (0.5 + 0.5 * Math.sin(along)));
+      if (edge < 1) c = mix(c, [152, 142, 130], 0.6 * (1 - edge));
+      return c;
+    }
+
+    /* ================= 보기 ① 빙하가 깎은 골짜기 (예시 모형, 산악 빙하) =================
+       블록 가로 약 10km(1 = 5km), 높이는 늘리지 않음. 골짜기는 뒤(z = 1, 머리)에서 앞(z = −1)으로 내려감
+       처음: 하천이 깎은 V자 골짜기(양옆 경사 1.25). 옆 골짜기 하나가 오른쪽에서 z = 0.05에 합류
+       빙기의 기온 T(0 조금 추움 ~ 1 매우 추움) → 빙하 최대 길이 Lmax = 0.25 + 1.6T
+       시간: 0.02~0.45 빙하가 늘어남, 0.55~0.95 줄어듦. 빙하에 0.3만큼 덮이면 그곳 단면이 U자로 다 바뀜
+       U자: 바닥이 0.1 낮아지고 반폭 0.27 안에서 (|dx|/0.27)^2.6 모양. 옆 골짜기는 덜 깎여 높이 걸림(현곡)
+       골짜기 머리와 봉우리 둘레 세 곳이 움푹 깎임(권곡) → 사이의 봉우리가 뾰족해짐(호른)
+       빙하가 줄기 시작하면 가장 멀리 갔던 끝에 둑(모레인), 둑 안쪽 · 권곡 바닥에 물이 고임
+       완성본: 빙하는 골짜기 바닥에서 두께 0.17까지 채우는 얼음 면(골짜기 벽에 맞닿음). 눈이 덮이는 높이(설선) = 0.86 − 0.36 × T × 빙하 진행 */
+    var VA = (function () {
+      var st = { t: 0, cold: 0.6, cut: true, cv: 1, play: false };
+      var cam = Cam(-30, 32), BOT = -0.3, KM = 5, ZT = 0.05, WU = 0.27, NE = 80;
+      var Q = { Lmax: 1, adv: 0, Lg: 0, zm: 0, mor: 0, Ehead: 0, Etrib: 0, snow: 0.86 }, Earr = new Float32Array(NE + 1);
+      var CIRQ = [[0.03, 0.72, 0.2, 1], [-0.32, 0.9, 0.18, 0.8], [0.38, 0.88, 0.18, 0.8]];
+      var R_ = 0, IT_ = -9, LV_ = -9;
+      function xc(z) { return 0.06 * Math.sin(1.8 * z + 0.4); }
+      function f0(z) { return 0.06 + 0.15 * (z + 1); }
+      function floorV(z) { return f0(z) + 0.36 * sm(0.62, 1.02, z); }
+      function crest(x, z) { return f0(z) + 0.3 + 0.03 * Math.sin(3.1 * x + 1.2 * z) + 0.02 * Math.sin(6.3 * z + 0.5 * x) + 0.045 * Math.sin(8.3 * x + 2.1 * z) * sm(0.4, 0.95, z) + 0.34 * Math.pow(Math.max(0, 1 - Math.sqrt((x - 0.04) * (x - 0.04) / 0.07 + (z - 0.98) * (z - 0.98) / 0.045)), 1.4); }
+      function Eat(s) { return clamp(coverDur(s, Q.Lmax, st.t, 0.02, 0.45, 0.55, 0.95) / 0.3, 0, 1); }
+      function Ez(z) { var f = clamp((z + 1) / 2 * NE, 0, NE), i = Math.min(NE - 1, f | 0), u = f - i; return Earr[i] + (Earr[i + 1] - Earr[i]) * u; }
+      function prm() {
+        Q.Lmax = 0.25 + 1.6 * st.cold;
+        Q.adv = advOf(st.t, 0.02, 0.45, 0.55, 0.95);
+        Q.Lg = Q.Lmax * Q.adv; Q.zm = 1 - Q.Lmax;
+        Q.mor = st.t > 0.5 && Q.Lmax < 1.95 ? sm(0.5, 0.62, st.t) : 0;
+        for (var i = 0; i <= NE; i++) Earr[i] = Eat(1 - (-1 + 2 * i / NE));
+        Q.Ehead = Eat(0.28);
+        Q.Etrib = st.cold > 0.35 ? 0.6 * Eat(1 - ZT) : 0;
+        Q.snow = 0.86 - 0.36 * st.cold * Q.adv;
+        fz = NaN;
+        Q.lv1 = rock(xc(Q.zm), Q.zm) - 0.008; Q.lv2 = rock(CIRQ[0][0], CIRQ[0][1]) + 0.02;
+      }
+      /* 골짜기 바닥 높이: 격자는 한 줄씩(같은 z) 계산하므로 바로 앞 값을 다시 씀 */
+      var fz = NaN, fv = 0;
+      function vfloor(z) { if (z !== fz) { fz = z; fv = rock(xc(z), z); } return fv; }
+      function rockV(x, z) {
+        var dx = x - xc(z), ad = Math.abs(dx), cr = crest(x, z), h = Math.min(cr, floorV(z) + 1.25 * ad);
+        if (x > xc(ZT) + 0.04) { var hT = Math.min(cr, floorV(ZT) + 0.22 * (x - xc(ZT)) + 1.25 * Math.abs(z - ZT)); if (hT < h) h = hT; }
+        return h;
+      }
+      function rock(x, z) {
+        var E_ = Ez(z), dx = x - xc(z), ad = Math.abs(dx), cr = crest(x, z), fV = floorV(z);
+        var hV = Math.min(cr, fV + 1.25 * ad), fU = fV - 0.1, hU = Math.min(cr, fU + (cr - fU) * Math.pow(Math.min(1, ad / WU), 2.6));
+        var h = hV + (hU - hV) * E_;
+        if (x > xc(ZT) + 0.04) { var hT = Math.min(cr, floorV(ZT) + 0.22 * (x - xc(ZT)) - 0.03 * Q.Etrib + 1.25 * Math.abs(z - ZT)); if (hT < h) h = hT; }
+        for (var k = 0; k < CIRQ.length; k++) {
+          var c = CIRQ[k], ddx = x - c[0], ddz = z - c[1], r = Math.sqrt(ddx * ddx + ddz * ddz);
+          if (r < c[2]) { var q = r / c[2]; h -= 0.14 * Q.Ehead * c[3] * (1 - q * q) * (1 - q * q); }
+        }
+        if (Q.mor > 0) { var dzm = z - Q.zm; h += 0.035 * Q.mor * Math.exp(-dzm * dzm / 0.0016) * Math.max(0, 1 - Math.pow(ad / (WU + 0.06), 4)); }
+        return h;
+      }
+      /* 빙하 겉면 높이: 빙하 끝 밖에서는 바위 아래로 이어 내려가게 해서 경계가 매끄럽게 잘리도록 함(빙하가 없으면 −9) */
+      function iceTop(x, z) {
+        var top = -9;
+        if (Q.Lg > 0.01) {
+          var s = 1 - z, ad = Math.abs(x - xc(z)), g = Math.sqrt(clamp((Q.Lg - s) / 0.3, 0, 1)), q = Math.min(ad / 0.46, 1.5);
+          top = vfloor(z) + 0.012 + 0.17 * g * (1 - 0.35 * q * q) - 0.6 * Math.max(0, s - Q.Lg);
+        }
+        /* 옆 골짜기의 작은 빙하 */
+        if (st.cold > 0.35 && Q.adv > 0.3 && x > xc(ZT) + 0.1) {
+          var dz = (z - ZT) / 0.11, tz = rock(x, ZT) + 0.07 * (Q.adv - 0.3) / 0.7 - 0.08 * dz * dz;
+          if (tz > top) top = tz;
+        }
+        return top;
+      }
+      /* 호수 물 높이: 바위 높이와 상관없이 그 자리의 물 높이를 돌려줌(물가가 매끄럽게 잘리도록). 없으면 −9 */
+      function lakeLv(x, z) {
+        if (st.t < 0.7) return -9;
+        var ad = Math.abs(x - xc(z));
+        if (Q.mor > 0.5 && z >= Q.zm && z < Q.zm + 0.5 && ad < WU + 0.05 && 1 - z >= Q.Lg) return Q.lv1;
+        if (st.t > 0.93 && Q.Ehead > 0.5) { var c = CIRQ[0], dx = x - c[0], dz = z - c[1]; if (dx * dx + dz * dz < 0.03) return Q.lv2; }
+        return -9;
+      }
+      function hf(x, z) {
+        var r = rock(x, z), it = iceTop(x, z), lv = lakeLv(x, z), h = Math.max(r, it);
+        if (lv > h) h = lv;
+        R_ = r; IT_ = it; LV_ = lv;
+        return h;
+      }
+      function color(h, x, z) {
+        var ad = Math.abs(x - xc(z));
+        if (Q.mor > 0.2 && Math.abs(z - Q.zm) < 0.05 && ad < WU + 0.05) return mix(GRASS, MOR, Q.mor);
+        if (Ez(z) > 0.3 && ad > 0.1 && ad < WU) return mix(GRASS, ROCK, 0.75);
+        var g = mix(FOREST, GRASS, clamp((h - 0.22) / 0.12, 0, 1));
+        return mix(g, ROCK, clamp((h - 0.4) / 0.2, 0, 1));
+      }
+      var LAYERS = [
+        { s: function (x, z, h) { return Q.snow - h; }, c: function () { return [255, 255, 255]; }, line: "rgba(110,140,175,.55)" },
+        { s: function () { return LV_ > -9 ? R_ - LV_ : 1; }, c: function (x, z) { return mix([104, 172, 220], [62, 128, 190], clamp((lakeLv(x, z) - rock(x, z)) / 0.04, 0, 1)); }, flat: true, line: "rgba(255,255,255,.75)" },
+        { s: function () { return R_ - IT_ + 0.003; }, c: function (x, z) {
+          var r = rock(x, z), it = iceTop(x, z), d = it - r, dx = x - xc(z), c = glacierCol(clamp(d / 0.18, 0, 1), (1 - z) * 24, dx * 44, clamp(d / 0.025, 0, 1));
+          if (st.cold > 0.35 && z < ZT - 0.03 && Math.abs(dx - 0.12) < 0.022) c = mix(c, [128, 122, 116], 0.6);
+          return c;
+        } }
+      ];
+      var full = makeSurf({ nx: 60, nz: 60, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: LAYERS });
+      /* 자른 블록: 자르는 위치가 바뀌면 높이 격자를 다시 만듦(「화산 지형」 완성본과 같음) */
+      var half = null, halfZ = null;
+      function surf() {
+        if (!st.cut) return full;
+        var z = -1 + st.cv;
+        if (!half || halfZ !== z) { half = makeSurf({ nx: 80, nz: Math.max(8, Math.round(40 * (1 - z))), x0: -1, x1: 1, z0: z, z1: 1, hf: hf, color: color, layers: LAYERS }); half.lod = full.lod; halfZ = z; prm(); half.reshape(); }
+        return half;
+      }
+      var M = { st: st, cam: cam, yaw0: -30, pitch0: 32, Q: Q, KM: KM };
+      M.update = function () { prm(); surf().reshape(); };
+      M.setLod = function (v) { full.lod = v; if (half) half.lod = v; };
+      M.lod = function () { return full.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.cold.toFixed(3), st.cut, st.cv.toFixed(3)].join(","); };
+      M.zcut = function () { return st.cut ? -1 + st.cv : 0; };
+      M.Ecut = function () { return Ez(M.zcut()); };
+      M.termH = function () { return rock(xc(1 - Q.Lg), 1 - Q.Lg) * KM * 1000; };
+      M.snowH = function () { return Q.snow * KM * 1000; };
+      M.found = function () {
+        var out = [];
+        if (Q.Ehead > 0.3) out.push("권곡");
+        if (Q.Ehead > 0.6) out.push("호른");
+        if (Q.Etrib > 0.3 && Ez(ZT) > 0.6 && Q.adv < 0.6 && st.t > 0.5) out.push("현곡");
+        if (Q.mor > 0.5) out.push("모레인");
+        var lake = st.t > 0.7 && Q.mor > 0.5 && 1 - Q.zm - 0.05 >= Q.Lg;
+        if (lake) out.push("모레인호");
+        if (st.t > 0.93 && Q.Ehead > 0.5) out.push("권곡호");
+        return out;
+      };
+      var walls = [];
+      function drawWall(w) {
+        var T = surf(), P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); };
+        var r = wallRange(T, w), outline = wallOutline(cam, T, w, BOT), us = [], i;
+        poly(outline); ctx.fillStyle = "#a99f92"; ctx.fill();
+        ctx.save(); poly(outline); ctx.clip();
+        strata(P, r[0], r[1], 1.3, BOT, ["#aca294", "#a09689"], 0.05);
+        speckle(P, r[0], r[1], 1.2, BOT, 160, w * 17 + 3);
+        for (i = 0; i <= 80; i++) us.push(r[0] + (r[1] - r[0]) * i / 80);
+        var rs = [], its = [], lvs = [], top = -9;
+        us.forEach(function (u) { var p = wallPt(T, w, u, 0), rr = rock(p[0], p[2]), it = iceTop(p[0], p[2]), lv = lakeLv(p[0], p[2]); rs.push(rr); its.push(Math.max(rr, it)); lvs.push(Math.max(rr, lv)); if (it > top) top = it; });
+        /* 빙하 위로 솟은 바위 띠를 바깥 흙 · 풀빛으로 덮음 */
+        var soil = rs.map(function (v) { return v - 0.012; });
+        band(P, us, rs, soil, "rgba(110,120,80,.55)");
+        band(P, us, lvs, rs, vgrad(P, (r[0] + r[1]) / 2, top, BOT, "#6aa9d8", "#3f7fb8"));
+        band(P, us, its, rs, vgrad(P, (r[0] + r[1]) / 2, top, top - 0.2, "#eef5fb", "#b9d3ec"));
+        /* 자른 면: 처음 V자 골짜기 선 */
+        if (w === 0 && st.cut && Ez(T.z0) > 0.05) {
+          ctx.setLineDash([5, 4]); ctx.strokeStyle = "rgba(29,99,180,.85)"; ctx.lineWidth = 1.6; ctx.beginPath();
+          us.forEach(function (u, j) { var p = P(u, rockV(u, T.z0)); if (j) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); });
+          ctx.stroke(); ctx.setLineDash([]);
+        }
+        ctx.restore();
+        poly(outline); ctx.strokeStyle = "rgba(80,64,44,.5)"; ctx.lineWidth = 1; ctx.stroke();
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var T = surf();
+        fitBlock(cam, rect, T, 0.95, BOT, st.cut ? -1 : null);
+        T.draw(cam);
+        walls = facingWalls(cam, T, -0.1);
+        walls.forEach(drawWall);
+        labels();
+      };
+      function labels() {
+        var T = surf(), z0 = T.z0, front0 = st.cut && walls.indexOf(0) >= 0, f = M.found();
+        if (Q.Lg > 0.15) {
+          var zg = clamp(1 - Q.Lg * 0.55, z0 + 0.05, 0.9), g0 = cam.P(xc(zg), hf(xc(zg), zg) + 0.004, zg), g1 = cam.P(xc(zg) - 0.35, 0.95, zg);
+          callout("빙하", g0[0], g0[1], g1[0], g1[1], { size: 14 });
+        }
+        if (front0) {
+          var e0 = Ez(z0), xa = xc(z0) + 0.08, a = cam.P(xa, rock(xa, z0) + 0.005, z0), l = cam.P(-0.62, 0.62, z0);
+          callout(e0 < 0.15 ? "V자 골짜기(하천이 깎음)" : e0 < 0.85 ? "V자 → U자로 바뀌는 중" : "U자 골짜기(빙하가 깎음)", a[0], a[1], l[0], l[1]);
+          if (e0 > 0.05) { var d0 = cam.P(0.17, rockV(0.17, z0), z0), d1 = cam.P(0.62, 0.66, z0); callout("처음 V자 골짜기", d0[0], d0[1], d1[0], d1[1], { size: 12, color: "#1858a0" }); }
+        }
+        if (f.indexOf("호른") >= 0) { var hz = hf(0.04, 0.98), h0 = cam.P(0.04, hz + 0.004, 0.98), h1 = cam.P(0.32, hz + 0.18, 0.98); callout("호른(뾰족한 봉우리)", h0[0], h0[1], h1[0], h1[1]); }
+        else if (f.indexOf("권곡") >= 0 && Q.Lg < 0.3) { var c0 = cam.P(0.03, hf(0.03, 0.72) + 0.004, 0.72), c1 = cam.P(-0.3, 0.95, 0.72); callout("권곡", c0[0], c0[1], c1[0], c1[1]); }
+        if (f.indexOf("현곡") >= 0 && ZT >= z0) { var x3 = xc(ZT) + 0.24, t0 = cam.P(x3, hf(x3, ZT) + 0.004, ZT), t1 = cam.P(x3 + 0.25, 0.85, ZT); callout("현곡(높이 걸린 골짜기)", t0[0], t0[1], t1[0], t1[1], { size: 12.5 }); }
+        if (Q.zm >= z0 && f.indexOf("모레인") >= 0) {
+          var m0 = cam.P(xc(Q.zm) + 0.18, rock(xc(Q.zm) + 0.18, Q.zm) + 0.004, Q.zm), m1 = cam.P(xc(Q.zm) + 0.55, 0.6, Q.zm);
+          callout(f.indexOf("모레인호") >= 0 ? "모레인 · 모레인호" : "모레인(빙하가 쌓은 둑)", m0[0], m0[1], m1[0], m1[1], { size: 12.5 });
+        }
+        /* 업그레이드: 설선 — 왼쪽 산등성이에서 눈 덮인 곳이 시작되는 자리 */
+        if (Q.adv > 0.15) {
+          for (var z = Math.max(z0, -0.9); z < 0.95; z += 0.02) {
+            var hh = rock(-0.72, z);
+            if (hh >= Q.snow) { var s0 = cam.P(-0.72, hh + 0.004, z), s1 = cam.P(-0.95, Q.snow + 0.3, z); callout("설선(눈이 녹지 않는 높이)", s0[0], s0[1], s1[0], s1[1], { size: 12, color: "#1858a0" }); break; }
+          }
+        }
+      }
+      var phase = 0;
+      M.step = function (dt) { phase += dt / 1000; };
+      M.renderDynamic = function () {
+        if (!st.play || Q.Lg < 0.1) return;
+        /* 빙하가 흐르는 방향(뒤 → 앞) 점선 */
+        ctx.setLineDash([5, 9]); ctx.lineDashOffset = -phase * 18; ctx.strokeStyle = "rgba(70,120,180,.7)"; ctx.lineWidth = 1.6; ctx.beginPath();
+        var z0 = st.cut ? -1 + st.cv + 0.02 : -1, first = true;
+        for (var z = 0.75; z > Math.max(z0, 1 - Q.Lg); z -= 0.04) { var p = cam.P(xc(z), hf(xc(z), z) + 0.004, z); if (first) { ctx.moveTo(p[0], p[1]); first = false; } else ctx.lineTo(p[0], p[1]); }
+        ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ② 피오르가 생기려면 (예시 모형, 노르웨이) =================
+       블록 가로 약 40km(1 = 20km), 높이는 10배로 늘림(1 = 2km). 앞쪽(z < 해안선 ≈ −0.25)은 바다, 뒤는 높이 약 0.42(약 840m)의 산지
+       골짜기는 뒤에서 바닷가로 내려감. 시간 0.05~0.42에 빙하가 바다까지 흘러 V자를 U자로 깎음(바닥이 해안 가까이 0.35, 안쪽 0.2 낮아짐)
+       시간 0.5~0.88에 빙하가 녹음. 해수면 = −0.4 × (1 − 막대)(빙기 수준이면 깎인 골짜기 바닥보다 낮아 바닷물이 못 들어옴). 해수면보다 낮은 곳에는 바닷물이 들어옴
+       (실제 빙기 해수면은 지금보다 약 120m 낮았음. 모형은 차이를 크게 그림)
+       완성본: 빙하는 골짜기를 두께 0.32까지 채우는 얼음 면. 바다 · 빙하 경계를 칸 안에서 잘라 그림 */
+    var FJ = (function () {
+      var st = { t: 0, sea: 1, cut: false, cv: 0, play: false };
+      var cam = Cam(-25, 50), BOT = -0.55, KM = 20, VM_ = 2000, WU = 0.2;
+      var Q = {}, R_ = 0, IT_ = -9;
+      function zc(x) { return -0.25 + 0.06 * Math.sin(2.3 * x + 0.4) + 0.04 * Math.sin(5.1 * x); }
+      function xv(z) { return 0.05 * Math.sin(1.5 * z + 0.2); }
+      function plateau(x, z) { return 0.42 + 0.04 * Math.sin(2.7 * x + 1.3 * z) + 0.03 * Math.sin(5.3 * z - 0.8 * x); }
+      function seaFl(x, z) { return -0.28 - 0.25 * Math.max(0, zc(x) - z); }
+      function terrain0(x, z) { var c = zc(x), k = sm(c - 0.04, c + 0.32, z); return seaFl(x, z) + (plateau(x, z) - seaFl(x, z)) * k; }
+      function prm() {
+        Q.E = sm(0.05, 0.42, st.t); Q.adv = advOf(st.t, 0.02, 0.4, 0.5, 0.88);
+        Q.ys = -0.4 * (1 - st.sea); Q.zg = 1.02 - 1.42 * Q.adv;
+        fz = NaN;
+      }
+      var fz = NaN, fv = 0;
+      function vfloor(z) { if (z !== fz) { fz = z; fv = rock(xv(z), z); } return fv; }
+      function rock(x, z) {
+        var t0 = terrain0(x, z), ad = Math.abs(x - xv(z)), c = zc(xv(z));
+        if (z < c - 0.05) {
+          var ext = 0.18 * Math.max(0, 1 - (c - z) / 0.45) * Math.max(0, 1 - (ad / WU) * (ad / WU));
+          return t0 - Q.E * ext;
+        }
+        var fV = 0.03 + 0.22 * sm(c, 1, z), hV = Math.min(t0, fV + 1.3 * ad);
+        var D = 0.2 + 0.15 * (1 - sm(c, 1, z)), fU = fV - D, hU = Math.min(t0, fU + (t0 - fU) * Math.pow(Math.min(1, ad / WU), 2.6));
+        return hV + (hU - hV) * Q.E;
+      }
+      /* 빙하 겉면: 빙하 끝(zg) 앞에서는 바위 아래로 이어 내려감(경계가 매끄럽게 잘리도록) */
+      function iceTop(x, z) {
+        if (Q.adv <= 0.005) return -9;
+        var g = Math.sqrt(clamp((z - Q.zg) / 0.25, 0, 1)), q = Math.min(Math.abs(x - xv(z)) / 0.4, 1.5);
+        return vfloor(z) + 0.005 + 0.32 * g * (1 - 0.3 * q * q) - 0.8 * Math.max(0, Q.zg - z);
+      }
+      function hf(x, z) { var r = rock(x, z), it = iceTop(x, z); R_ = r; IT_ = it; return Math.max(r, it, Q.ys); }
+      function color(h, x, z) {
+        var ad = Math.abs(x - xv(z));
+        if (Q.E > 0.3 && ad > 0.08 && ad < WU && z > zc(x)) return mix(GRASS, ROCK, 0.8);
+        var g = mix(FOREST, GRASS, clamp((h - 0.1) / 0.15, 0, 1));
+        return mix(g, ROCK, clamp((h - 0.32) / 0.12, 0, 1));
+      }
+      var LAYERS = [
+        { s: function () { return R_ - Q.ys; }, c: function (x, z) { return mix([98, 166, 214], [34, 88, 152], clamp((Q.ys - rock(x, z)) / 0.3, 0, 1)); }, flat: true, line: "rgba(255,255,255,.8)" },
+        { s: function () { return Math.max(R_, Q.ys) - IT_ + 0.003; }, c: function (x, z) {
+          var d = iceTop(x, z) - Math.max(rock(x, z), Q.ys);
+          return glacierCol(clamp(d / 0.3, 0, 1), (1 - z) * 20, (x - xv(z)) * 36, clamp(d / 0.04, 0, 1));
+        } }
+      ];
+      var full = makeSurf({ nx: 60, nz: 60, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: LAYERS });
+      var half = null, halfZ = null;
+      function surf() {
+        if (!st.cut) return full;
+        var z = -1 + st.cv;
+        if (!half || halfZ !== z) { half = makeSurf({ nx: 80, nz: Math.max(8, Math.round(40 * (1 - z))), x0: -1, x1: 1, z0: z, z1: 1, hf: hf, color: color, layers: LAYERS }); half.lod = full.lod; halfZ = z; prm(); half.reshape(); }
+        return half;
+      }
+      var M = { st: st, cam: cam, yaw0: -25, pitch0: 50, Q: Q, KM: KM };
+      M.update = function () { prm(); surf().reshape(); };
+      M.setLod = function (v) { full.lod = v; if (half) half.lod = v; };
+      M.lod = function () { return full.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.sea.toFixed(3), st.cut, st.cv.toFixed(3)].join(","); };
+      /* 바닷물이 들어온 만: 해안에서 골짜기를 따라 해수면보다 낮은 곳이 이어지는 길이 · 가장 깊은 곳 · 가운데 폭 · 절벽 높이 */
+      M.fjord = function () {
+        if (Q.adv > 0.05) return null;
+        var c = zc(xv(-0.25)), zmax = c, minR = 9, z;
+        for (z = c; z <= 1; z += 0.01) { var rr = rock(xv(z), z); if (rr < Q.ys && iceTop(xv(z), z) < rr) { zmax = z; if (rr < minR) minR = rr; } else break; }
+        if (zmax <= c + 0.02) return null;
+        var zm = (c + zmax) / 2, ad = 0;
+        while (ad < WU * 1.6 && rock(xv(zm) + ad, zm) < Q.ys) ad += 0.005;
+        return { len: (zmax - c) * KM, depth: (Q.ys - minR) * VM_, width: 2 * ad * KM, cliff: (plateau(xv(zm), zm) - Q.ys) * VM_, zmid: zm };
+      };
+      var walls = [];
+      function drawWall(w) {
+        var T = surf(), P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); };
+        var r = wallRange(T, w), outline = wallOutline(cam, T, w, BOT), us = [], i, mu = (r[0] + r[1]) / 2;
+        poly(outline); ctx.fillStyle = "#a99f92"; ctx.fill();
+        ctx.save(); poly(outline); ctx.clip();
+        strata(P, r[0], r[1], 0.6, BOT, ["#aca294", "#a09689"], 0.06);
+        speckle(P, r[0], r[1], 0.5, BOT, 150, w * 13 + 7);
+        for (i = 0; i <= 80; i++) us.push(r[0] + (r[1] - r[0]) * i / 80);
+        var rs = [];
+        us.forEach(function (u) { var p = wallPt(T, w, u, 0); rs.push(rock(p[0], p[2])); });
+        var water = rs.map(function (v) { return Math.max(v, Q.ys); });
+        band(P, us, water, rs, vgrad(P, mu, Q.ys, BOT, "#5d9bd0", "#2f6aa6"));
+        var ice = us.map(function (u, j) { var p = wallPt(T, w, u, 0), it = iceTop(p[0], p[2]); return it > water[j] ? it : water[j]; });
+        band(P, us, ice, water, vgrad(P, mu, 0.45, 0, "#eef5fb", "#bcd5ec"));
+        var sl = [P(r[0], Q.ys), P(r[1], Q.ys)];
+        ctx.setLineDash([6, 4]); ctx.strokeStyle = "rgba(29,99,180,.6)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(sl[0][0], sl[0][1]); ctx.lineTo(sl[1][0], sl[1][1]); ctx.stroke(); ctx.setLineDash([]);
+        ctx.restore();
+        poly(outline); ctx.strokeStyle = "rgba(80,64,44,.5)"; ctx.lineWidth = 1; ctx.stroke();
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var T = surf();
+        fitBlock(cam, rect, T, 0.6, BOT, st.cut ? -1 : null);
+        T.draw(cam);
+        walls = facingWalls(cam, T, -0.2);
+        walls.forEach(drawWall);
+        var f = M.fjord(), z0 = T.z0;
+        if (Q.adv > 0.2) { var zg = clamp((Q.zg + 1) / 2 + 0.2, z0 + 0.05, 0.9), g0 = cam.P(xv(zg), hf(xv(zg), zg) + 0.004, zg), g1 = cam.P(xv(zg) - 0.4, 0.8, zg); callout("빙하", g0[0], g0[1], g1[0], g1[1], { size: 14 }); }
+        if (f && st.t > 0.85) {
+          var fz = clamp(f.zmid, z0 + 0.04, 0.95), a0 = cam.P(xv(fz), Q.ys + 0.003, fz), a1 = cam.P(xv(fz) + 0.45, 0.72, fz);
+          callout("피오르(바닷물이 들어온 U자 골짜기)", a0[0], a0[1], a1[0], a1[1], { size: 13.5 });
+        } else if (!f && Q.E > 0.8 && Q.adv < 0.3) {
+          var uz = clamp(0.2, z0 + 0.04, 0.95), u0 = cam.P(xv(uz), hf(xv(uz), uz) + 0.004, uz), u1 = cam.P(xv(uz) + 0.45, 0.72, uz);
+          callout("U자 골짜기(바닷물 없음)", u0[0], u0[1], u1[0], u1[1]);
+        }
+        if (z0 < -0.6) { var s0 = cam.P(-0.55, Q.ys + 0.003, Math.max(z0 + 0.05, -0.95)), s1 = cam.P(-0.75, 0.3, Math.max(z0 + 0.05, -0.95)); callout("바다", s0[0], s0[1], s1[0], s1[1]); }
+        if (walls.indexOf(0) >= 0 && st.cut && Q.E > 0.5) { var w0 = cam.P(xv(z0) + 0.1, rock(xv(z0) + 0.1, z0), z0), w1 = cam.P(0.6, 0.62, z0); callout(Q.ys > rock(xv(z0), z0) ? "자른 면: 물에 잠긴 U자 골짜기" : "자른 면: U자 골짜기", w0[0], w0[1], w1[0], w1[1], { size: 12.5 }); }
+      };
+      var phase = 0;
+      M.step = function (dt) { phase += dt / 1000; };
+      M.renderDynamic = function () {
+        if (!st.play || Q.adv < 0.1) return;
+        ctx.setLineDash([5, 9]); ctx.lineDashOffset = -phase * 18; ctx.strokeStyle = "rgba(70,120,180,.7)"; ctx.lineWidth = 1.6; ctx.beginPath();
+        var zEnd = Math.max(st.cut ? -1 + st.cv + 0.02 : -1, Q.zg + 0.05), first = true;
+        for (var z = 0.95; z > zEnd; z -= 0.04) { var p = cam.P(xv(z), hf(xv(z), z) + 0.004, z); if (first) { ctx.moveTo(p[0], p[1]); first = false; } else ctx.lineTo(p[0], p[1]); }
+        ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ③ 빙하가 남긴 호수 (예시 모형, 대륙 빙하 · 캐나다와 오대호) =================
+       블록 가로 약 500km(1 = 250km), 높이는 약 25배로 늘림(빙하 두께 0.32 = 약 3.2km)
+       빙기의 세기: 약함 · 보통 · 강함 = 빙하가 뒤(북쪽)에서 내려오는 거리 1.0 · 1.5 · 2.05, 가장 두꺼운 곳 0.18 · 0.25 · 0.32
+       시간: 0.02~0.45 빙하가 퍼짐 → 0.55~0.95 북쪽으로 물러남. 빙하 끝에 둑(모레인), 덮였던 곳에 길쭉한 언덕(드럼린)
+       무른 땅 9곳(+ 둑 바로 안쪽 1곳)은 빙하에 덮인 시간과 두께만큼 파이고, 빙하가 물러나면 물이 고여 호수가 됨
+       완성본: 호수 물가 · 빙하 끝을 칸 안에서 잘라 매끄럽게 그림(호수 가장자리 0.75~1에서 물이 차지 않도록 높이를 더함) */
+    var LK = (function () {
+      var st = { t: 0, ice: 2, play: false };
+      var cam = Cam(-38, 34), BOT = -0.25, SP = [1.0, 1.5, 2.05], HI = [0.18, 0.25, 0.32];
+      var BAS = [[-0.55, 0.72, 0.13, 1], [0.35, 0.62, 0.16, 0.9], [-0.1, 0.32, 0.18, 1], [0.62, 0.18, 0.12, 0.8], [-0.62, 0.02, 0.14, 0.9], [0.15, -0.22, 0.19, 1], [-0.38, -0.52, 0.13, 0.8], [0.58, -0.6, 0.14, 0.9], [0, -0.86, 0.1, 0.7]];
+      var Q = { bas: [] }, R_ = 0, IT_ = -9, LS_ = 1, LV_ = -9;
+      function base(x, z) { return 0.03 * Math.sin(2.1 * x + 0.7 * z) + 0.025 * Math.cos(3.3 * z - 1.1 * x) + 0.01 * Math.sin(7 * x + 5 * z); }
+      function morZ(x) { return Q.zm + 0.03 * Math.sin(3 * x + 0.5); }
+      function prm() {
+        var sp = SP[st.ice - 1], t = st.t;
+        Q.sp = sp; Q.hi = HI[st.ice - 1];
+        Q.adv = advOf(t, 0.02, 0.45, 0.55, 0.95);
+        Q.zf = 1.05 - sp * Q.adv; Q.zm = 1.05 - sp;
+        Q.mor = t > 0.5 && Q.zm > -1.02 ? sm(0.5, 0.62, t) : 0;
+        var list = BAS.slice();
+        if (Q.zm > -0.9) list.push([0.25, Q.zm + 0.12, 0.12, 0.85, true]);
+        Q.bas = list.map(function (b) {
+          var s = 1.05 - b[1], d = coverDur(s, sp, t, 0.02, 0.45, 0.55, 0.95), e = clamp(d / 0.3, 0, 1);
+          var uncovered = b[1] > Q.zf ? false : true;
+          var o = { x: b[0], z: b[1], r: b[2], w: b[3], mor: !!b[4], e: e, dep: 0.07 * b[3] * e * (Q.hi / 0.32), lake: uncovered && t > 0.55 && e > 0.25 };
+          o.lv = base(o.x, o.z) - 0.006 + (o.mor ? 0.012 * Q.mor : 0);
+          return o;
+        });
+        Q.drum = [];
+        for (var k = 0; k < 8; k++) {
+          var dz = Q.zm + 0.18 + 0.4 * rnd(k + 3), dx = -0.8 + 1.6 * rnd(k + 11);
+          if (dz < 0.95 && dz > -0.98) Q.drum.push([dx, dz, clamp(coverDur(1.05 - dz, sp, t, 0.02, 0.45, 0.55, 0.95) / 0.3, 0, 1)]);
+        }
+      }
+      function rock(x, z) {
+        var h = base(x, z);
+        for (var k = 0; k < Q.bas.length; k++) {
+          var b = Q.bas[k];
+          if (b.dep <= 0) continue;
+          var dx = (x - b.x) / 1.6, dz = z - b.z, q2 = (dx * dx + dz * dz) / (b.r * b.r);
+          if (q2 < 1) h -= b.dep * Math.pow(1 - q2, 1.5);
+        }
+        if (Q.mor > 0) { var d = z - morZ(x); h += 0.025 * Q.mor * Math.exp(-d * d / 0.0016); }
+        for (var j = 0; j < Q.drum.length; j++) {
+          var dr = Q.drum[j];
+          if (dr[2] < 0.3) continue;
+          var ex = (x - dr[0]) / 0.04, ez = (z - dr[1]) / 0.11, q = ex * ex + ez * ez;
+          if (q < 1) h += 0.012 * (1 - q);
+        }
+        return h;
+      }
+      /* 빙하 겉면: 빙하 끝(zf) 앞에서는 땅 아래로 이어 내려감 */
+      function iceTop(x, z) {
+        if (Q.adv <= 0.005) return -9;
+        return base(x, z) + Q.hi * Math.sqrt(Q.adv) * Math.sqrt(clamp((z - Q.zf) / 0.9, 0, 1)) * sm(0, 0.1, z - Q.zf) + 0.004 - 0.6 * Math.max(0, Q.zf - z);
+      }
+      /* 호수: 0보다 작으면 물. LV_에 그 호수의 물 높이를 남김 */
+      function lakeS(x, z, r) {
+        var best = 1; LV_ = -9;
+        for (var k = 0; k < Q.bas.length; k++) {
+          var b = Q.bas[k];
+          if (!b.lake) continue;
+          var dx = (x - b.x) / 1.6, dz = z - b.z, q2 = (dx * dx + dz * dz) / (b.r * b.r);
+          if (q2 >= 1) continue;
+          var s = r - b.lv + 0.06 * Math.max(0, q2 - 0.75) / 0.25;
+          if (s < best) { best = s; LV_ = b.lv; }
+        }
+        return best;
+      }
+      function lakeAt(x, z, r) { return lakeS(x, z, r) < 0 ? LV_ : -9; }
+      function hf(x, z) {
+        var r = rock(x, z), it = iceTop(x, z), ls = lakeS(x, z, r), h = r;
+        if (ls < 0) h = Math.max(h, LV_);
+        R_ = r; IT_ = it; LS_ = ls;
+        return Math.max(h, it);
+      }
+      function color(h, x, z) {
+        if (Q.mor > 0.2 && Math.abs(z - morZ(x)) < 0.04) return mix(GRASS, MOR, Q.mor);
+        for (var j = 0; j < Q.drum.length; j++) {
+          var dr = Q.drum[j];
+          if (dr[2] < 0.3) continue;
+          var ex = (x - dr[0]) / 0.04, ez = (z - dr[1]) / 0.11;
+          if (ex * ex + ez * ez < 1) return mix(GRASS, [170, 182, 116], 0.3);
+        }
+        var scoured = z > Q.zm && st.t > 0.02;
+        return scoured ? mix(GRASS, [150, 160, 128], 0.35) : GRASS;
+      }
+      var LAYERS = [
+        { s: function () { return LS_; }, c: function (x, z) { var r = rock(x, z), lv = lakeAt(x, z, r); return mix([96, 162, 214], [70, 136, 196], clamp((lv - r) / 0.05, 0, 1)); }, flat: true, line: "rgba(255,255,255,.75)" },
+        { s: function () { return R_ - IT_; }, c: function (x, z) { var d = iceTop(x, z) - rock(x, z); return glacierCol(clamp(d / 0.3, 0, 1), z * 30, x * 9, clamp(d / 0.02, 0, 1)); } }
+      ];
+      var surf = makeSurf({ nx: 60, nz: 60, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: LAYERS });
+      var M = { st: st, cam: cam, yaw0: -38, pitch0: 34, Q: Q };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.ice].join(","); };
+      M.lakes = function () { var n = 0, area = 0; Q.bas.forEach(function (b) { if (b.lake) { n++; area += Math.PI * b.r * b.r * 1.6 * 0.7; } }); return { n: n, frac: area / 4 }; };
+      var walls = [];
+      function drawWall(w) {
+        var T = surf, P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); };
+        var r = wallRange(T, w), outline = wallOutline(cam, T, w, BOT), us = [], i, mu = (r[0] + r[1]) / 2;
+        poly(outline); ctx.fillStyle = "#c9b99a"; ctx.fill();
+        ctx.save(); poly(outline); ctx.clip();
+        strata(P, r[0], r[1], 0.06, BOT, ["#d1c19e", "#c3b28d"], 0.05);
+        speckle(P, r[0], r[1], 0.06, BOT, 110, w * 11 + 5);
+        for (i = 0; i <= 80; i++) us.push(r[0] + (r[1] - r[0]) * i / 80);
+        var rs = [];
+        us.forEach(function (u) { var p = wallPt(T, w, u, 0); rs.push(rock(p[0], p[2])); });
+        var ice = us.map(function (u, j) { var p = wallPt(T, w, u, 0); return Math.max(rs[j], iceTop(p[0], p[2])); });
+        band(P, us, ice, rs, vgrad(P, mu, Q.hi, 0, "#eef5fb", "#b7d0ea"));
+        var wat = us.map(function (u, j) { var p = wallPt(T, w, u, 0); return Math.max(rs[j], lakeAt(p[0], p[2], rs[j])); });
+        band(P, us, wat, rs, "#4f8cc4");
+        ctx.restore();
+        poly(outline); ctx.strokeStyle = "rgba(80,64,44,.5)"; ctx.lineWidth = 1; ctx.stroke();
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.4, BOT);
+        surf.draw(cam);
+        walls = facingWalls(cam, surf, -0.1);
+        walls.forEach(drawWall);
+        if (Q.adv > 0.1) { var iz = clamp(Q.zf + 0.4, -0.9, 0.9), i0 = cam.P(0.2, iceTop(0.2, iz) + 0.004, iz), i1 = cam.P(-0.2, 0.55, iz); callout("대륙 빙하(두꺼운 얼음)", i0[0], i0[1], i1[0], i1[1], { size: 13.5 }); }
+        var lk = Q.bas.filter(function (b) { return b.lake; });
+        if (lk.length) {
+          var mb = lk.filter(function (b) { return b.mor; })[0];
+          var big = lk.slice().sort(function (a, b) { return b.r * b.e - a.r * a.e; })[0];
+          var b0 = cam.P(big.x, big.lv, big.z), b1 = cam.P(big.x - 0.3, 0.38, big.z);
+          callout("빙하호", b0[0], b0[1], b1[0], b1[1], { size: 14 });
+          if (mb && mb !== big) { var c0 = cam.P(mb.x, mb.lv, mb.z), c1 = cam.P(mb.x + 0.25, 0.3, mb.z); callout("모레인호", c0[0], c0[1], c1[0], c1[1], { size: 12.5 }); }
+        }
+        if (Q.mor > 0.5 && Q.zm > -0.98) { var mz = morZ(0.6), m0 = cam.P(0.6, rock(0.6, mz) + 0.004, mz), m1 = cam.P(0.75, 0.3, mz); callout("모레인(빙하 끝의 둑)", m0[0], m0[1], m1[0], m1[1], { size: 12.5 }); }
+        if (st.t > 0.7) {
+          var dr = Q.drum.filter(function (d) { var rr = rock(d[0], d[1]); return d[2] >= 0.3 && d[1] < Q.zf && lakeAt(d[0], d[1], rr) <= rr; })[0];
+          if (dr) { var d0 = cam.P(dr[0], rock(dr[0], dr[1]) + 0.004, dr[1]), d1 = cam.P(dr[0] + 0.2, 0.22, dr[1]); callout("드럼린", d0[0], d0[1], d1[0], d1[1], { size: 12 }); }
+        }
+      };
+      var phase = 0;
+      M.step = function (dt) { phase += dt / 1000; };
+      M.renderDynamic = function () {
+        if (!st.play || Q.adv < 0.1) return;
+        ctx.setLineDash([5, 9]); ctx.lineDashOffset = -phase * 18; ctx.strokeStyle = "rgba(70,120,180,.6)"; ctx.lineWidth = 1.5;
+        [-0.5, 0, 0.5].forEach(function (x) {
+          ctx.beginPath(); var first = true;
+          for (var z = 0.98; z > Q.zf + 0.04; z -= 0.05) { var p = cam.P(x, iceTop(x, z) + 0.004, z); if (first) { ctx.moveTo(p[0], p[1]); first = false; } else ctx.lineTo(p[0], p[1]); }
+          ctx.stroke();
+        });
+        ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ④ 극지방의 빙하 (완성본 업그레이드) =================
+       북극 · 남극을 내려다보는 지구(광선 추적 구, 「해류와 기후」 완성본의 makeGlobe와 같은 방식)
+       북극 해빙 넓이: 미국 국립설빙자료센터(NSIDC) Sea Ice Index 월평균 값을 대략 옮김(백만 km²). 남극 둘레 해빙은 대략 값으로 고정
+       얼음 모양(예시): 경도 15°마다 정한 얼음 가장자리 위도 — 1980년 9월 · 2012년 9월 · 3월 — 를 넓이에 맞춰 섞음
+       북극 항로(부산 → 베링 해협 → 시베리아 앞바다 → 로테르담): 북위 70° 위 구간에 얼음이 없으면 「열림」 */
+    var PL = (function () {
+      var st = { t: 0, pole: "n", mon: 9, play: false };
+      var YRS = [1980, 1985, 1990, 1995, 2000, 2005, 2007, 2010, 2012, 2015, 2020];
+      var NSEP = [7.8, 6.9, 6.2, 6.1, 6.3, 5.5, 4.3, 4.9, 3.6, 4.6, 4.0];
+      var NMAR = [16.1, 16.1, 15.9, 15.6, 15.3, 14.8, 14.7, 15.1, 15.2, 14.4, 14.8];
+      var SSEP = 18.9, SMAR = 4.5;
+      /* 얼음 가장자리 위도: 경도 −180°부터 15°마다 */
+      var NB80 = [72, 72, 72.5, 72, 71, 70, 69, 71, 75, 76, 71, 73, 78, 80, 80, 80, 80, 79, 78, 77, 76, 74, 72, 72];
+      var NB12 = [80, 79, 77, 76, 75, 75, 76, 78, 81, 81, 79, 80, 81, 81, 82, 83, 83, 83, 82, 81, 81, 80, 80, 80];
+      var NBM = [60, 61, 62, 65, 62, 58, 52, 56, 52, 58, 65, 69, 76, 78, 76, 72, 70, 68, 68, 70, 65, 52, 50, 58];
+      var SBS = [-61, -62, -63, -64, -64, -63, -62, -61, -60, -58, -56, -55, -55, -56, -57, -58, -59, -60, -61, -62, -63, -63, -62, -61];
+      var SBM = [-73, -74, -73, -72, -71, -71, -70, -68, -66, -64, -66, -70, -70, -68, -67, -66, -66, -66, -66, -66, -66, -67, -70, -72];
+      var ROUTE = [[129, 35.1], [131.5, 38], [137, 42.5], [141.8, 45.7], [150, 49], [160, 54], [170, 60], [188, 64], [191, 66], [188, 69], [180, 71], [170, 72.5], [160, 73.5], [150, 75], [140, 76], [130, 76.5], [115, 77.5], [104, 78], [95, 77.5], [80, 76], [70, 75], [58, 74], [45, 72.5], [35, 71], [25, 71.3], [15, 69.5], [8, 64], [5, 60], [4, 55], [4.5, 51.9]];
+      var cam = { yaw: 0, pitch: 22, rot: function () {} };
+      var Q = { year: 1980, A: 7.8, A80: 7.8, open: false };
+      function itp(arr, y) {
+        if (y <= YRS[0]) return arr[0];
+        for (var i = 1; i < YRS.length; i++) if (y <= YRS[i]) return arr[i - 1] + (arr[i] - arr[i - 1]) * (y - YRS[i - 1]) / (YRS[i] - YRS[i - 1]);
+        return arr[arr.length - 1];
+      }
+      function cr(tab, lon) {
+        var f = (((lon + 180) % 360) + 360) % 360 / 15, i = Math.floor(f), u = f - i;
+        var p0 = tab[(i + 23) % 24], p1 = tab[i % 24], p2 = tab[(i + 1) % 24], p3 = tab[(i + 2) % 24];
+        return 0.5 * (2 * p1 + (-p0 + p2) * u + (2 * p0 - 5 * p1 + 4 * p2 - p3) * u * u + (-p0 + 3 * p1 - 3 * p2 + p3) * u * u * u);
+      }
+      function wig(lon) { return 0.8 * Math.sin(lon * RAD * 7 + 1.3) + 0.45 * Math.sin(lon * RAD * 13 + 0.4); }
+      function nEdge(lon) {
+        if (st.mon === 3) return cr(NBM, lon) + (16.1 - Q.An) * 1.2 + wig(lon);
+        var w = clamp((7.8 - Q.An) / (7.8 - 3.6), -0.2, 1.2);
+        return cr(NB80, lon) + w * (cr(NB12, lon) - cr(NB80, lon)) + wig(lon);
+      }
+      function sEdge(lon) { return (st.mon === 9 ? cr(SBS, lon) : cr(SBM, lon)) - wig(lon + 40); }
+      function prm() {
+        Q.year = Math.round(1980 + 40 * st.t);
+        Q.An = itp(st.mon === 9 ? NSEP : NMAR, Q.year); Q.An80 = (st.mon === 9 ? NSEP : NMAR)[0];
+        Q.A = st.pole === "n" ? Q.An : st.mon === 9 ? SSEP : SMAR;
+        Q.open = st.mon === 9 && ROUTE.every(function (p) { return p[1] < 70 || p[1] < nEdge(p[0] > 180 ? p[0] - 360 : p[0]) - 0.6; });
+      }
+
+      /* 지구 바탕 그림: 바다 · 땅(위도에 따라 툰드라 · 숲) · 그린란드와 남극의 빙하. 해빙은 넓이가 바뀔 때마다 덧칠 */
+      var TW = 2048, TH = 1024, BASE = null, MASK = null, TEX = null, texKey = "", texVer = 0;
+      function buildBase() {
+        if (BASE) return;
+        var c0 = document.createElement("canvas"); c0.width = TW; c0.height = TH;
+        var x0 = c0.getContext("2d");
+        x0.fillStyle = "#000"; x0.fillRect(0, 0, TW, TH);
+        x0.setTransform(TW / 360, 0, 0, TH / 180, TW / 2, TH / 2);
+        x0.fillStyle = "#f00"; x0.fill(new Path2D(LAND_WORLD));
+        x0.setTransform(1, 0, 0, 1, 0, 0);
+        var m = x0.getImageData(0, 0, TW, TH).data;
+        MASK = new Uint8Array(TW * TH); BASE = new Uint8ClampedArray(TW * TH * 4);
+        for (var row = 0; row < TH; row++) {
+          var lat = 90 - (row + 0.5) * 180 / TH, al = Math.abs(lat);
+          var oc = mix([150, 196, 232], [112, 168, 214], clamp((70 - al) / 50, 0, 1));
+          for (var col = 0; col < TW; col++) {
+            var i = row * TW + col, o = i * 4, lon = -180 + (col + 0.5) * 360 / TW, c;
+            if (m[o] > 110) {
+              MASK[i] = 1;
+              if (lat < -60 || (lat > 59.5 && lon > -74 && lon < -11)) c = mix([200, 213, 229], [228, 236, 246], clamp((al - 64) / 16, 0, 1));
+              else c = mix(mix([206, 194, 154], [156, 170, 126], sm(42, 56, al)), [190, 186, 166], sm(60, 70, al));
+            } else c = oc;
+            BASE[o] = c[0]; BASE[o + 1] = c[1]; BASE[o + 2] = c[2]; BASE[o + 3] = 255;
+          }
+        }
+        /* 해안선: 바다와 닿은 땅을 조금 어둡게 */
+        for (var r2 = 1; r2 < TH - 1; r2++) for (var c2 = 0; c2 < TW; c2++) {
+          var i2 = r2 * TW + c2;
+          if (!MASK[i2]) continue;
+          if (!MASK[i2 - TW] || !MASK[i2 + TW] || !MASK[r2 * TW + (c2 + 1) % TW] || !MASK[r2 * TW + (c2 + TW - 1) % TW]) { var o2 = i2 * 4; BASE[o2] *= 0.72; BASE[o2 + 1] *= 0.74; BASE[o2 + 2] *= 0.78; }
+        }
+        TEX = new Uint8ClampedArray(BASE.length);
+      }
+      function paintIce(row0, row1, edgeAt, north) {
+        var EDGE = new Float32Array(TW), col, row;
+        for (col = 0; col < TW; col++) EDGE[col] = edgeAt(-180 + (col + 0.5) * 360 / TW);
+        for (row = row0; row < row1; row++) {
+          var lat = 90 - (row + 0.5) * 180 / TH;
+          for (col = 0; col < TW; col++) {
+            var i = row * TW + col;
+            if (MASK[i]) continue;
+            var d = north ? lat - EDGE[col] : EDGE[col] - lat;
+            if (d < -1.2) continue;
+            var h = ((col * 73856093) ^ (row * 19349663)) & 1023;
+            var a = clamp(d / 1.1 + 0.5 + (h / 1023 - 0.5) * 0.3, 0, 1);
+            if (a <= 0) continue;
+            var c = mix([214, 228, 240], [248, 251, 253], clamp(d / 4, 0, 1)), o = i * 4;
+            TEX[o] = TEX[o] + (c[0] - TEX[o]) * a; TEX[o + 1] = TEX[o + 1] + (c[1] - TEX[o + 1]) * a; TEX[o + 2] = TEX[o + 2] + (c[2] - TEX[o + 2]) * a;
+          }
+        }
+      }
+      function buildTex() {
+        buildBase();
+        var key = st.mon + "|" + Q.An.toFixed(2);
+        if (key === texKey) return;
+        texKey = key; texVer++;
+        TEX.set(BASE);
+        paintIce(0, Math.round(TH * 45 / 180), nEdge, true);
+        paintIce(Math.round(TH * 130 / 180), TH, sEdge, false);
+      }
+
+      /* 지구: 가운데 경도 lon · 위도 lat */
+      var G = { lon: 100, lat: 65, D: 5, R: 1, rs: 1, cx: 0, cy: 0, lod: false }, img = document.createElement("canvas"), ictx = img.getContext("2d"), gkey = "", cT = 1, sT = 0;
+      var GL = (function () { var v = [-0.4, 0.6, 0.7], l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); return [v[0] / l, v[1] / l, v[2] / l]; })();
+      function view3(lo, la, r) {
+        var a = la * RAD, b = (lo - G.lon) * RAD, ca = Math.cos(a), x = ca * Math.sin(b) * r, y = Math.sin(a) * r, z = ca * Math.cos(b) * r;
+        return [x, y * cT - z * sT, y * sT + z * cT];
+      }
+      function GP(lo, la, r) {
+        var v = view3(lo, la, r || 1), l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]), s = G.D / (G.D - v[2]);
+        return [G.cx + v[0] * s * G.R, G.cy - v[1] * s * G.R, v[2] / l > 1 / G.D, s];
+      }
+      function gline(geo, color, w, dash) {
+        var prev = null;
+        ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.setLineDash(dash || []);
+        ctx.beginPath();
+        geo.forEach(function (g) { var p = GP(g[0], g[1], 1.002); if (p[2]) { if (prev) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); prev = p; } else prev = null; });
+        ctx.stroke(); ctx.setLineDash([]); ctx.lineCap = "butt";
+      }
+      function renderGlobe(rect) {
+        G.rs = Math.min(rect.h * 0.5, rect.w * 0.42) * (cam.zoom || 1); G.R = G.rs * Math.sqrt(G.D * G.D - 1) / G.D;
+        G.cx = rect.x + rect.w / 2; G.cy = rect.y + rect.h * 0.5;
+        cT = Math.cos(G.lat * RAD); sT = Math.sin(G.lat * RAD);
+        var q = G.lod ? 0.55 : 1, W = Math.max(1, Math.round(rect.w * DPR * q)), H = Math.max(1, Math.round(rect.h * DPR * q));
+        var k2 = [G.lon.toFixed(2), G.lat.toFixed(2), W, H, G.R.toFixed(2), G.cx.toFixed(1), G.cy.toFixed(1), texVer].join("|");
+        if (k2 !== gkey) {
+          gkey = k2;
+          img.width = W; img.height = H;
+          var im = ictx.createImageData(W, H), px = im.data, D = G.D, D2 = D * D, D4 = D2 * D2, sc = DPR * q;
+          var rs2 = (G.rs + 1) * (G.rs + 1), x0 = rect.x, y0 = rect.y;
+          for (var j = 0; j < H; j++) {
+            var Y = y0 + (j + 0.5) / sc, oy = Y - G.cy, dy = -oy / G.R;
+            for (var i = 0; i < W; i++) {
+              var X = x0 + (i + 0.5) / sc, ox = X - G.cx, rr2 = ox * ox + oy * oy;
+              if (rr2 > rs2) continue;
+              var dx = ox / G.R, dd = dx * dx + dy * dy + D2, disc = D4 - dd * (D2 - 1);
+              if (disc < 0) disc = 0;
+              var t = (D2 - Math.sqrt(disc)) / dd, vx = t * dx, vy = t * dy, vz = D - t * D;
+              var wy = vy * cT + vz * sT, wz = -vy * sT + vz * cT;
+              var la = Math.asin(wy > 1 ? 1 : wy < -1 ? -1 : wy), lo = G.lon * RAD + Math.atan2(vx, wz);
+              var u = lo / (2 * Math.PI) + 0.5; u -= Math.floor(u);
+              var row = ((0.5 - la / Math.PI) * TH) | 0; if (row >= TH) row = TH - 1;
+              var ti = (row * TW + ((u * TW) | 0)) * 4;
+              var lam = vx * GL[0] + vy * GL[1] + vz * GL[2], k = (0.7 + 0.36 * (lam > 0 ? lam : 0)) * (0.9 + 0.1 * vz);
+              var o2 = (j * W + i) * 4, a = G.rs + 0.5 - Math.sqrt(rr2);
+              px[o2] = TEX[ti] * k; px[o2 + 1] = TEX[ti + 1] * k; px[o2 + 2] = TEX[ti + 2] * k;
+              px[o2 + 3] = a >= 1 ? 255 : a <= 0 ? 0 : a * 255;
+            }
+          }
+          ictx.putImageData(im, 0, 0);
+        }
+        var halo = ctx.createRadialGradient(G.cx, G.cy, G.rs * 0.96, G.cx, G.cy, G.rs * 1.1);
+        halo.addColorStop(0, "rgba(120,170,230,.35)"); halo.addColorStop(1, "rgba(120,170,230,0)");
+        ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(G.cx, G.cy, G.rs * 1.1, 0, 2 * Math.PI); ctx.fill();
+        ctx.drawImage(img, rect.x, rect.y, rect.w, rect.h);
+      }
+      function circle(la) { var p = []; for (var lo = -180; lo <= 180; lo += 3) p.push([lo, la]); return p; }
+
+      var M = { st: st, cam: cam, yaw0: 0, pitch0: 22, Q: Q };
+      M.update = function () { prm(); };
+      M.setLod = function (v) { G.lod = v; };
+      M.lod = function () { return G.lod; };
+      M.skey = function () { return [Q.year, st.pole, st.mon].join(","); };
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        buildTex();
+        var N = st.pole === "n";
+        G.lon = (N ? 100 : 20) - cam.yaw; G.lat = N ? 90 - cam.pitch : -(90 - cam.pitch);
+        ctx.save(); rrect(rect, 12); ctx.clip();
+        renderGlobe(rect);
+        /* 위도선 · 경도선 · 극권 */
+        [60, 80].forEach(function (la) { gline(circle(N ? la : -la), "rgba(255,255,255,.35)", 1); });
+        for (var lo = -180; lo < 180; lo += 30) gline([[lo, N ? 50 : -50], [lo, N ? 89.5 : -89.5]], "rgba(255,255,255,.25)", 1);
+        gline(circle(N ? 66.56 : -66.56), "rgba(40,90,150,.55)", 1.3, [6, 5]);
+        var pc = GP(0, N ? 90 : -90, 1.002);
+        if (pc[2]) { ctx.fillStyle = "#c92a2a"; ctx.beginPath(); ctx.arc(pc[0], pc[1], 3.5, 0, 2 * Math.PI); ctx.fill(); }
+        if (N) {
+          gline(ROUTE, Q.open ? "#2b8a3e" : "rgba(201,42,42,.85)", 2.6, Q.open ? [] : [7, 6]);
+          [[129, 35.1, "부산"], [4.5, 51.9, "로테르담"]].forEach(function (c) {
+            var p = GP(c[0], c[1], 1.002);
+            if (!p[2]) return;
+            ctx.fillStyle = "#fff"; ctx.strokeStyle = "#1d2126"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+            ctext(c[2], p[0] + 7, p[1] - 1, { bold: true, size: 12.5 });
+          });
+        }
+        ctx.restore();
+        /* 이름표 */
+        function lab(text, lo, la, dx, dy, o) { var p = GP(lo, la, 1.002); if (p[2]) callout(text, p[0], p[1], p[0] + dx * TS, p[1] + dy * TS, o); }
+        if (pc[2]) lab(N ? "북극점" : "남극점", 0, N ? 90 : -90, 60, -30, { size: 12 });
+        var arc = GP(G.lon - 55, N ? 66.56 : -66.56, 1.002);
+        if (arc[2]) ctext(N ? "북극권" : "남극권", arc[0] + 4, arc[1] - 9, { bold: true, size: 11.5, color: "#285a96" });
+        if (N) {
+          lab("해빙(바닷물이 언 얼음)", G.lon + 160, 86, -150, -40, { size: 13.5 });
+          lab("그린란드 빙하", -40, 74, -40, -36, { size: 12.5 });
+          lab(st.mon === 3 ? "북극 항로(얼음에 막힘)" : Q.open ? "북극 항로(열림)" : "북극 항로(얼음에 막힘)", 140, 76, 50, 40, { size: 12.5, color: Q.open ? "#2b8a3e" : "#c92a2a" });
+        } else {
+          lab("남극 대륙 빙하(평균 두께 약 2km)", G.lon, -82, 0, -60, { size: 13.5 });
+          if (st.mon === 9) lab("해빙(바닷물이 언 얼음)", G.lon - 30, -60, -110, 40, { size: 13 });
+          else lab("해빙(웨델해에 남음)", -45, -70, -90, 40, { size: 12.5 });
+        }
+      };
+      M.step = function () {};
+      M.renderDynamic = function () {};
+      return M;
+    })();
+
+    /* ================= 그리기 ================= */
+    var stage = $(".gl-stage"), cap = $(".gl-cap"), legend = $(".gl-legend");
+    var padL = 18;
+    function drawRect() {
+      var top = cap.offsetTop + cap.offsetHeight + 8, bot = legend.offsetHeight + 20;
+      return { x: padL, y: top, w: Math.max(10, CW - padL - 18), h: Math.max(10, CH - top - bot) };
+    }
+    function scene() { return view === 1 ? VA : view === 2 ? FJ : view === 3 ? LK : PL; }
+    var rq = 0, layer = document.createElement("canvas"), layerKey = "";
+    function requestRender() { if (!rq) rq = requestAnimationFrame(function () { rq = 0; render(); }); }
+    function render() {
+      var sc = scene(), rect = drawRect();
+      if (rect.w < 40 || rect.h < 40) return;
+      TS = clamp(rect.w / 900, 0.78, 1.1);
+      var key = [view, sc.cam.yaw.toFixed(2), sc.cam.pitch.toFixed(2), (sc.cam.zoom || 1).toFixed(3), sc.lod(), CW, CH, DPR, rect.x, rect.y.toFixed(1), rect.w.toFixed(1), rect.h.toFixed(1), sc.skey()].join("|");
+      var main = ctx;
+      if (key !== layerKey) {
+        if (layer.width !== cv.width || layer.height !== cv.height) { layer.width = cv.width; layer.height = cv.height; }
+        ctx = layer.getContext("2d");
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, CW, CH);
+        sc.cam.rot();
+        LQ = [];
+        var t0s = performance.now();
+        if (SLOW) sc.setLod(true);
+        ctx.save(); rrect(rect, 12); ctx.clip();
+        sc.renderStatic(rect);
+        ctx.restore();
+        flushLabels(rect);
+        noteSpeed(performance.now() - t0s);
+        ctx = main; layerKey = key;
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.drawImage(layer, 0, 0);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      sc.renderDynamic(rect);
+    }
+
+    /* ================= 애니메이션: 재생 중에는 시간이 흐름(약 16초에 끝까지) ================= */
+    var raf = 0, lastT = 0, PLAY_MS = 16000;
+    function needAnim() { return scene().st.play; }
+    function tick(t) {
+      raf = 0;
+      var dt = lastT ? Math.min(80, t - lastT) : 16, sc = scene();
+      lastT = t;
+      if (sc.st.play) {
+        var nt = Math.min(1, sc.st.t + dt / PLAY_MS);
+        setTime(nt, true);
+        if (nt >= 1) { sc.st.play = false; sc.setLod(false); sc.update(); syncPlay(); }
+      }
+      sc.step(dt);
+      requestRender();
+      if (needAnim()) raf = requestAnimationFrame(tick); else lastT = 0;
+    }
+    function kick() { if (!raf && needAnim()) { lastT = 0; raf = requestAnimationFrame(tick); } }
+
+    /* ================= 패널: 읽은 값 ================= */
+    var elReadH = $(".gl-readh"), elRes = $(".gl-result"), elRk = $(".gl-rk"), elRt = $(".gl-rt"), elNote = $(".gl-readnote");
+    var elTitle = $(".gl-title"), elGuide = $(".gl-guide");
+    var K_ = [1, 2, 3, 4].map(function (i) { return { k: $(".gl-k" + i), v: $(".gl-v" + i) }; });
+    function stat(i, k, v) { setText(K_[i].k, k); setText(K_[i].v, v); }
+    function result(head, text, cls) {
+      var c = "gl-result" + (cls ? " " + cls : "");
+      if (elRes.className !== c) elRes.className = c;
+      setText(elRk, head); setText(elRt, text);
+    }
+    function stageA() {
+      var Q = VA.Q, t = VA.st.t, e0 = VA.Ecut();
+      if (t < 0.02) return ["하천이 깎은 V자 골짜기입니다", "빙기가 오기 전, 하천이 깎은 V자 모양 골짜기입니다. 빙기의 기온을 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 봅니다.", "calm", "처음"];
+      if (t < 0.5 && Q.Lg < 0.4) return ["추워지며 골짜기 머리에 빙하가 생깁니다", "기온이 내려가 여름에도 눈이 다 녹지 않고 쌓여 얼음이 됩니다. 이 얼음이 무게 때문에 천천히 흘러 내려가는 것이 빙하입니다.", "", "빙하 생김"];
+      if (t < 0.5) return ["빙하가 골짜기를 따라 흘러 내려가며 깎습니다", "빙하는 골짜기의 바닥과 양옆을 함께 넓고 깊게 깎아, V자 골짜기를 U자 모양으로 바꿉니다.", "", "깎는 중"];
+      if (t < 0.95) return ["따뜻해지며 빙하가 물러납니다", "기온이 오르면 빙하가 녹아 위쪽으로 물러납니다. 빙하가 실어 온 흙과 돌이 가장 멀리 내려갔던 빙하 끝에 둑(모레인)으로 남습니다.", "", "물러남"];
+      if (e0 < 0.15 && Q.Lmax < 1) return ["빙하가 골짜기 위쪽만 깎았습니다", "조금만 추워져 빙하가 짧았습니다. 자른 곳까지는 빙하가 오지 않아 V자 모양이 그대로입니다. 기온을 「매우 추움」 쪽으로 옮기면 빙하가 더 멀리 내려갑니다.", "", "끝"];
+      return ["빙하가 깎은 U자 골짜기가 드러났습니다", "바닥이 넓고 양옆이 가파른 U자 골짜기, 뾰족한 봉우리(호른), 높이 걸린 옆 골짜기(현곡)가 남았습니다. 알프스와 뉴질랜드 남섬에서 이런 지형을 볼 수 있습니다." + (VA.st.cut && Q.zm < VA.zcut() && Q.mor > 0.5 ? " 「단면 자르는 위치」 막대를 왼쪽으로 옮기면 빙하 끝이었던 곳의 모레인과 호수를 볼 수 있습니다." : ""), "", "끝"];
+    }
+    function stageB() {
+      var t = FJ.st.t, f = FJ.fjord();
+      if (t < 0.02) return ["하천이 깎은 V자 골짜기가 바다로 이어집니다", "빙기가 오기 전입니다. 「재생」을 누르거나 시간 막대를 옮겨 봅니다.", "calm", "처음"];
+      if (t < 0.5) return ["빙하가 바다까지 흘러 내려가며 골짜기를 깎습니다", "빙기에 두꺼운 빙하가 골짜기를 따라 바닷가까지 내려가, 골짜기를 지금의 해수면보다 깊고 넓은 U자 모양으로 깎습니다.", "", "깎는 중"];
+      if (t < 0.88) return ["따뜻해지며 빙하가 녹아 물러납니다", "기온이 오르면 빙하가 녹아 골짜기 위쪽으로 물러납니다.", "", "녹는 중"];
+      if (f) return ["바닷물이 들어와 피오르가 되었습니다", "빙하가 깎은 U자 골짜기에 바닷물이 들어와 좁고 긴 만이 되었습니다. 양옆은 높은 절벽이고 물이 깊습니다. 노르웨이 해안에 이런 피오르가 많습니다.", "", "피오르"];
+      return ["U자 골짜기가 드러났습니다", "해수면이 낮아 바닷물이 골짜기에 들어오지 못했습니다. 해수면 막대를 「지금(높음)」 쪽으로 올려 봅니다.", "calm", "U자 골짜기"];
+    }
+    function stageC() {
+      var t = LK.st.t, L = LK.lakes();
+      if (t < 0.02) return ["넓은 들판입니다", "뒤쪽이 북쪽입니다. 빙기의 세기를 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 봅니다.", "calm", "처음"];
+      if (t < 0.47) return ["두꺼운 빙하가 넓은 땅을 덮으며 내려옵니다", "눈이 쌓여 생긴 두꺼운 빙하(대륙 빙하)가 넓은 땅을 덮으며 남쪽으로 퍼집니다. 빙하는 무른 땅을 깊이 파냅니다.", "", "퍼짐"];
+      if (t < 0.62) return ["빙하 끝에 흙과 돌이 쌓입니다", "빙하가 실어 온 흙과 돌이 가장 멀리 내려간 빙하 끝에 쌓여 둑(모레인)이 됩니다.", "", "둑"];
+      if (t < 0.95) return ["따뜻해지며 빙하가 북쪽으로 물러납니다", "빙하가 물러난 자리에 빙하가 파낸 땅과, 빙하가 흐른 방향으로 길쭉한 언덕(드럼린)이 드러납니다. 파낸 땅에는 녹은 물이 고이기 시작합니다.", "", "물러남"];
+      return L.n >= 6 ? ["빙하가 파낸 땅에 물이 고여 호수가 많이 생겼습니다", "녹은 물이 빙하가 파낸 땅과 둑 안쪽에 고여 빙하호가 됩니다. 캐나다와 미국 북부에 오대호를 비롯한 수많은 호수가 이렇게 생겼습니다.", "", "호수"]
+        : ["빙하호가 몇 개 생겼습니다", "빙하가 짧게 내려와 파낸 땅이 적어 호수도 적습니다. 빙기의 세기를 「강함」으로 바꾸어 비교해 봅니다.", "", "호수"];
+    }
+    function stageD() {
+      var Q = PL.Q, y = Q.year + "년";
+      if (PL.st.pole === "s") return PL.st.mon === 9
+        ? ["남극 둘레 바다가 얼어 해빙이 가장 넓습니다", "남반구는 9월이 겨울 끝이라 남극 둘레 바다가 넓게 얼어붙습니다. 남극 대륙은 평균 두께 약 2km의 거대한 빙하로 덮여 있습니다.", "", y]
+        : ["여름 끝, 해빙이 남극 대륙 가까이로 줄었습니다", "남반구의 3월은 여름이 끝날 무렵이라 해빙이 가장 좁습니다. 대륙을 덮은 빙하는 녹지 않고 남아 있습니다. 남극의 빙하가 모두 녹으면 해수면이 약 58m 오른다고 계산됩니다.", "calm", y];
+      if (PL.st.mon === 3) return ["겨울이 끝날 무렵 해빙이 가장 넓습니다", "북극해의 해빙은 해마다 3월에 가장 넓고 9월에 가장 좁습니다. 3월 넓이도 1980년보다 조금 줄었습니다. 「9월」을 눌러 여름 끝과 비교해 봅니다.", "calm", y];
+      var dn = Math.round((1 - Q.An / Q.An80) * 100);
+      if (Q.open) return ["여름 해빙이 줄어 북극 항로가 열렸습니다", y + " 9월 해빙은 1980년보다 약 " + dn + "% 줄었습니다. 시베리아 앞바다의 얼음이 녹아 배가 북극해를 지나 아시아와 유럽을 오갈 수 있습니다. 부산에서 로테르담까지 수에즈 운하를 지나면 약 2만 2천 km이지만, 북극 항로로는 약 1만 5천 km입니다.", "", y];
+      return ["여름에도 해빙이 북극 항로를 막고 있습니다", y + " 9월에도 시베리아 앞바다에 해빙이 남아 배가 다니기 어렵습니다. 「재생」을 누르거나 시간 막대를 옮겨 해빙이 줄어드는 모습을 봅니다.", "calm", y];
+    }
+    function man(a) { return "약 " + Math.round(a * 100).toLocaleString("ko-KR") + "만 km²"; }
+    function updRead() {
+      var s;
+      if (view === 1) {
+        s = stageA();
+        var Q = VA.Q, e0 = VA.Ecut(), f = VA.found();
+        setText(elReadH, "읽은 값 · 산악 빙하");
+        stat(0, "빙하 길이", Q.Lg > 0.01 ? "약 " + (Q.Lg * VA.KM).toFixed(1) + "km" : "없음");
+        stat(1, "빙하 끝 높이", Q.Lg > 0.01 ? "약 " + round10(VA.termH()).toLocaleString("ko-KR") + "m" : "—");
+        stat(2, VA.st.cut ? "자른 곳 골짜기 모양" : "가운데 골짜기 모양", e0 < 0.15 ? "V자" : e0 < 0.85 ? "V자 → U자 " + Math.round(e0 * 100) + "%" : "U자");
+        stat(3, "새로 생긴 지형", f.length ? f.join(" · ") : "—");
+        result(s[0], s[1], s[2]);
+        setText(elNote, "블록 가로를 약 10km로 본 예시 모형입니다. 실제 빙하는 수천~수만 년에 걸쳐 늘고 줄어듭니다.");
+        var c = VA.st.cold;
+        setText($(".gl-coldval"), c < 0.35 ? "조금 추움" : c > 0.7 ? "매우 추움" : "추움");
+      } else if (view === 2) {
+        s = stageB();
+        var fj = FJ.fjord();
+        setText(elReadH, "읽은 값 · 피오르");
+        stat(0, "만의 길이", fj ? "약 " + fj.len.toFixed(1) + "km" : "없음");
+        stat(1, "가장 깊은 곳", fj ? "약 " + round10(fj.depth) + "m" : "—");
+        stat(2, "만의 폭", fj ? "약 " + fj.width.toFixed(1) + "km" : "—");
+        stat(3, "양쪽 절벽 높이", fj ? "약 " + round10(fj.cliff) + "m" : "—");
+        result(s[0], s[1], s[2]);
+        setText(elNote, "블록 가로를 약 40km로 보고 높이를 10배로 늘려 그린 예시 모형입니다. 빙기의 해수면은 실제로 지금보다 약 120m 낮았는데, 모형에서는 차이를 더 크게 그렸습니다.");
+        setText($(".gl-seaval"), FJ.st.sea > 0.97 ? "지금 수준" : FJ.st.sea < 0.05 ? "빙기 수준" : "지금보다 낮음");
+      } else if (view === 4) {
+        s = stageD();
+        var P4 = PL.Q, mon = PL.st.mon + "월";
+        if (PL.st.pole === "n") {
+          setText(elReadH, "읽은 값 · 북극의 해빙");
+          var dd = P4.An80 - P4.An, pc = Math.round((P4.An / P4.An80 - 1) * 100);
+          stat(0, "해빙 넓이(" + mon + ")", man(P4.An));
+          stat(1, "1980년과 비교", P4.year === 1980 ? "기준 해" : (pc > 0 ? "+" : pc < 0 ? "−" : "") + Math.abs(pc) + "%");
+          stat(2, "북극 항로(" + mon + ")", P4.open ? "배가 다닐 수 있음" : "얼음에 막힘");
+          stat(3, "1980년보다 줄어든 넓이", dd > 0.15 ? "한반도의 약 " + Math.round(dd / 0.22) + "배" : "—");
+          setText(elNote, "해빙 넓이는 미국 국립설빙자료센터(NSIDC) 관측 값(월평균)을 대략 옮긴 것입니다. 지구 위 얼음 모양은 넓이에 맞춰 그린 예시입니다.");
+        } else {
+          setText(elReadH, "읽은 값 · 남극의 빙하와 해빙");
+          stat(0, "해빙 넓이(" + mon + ")", man(PL.st.mon === 9 ? 18.9 : 4.5));
+          stat(1, "대륙 빙하 평균 두께", "약 2km");
+          stat(2, "모두 녹으면 해수면", "약 58m 상승");
+          stat(3, "1980년과 비교(해빙)", "큰 변화 없음");
+          setText(elNote, "남극 둘레 해빙은 해마다 차이가 크고, 1980~2015년에는 뚜렷이 줄지 않았습니다(2016년 이후 줄어든 해가 많음). 넓이는 대략 값입니다.");
+        }
+        result(s[0], s[1], s[2]);
+      } else {
+        s = stageC();
+        var L = LK.Q, lk = LK.lakes();
+        setText(elReadH, "읽은 값 · 대륙 빙하");
+        stat(0, "빙하 두께(가장 두꺼운 곳)", L.adv > 0.01 ? "약 " + (L.hi * Math.sqrt(L.adv) * 10).toFixed(1) + "km" : "없음");
+        stat(1, "빙하가 내려온 거리", L.adv > 0.01 ? "약 " + round10((1.05 - L.zf) * 250) + "km" : "—");
+        stat(2, "생긴 호수", lk.n + "개");
+        stat(3, "호수가 차지한 넓이", Math.round(lk.frac * 100) + "%");
+        result(s[0], s[1], s[2]);
+        setText(elNote, "블록 가로를 약 500km로 보고 높이를 약 25배로 늘려 그린 예시 모형입니다. 실제 대륙 빙하가 늘고 줄어드는 데에는 수만 년이 걸립니다.");
+      }
+      setText(elGuide, s[0]);
+      setText($$(".gl-tval")[view - 1], s[3]);
+      $$(".gl-trange")[view - 1].setAttribute("aria-valuetext", s[3] + " · " + s[0]);
+      updMap();
+    }
+
+    /* ================= 사례 지도(세계) ================= */
+    var map = $(".gl-map"), elPlace = $(".gl-place"), elUse = $(".gl-use");
+    var MK = 0.75;
+    function mx(lon) { return (lon + 180) * MK; }
+    function my(lat) { return (85 - lat) * MK; }
+    S("path", { d: LAND_WORLD, "class": "gl-land", transform: "translate(" + (180 * MK) + "," + (85 * MK) + ") scale(" + MK + ")", "vector-effect": "non-scaling-stroke" }, map);
+    var pinEls = {}, placeOn = null;
+    PLACES.forEach(function (pl) {
+      var g = S("g", { "class": "gl-pin", tabindex: "0", role: "button", "aria-label": pl.name + " 설명 보기" }, map), x = mx(pl.lon), y = my(pl.lat);
+      S("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: 5.5, "class": "gl-pring" }, g);
+      S("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: 3.2, "class": "gl-pdot" }, g);
+      S("text", { x: (x + pl.dx).toFixed(1), y: (y + pl.dy).toFixed(1), "text-anchor": pl.anchor, "class": "gl-pname" }, g, pl.name);
+      function pick() { placeOn = pl.id; updMap(); }
+      g.addEventListener("click", pick);
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+      pinEls[pl.id] = g;
+    });
+    function updMap() {
+      PLACES.forEach(function (pl) {
+        pinEls[pl.id].classList.toggle("hot", pl.kinds.indexOf(view) >= 0);
+        pinEls[pl.id].classList.toggle("on", placeOn === pl.id);
+      });
+      var pl = PLACES.filter(function (q) { return q.id === placeOn; })[0];
+      setText(elPlace, pl ? pl.text : "파란 점은 지금 보기와 닮은 곳입니다. 점을 누르면 설명이 나옵니다.");
+      setText(elUse, view === 1
+        ? "빙하가 깎은 U자 골짜기는 경치가 뛰어나 관광지가 되고, 높은 곳에서 떨어지는 물로 수력 발전을 하기도 합니다."
+        : view === 2 ? "피오르는 물이 깊고 파도가 잔잔해 배가 드나들기 좋은 항구가 되고, 높은 절벽 경치를 보러 많은 관광객이 찾습니다."
+        : view === 4 ? "북극 항로가 열리면 아시아와 유럽 사이 뱃길이 짧아지지만, 기름 유출 같은 사고 위험과 북극곰 같은 생물의 서식지 감소가 걱정됩니다."
+        : "오대호는 배가 다니는 물길로 이용되어, 호수를 따라 큰 도시와 공업 지역이 발달했습니다.");
+    }
+
+    /* ================= 무대 글 · 범례 ================= */
+    var LEG = {
+      1: [["#eaf3fa", "빙하"], ["#f7f9fb", "눈"], ["#8c857c", "빙하가 깎은 바위"], ["#a99f92", "암석(단면)"], ["#5096cd", "호수"], ["#a8916c", "모레인"], ["#86a860", "풀밭 · 숲"]],
+      2: [["#eaf3fa", "빙하"], ["#3d7fbf", "바다"], ["#a99f92", "암석(단면)"], ["#86a860", "풀밭 · 숲"]],
+      3: [["#eaf3fa", "대륙 빙하"], ["#5096cd", "빙하호"], ["#a8916c", "모레인"], ["#c9b99a", "땅(단면)"], ["#86a860", "들판"]],
+      4: [["#f8fbfd", "해빙(바닷물이 언 얼음)"], ["#e4ecf5", "빙하(그린란드 · 남극)"], ["#7fb3dc", "바다"], ["#c4bea8", "땅"], ["#2b8a3e", "북극 항로"]]
+    };
+    var MODEL = { 1: "예시 모형입니다 · 실제 속도와 크기는 다릅니다", 2: "예시 모형입니다 · 높이를 10배로, 해수면 차이는 더 크게 그렸습니다", 3: "예시 모형입니다 · 높이를 약 25배로 늘려 그렸습니다", 4: "해빙 넓이는 관측 값(대략) · 얼음 모양은 예시입니다" };
+    var legKey = 0;
+    function updLegend() {
+      if (legKey === view) return;
+      legKey = view;
+      legend.textContent = "";
+      LEG[view].forEach(function (it) {
+        var s = E("span", "gl-lg", legend);
+        var c = E("span", "gl-chip", s); c.style.background = it[0];
+        E("span", "", s, it[1]);
+      });
+      E("span", "gl-model", legend, MODEL[view]);
+    }
+    var TITLES = { 1: "빙하가 깎은 골짜기", 2: "피오르가 생기려면", 3: "빙하가 남긴 호수", 4: "극지방의 빙하" };
+    var KEYS = "끌어서 돌려 봅니다. 왼쪽·오른쪽 화살표 키로 돌리고, 위아래 화살표 키로 시간을 옮기며, Page Up·Page Down 키로 내려다보는 각도를 바꿉니다. 스페이스 키로 재생하거나 멈춥니다.";
+    var LABELS = {
+      1: "3D 산 블록. 빙하가 늘고 줄며 V자 골짜기가 U자 골짜기로 바뀌는 과정입니다. " + KEYS,
+      2: "3D 바닷가 산 블록. 빙하가 깎은 골짜기에 바닷물이 들어와 피오르가 되는 과정입니다. " + KEYS,
+      3: "3D 들판 블록. 대륙 빙하가 땅을 덮었다가 물러나며 빙하호가 생기는 과정입니다. " + KEYS,
+      4: "북극 또는 남극을 내려다본 3D 지구. 해마다 바다가 언 얼음(해빙)의 넓이가 바뀌는 모습입니다. 끌어서 돌려 보고, 위아래 화살표 키로 해를 옮깁니다. 스페이스 키로 재생하거나 멈춥니다."
+    };
+
+    /* ================= 조작 ================= */
+    var ranges = $$(".gl-trange"), plays = $$(".gl-play");
+    function setTime(t, fromPlay) {
+      var sc = scene();
+      sc.st.t = clamp(t, 0, 1);
+      if (!fromPlay && sc.st.play) { sc.st.play = false; sc.setLod(false); syncPlay(); }
+      ranges[view - 1].value = String(Math.round(sc.st.t * 100));
+      sc.update();
+      updRead();
+      requestRender();
+      if (!fromPlay) kick();
+    }
+    function syncPlay() {
+      plays[0].textContent = VA.st.play ? "멈춤" : "재생";
+      plays[1].textContent = FJ.st.play ? "멈춤" : "재생";
+      plays[2].textContent = LK.st.play ? "멈춤" : "재생";
+      plays[3].textContent = PL.st.play ? "멈춤" : "재생";
+    }
+    function togglePlay() {
+      var sc = scene();
+      if (!sc.st.play && sc.st.t >= 1) setTime(0);
+      sc.st.play = !sc.st.play;
+      sc.setLod(sc.st.play);
+      if (!sc.st.play) sc.update();
+      syncPlay();
+      requestRender();
+      kick();
+    }
+    ranges.forEach(function (r) { r.addEventListener("input", function () { setTime(Number(r.value) / 100); }); });
+    plays.forEach(function (b) { b.addEventListener("click", togglePlay); });
+    $$(".gl-reset").forEach(function (b) { b.addEventListener("click", function () { setTime(0); }); });
+    function seg(sel, attr, fn) {
+      var bs = $$(sel + " .gl-segb");
+      bs.forEach(function (b) { b.addEventListener("click", function () { fn(b.getAttribute(attr)); }); });
+      return function (v) { bs.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute(attr) === String(v) ? "true" : "false"); }); };
+    }
+    function refresh(sc) { sc.update(); updRead(); requestRender(); }
+    /* 완성본: 단면 자르는 위치(0 = 자르지 않음, 100 = 가운데). 「화산 지형」 완성본과 같은 방식 */
+    function setCut(sc, v) {
+      var n = sc === VA ? "1" : "2";
+      sc.st.cv = clamp(v, 0, 1); sc.st.cut = sc.st.cv > 0.005;
+      $(".gl-cutr[data-for=\"" + n + "\"]").value = String(Math.round(sc.st.cv * 100));
+      setText($(".gl-cutv[data-for=\"" + n + "\"]"), !sc.st.cut ? "자르지 않음" : sc.st.cv >= 0.995 ? "가운데" : "안쪽 " + Math.round(sc.st.cv * 100) + "%");
+      refresh(sc);
+    }
+    $$(".gl-cutr").forEach(function (r) { r.addEventListener("input", function () { setCut(r.getAttribute("data-for") === "1" ? VA : FJ, Number(r.value) / 100); }); });
+    var markPole = seg(".gl-poleseg", "data-pole", function (v) { setPole(v); });
+    function setPole(v) { PL.st.pole = v === "s" ? "s" : "n"; markPole(PL.st.pole); PL.cam.yaw = PL.yaw0; PL.cam.pitch = PL.pitch0; refresh(PL); }
+    var markMon = seg(".gl-monseg", "data-mon", function (v) { setMon(Number(v)); });
+    function setMon(v) { PL.st.mon = v === 3 ? 3 : 9; markMon(PL.st.mon); refresh(PL); }
+    var markIce = seg(".gl-iceseg", "data-ice", function (v) { setIce(Number(v)); });
+    function setIce(v) { LK.st.ice = v >= 1 && v <= 3 ? v : 2; markIce(LK.st.ice); refresh(LK); }
+    $(".gl-coldrange").addEventListener("input", function (e) { VA.st.cold = clamp(Number(e.target.value) / 100, 0, 1); refresh(VA); });
+    $(".gl-searange").addEventListener("input", function (e) { FJ.st.sea = clamp(Number(e.target.value) / 100, 0, 1); refresh(FJ); });
+
+    var vbtns = $$(".gl-vbtn"), vctls = $$(".gl-vctl");
+    function setView(v) {
+      v = v >= 2 && v <= 4 ? v : 1;
+      var old = scene();
+      if (old.st.play && v !== view) { old.st.play = false; old.setLod(false); old.update(); syncPlay(); }
+      root.classList.toggle("gl-globe", v === 4);
+      view = v;
+      vbtns.forEach(function (b) { b.setAttribute("aria-pressed", Number(b.getAttribute("data-view")) === v ? "true" : "false"); });
+      vctls.forEach(function (c) { c.classList.toggle("gl-off", Number(c.getAttribute("data-for")) !== v); });
+      setText(elTitle, TITLES[v]);
+      cv.setAttribute("aria-label", LABELS[v]);
+      scene().update();
+      updLegend();
+      updRead();
+      layerKey = "";
+      requestRender();
+      kick();
+    }
+    vbtns.forEach(function (b) { b.addEventListener("click", function () { setView(Number(b.getAttribute("data-view"))); }); });
+    $(".gl-resetview").addEventListener("click", function () { var sc = scene(); sc.cam.yaw = sc.yaw0; sc.cam.pitch = sc.pitch0; sc.cam.zoom = 1; requestRender(); });
+    /* 완성본(10-19 개선): 확대 · 축소 — 마우스 휠 · 두 손가락 · + − 키 · 단추. 0.7 ~ 2.5배, 「처음 시점으로」에서 1배 */
+    function zoomBy(f) { var sc = scene(); sc.cam.zoom = clamp((sc.cam.zoom || 1) * f, 0.7, 2.5); requestRender(); }
+    $(".gl-zin").addEventListener("click", function () { zoomBy(1.2); });
+    $(".gl-zout").addEventListener("click", function () { zoomBy(1 / 1.2); });
+    cv.addEventListener("wheel", function (e) { e.preventDefault(); zoomBy(e.deltaY < 0 ? 1.1 : 1 / 1.1); }, { passive: false });
+    cv.addEventListener("keydown", function (e) { if (e.key === "+" || e.key === "=") zoomBy(1.15); else if (e.key === "-") zoomBy(1 / 1.15); else return; e.preventDefault(); });
+    (function () {
+      var pts = {}, d0 = 0, z0 = 1;
+      function n() { return Object.keys(pts).length; }
+      function dist() { var k = Object.keys(pts), a = pts[k[0]], b = pts[k[1]]; return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
+      cv.addEventListener("pointerdown", function (e) {
+        pts[e.pointerId] = [e.clientX, e.clientY];
+        if (n() === 2) { d0 = dist(); z0 = scene().cam.zoom || 1; cv.dispatchEvent(new PointerEvent("pointercancel", { pointerId: e.pointerId })); e.stopImmediatePropagation(); }
+      }, true);
+      cv.addEventListener("pointermove", function (e) {
+        if (!pts[e.pointerId]) return;
+        pts[e.pointerId] = [e.clientX, e.clientY];
+        if (n() >= 2 && d0 > 0) { scene().cam.zoom = clamp(z0 * dist() / d0, 0.7, 2.5); requestRender(); e.stopImmediatePropagation(); }
+      }, true);
+      function up(e) { delete pts[e.pointerId]; if (n() < 2) d0 = 0; }
+      cv.addEventListener("pointerup", up, true);
+      cv.addEventListener("pointercancel", function (e) { if (e.isTrusted) up(e); }, true);
+    })();
+
+
+    /* 3D: 끌어 돌리기 · 키보드 */
+    (function () {
+      var drag = null;
+      function turn(sc, dyaw, dpitch) { sc.cam.yaw += dyaw; sc.cam.pitch = clamp(sc.cam.pitch + dpitch, 8, 70); requestRender(); }
+      cv.addEventListener("pointerdown", function (e) {
+        var sc = scene();
+        drag = { x: e.clientX, y: e.clientY, yaw: sc.cam.yaw, pitch: sc.cam.pitch, moved: false };
+        if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+      cv.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        var sc = scene(), dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+        if (drag.moved) { cv.style.cursor = "grabbing"; sc.setLod(true); sc.cam.yaw = drag.yaw; sc.cam.pitch = drag.pitch; turn(sc, dx * 0.4, dy * 0.25); }
+      });
+      function end() {
+        if (!drag) return;
+        var sc = scene();
+        if (!sc.st.play) sc.setLod(false);
+        drag = null;
+        cv.style.cursor = "grab";
+        requestRender();
+      }
+      cv.addEventListener("pointerup", end);
+      cv.addEventListener("pointercancel", end);
+      cv.addEventListener("keydown", function (e) {
+        var k = e.key, sc = scene();
+        if (k === "ArrowLeft" || k === "ArrowRight") turn(sc, k === "ArrowLeft" ? -10 : 10, 0);
+        else if (k === "PageUp" || k === "PageDown") turn(sc, 0, k === "PageUp" ? 5 : -5);
+        else if (k === "ArrowUp" || k === "ArrowDown") setTime(sc.st.t + (k === "ArrowUp" ? 0.05 : -0.05));
+        else if (k === "Home" || k === "End") setTime(k === "Home" ? 0 : 1);
+        else if (k === " " || k === "Enter") togglePlay();
+        else return;
+        e.preventDefault();
+      });
+    })();
+
+    /* 패널 위치 · 접기 · 끌어 옮기기 */
+    var panel = $(".gl-panel"), phead = $(".gl-head"), fold = $(".gl-fold");
+    var mode = "right", panelMoved = false;
+    var posBtns = $$(".gl-posseg .gl-segb");
+    function layout() {
+      if (mode === "float" && panelMoved) {
+        var px = parseFloat(panel.style.left) || 0, py = parseFloat(panel.style.top) || 0;
+        panel.style.left = clamp(px, 0, Math.max(0, root.clientWidth - panel.offsetWidth)) + "px";
+        panel.style.top = clamp(py, 0, Math.max(0, root.clientHeight - Math.min(panel.offsetHeight, 60))) + "px";
+      }
+      var pad = 18, side = panel.offsetWidth + 32;
+      if (mode === "float" && !panelMoved && !root.classList.contains("gl-collapsed") && stage.clientWidth - side >= 360) pad = side;
+      padL = pad;
+      cap.style.left = pad + "px"; legend.style.left = pad + "px";
+      sizeCanvas();
+      layerKey = "";
+      requestRender();
+    }
+    function setPanel(m) {
+      if (["right", "left", "float"].indexOf(m) < 0) m = "right";
+      mode = m; panelMoved = false;
+      root.classList.remove("gl-pos-right", "gl-pos-left", "gl-pos-float", "gl-collapsed");
+      root.classList.add("gl-pos-" + m);
+      panel.style.left = ""; panel.style.top = "";
+      fold.textContent = "접기";
+      fold.setAttribute("aria-expanded", "true");
+      posBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-pos") === m ? "true" : "false"); });
+      layout();
+    }
+    posBtns.forEach(function (b) { b.addEventListener("click", function () { setPanel(b.getAttribute("data-pos")); }); });
+    fold.addEventListener("click", function () {
+      var c = root.classList.toggle("gl-collapsed");
+      fold.textContent = c ? "펴기" : "접기";
+      fold.setAttribute("aria-expanded", c ? "false" : "true");
+      layout();
+    });
+    var pDrag = null;
+    phead.addEventListener("pointerdown", function (e) {
+      if (mode !== "float" || e.target.closest("button")) return;
+      var pb = panel.getBoundingClientRect(), rb = root.getBoundingClientRect();
+      pDrag = { dx: e.clientX - pb.left, dy: e.clientY - pb.top, rb: rb, w: pb.width, h: pb.height };
+      if (phead.setPointerCapture) phead.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+    phead.addEventListener("pointermove", function (e) {
+      if (!pDrag) return;
+      var x = clamp(e.clientX - pDrag.rb.left - pDrag.dx, 0, Math.max(0, pDrag.rb.width - pDrag.w));
+      var y = clamp(e.clientY - pDrag.rb.top - pDrag.dy, 0, Math.max(0, pDrag.rb.height - Math.min(pDrag.h, 60)));
+      panel.style.left = x + "px"; panel.style.top = y + "px";
+      if (!panelMoved) { panelMoved = true; layout(); }
+    });
+    phead.addEventListener("pointerup", function () { pDrag = null; });
+    phead.addEventListener("pointercancel", function () { pDrag = null; });
+
+    /* ================= 확인 문제 (버튼 → 창) ================= */
+    var answered = QUIZ.map(function () { return null; });
+    var qStatus = [];
+    var qBtns = QUIZ.map(function (item, i) {
+      var b = E("button", "gl-qbtn", $(".gl-qlist"));
+      b.type = "button";
+      E("span", "gl-qno", b, String(i + 1));
+      E("span", "gl-qtt", b, item.title);
+      qStatus.push(E("span", "gl-qst", b, "풀기"));
+      b.addEventListener("click", function () { openQuiz(i, b); });
+      return b;
+    });
+    var modal = $(".gl-modal"), dialog = $(".gl-dialog");
+    var dNum = $(".gl-dnum"), dQ = $(".gl-dq"), dOpts = $(".gl-dopts"), dFb = $(".gl-dfb");
+    var dPrev = $(".gl-prev"), dNext = $(".gl-next"), dX = $(".gl-x");
+    dQ.id = uid + "-q";
+    dialog.setAttribute("aria-labelledby", uid + "-q");
+    var qCur = 0, backFocus = null;
+    function renderQuiz() {
+      var item = QUIZ[qCur], picked = answered[qCur];
+      dNum.textContent = "확인 문제 " + (qCur + 1) + " / " + QUIZ.length;
+      dQ.textContent = item.q;
+      dOpts.textContent = "";
+      item.opts.forEach(function (txt, i) {
+        var b = E("button", "gl-opt", dOpts, txt);
+        b.type = "button";
+        if (picked === i) b.classList.add(i === item.ans ? "ok" : "no");
+        b.addEventListener("click", function () { answered[qCur] = i; renderQuiz(); updateQuizList(); dOpts.children[i].focus(); });
+      });
+      if (picked === null) { dFb.className = "gl-dfb"; dFb.textContent = ""; }
+      else { var right = picked === item.ans; dFb.className = "gl-dfb " + (right ? "ok" : "no"); dFb.textContent = right ? item.ok : item.no; }
+      dPrev.disabled = qCur === 0;
+      dNext.disabled = qCur === QUIZ.length - 1;
+    }
+    function updateQuizList() {
+      QUIZ.forEach(function (item, i) {
+        var p = answered[i], st = qStatus[i];
+        if (p === null) { st.className = "gl-qst"; st.textContent = "풀기"; }
+        else if (p === item.ans) { st.className = "gl-qst ok"; st.textContent = "정답"; }
+        else { st.className = "gl-qst no"; st.textContent = "다시"; }
+      });
+    }
+    function openQuiz(i, from) {
+      qCur = i; backFocus = from || null;
+      renderQuiz();
+      modal.hidden = false;
+      var first = dOpts.querySelector(".gl-opt");
+      if (first) first.focus();
+    }
+    function closeQuiz() {
+      modal.hidden = true;
+      if (backFocus) backFocus.focus();
+    }
+    dX.addEventListener("click", closeQuiz);
+    dPrev.addEventListener("click", function () { if (qCur > 0) { qCur--; renderQuiz(); backFocus = qBtns[qCur]; } });
+    dNext.addEventListener("click", function () { if (qCur < QUIZ.length - 1) { qCur++; renderQuiz(); backFocus = qBtns[qCur]; } });
+    modal.addEventListener("click", function (e) { if (e.target === modal) closeQuiz(); });
+    modal.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); closeQuiz(); return; }
+      if (e.key !== "Tab") return;
+      var f = Array.prototype.slice.call(dialog.querySelectorAll("button")).filter(function (b) { return !b.disabled; });
+      if (!f.length) return;
+      var i = f.indexOf(e.target);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    });
+
+    /* ================= 처음 상태: ?view=1&temp=90&cut=0~100&time=100 · ?view=2&sea=0&cut=60&time=100 · ?view=3&ice=3&time=100 · ?view=4&pole=n|s&mon=9|3&year=2012 · &play=1 · &panel=float ================= */
+    var qs = new URLSearchParams(location.search);
+    var qv = parseInt(qs.get("view"), 10), qt = parseInt(qs.get("time"), 10), qcut = parseInt(qs.get("cut"), 10), qyear = parseInt(qs.get("year"), 10);
+    if (!(qv >= 1 && qv <= 4)) qv = 1;
+    var qtemp = parseInt(qs.get("temp"), 10), qsea = parseInt(qs.get("sea"), 10), qice = parseInt(qs.get("ice"), 10);
+    if (isFinite(qtemp)) VA.st.cold = clamp(qtemp / 100, 0, 1);
+    if (isFinite(qsea)) FJ.st.sea = clamp(qsea / 100, 0, 1);
+    $(".gl-coldrange").value = String(Math.round(VA.st.cold * 100));
+    $(".gl-searange").value = String(Math.round(FJ.st.sea * 100));
+    PL.st.pole = qs.get("pole") === "s" ? "s" : "n"; markPole(PL.st.pole);
+    PL.st.mon = qs.get("mon") === "3" ? 3 : 9; markMon(PL.st.mon);
+    if (isFinite(qyear)) PL.st.t = clamp((qyear - 1980) / 40, 0, 1);
+    LK.st.ice = qice >= 1 && qice <= 3 ? qice : 2; markIce(LK.st.ice);
+    if (isFinite(qt)) [VA, FJ, LK, PL][qv - 1].st.t = clamp(qt / 100, 0, 1);
+    ranges[0].value = String(Math.round(VA.st.t * 100));
+    ranges[1].value = String(Math.round(FJ.st.t * 100));
+    ranges[2].value = String(Math.round(LK.st.t * 100));
+    ranges[3].value = String(Math.round(PL.st.t * 100));
+    VA.update(); FJ.update(); LK.update(); PL.update();
+    setCut(VA, isFinite(qcut) && qv === 1 ? qcut / 100 : 1);
+    setCut(FJ, isFinite(qcut) && qv === 2 ? qcut / 100 : 0);
+    setPanel(qs.get("panel") || "right");
+    updateQuizList();
+    setView(qv);
+    if (qs.get("play") === "1") togglePlay();
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(root);
+    else window.addEventListener("resize", layout);
+  }
+  Up(document.currentScript.parentElement);
+})();
+</script>
+</div>
+</body>
+</html>
