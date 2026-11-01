@@ -1,0 +1,2563 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>산지 지형 (ver03)</title>
+<style>.ds-page{margin:0}</style>
+</head>
+<body class="ds-page" style="margin:0">
+<div class="ds-lf-mountain">
+<style>
+.ds-lf-mountain{
+  --bg:#f4f3ee; --panel:#f7f7f4; --card:#fff; --ink:#1d2126; --ink2:#5b636d; --line:#e2e0d9;
+  --accent:#1f6feb; --accent-soft:#e7efff;
+  box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr) 320px;
+  height:100vh; min-height:560px; background:var(--bg); color:var(--ink);
+  font-family:Pretendard,'Pretendard Variable','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  font-size:15px; line-height:1.5; position:relative; overflow:hidden;
+}
+.ds-lf-mountain.mt-pos-left{grid-template-columns:320px minmax(0,1fr)}
+.ds-lf-mountain.mt-pos-float{grid-template-columns:minmax(0,1fr)}
+.ds-lf-mountain .mt-stage{position:relative;min-width:0;min-height:0;overflow:hidden;background:linear-gradient(180deg,#f7f9fb 0%,#edf2f6 100%)}
+.ds-lf-mountain .mt-cv{position:absolute;left:0;top:0;width:100%;height:100%;display:block;touch-action:none;outline:none;cursor:grab}
+.ds-lf-mountain .mt-cv:focus-visible{box-shadow:inset 0 0 0 3px #74a7ff}
+.ds-lf-mountain .mt-cap{position:absolute;top:12px;left:18px;right:170px;pointer-events:none;display:flex;flex-direction:column;gap:2px}
+.ds-lf-mountain .mt-title{margin:0;font-size:19px;font-weight:700;line-height:1.3}
+.ds-lf-mountain .mt-guide{margin:0;font-size:14px;color:var(--ink2);line-height:1.4}
+.ds-lf-mountain .mt-legend{position:absolute;left:18px;bottom:12px;right:18px;pointer-events:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:12.5px;color:var(--ink2)}
+.ds-lf-mountain .mt-lg{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.ds-lf-mountain .mt-chip{width:14px;height:10px;border-radius:3px;border:1px solid rgba(0,0,0,.18);display:inline-block}
+.ds-lf-mountain .mt-chip.dot{width:9px;height:9px;border-radius:50%}
+.ds-lf-mountain .mt-model{font-size:11.5px;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.85);border:1px solid var(--line);white-space:nowrap}
+.ds-lf-mountain .mt-panel{box-sizing:border-box;background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+.ds-lf-mountain.mt-pos-left .mt-panel{order:-1;border-left:0;border-right:1px solid var(--line)}
+.ds-lf-mountain.mt-pos-float .mt-panel{position:absolute;top:16px;left:16px;width:320px;max-width:calc(100% - 32px);max-height:calc(100% - 32px);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.12),0 12px 32px rgba(0,0,0,.16);z-index:20}
+.ds-lf-mountain .mt-head{display:flex;flex-direction:column;gap:2px;padding:12px 16px 10px;background:var(--card);border-bottom:1px solid var(--line)}
+.ds-lf-mountain.mt-pos-float .mt-head{cursor:move;border-radius:14px 14px 0 0}
+.ds-lf-mountain.mt-pos-float.mt-collapsed .mt-head{border-bottom:0;border-radius:14px}
+.ds-lf-mountain .mt-head-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ds-lf-mountain .mt-ptitle{font-size:18px;margin:0;font-weight:700;line-height:1.35}
+.ds-lf-mountain .mt-src{font-size:12px;color:var(--ink2);margin:0}
+.ds-lf-mountain .mt-fold{display:none}
+.ds-lf-mountain.mt-pos-float .mt-fold{display:inline-block}
+.ds-lf-mountain.mt-collapsed .mt-body{display:none}
+.ds-lf-mountain .mt-body{display:flex;flex-direction:column;gap:8px;padding:10px}
+.ds-lf-mountain .mt-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.ds-lf-mountain .mt-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin:0}
+.ds-lf-mountain .mt-h::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--accent)}
+.ds-lf-mountain .mt-sub{font-size:12px;font-weight:600;color:var(--ink2)}
+.ds-lf-mountain .mt-line2{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ds-lf-mountain .mt-line2 .mt-seg{flex:1}
+.ds-lf-mountain .mt-seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.ds-lf-mountain .mt-seg.two{grid-template-columns:repeat(2,1fr)}
+.ds-lf-mountain .mt-seg.four{grid-template-columns:repeat(2,1fr)}
+.ds-lf-mountain .mt-seg.four .mt-segb:nth-child(3){border-left:0}
+.ds-lf-mountain .mt-seg.four .mt-segb:nth-child(n+3){border-top:1px solid var(--line)}
+.ds-lf-mountain .mt-segb{font:inherit;font-size:12.5px;padding:5px 2px;border:0;background:#fff;color:var(--ink);cursor:pointer;line-height:1.3}
+.ds-lf-mountain .mt-segb + .mt-segb{border-left:1px solid var(--line)}
+.ds-lf-mountain .mt-segb[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:700}
+.ds-lf-mountain .mt-vlist{display:flex;flex-direction:column;gap:5px}
+.ds-lf-mountain .mt-vbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-size:13.5px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}
+.ds-lf-mountain .mt-vbtn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.ds-lf-mountain .mt-vno{flex:none;width:20px;height:20px;border-radius:50%;background:#f1f3f5;color:var(--ink2);font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-mountain .mt-vbtn[aria-pressed="true"] .mt-vno{background:var(--accent);color:#fff}
+.ds-lf-mountain .mt-vctl{display:flex;flex-direction:column;gap:7px;border-top:1px dashed var(--line);padding-top:8px}
+.ds-lf-mountain .mt-rangerow{display:flex;align-items:center;gap:8px}
+.ds-lf-mountain .mt-range{flex:1;min-width:0;margin:0;accent-color:var(--accent)}
+.ds-lf-mountain .mt-rv{flex:none;min-width:76px;text-align:right;font-size:12.5px;font-weight:700}
+.ds-lf-mountain .mt-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2);margin-top:-5px;padding-right:84px}
+.ds-lf-mountain .mt-hint{font-size:11.5px;color:var(--ink2);margin:-3px 0 0}
+.ds-lf-mountain .mt-mini{font:inherit;font-size:12px;padding:2px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.ds-lf-mountain .mt-row{display:flex;gap:4px}
+.ds-lf-mountain .mt-btn{font:inherit;font-size:12.5px;padding:5px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.ds-lf-mountain .mt-row .mt-btn{flex:1 1 auto}
+.ds-lf-mountain .mt-btn.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.ds-lf-mountain .mt-btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.ds-lf-mountain .mt-btn:hover,
+.ds-lf-mountain .mt-mini:hover,
+.ds-lf-mountain .mt-vbtn:hover,
+.ds-lf-mountain .mt-qbtn:hover,
+.ds-lf-mountain .mt-opt:hover{border-color:#b9bfc6}
+.ds-lf-mountain .mt-btn.main:hover{border-color:#1858c0}
+.ds-lf-mountain .mt-btn:focus-visible,
+.ds-lf-mountain .mt-mini:focus-visible,
+.ds-lf-mountain .mt-segb:focus-visible,
+.ds-lf-mountain .mt-vbtn:focus-visible,
+.ds-lf-mountain .mt-qbtn:focus-visible,
+.ds-lf-mountain .mt-opt:focus-visible,
+.ds-lf-mountain .mt-range:focus-visible,
+.ds-lf-mountain .mt-x:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ds-lf-mountain .mt-stat{background:#f8f8f6;border-radius:8px;padding:5px 8px;display:flex;flex-direction:column;min-width:0}
+.ds-lf-mountain .mt-k{font-size:11.5px;color:var(--ink2);line-height:1.3}
+.ds-lf-mountain .mt-v{font-size:15px;font-weight:700;line-height:1.3}
+.ds-lf-mountain .mt-result{border-radius:8px;padding:8px 10px;border-left:4px solid #1c7ed6;background:#e7f5ff;display:flex;flex-direction:column;gap:2px}
+.ds-lf-mountain .mt-result.calm{border-left-color:#868e96;background:#f1f3f5}
+.ds-lf-mountain .mt-rk{font-size:15px;font-weight:700;color:#1864ab}
+.ds-lf-mountain .mt-result.calm .mt-rk{color:#495057}
+.ds-lf-mountain .mt-rt{font-size:12.5px;margin:0;line-height:1.45}
+.ds-lf-mountain .mt-note{font-size:11.5px;color:var(--ink2);margin:0}
+.ds-lf-mountain .mt-credit{font-size:11px;line-height:1.45;color:var(--ink2);margin:0;padding:2px 4px 4px}
+.ds-lf-mountain .mt-p{font-size:12.5px;margin:0;line-height:1.5}
+.ds-lf-mountain .mt-map{display:block;width:100%;max-width:290px;height:auto;margin:0 auto;border-radius:8px;background:#e8f1f9}
+.ds-lf-mountain .mt-land{fill:#f3efe4;stroke:#9aa1a9;stroke-width:1}
+.ds-lf-mountain .mt-range-line{fill:none;stroke:#b07a4a;stroke-width:2.2;stroke-dasharray:5 3;stroke-linecap:round}
+.ds-lf-mountain .mt-mt{font-size:11px;fill:var(--ink2)}
+.ds-lf-mountain .mt-rname{font-size:10.5px;fill:#8a5a2e;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:3}
+.ds-lf-mountain .mt-pin{cursor:pointer}
+.ds-lf-mountain .mt-pin:focus{outline:none}
+.ds-lf-mountain .mt-pdot{fill:#fff;stroke:#495057;stroke-width:2}
+.ds-lf-mountain .mt-pin.hot .mt-pdot{fill:#1c7ed6;stroke:#fff;stroke-width:2.2}
+.ds-lf-mountain .mt-pin.on .mt-pring,
+.ds-lf-mountain .mt-pin:focus-visible .mt-pring{stroke:var(--accent);stroke-width:2;stroke-dasharray:3 2}
+.ds-lf-mountain .mt-pring{fill:none;stroke:none}
+.ds-lf-mountain .mt-pname{font-size:12px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3.5;stroke-linejoin:round;display:none}
+.ds-lf-mountain .mt-pin.hot .mt-pname,
+.ds-lf-mountain .mt-pin.on .mt-pname{display:inline}
+.ds-lf-mountain .mt-place{font-size:12.5px;margin:0;line-height:1.5;padding:6px 8px;border-radius:8px;background:#f8f8f6}
+.ds-lf-mountain .mt-more{display:flex;flex-direction:column;gap:6px;margin:0}
+.ds-lf-mountain .mt-mterm{font-size:13px;font-weight:700;margin:0}
+.ds-lf-mountain .mt-mdesc{font-size:12.5px;margin:0 0 2px;line-height:1.45;color:var(--ink2)}
+.ds-lf-mountain .mt-qlist{display:flex;flex-direction:column;gap:6px}
+.ds-lf-mountain .mt-qbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}
+.ds-lf-mountain .mt-qno{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-mountain .mt-qtt{flex:1;min-width:0}
+.ds-lf-mountain .mt-qst{flex:none;font-size:11.5px;color:var(--ink2)}
+.ds-lf-mountain .mt-qst.ok{color:#2b8a3e;font-weight:700}
+.ds-lf-mountain .mt-qst.no{color:#c92a2a;font-weight:700}
+.ds-lf-mountain .mt-modal{position:absolute;left:0;top:0;right:0;bottom:0;z-index:60;background:rgba(20,24,30,.5);display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+.ds-lf-mountain .mt-modal[hidden]{display:none}
+.ds-lf-mountain .mt-dialog{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:100%;overflow:auto;box-sizing:border-box;padding:20px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.ds-lf-mountain .mt-dhead{display:flex;align-items:center;justify-content:space-between}
+.ds-lf-mountain .mt-dnum{font-size:13px;font-weight:700;color:var(--accent)}
+.ds-lf-mountain .mt-x{font:inherit;font-size:20px;line-height:1;width:34px;height:34px;border:0;border-radius:50%;background:#f1f3f5;color:var(--ink2);cursor:pointer}
+.ds-lf-mountain .mt-dq{font-size:18px;font-weight:700;margin:0;line-height:1.45}
+.ds-lf-mountain .mt-dopts{display:flex;flex-direction:column;gap:8px}
+.ds-lf-mountain .mt-opt{font:inherit;font-size:15px;text-align:left;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer;line-height:1.45}
+.ds-lf-mountain .mt-opt.ok{border-color:#2b8a3e;background:#ebfbee;color:#2b8a3e;font-weight:700}
+.ds-lf-mountain .mt-opt.no{border-color:#e03131;background:#fff5f5;color:#c92a2a}
+.ds-lf-mountain .mt-dfb{font-size:14px;margin:0;padding:10px 12px;border-radius:10px;background:#f8f9fa;color:var(--ink2)}
+.ds-lf-mountain .mt-dfb:empty{display:none}
+.ds-lf-mountain .mt-dfb.ok{background:#ebfbee;color:#2b8a3e}
+.ds-lf-mountain .mt-dfb.no{background:#fff5f5;color:#c92a2a}
+.ds-lf-mountain .mt-dfoot{display:flex;justify-content:space-between;gap:8px}
+.ds-lf-mountain .mt-dfoot .mt-btn{font-size:14px;padding:7px 14px}
+.ds-lf-mountain .mt-dfoot .mt-btn:disabled{opacity:.4;cursor:default}
+.ds-lf-mountain .mt-off{display:none}
+@media (max-width:820px){
+  .ds-lf-mountain,
+  .ds-lf-mountain.mt-pos-left{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto}
+  .ds-lf-mountain .mt-panel,
+  .ds-lf-mountain.mt-pos-left .mt-panel{order:0;border-left:0;border-right:0;border-top:1px solid var(--line);max-height:45vh}
+  .ds-lf-mountain .mt-cap{top:8px;left:10px}
+  .ds-lf-mountain .mt-title{font-size:17px}
+  .ds-lf-mountain .mt-guide{font-size:13px}
+  .ds-lf-mountain .mt-legend{left:10px;bottom:8px;font-size:12px}
+}
+@media (max-width:560px){
+  .ds-lf-mountain .mt-panel,
+  .ds-lf-mountain.mt-pos-left .mt-panel{max-height:40vh}
+  .ds-lf-mountain .mt-legend{font-size:11px;gap:2px 8px}
+  .ds-lf-mountain .mt-title{font-size:16px}
+}
+.ds-lf-mountain .mt-zbtns{display:inline-flex;gap:4px;align-items:center}
+
+/* ver02: 목록 → 하위 목록 → 장면, 설정 버튼, 확인 문제는 무대에 */
+.ds-lf-mountain .mt-headbtns{display:inline-flex;gap:4px;align-items:center;flex:none}
+.ds-lf-mountain .mt-back{font-weight:700;color:var(--accent);border-color:var(--accent)}
+.ds-lf-mountain .mt-back[hidden]{display:none}
+.ds-lf-mountain .mt-settings{margin-top:6px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#f8f9fa;display:flex;flex-direction:column;gap:6px}
+.ds-lf-mountain .mt-settings[hidden]{display:none}
+.ds-lf-mountain .mt-gear[aria-expanded="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain .mt-scr{display:flex;flex-direction:column;gap:8px}
+.ds-lf-mountain .mt-scr[hidden]{display:none}
+.ds-lf-mountain .mt-ltitle{font-size:13px;font-weight:700;color:var(--ink2);margin:2px 2px 0}
+.ds-lf-mountain .mt-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);cursor:pointer}
+.ds-lf-mountain .mt-item:hover{border-color:#b9bfc6}
+.ds-lf-mountain .mt-item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-ino{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-mountain .mt-itx{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.ds-lf-mountain .mt-itb{font-size:15px}
+.ds-lf-mountain .mt-its{font-size:12px;color:var(--ink2);line-height:1.35}
+.ds-lf-mountain .mt-arr{flex:none;font-size:18px;color:var(--ink2)}
+.ds-lf-mountain .mt-item.quiz .mt-ino{background:#fff4e6;color:#d9480f}
+.ds-lf-mountain .mt-sname{font-size:16px;font-weight:700;margin:0 2px}
+/* 개편(10-23): 대지형과 같은 한 장짜리 목차 · 표지 */
+.ds-lf-mountain .mt-toch{margin:2px 4px 6px;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--ink2)}
+.ds-lf-mountain .mt-toci{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;font-size:15px;padding:9px 10px;border:0;border-radius:10px;background:transparent;color:var(--ink);cursor:pointer}
+.ds-lf-mountain .mt-toci:hover{background:#f1f5fb}
+.ds-lf-mountain .mt-toci:hover .mt-arr{color:var(--accent)}
+.ds-lf-mountain .mt-toci:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ds-lf-mountain .mt-toci[aria-current]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.ds-lf-mountain .mt-toci.sub{margin-left:22px;width:calc(100% - 22px);font-size:14px;padding:7px 10px;border-left:2px solid var(--line);border-radius:0 10px 10px 0}
+.ds-lf-mountain .mt-toci.quiz{margin-top:8px;border-top:1px solid var(--line);border-radius:0;padding-top:12px}
+.ds-lf-mountain .mt-tocn{flex:none;min-width:26px;height:22px;padding:0 4px;box-sizing:border-box;border-radius:11px;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-mountain .mt-toci.sub .mt-tocn{background:transparent;color:var(--ink2);font-weight:600}
+.ds-lf-mountain .mt-toci.quiz .mt-tocn{background:#fff4e6;color:#d9480f}
+.ds-lf-mountain .mt-toct{flex:1;min-width:0}
+.ds-lf-mountain .mt-tocg{display:flex;align-items:center;gap:10px;margin:6px 0 0;padding:9px 10px 4px;font-size:15px;font-weight:700;color:var(--ink)}
+/* 표지 */
+.ds-lf-mountain .mt-cover{position:absolute;inset:0;z-index:25;display:flex;align-items:center;padding:32px 40px;box-sizing:border-box;background:linear-gradient(90deg,#f7f9fb 0%,rgba(247,249,251,.96) 45%,rgba(247,249,251,.4) 100%)}
+.ds-lf-mountain .mt-cover[hidden]{display:none}
+/* 플로팅 패널은 표지 위에(표지 z-index 25) */
+.ds-lf-mountain.mt-pos-float .mt-panel{z-index:30}
+.ds-lf-mountain .mt-covin{max-width:520px;display:flex;flex-direction:column;gap:14px}
+.ds-lf-mountain .mt-coveye{margin:0;font-size:13px;font-weight:700;color:var(--accent)}
+.ds-lf-mountain .mt-covt{margin:0;font-size:40px;line-height:1.15;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.ds-lf-mountain .mt-covs{margin:0;font-size:15px;line-height:1.65;color:var(--ink2)}
+.ds-lf-mountain .mt-covl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:4px}
+.ds-lf-mountain .mt-covc{display:flex;align-items:center;gap:8px;font:inherit;font-size:14px;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.92);color:var(--ink);cursor:pointer}
+.ds-lf-mountain .mt-covc:hover{border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain .mt-covc:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-covn{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-mountain .mt-covgo{align-self:flex-start;padding:12px 20px;font-size:15px;margin-top:4px}
+.ds-lf-mountain .mt-covh{margin:0;font-size:13px;color:var(--ink2)}
+.ds-lf-mountain.mt-covermode .mt-cap,.ds-lf-mountain.mt-covermode .mt-legend,.ds-lf-mountain.mt-covermode .mt-stagebtns .mt-sbtn:not(.mt-openp),.ds-lf-mountain.mt-covermode .mt-toast{display:none}
+@media (max-width:720px){
+  .ds-lf-mountain .mt-cover{padding:20px 16px;background:rgba(247,249,251,.94)}
+  .ds-lf-mountain .mt-covt{font-size:30px}
+  .ds-lf-mountain .mt-covl,.ds-lf-mountain .mt-covh{display:none}
+  .ds-lf-mountain .mt-covin{gap:10px}
+  .ds-lf-mountain .mt-covs{font-size:14px;line-height:1.55}
+}
+.ds-lf-mountain .mt-covl.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:400px}
+.ds-lf-mountain.mt-covermode .mt-tbar{display:none}
+.ds-lf-mountain .mt-c-hide{display:none}
+.ds-lf-mountain .mt-ovseg[hidden]{display:none}
+.ds-lf-mountain.mt-quizmode .mt-src{display:none}
+.ds-lf-mountain .mt-sum{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--ink2)}
+.ds-lf-mountain .mt-why[open] .mt-sum{margin-bottom:4px}
+.ds-lf-mountain .mt-extra .mt-sum{font-size:14px;color:var(--ink)}
+.ds-lf-mountain .mt-extra[open] .mt-sum{margin-bottom:6px}
+.ds-lf-mountain .mt-mterm.mt-off,.ds-lf-mountain .mt-mdesc.mt-off{display:none}
+.ds-lf-mountain.mt-quizmode .mt-cap,.ds-lf-mountain.mt-quizmode .mt-legend{display:none}
+.ds-lf-mountain.mt-quizmode{grid-template-columns:minmax(0,1fr) 240px}
+.ds-lf-mountain.mt-quizmode.mt-pos-left{grid-template-columns:240px minmax(0,1fr)}
+.ds-lf-mountain.mt-quizmode.mt-pos-float{grid-template-columns:minmax(0,1fr)}
+.ds-lf-mountain.mt-quizmode.mt-pos-float .mt-panel{width:240px}
+.ds-lf-mountain .mt-quiz{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;background:linear-gradient(180deg,#f7f9fb 0%,#edf2f6 100%)}
+.ds-lf-mountain .mt-quiz[hidden]{display:none}
+.ds-lf-mountain .mt-qcard{background:#fff;border:1px solid var(--line);border-radius:18px;width:100%;max-width:720px;max-height:100%;overflow:auto;box-sizing:border-box;padding:24px 28px;display:flex;flex-direction:column;gap:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.ds-lf-mountain .mt-qdots{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ds-lf-mountain .mt-qdot{font:inherit;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:#fff;color:var(--ink2);font-weight:700;font-size:14px;cursor:pointer}
+.ds-lf-mountain .mt-qdot.cur{border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain .mt-qdot.ok{background:#ebfbee;border-color:#2b8a3e;color:#2b8a3e}
+.ds-lf-mountain .mt-qdot.no{background:#fff5f5;border-color:#e03131;color:#c92a2a}
+.ds-lf-mountain .mt-qdot:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-qtitle{font-size:13px;font-weight:700;color:var(--accent);margin:0}
+.ds-lf-mountain .mt-qcard .mt-dq{font-size:22px;font-weight:700;margin:0;line-height:1.45}
+.ds-lf-mountain .mt-qcard .mt-opt{font-size:17px;padding:12px 16px}
+.ds-lf-mountain .mt-qcard .mt-dfb{font-size:15.5px}
+.ds-lf-mountain .mt-qfoot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.ds-lf-mountain .mt-qfoot .mt-btn{font-size:15px;padding:8px 16px}
+.ds-lf-mountain .mt-qfoot .mt-btn:disabled{opacity:.4;cursor:default}
+.ds-lf-mountain .mt-qfoot .mt-btn[hidden]{display:none}
+.ds-lf-mountain .mt-qres{display:flex;flex-direction:column;gap:6px}
+.ds-lf-mountain .mt-qres[hidden]{display:none}
+.ds-lf-mountain .mt-qscore{font-size:26px;font-weight:800;margin:0}
+.ds-lf-mountain .mt-qrow{display:flex;align-items:center;gap:8px;font-size:15px}
+.ds-lf-mountain .mt-qn{width:52px;flex:none}
+.ds-lf-mountain .mt-qrow .ok{color:#2b8a3e;font-weight:700}
+.ds-lf-mountain .mt-qrow .no{color:#c92a2a;font-weight:700}
+.ds-lf-mountain .mt-qrow .na{color:var(--ink2)}
+.ds-lf-mountain .mt-qside{font-size:13px;color:var(--ink2);margin:0 2px;line-height:1.5}
+@media (max-width:820px){
+  .ds-lf-mountain.mt-quizmode,.ds-lf-mountain.mt-quizmode.mt-pos-left{grid-template-columns:minmax(0,1fr)}
+  .ds-lf-mountain .mt-qcard{padding:16px 18px}
+  .ds-lf-mountain .mt-qcard .mt-dq{font-size:18px}
+  .ds-lf-mountain .mt-qcard .mt-opt{font-size:15px}
+}
+.ds-lf-mountain .mt-zbtns{display:inline-flex;gap:4px;align-items:center}
+
+/* 품질 다듬기(10-20): 부드러운 화면 전환 · 단추 반응 · 카드 그림자 */
+@keyframes mt-in{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+@keyframes mt-pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes mt-fade{from{opacity:0}to{opacity:1}}
+.ds-lf-mountain .mt-scr:not([hidden]){animation:mt-in .26s ease-out}
+.ds-lf-mountain .mt-quiz:not([hidden]) .mt-qcard{animation:mt-pop .3s ease-out}
+.ds-lf-mountain .mt-cap{animation:mt-fade .3s ease-out}
+.ds-lf-mountain .mt-card{box-shadow:0 1px 2px rgba(20,32,52,.04),0 2px 8px rgba(20,32,52,.04)}
+.ds-lf-mountain .mt-item{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;box-shadow:0 1px 2px rgba(20,32,52,.05)}
+.ds-lf-mountain .mt-item:hover{transform:translateX(3px);box-shadow:0 4px 14px rgba(20,32,52,.10);border-color:var(--accent)}
+.ds-lf-mountain .mt-item:hover .mt-arr{color:var(--accent)}
+.ds-lf-mountain .mt-segb,.ds-lf-mountain .mt-btn,.ds-lf-mountain .mt-mini,.ds-lf-mountain .mt-opt,.ds-lf-mountain .mt-qdot{transition:background-color .15s ease,color .15s ease,border-color .15s ease,box-shadow .15s ease,transform .1s ease}
+.ds-lf-mountain .mt-btn:active,.ds-lf-mountain .mt-segb:active,.ds-lf-mountain .mt-mini:active,.ds-lf-mountain .mt-opt:active{transform:scale(.97)}
+.ds-lf-mountain .mt-btn.main{box-shadow:0 2px 6px rgba(31,111,235,.25)}
+.ds-lf-mountain .mt-opt:hover{border-color:var(--accent);background:#f8fbff}
+.ds-lf-mountain .mt-qcard{box-shadow:0 2px 6px rgba(20,32,52,.06),0 18px 40px rgba(20,32,52,.10)}
+.ds-lf-mountain .mt-title{letter-spacing:-.2px}
+.ds-lf-mountain .mt-range{height:22px}
+@media (prefers-reduced-motion:reduce){
+  .ds-lf-mountain .mt-scr:not([hidden]),.ds-lf-mountain .mt-quiz:not([hidden]) .mt-qcard,.ds-lf-mountain .mt-cap{animation:none}
+  .ds-lf-mountain .mt-item,.ds-lf-mountain .mt-item:hover{transition:none;transform:none}
+}
+
+/* 두 번째 다듬기(10-20): 패널 숨기기(모든 위치) · 전체 화면 · 무대 단추 · 장면 이전/다음 */
+.ds-lf-mountain .mt-fold{display:inline-block}
+.ds-lf-mountain.mt-collapsed.mt-pos-right,.ds-lf-mountain.mt-collapsed.mt-pos-left{grid-template-columns:minmax(0,1fr)}
+.ds-lf-mountain.mt-collapsed:not(.mt-pos-float) .mt-panel{display:none}
+.ds-lf-mountain:fullscreen{height:100vh;width:100vw}
+.ds-lf-mountain .mt-stagebtns{position:absolute;top:12px;right:16px;display:flex;gap:8px;z-index:15}
+.ds-lf-mountain .mt-sbtn{font:inherit;font-size:14px;font-weight:700;min-width:44px;height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(20,32,52,.12);background:rgba(255,255,255,.92);color:var(--ink);cursor:pointer;box-shadow:0 2px 8px rgba(20,32,52,.12);transition:transform .12s ease,background-color .15s ease}
+.ds-lf-mountain .mt-sbtn:hover{background:#fff;transform:translateY(-1px)}
+.ds-lf-mountain .mt-sbtn:active{transform:scale(.96)}
+.ds-lf-mountain .mt-sbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-sbtn[hidden]{display:none}
+.ds-lf-mountain .mt-splay{background:var(--accent);color:#fff;border-color:var(--accent);min-width:48px;font-size:15px}
+.ds-lf-mountain .mt-splay:hover{background:#1858c0}
+.ds-lf-mountain.mt-quizmode .mt-stagebtns .mt-sbtn:not(.mt-openp){display:none}
+.ds-lf-mountain .mt-stepnav{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:-2px 2px 2px}
+.ds-lf-mountain .mt-stepno{font-size:12px;color:var(--ink2);font-weight:600}
+.ds-lf-mountain .mt-stepnav .mt-mini:disabled{opacity:.35;cursor:default}
+.ds-lf-mountain .mt-hint2{font-size:11.5px;color:var(--ink2);margin:2px 0 0;line-height:1.45}
+.ds-lf-mountain .mt-full{font-size:14px;padding:2px 9px}
+.ds-lf-mountain .mt-ptitle{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:17px}
+.ds-lf-mountain .mt-headbtns .mt-mini{padding:2px 8px}
+
+/* 세 번째 다듬기(10-20): 무대 시간 막대 · 도움말 · 처음 안내 · 글꼴과 색 정리 */
+.ds-lf-mountain .mt-tbar{position:absolute;left:50%;bottom:46px;transform:translateX(-50%);width:min(620px,72%);display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.94);border:1px solid rgba(20,32,52,.10);box-shadow:0 6px 22px rgba(20,32,52,.14);z-index:14}
+.ds-lf-mountain .mt-tbar[hidden]{display:none}
+.ds-lf-mountain .mt-tlab{flex:none;min-width:84px;font-size:14px;font-weight:700;color:var(--accent)}
+.ds-lf-mountain .mt-trng{flex:1;min-width:0;margin:0;height:26px;accent-color:var(--accent)}
+.ds-lf-mountain .mt-help{position:absolute;top:62px;right:16px;width:300px;max-width:calc(100% - 32px);padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.97);border:1px solid rgba(20,32,52,.10);box-shadow:0 10px 30px rgba(20,32,52,.16);z-index:16}
+.ds-lf-mountain .mt-help[hidden]{display:none}
+.ds-lf-mountain .mt-helph{margin:0 0 6px;font-size:14px;font-weight:800}
+.ds-lf-mountain .mt-helpl{margin:4px 0;font-size:12.5px;line-height:1.5;color:var(--ink2)}
+.ds-lf-mountain .mt-key{display:inline-block;margin-right:6px;padding:0 6px;border-radius:6px;background:#eef2f7;color:var(--ink);font-size:11.5px;font-weight:700}
+.ds-lf-mountain .mt-toast{position:absolute;left:50%;top:74px;transform:translateX(-50%);padding:8px 16px;border-radius:999px;background:rgba(29,33,38,.82);color:#fff;font-size:13px;font-weight:600;z-index:14;pointer-events:none;animation:mt-toast 4.6s ease forwards}
+.ds-lf-mountain .mt-toast[hidden]{display:none}
+@keyframes mt-toast{0%{opacity:0;transform:translate(-50%,-6px)}10%{opacity:1;transform:translate(-50%,0)}82%{opacity:1}100%{opacity:0}}
+.ds-lf-mountain .mt-helpb{min-width:40px;padding:0;font-size:16px}
+.ds-lf-mountain .mt-helpb[aria-expanded="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain .mt-title{font-size:20px;font-weight:800}
+.ds-lf-mountain .mt-guide{font-size:14.5px}
+.ds-lf-mountain .mt-sname{font-size:17px;font-weight:800;letter-spacing:-.2px}
+.ds-lf-mountain .mt-rk{font-size:15.5px;line-height:1.45}
+.ds-lf-mountain .mt-v{font-size:16px}
+.ds-lf-mountain .mt-stat{background:linear-gradient(180deg,#f9fafb,#f3f5f7)}
+.ds-lf-mountain .mt-legend{gap:6px 14px}
+.ds-lf-mountain .mt-chip{width:16px;height:11px;border-radius:4px}
+@media (max-width:820px){.ds-lf-mountain .mt-tbar{width:calc(100% - 32px);bottom:56px}.ds-lf-mountain .mt-title{font-size:18px}}
+@media (prefers-reduced-motion:reduce){.ds-lf-mountain .mt-toast{animation:none}}
+.ds-lf-mountain .mt-snap{width:100%;margin-top:4px}
+
+/* 큰 다듬기(10-20) */
+.ds-lf-mountain .mt-orbit[aria-pressed="true"]{background:#e7f5ff;border-color:var(--accent);color:var(--accent)}
+@keyframes mt-gpop{0%{color:var(--accent);transform:translateY(3px);opacity:.4}100%{color:var(--ink2);transform:none;opacity:1}}
+.ds-lf-mountain .mt-guide.mt-gpop{animation:mt-gpop .6s ease-out}
+.ds-lf-mountain .mt-stagebtns .mt-sbtn{backdrop-filter:blur(6px)}
+@media (prefers-reduced-motion:reduce){.ds-lf-mountain .mt-guide.mt-gpop{animation:none}}
+
+/* 품질(10-20): 화면 읽기 프로그램용 숨은 글 */
+.ds-lf-mountain .mt-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* 개편(10-21): 솟는 정도 막대 · 시기 버튼 · 측정 값 행 표 · 자료 해석 */
+.ds-lf-mountain .mt-tiltrow{display:flex;align-items:center;gap:8px}
+.ds-lf-mountain .mt-tiltrow .mt-range{flex:1;min-width:0;width:auto}
+.ds-lf-mountain .mt-tend{font-size:12px;font-weight:700;color:var(--ink2);white-space:nowrap}
+.ds-lf-mountain .mt-stageseg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ds-lf-mountain .mt-stb{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 4px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.ds-lf-mountain .mt-stn{font-size:12.5px}
+.ds-lf-mountain .mt-sts{font-size:11px;color:var(--ink2)}
+.ds-lf-mountain .mt-stb[aria-pressed="true"]{border-color:var(--accent)}
+.ds-lf-mountain .mt-stb[aria-pressed="true"] .mt-sts{color:#e7f5ff}
+.ds-lf-mountain .mt-rows{display:flex;flex-direction:column}
+.ds-lf-mountain .mt-mrow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 2px;border-bottom:1px solid var(--line)}
+.ds-lf-mountain .mt-mrow:last-of-type{border-bottom:0}
+.ds-lf-mountain .mt-mrow[hidden]{display:none}
+.ds-lf-mountain .mt-mrow .mt-k{font-size:12.5px}
+.ds-lf-mountain .mt-mrow .mt-v{font-size:14.5px;text-align:right}
+.ds-lf-mountain .mt-interp .mt-result{margin-top:2px}
+.ds-lf-mountain .mt-stepnav[hidden]{display:none}
+.ds-lf-mountain .mt-rangerow[hidden]{display:none}
+/* 개편(10-26): 대지형과 같은 패널(머리 · 메뉴 · 재생 카드 · 접는 카드) */
+/* 개편(10-22): 재생 카드 · 접는 카드 */
+.ds-lf-mountain .mt-prow .mt-play{flex:none;width:52px;font-size:16px;letter-spacing:-.1em}
+.ds-lf-mountain .mt-prow .mt-reset{flex:1}
+.ds-lf-mountain .mt-stages{display:grid;gap:4px}
+.ds-lf-mountain .mt-stg{font:inherit;font-size:13px;padding:7px 2px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.ds-lf-mountain .mt-stg:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain .mt-stg[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.ds-lf-mountain .mt-stg:disabled{opacity:.4;cursor:default}
+.ds-lf-mountain .mt-stg:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-csum{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--ink)}
+.ds-lf-mountain .mt-csum::-webkit-details-marker{display:none}
+.ds-lf-mountain .mt-csum::before{content:"";width:4px;height:14px;border-radius:2px;background:var(--accent)}
+.ds-lf-mountain .mt-csum::after{content:"▾";margin-left:auto;font-size:12px;color:var(--ink2);transition:transform .15s}
+.ds-lf-mountain .mt-readcard:not([open]) > .mt-csum::after,.ds-lf-mountain .mt-extra:not([open]) > .mt-csum::after{transform:rotate(-90deg)}
+.ds-lf-mountain .mt-readcard[open] .mt-csum,.ds-lf-mountain .mt-extra[open] .mt-csum{margin-bottom:4px}
+.ds-lf-mountain .mt-readh{margin:0;font-size:12.5px;font-weight:700;color:var(--ink2)}
+.ds-lf-mountain .mt-ptitle{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:17px}
+.ds-lf-mountain .mt-headbtns .mt-mini{padding:2px 8px}
+/* 개편(10-22): 패널 머리 — 아이콘 자리 · 제목 · 메뉴 하나 */
+.ds-lf-mountain .mt-head-row{justify-content:flex-start;gap:10px}
+.ds-lf-mountain .mt-hico,.ds-lf-mountain .mt-hmbtn{flex:none;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ds-lf-mountain .mt-hsvg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ds-lf-mountain .mt-hico .mt-ic-back{display:none}
+.ds-lf-mountain .mt-hico.is-back{color:var(--accent);border-color:var(--accent)}
+.ds-lf-mountain .mt-hico.is-back .mt-ic-back{display:block}
+.ds-lf-mountain .mt-hico.is-back .mt-ic-home{display:none}
+.ds-lf-mountain .mt-hico:not(.is-back){cursor:default}
+.ds-lf-mountain .mt-hico.is-back:hover,.ds-lf-mountain .mt-hmbtn:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain .mt-hico:focus-visible,.ds-lf-mountain .mt-hmbtn:focus-visible,.ds-lf-mountain .mt-hmi:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-hmenu{position:relative;margin-left:auto;flex:none}
+.ds-lf-mountain .mt-hmlist{display:none;position:absolute;right:0;top:100%;z-index:40;min-width:150px;padding:6px;margin-top:0;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 8px 24px rgba(20,32,52,.14);flex-direction:column;gap:2px}
+.ds-lf-mountain .mt-hmlist::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
+.ds-lf-mountain .mt-hmenu:hover .mt-hmlist,.ds-lf-mountain .mt-hmenu:focus-within .mt-hmlist,.ds-lf-mountain .mt-hmenu.open .mt-hmlist{display:flex}
+.ds-lf-mountain.mt-collapsed .mt-hmenu .mt-hmlist{display:none}
+.ds-lf-mountain .mt-hmlist .mt-hmi{display:block;width:100%;text-align:left;font:inherit;font-size:14px;padding:8px 12px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap}
+.ds-lf-mountain .mt-hmlist .mt-hmi:hover{background:#f1f5fb;color:var(--accent)}
+.ds-lf-mountain .mt-hmlist .mt-gear[aria-expanded="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+/* 패널 위치 말풍선: 메뉴 왼쪽에, 꼬리는 「패널 위치」 쪽 */
+.ds-lf-mountain .mt-pospop{position:absolute;left:0;top:0;width:220px;z-index:50;padding:10px 12px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 8px 24px rgba(20,32,52,.16);display:flex;flex-direction:column;gap:8px;z-index:41}
+.ds-lf-mountain .mt-pospop[hidden]{display:none}
+.ds-lf-mountain .mt-pospop.tail-left::after{right:auto;left:-7px;border-right:0;border-top:0;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ds-lf-mountain .mt-pospop::after{content:"";position:absolute;right:-7px;top:14px;width:12px;height:12px;background:#fff;border-right:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.ds-lf-mountain .mt-poph{margin:0;font-size:13px;font-weight:700;color:var(--ink)}
+/* 접은 패널을 다시 여는 손잡이 */
+.ds-lf-mountain .mt-reopen{position:absolute;top:50%;right:0;transform:translateY(-50%);z-index:45;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 7px;border:1px solid var(--accent);border-right:0;border-radius:12px 0 0 12px;background:#fff;color:var(--accent);font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:-2px 2px 10px rgba(20,32,52,.14)}
+.ds-lf-mountain .mt-reopen[hidden]{display:none}
+.ds-lf-mountain .mt-reopen:hover{background:var(--accent-soft)}
+.ds-lf-mountain .mt-reopen:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain .mt-reic{font-size:18px;line-height:1}
+.ds-lf-mountain .mt-retx{writing-mode:vertical-rl;letter-spacing:.1em}
+.ds-lf-mountain.mt-pos-left .mt-reopen{right:auto;left:0;border-right:1px solid var(--accent);border-left:0;border-radius:0 12px 12px 0;box-shadow:2px 2px 10px rgba(20,32,52,.14)}
+.ds-lf-mountain .mt-scr .mt-snap{margin-top:2px}
+.ds-lf-mountain .mt-pospop .mt-seg{display:flex}
+
+/* ===== 양식 맞춤(10-28): 출판사 예시 t1-u5-metro와 같은 모양 ===== */
+.ds-lf-mountain.ds-lf-mountain{--bg:#f6f5f1;--panel:#fff;--card:#fff;--accent-soft:#e6efff;font-family:Pretendard,'Pretendard Variable','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
+.ds-lf-mountain.ds-lf-mountain .mt-panel{background:#fff}
+.ds-lf-mountain.ds-lf-mountain .mt-head{background:#fff;padding:14px 16px 12px}
+.ds-lf-mountain.ds-lf-mountain .mt-body{gap:18px;padding:16px}
+.ds-lf-mountain.ds-lf-mountain .mt-card{background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;gap:8px}
+.ds-lf-mountain.ds-lf-mountain .mt-h,.ds-lf-mountain.ds-lf-mountain .mt-csum,.ds-lf-mountain.ds-lf-mountain .mt-extra > .mt-sum{font-size:14px;font-weight:700;color:var(--ink)}
+.ds-lf-mountain.ds-lf-mountain .mt-h::before,.ds-lf-mountain.ds-lf-mountain .mt-csum::before{content:none;display:none}
+.ds-lf-mountain.ds-lf-mountain .mt-csum::after{content:"›";font-size:16px;line-height:1;transform:rotate(90deg)}
+.ds-lf-mountain.ds-lf-mountain .mt-readcard:not([open]) > .mt-csum::after,.ds-lf-mountain.ds-lf-mountain .mt-extra:not([open]) > .mt-csum::after{transform:none}
+.ds-lf-mountain.ds-lf-mountain .mt-sub{font-size:13px;font-weight:400;color:var(--ink2)}
+.ds-lf-mountain.ds-lf-mountain .mt-hint,.ds-lf-mountain.ds-lf-mountain .mt-hint2{font-size:12px;color:var(--ink2);line-height:1.5}
+.ds-lf-mountain.ds-lf-mountain .mt-note,.ds-lf-mountain.ds-lf-mountain .mt-readnote{font-size:12px;color:var(--ink2);line-height:1.5}
+.ds-lf-mountain.ds-lf-mountain .mt-p,.ds-lf-mountain.ds-lf-mountain .mt-place,.ds-lf-mountain.ds-lf-mountain .mt-mdesc{font-size:13.5px;line-height:1.6}
+.ds-lf-mountain.ds-lf-mountain .mt-place{background:#faf9f6;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.ds-lf-mountain.ds-lf-mountain .mt-mterm{font-size:13.5px}
+/* 붙은 탭 모양 선택 단추: 고른 것은 연한 파랑 바탕 · 파란 굵은 글씨 */
+.ds-lf-mountain.ds-lf-mountain .mt-seg{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.ds-lf-mountain.ds-lf-mountain .mt-segb{font-size:13.5px;padding:7px 6px;background:#fff;color:var(--ink2)}
+.ds-lf-mountain.ds-lf-mountain .mt-segb:hover{background:#f6f5f1}
+.ds-lf-mountain.ds-lf-mountain .mt-seg .mt-segb[aria-pressed="true"],.ds-lf-mountain.ds-lf-mountain .mt-segb[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.ds-lf-mountain.ds-lf-mountain .mt-stages{gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.ds-lf-mountain.ds-lf-mountain .mt-stg{border:0;border-radius:0;font-size:13.5px;padding:7px 2px;color:var(--ink2);background:#fff}
+.ds-lf-mountain.ds-lf-mountain .mt-stg + .mt-stg{border-left:1px solid var(--line)}
+.ds-lf-mountain.ds-lf-mountain .mt-stg[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--line)}
+.ds-lf-mountain.ds-lf-mountain .mt-stb[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain.ds-lf-mountain .mt-stb[aria-pressed="true"] .mt-sts{color:var(--accent)}
+.ds-lf-mountain.ds-lf-mountain .mt-vbtn{border-radius:8px;font-size:14px;padding:8px 10px}
+/* 단추 */
+.ds-lf-mountain.ds-lf-mountain .mt-btn{font-size:14px;padding:8px 12px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:none}
+.ds-lf-mountain.ds-lf-mountain .mt-btn:hover{background:#f1f0eb}
+.ds-lf-mountain.ds-lf-mountain .mt-btn.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;box-shadow:none}
+.ds-lf-mountain.ds-lf-mountain .mt-btn.main:hover{background:var(--accent);filter:brightness(1.05)}
+.ds-lf-mountain.ds-lf-mountain .mt-btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--line);color:var(--accent)}
+.ds-lf-mountain.ds-lf-mountain .mt-prow .mt-play,.ds-lf-mountain.ds-lf-mountain .mt-row .mt-play{flex:1 1 0;width:auto;letter-spacing:0;font-size:14px}
+.ds-lf-mountain.ds-lf-mountain .mt-play::before{content:"";flex:none;width:0;height:0;margin-right:2px;border-left:10px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+.ds-lf-mountain.ds-lf-mountain .mt-play:not([aria-label])::before{content:none}
+.ds-lf-mountain.ds-lf-mountain .mt-play[aria-label="멈춤"]::before{width:3px;height:12px;border:0;border-left:3px solid currentColor;border-right:3px solid currentColor}
+.ds-lf-mountain.ds-lf-mountain .mt-reset::before{content:"↻";flex:none;font-size:16px;line-height:1}
+.ds-lf-mountain.ds-lf-mountain .mt-reset{flex:1 1 0}
+.ds-lf-mountain.ds-lf-mountain .mt-mini{border-radius:8px;font-size:12.5px;padding:3px 10px}
+/* 켜기/끄기는 스위치: 글자 왼쪽 · 스위치 오른쪽 */
+.ds-lf-mountain.ds-lf-mountain .mt-onoff{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font-size:14px;font-weight:400;padding:4px 0;border:0;border-radius:0;background:transparent;color:var(--ink)}
+.ds-lf-mountain.ds-lf-mountain .mt-onoff:hover,.ds-lf-mountain.ds-lf-mountain .mt-onoff[aria-pressed="true"]{background:transparent;color:var(--ink);font-weight:400;border:0}
+.ds-lf-mountain.ds-lf-mountain .mt-onoff::after{content:"";flex:none;width:36px;height:20px;border-radius:999px;background:#d6d3cb radial-gradient(circle at 10px 10px,#fff 7px,transparent 7.5px);transition:background-position .15s}
+.ds-lf-mountain.ds-lf-mountain .mt-onoff[aria-pressed="true"]::after{background:var(--accent) radial-gradient(circle at 26px 10px,#fff 7px,transparent 7.5px)}
+.ds-lf-mountain.ds-lf-mountain .mt-onoff:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ds-lf-mountain.ds-lf-mountain .mt-row:has(> .mt-onoff){flex-direction:column;gap:2px}
+.ds-lf-mountain.ds-lf-mountain .mt-onoffl{display:flex;flex-direction:row-reverse;justify-content:space-between;align-items:center;gap:10px;font-size:14px;color:var(--ink);padding:2px 0;user-select:none}
+.ds-lf-mountain.ds-lf-mountain .mt-onoffl .mt-check-in{-webkit-appearance:none;appearance:none;width:36px;height:20px;margin:0;border-radius:999px;background:#d6d3cb;position:relative;cursor:pointer;flex:none;transition:background .15s}
+.ds-lf-mountain.ds-lf-mountain .mt-onoffl .mt-check-in::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.ds-lf-mountain.ds-lf-mountain .mt-onoffl .mt-check-in:checked{background:var(--accent)}
+.ds-lf-mountain.ds-lf-mountain .mt-onoffl .mt-check-in:checked::after{transform:translateX(16px)}
+.ds-lf-mountain.ds-lf-mountain .mt-onoffl .mt-check-in:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* 값은 「이름 … 값」 목록 */
+.ds-lf-mountain.ds-lf-mountain .mt-stats{display:grid;grid-template-columns:1fr;gap:4px}
+.ds-lf-mountain.ds-lf-mountain .mt-stat,.ds-lf-mountain.ds-lf-mountain .mt-mrow{display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;gap:12px;background:transparent;border:0;border-radius:0;padding:0}
+.ds-lf-mountain.ds-lf-mountain .mt-k{font-size:14px;color:var(--ink2);line-height:1.5}
+.ds-lf-mountain.ds-lf-mountain .mt-v{font-size:14px;font-weight:700;line-height:1.5;text-align:right;font-variant-numeric:tabular-nums}
+/* 설명은 연한 베이지 카드 */
+.ds-lf-mountain.ds-lf-mountain.ds-lf-mountain .mt-result{border:1px solid var(--line);border-left:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fcfbf8;gap:6px}
+.ds-lf-mountain.ds-lf-mountain .mt-rk{font-size:16px;line-height:1.4}
+.ds-lf-mountain.ds-lf-mountain .mt-rt{font-size:14px;line-height:1.6;color:var(--ink)}
+.ds-lf-mountain.ds-lf-mountain .mt-range,.ds-lf-mountain.ds-lf-mountain .mt-trange{accent-color:var(--accent)}
+.ds-lf-mountain.ds-lf-mountain .mt-rv{font-size:13px;font-weight:600;color:var(--ink)}
+/* 완성도(10-29): 2 · 3칸 격자 단추가 넓어진 여백 때문에 칸 밖으로 넘치던 것 */
+.ds-lf-mountain.ds-lf-mountain .mt-grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ds-lf-mountain.ds-lf-mountain .mt-grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ds-lf-mountain.ds-lf-mountain .mt-grid2 .mt-btn,.ds-lf-mountain.ds-lf-mountain .mt-grid3 .mt-btn{min-width:0;padding:7px 4px;white-space:normal;line-height:1.3}
+/* 완성도(10-29): 「이름표 + 선택 단추」 한 줄이 좁으면 이름표가 줄바꿈(하천 「살펴볼 곳에서 자르기」가 3px 넘치던 것) */
+.ds-lf-mountain.ds-lf-mountain .mt-line2 > .mt-sub{min-width:0}
+.ds-lf-mountain.ds-lf-mountain .mt-line2 .mt-seg{min-width:0}
+.ds-lf-mountain.ds-lf-mountain .mt-segb{min-width:0;padding-left:4px;padding-right:4px}
+/* 업그레이드(10-29): 단계 단추 이름 · 무대 위 단계 표시 */
+.ds-lf-mountain.ds-lf-mountain .mt-stg{font-size:13px;line-height:1.25;padding:7px 2px;word-break:keep-all}
+.ds-lf-mountain.ds-lf-mountain .mt-hud{margin:3px 0 0;font-size:15px;font-weight:700;color:var(--accent);line-height:1.3}
+.ds-lf-mountain.ds-lf-mountain .mt-hud[hidden]{display:none}
+/* 휴대폰(10-29): 기후 「산을 넘는 바람」처럼 폭이 꽉 찬 그래프는 좁은 배치에서 글자만 키움 */
+.ds-lf-mountain.ds-lf-mountain .mt-narbump .mt-tick,.ds-lf-mountain.ds-lf-mountain .mt-narbump .mt-rht,.ds-lf-mountain.ds-lf-mountain .mt-narbump .mt-ptv,.ds-lf-mountain.ds-lf-mountain .mt-narbump .mt-tsub{font-size:19px}
+.ds-lf-mountain.ds-lf-mountain .mt-narbump .mt-small{font-size:15px}
+/* 업그레이드(10-29): 설명 카드의 핵심 낱말(예시의 파란 굵은 낱말) */
+.ds-lf-mountain.ds-lf-mountain .mt-term{color:var(--accent);font-weight:700}
+/* 업그레이드(10-29): 휴대폰 폭 — 패널은 늘 무대 아래라 패널 위치 고르기는 숨김, 무대 안내 말풍선은 숨김(제목 · 설명을 가림),
+   확인 문제 카드가 무대보다 길면 무대 안에서 스크롤 */
+@media (max-width:560px){
+  .ds-lf-mountain.ds-lf-mountain .mt-toast{display:none}
+  .ds-lf-mountain.ds-lf-mountain .mt-line2:has(> .mt-posseg),.ds-lf-mountain.ds-lf-mountain .mt-hmi.mt-gear{display:none}
+  .ds-lf-mountain.ds-lf-mountain .mt-title{font-size:17px}
+  .ds-lf-mountain.ds-lf-mountain .mt-hud{font-size:14px}
+  .ds-lf-mountain.ds-lf-mountain .mt-guide{font-size:13px}
+  .ds-lf-mountain.ds-lf-mountain .mt-cap{max-width:calc(100% - 160px)}
+  .ds-lf-mountain.ds-lf-mountain .mt-quiz{align-items:flex-start;overflow-y:auto;padding:10px}
+  .ds-lf-mountain.ds-lf-mountain .mt-qcard{padding:14px 14px 12px}
+  .ds-lf-mountain.ds-lf-mountain .mt-body{padding:14px 14px 18px;gap:16px}
+  /* 휴대폰(10-29): 무대 · 패널을 한 화면에 나누지 않고 위아래로 이어 페이지가 스크롤. 무대는 폭에 비례해 길게(기후 1.5배 · 지형 1.25배) */
+  .ds-lf-mountain.ds-lf-mountain.ds-lf-mountain{height:auto;min-height:0;grid-template-rows:auto auto}
+  .ds-lf-mountain.ds-lf-mountain .mt-stage{height:min(125vw,82vh)}
+  .ds-lf-mountain.ds-lf-mountain .mt-panel{max-height:none;overflow:visible}
+}
+/* 완성도(10-29): 키보드로 옮겨 갔을 때 어디인지 보이게 */
+.ds-lf-mountain.ds-lf-mountain .mt-segb:focus-visible,.ds-lf-mountain.ds-lf-mountain .mt-stg:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.ds-lf-mountain.ds-lf-mountain .mt-btn:focus-visible,.ds-lf-mountain.ds-lf-mountain .mt-vbtn:focus-visible,.ds-lf-mountain.ds-lf-mountain .mt-mini:focus-visible,.ds-lf-mountain.ds-lf-mountain .mt-toci:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ===== 컴퓨터 화면 손질(10-29) ===== */
+/* A2 시점 되돌리기(작은 단추)에는 재생용 ↻ 아이콘을 붙이지 않음 */
+.ds-lf-mountain.ds-lf-mountain .mt-mini.mt-reset::before{content:none}
+/* A3 색 견본이 있는 스위치(대지형 「보이는 대지형」)도 이름은 왼쪽, 스위치는 오른쪽 끝 */
+.ds-lf-mountain.ds-lf-mountain .mt-onoff{justify-content:flex-start}
+.ds-lf-mountain.ds-lf-mountain .mt-onoff::after{margin-left:auto}
+/* A5 표지 뒤 무대(단면 그래프 등)가 또렷하게 비치지 않게 */
+.ds-lf-mountain.ds-lf-mountain .mt-cover{background:linear-gradient(90deg,#f7f9fb 0%,rgba(247,249,251,.97) 45%,rgba(247,249,251,.8) 100%)}
+/* A6 위도와 태양 에너지: 그래프 칸을 넓혀 눈금 글자를 키움(좁은 쌓기 배치는 그대로) */
+.ds-lf-mountain.ds-lf-mountain .mt-stage:not(.mt-gstack) .mt-gwrap{width:clamp(300px,42%,640px)}
+/* B7 접는 카드(기후 설명 · 확인 문제) */
+.ds-lf-mountain.ds-lf-mountain .mt-csum{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px}
+.ds-lf-mountain.ds-lf-mountain .mt-csum::-webkit-details-marker{display:none}
+.ds-lf-mountain.ds-lf-mountain .mt-csum::after{margin-left:auto}
+.ds-lf-mountain.ds-lf-mountain .mt-fold:not([open]) > .mt-csum::after{transform:none}
+.ds-lf-mountain.ds-lf-mountain .mt-fold[open] > .mt-csum{margin-bottom:6px}
+/* B8 기후 「패널 위치」는 패널 머리 단추 → 아래로 펼침 */
+.ds-lf-mountain.ds-lf-mountain .mt-head-row .mt-ptitle{flex:1;min-width:0}
+.ds-lf-mountain.ds-lf-mountain .mt-posbtn[aria-expanded="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.ds-lf-mountain.ds-lf-mountain .mt-posbox{padding-top:8px}
+.ds-lf-mountain.ds-lf-mountain .mt-posbox[hidden]{display:none}
+/* B9 프로젝터 · 큰 모니터(1600px 이상): 패널을 1.15배로(폭 368px) */
+@media (min-width:1600px){
+  .ds-lf-mountain.ds-lf-mountain.ds-lf-mountain.mt-pos-right:not(.mt-collapsed):not(.mt-quizmode){grid-template-columns:minmax(0,1fr) 368px}
+  .ds-lf-mountain.ds-lf-mountain.ds-lf-mountain.mt-pos-left:not(.mt-collapsed):not(.mt-quizmode){grid-template-columns:368px minmax(0,1fr)}
+  .ds-lf-mountain.ds-lf-mountain.ds-lf-mountain.mt-quizmode.mt-pos-right{grid-template-columns:minmax(0,1fr) 276px}
+  .ds-lf-mountain.ds-lf-mountain.ds-lf-mountain.mt-quizmode.mt-pos-left{grid-template-columns:276px minmax(0,1fr)}
+  .ds-lf-mountain.ds-lf-mountain .mt-panel{zoom:1.15}
+}
+@media (max-width:560px){
+  .ds-lf-mountain.ds-lf-mountain .mt-posbtn{display:none}
+}
+</style>
+
+<div class="mt-stage">
+  <canvas class="mt-cv" tabindex="0" role="img" aria-label="3D 산지 지형 블록"></canvas>
+  <p class="mt-sr"></p>
+  <div class="mt-cap">
+    <p class="mt-title"></p>
+    <p class="mt-hud" hidden></p>
+    <p class="mt-guide" aria-live="polite"></p>
+  </div>
+  <div class="mt-legend"></div>
+  <div class="mt-tbar" hidden>
+    <span class="mt-tlab"></span>
+    <input class="mt-trng" type="range" min="0" max="100" step="1" aria-label="시간 막대(무대)">
+  </div>
+  <div class="mt-help" hidden role="note">
+    <p class="mt-helph">이렇게 다룬다</p>
+    <p class="mt-helpl"><b class="mt-key">끌기</b>모형을 돌린다(손을 떼면 조금 더 돈다)</p>
+    <p class="mt-helpl"><b class="mt-key">휠 · 두 손가락</b>확대 · 축소한다</p>
+    <p class="mt-helpl"><b class="mt-key">스페이스</b>재생 · 멈춤(모형을 누른 뒤)</p>
+    <p class="mt-helpl"><b class="mt-key">← →</b>돌리기 · <b class="mt-key">↑ ↓</b>시간 옮기기</p>
+    <p class="mt-helpl"><b class="mt-key">↻</b>모형을 천천히 돌려 보여 준다(끌면 잠시 멈춤)</p>
+    <p class="mt-helpl"><b class="mt-key">PageDown · PageUp</b>발표용 리모컨으로 목차의 다음 · 이전 항목 · <b class="mt-key">F</b>전체 화면</p>
+    <p class="mt-helpl"><b class="mt-key">접기 · ⛶</b>패널을 숨기거나 전체 화면으로 크게 본다</p>
+  </div>
+  <div class="mt-toast" hidden aria-live="polite">끌어서 돌리기 · 휠로 확대 · ▶로 재생</div>
+  <div class="mt-stagebtns">
+    <button type="button" class="mt-sbtn mt-orbit" aria-pressed="false" aria-label="천천히 돌려 보기" title="천천히 돌려 보기">↻</button>
+    <button type="button" class="mt-sbtn mt-helpb" aria-label="다루는 법" aria-expanded="false">?</button>
+    <button type="button" class="mt-sbtn mt-splay" aria-label="재생" hidden>▶</button>
+    <button type="button" class="mt-sbtn mt-openp" aria-label="패널 열기" hidden>☰ 패널</button>
+  </div>
+  <button type="button" class="mt-reopen" aria-label="패널 열기" hidden><span class="mt-reic" aria-hidden="true">‹</span><span class="mt-retx">패널</span></button>
+  <div class="mt-cover" hidden>
+    <div class="mt-covin">
+      <p class="mt-coveye">중학 사회 ② · 8단원 · 우리나라의 자연환경과 인간 생활</p>
+      <p class="mt-covt">산지 지형</p>
+      <p class="mt-covs">우리나라는 산지가 많고, 동쪽이 높고 서쪽이 낮다. 땅이 솟아 동고서저가 된 과정과 돌산 · 흙산의 차이, 산지를 이용하는 생활을 3D 모형으로 살펴본다.</p>
+      <div class="mt-covl">
+        <button type="button" class="mt-covc" data-go="east"><b class="mt-covn">1</b>한반도의 경동성 지형</button>
+        <button type="button" class="mt-covc" data-go="rock"><b class="mt-covn">2</b>돌산과 흙산</button>
+        <button type="button" class="mt-covc" data-go="use"><b class="mt-covn">3</b>산지와 생활</button>
+      </div>
+      <button type="button" class="mt-btn main mt-covgo" data-go="east">한반도의 경동성 지형부터 시작한다</button>
+      <p class="mt-covh">옆의 목차에서 살펴볼 내용을 골라도 된다.</p>
+    </div>
+  </div>
+  <div class="mt-quiz" hidden>
+    <div class="mt-qcard" role="region" aria-label="확인 문제">
+      <div class="mt-qdots" role="group" aria-label="문제 번호"></div>
+      <div class="mt-qbody">
+        <p class="mt-qtitle"></p>
+        <p class="mt-dq"></p>
+      </div>
+      <div class="mt-dopts"></div>
+      <p class="mt-dfb" aria-live="polite"></p>
+      <div class="mt-qres" hidden>
+        <p class="mt-qscore"></p>
+        <div class="mt-qrows"></div>
+      </div>
+      <div class="mt-qfoot">
+        <button type="button" class="mt-btn mt-prev">이전 문제</button>
+        <button type="button" class="mt-btn mt-goscene">장면에서 확인</button>
+        <button type="button" class="mt-btn main mt-next">다음 문제</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="mt-pospop" role="dialog" aria-label="패널 위치" hidden>
+    <p class="mt-poph">패널 위치</p>
+    <div class="mt-seg mt-posseg" role="group" aria-label="패널 위치">
+      <button type="button" class="mt-segb" data-pos="right" aria-pressed="true">오른쪽</button>
+      <button type="button" class="mt-segb" data-pos="left" aria-pressed="false">왼쪽</button>
+      <button type="button" class="mt-segb" data-pos="float" aria-pressed="false">플로팅</button>
+    </div>
+  </div>
+<aside class="mt-panel" aria-label="조작 패널">
+  <div class="mt-head">
+    <div class="mt-head-row">
+      <button type="button" class="mt-hico mt-back" aria-label="index(처음 화면)">
+        <svg class="mt-hsvg mt-ic-home" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.2 12 4.5l8 6.7"/><path d="M6.5 9.6V19h11V9.6"/><path d="M10.2 19v-5h3.6v5"/></svg>
+        <svg class="mt-hsvg mt-ic-back" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+      </button>
+      <h2 class="mt-ptitle">산지 지형</h2>
+      <div class="mt-hmenu">
+        <button type="button" class="mt-hmbtn" aria-haspopup="true" aria-expanded="false" aria-label="메뉴(크게 보기 · 설정 · 접기)">
+          <svg class="mt-hsvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg>
+        </button>
+        <div class="mt-hmlist" role="menu">
+          <button type="button" class="mt-hmi mt-full" role="menuitem">크게 보기</button>
+          <button type="button" class="mt-hmi mt-gear" role="menuitem" aria-expanded="false" aria-haspopup="true">패널 위치</button>
+          <button type="button" class="mt-hmi mt-fold" role="menuitem" aria-expanded="true">접기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-body">
+    <nav class="mt-scr mt-toc" data-scr="home" aria-label="산지 지형 목차">
+      <p class="mt-toch">index</p>
+      <button type="button" class="mt-toci" data-go="east"><span class="mt-tocn">1</span><span class="mt-toct">한반도의 경동성 지형</span><span class="mt-arr" aria-hidden="true">›</span></button>
+      <p class="mt-tocg"><span class="mt-tocn">2</span>돌산과 흙산</p>
+      <button type="button" class="mt-toci sub" data-go="rock"><span class="mt-tocn">2-1</span><span class="mt-toct">돌산</span><span class="mt-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="mt-toci sub" data-go="soil"><span class="mt-tocn">2-2</span><span class="mt-toct">흙산</span><span class="mt-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="mt-toci sub" data-go="both"><span class="mt-tocn">2-3</span><span class="mt-toct">돌산과 흙산 나란히</span><span class="mt-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="mt-toci" data-go="use"><span class="mt-tocn">3</span><span class="mt-toct">산지와 생활</span><span class="mt-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="mt-toci quiz" data-go="quiz"><span class="mt-tocn">?</span><span class="mt-toct">확인 문제</span><span class="mt-arr" aria-hidden="true">›</span></button>
+    </nav>
+
+    <div class="mt-scr" data-scr="scene" hidden>
+      <p class="mt-sname"></p>
+      <section class="mt-card">
+        <h3 class="mt-h">설정</h3>
+        <div class="mt-line2">
+          <span class="mt-sub">3D 보기</span>
+          <span class="mt-zbtns"><button type="button" class="mt-mini mt-zin" aria-label="확대">＋</button><button type="button" class="mt-mini mt-zout" aria-label="축소">－</button><button type="button" class="mt-mini mt-resetview">처음 시점으로</button></span>
+        </div>
+      <div class="mt-vctl" data-for="1">
+        <span class="mt-sub">동쪽이 더 솟는 정도</span>
+        <div class="mt-tiltrow">
+          <span class="mt-tend">약함</span>
+          <input class="mt-range mt-tiltrange" type="range" min="0" max="100" step="1" value="75" aria-label="동쪽이 더 솟는 정도(약함 ~ 강함)">
+          <span class="mt-tend">강함</span>
+        </div>
+        <div class="mt-line2 mt-pspd">
+          <span class="mt-sub">재생 빠르기</span>
+          <div class="mt-seg mt-pspdseg" role="group" aria-label="재생 빠르기">
+            <button type="button" class="mt-segb" data-spd="0.6" aria-pressed="false">느리게</button>
+            <button type="button" class="mt-segb" data-spd="1" aria-pressed="true">보통</button>
+            <button type="button" class="mt-segb" data-spd="1.7" aria-pressed="false">빠르게</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-vctl mt-off" data-for="2">
+        <div class="mt-c-kind mt-line2">
+          <span class="mt-sub">산</span>
+          <div class="mt-seg mt-kindseg" role="group" aria-label="산 고르기">
+            <button type="button" class="mt-segb" data-kind="rock" aria-pressed="true">돌산</button>
+            <button type="button" class="mt-segb" data-kind="soil" aria-pressed="false">흙산</button>
+            <button type="button" class="mt-segb" data-kind="both" aria-pressed="false">나란히</button>
+          </div>
+        </div>
+        <p class="mt-hint mt-kindhint"></p>
+        <span class="mt-sub">단면 자르는 위치</span>
+        <div class="mt-rangerow">
+          <input class="mt-range mt-cutr" data-for="2" type="range" min="0" max="100" step="1" value="0" aria-label="블록을 앞에서부터 자르는 위치(0 = 자르지 않음, 100 = 가운데)">
+          <span class="mt-rv mt-cutv" data-for="2">자르지 않음</span>
+        </div>
+        <p class="mt-hint">돌산은 블록을 잘라 땅속의 단단한 바위(화강암) 덩어리를, 흙산은 두꺼운 흙층을 볼 수 있다.</p>
+        <div class="mt-line2 mt-pspd">
+          <span class="mt-sub">재생 빠르기</span>
+          <div class="mt-seg mt-pspdseg" role="group" aria-label="재생 빠르기">
+            <button type="button" class="mt-segb" data-spd="0.6" aria-pressed="false">느리게</button>
+            <button type="button" class="mt-segb" data-spd="1" aria-pressed="true">보통</button>
+            <button type="button" class="mt-segb" data-spd="1.7" aria-pressed="false">빠르게</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-vctl mt-off" data-for="3">
+        <span class="mt-sub">살펴볼 곳 (블록 위를 눌러도 된다)</span>
+        <div class="mt-seg four mt-spotseg" role="group" aria-label="살펴볼 곳">
+          <button type="button" class="mt-segb" data-spot="flat" aria-pressed="true">높고 평탄한 곳</button>
+          <button type="button" class="mt-segb" data-spot="slope" aria-pressed="false">높은 곳의 비탈</button>
+          <button type="button" class="mt-segb" data-spot="east" aria-pressed="false">동해 쪽 가파른 비탈</button>
+          <button type="button" class="mt-segb" data-spot="low" aria-pressed="false">바닷가 · 골짜기</button>
+        </div>
+        <div class="mt-line2">
+          <span class="mt-sub">계절</span>
+          <div class="mt-seg two mt-seasonseg" role="group" aria-label="계절">
+            <button type="button" class="mt-segb" data-season="summer" aria-pressed="true">여름(7월)</button>
+            <button type="button" class="mt-segb" data-season="winter" aria-pressed="false">겨울(1월)</button>
+          </div>
+        </div>
+        <button type="button" class="mt-btn mt-usebtn mt-onoff" aria-pressed="true">알맞은 이용을 색으로 칠하기</button>
+      </div>
+      </section>
+
+      <section class="mt-card mt-vctl mt-playcard" data-for="1">
+        <h3 class="mt-h">재생</h3>
+        <div class="mt-row mt-prow">
+          <button type="button" class="mt-btn main mt-play" data-for="1" aria-label="재생">재생</button>
+          <button type="button" class="mt-btn mt-reset" data-for="1">처음으로</button>
+        </div>
+        <div class="mt-rangerow" hidden>
+          <input class="mt-range mt-trange" data-for="1" type="range" min="0" max="100" step="1" value="0" aria-label="시기" tabindex="-1">
+          <span class="mt-rv mt-tval" data-for="1"></span>
+        </div>
+        <span class="mt-sub">시기(경동성 요곡 운동)</span>
+        <div class="mt-stageseg" role="group" aria-label="시기 고르기">
+          <button type="button" class="mt-segb mt-stb" data-stage="0" aria-pressed="true"><b class="mt-stn">중생대 말</b><small class="mt-sts">요곡 운동 전</small></button>
+          <button type="button" class="mt-segb mt-stb" data-stage="1" aria-pressed="false"><b class="mt-stn">신생대 제3기 초</b><small class="mt-sts">요곡 운동 시작</small></button>
+          <button type="button" class="mt-segb mt-stb" data-stage="2" aria-pressed="false"><b class="mt-stn">신생대 제3기 후반</b><small class="mt-sts">동쪽이 크게 솟음</small></button>
+          <button type="button" class="mt-segb mt-stb" data-stage="3" aria-pressed="false"><b class="mt-stn">신생대 제4기</b><small class="mt-sts">오늘날 · 동고서저 지형</small></button>
+        </div>
+      </section>
+      <section class="mt-card mt-vctl mt-playcard mt-off" data-for="2">
+        <h3 class="mt-h">재생</h3>
+        <div class="mt-row mt-prow">
+          <button type="button" class="mt-btn main mt-play" data-for="2" aria-label="재생">재생</button>
+          <button type="button" class="mt-btn mt-reset" data-for="2">처음으로</button>
+        </div>
+        <div class="mt-rangerow">
+          <input class="mt-range mt-trange" data-for="2" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="mt-rv mt-tval" data-for="2"></span>
+        </div>
+        <div class="mt-stages" data-for="2" role="group" aria-label="재생 단계"></div>
+      </section>
+
+      <details class="mt-card mt-readcard">
+        <summary class="mt-csum">자료 해설</summary>
+        <p class="mt-readh"></p>
+        <div class="mt-rows">
+        <div class="mt-mrow"><span class="mt-k mt-k1"></span><span class="mt-v mt-v1"></span></div>
+        <div class="mt-mrow"><span class="mt-k mt-k2"></span><span class="mt-v mt-v2"></span></div>
+        <div class="mt-mrow"><span class="mt-k mt-k3"></span><span class="mt-v mt-v3"></span></div>
+        <div class="mt-mrow"><span class="mt-k mt-k4"></span><span class="mt-v mt-v4"></span></div>
+        <div class="mt-mrow"><span class="mt-k mt-k5"></span><span class="mt-v mt-v5"></span></div>
+      </div>
+        <div class="mt-result" aria-live="polite">
+          <span class="mt-rk"></span>
+          <p class="mt-rt"></p>
+          <p class="mt-note mt-readnote"></p>
+        </div>
+      </details>
+
+      <details class="mt-card mt-extra">
+        <summary class="mt-csum">사례와 더 알아보기</summary>
+      <svg class="mt-map" viewBox="0 0 270 290" role="group" aria-label="우리나라의 산지 사례 지도"></svg>
+      <p class="mt-place" aria-live="polite"></p>
+      <p class="mt-p">우리나라는 오랜 풍화와 침식으로 비교적 낮고 완만한 산지가 많다. 높은 산지는 주로 북동쪽에, 낮은 산지와 평야는 주로 남서쪽에 있다.</p>
+      <p class="mt-p mt-use"></p>
+      <div class="mt-more">
+        <p class="mt-mterm">융기와 침식</p>
+        <p class="mt-mdesc">땅덩어리가 주변보다 높아지는 것을 융기라고 한다. 솟은 땅은 비 · 바람 · 하천에 의해 오랜 시간 깎이며(침식) 낮고 완만해진다. 지형은 이 두 힘이 함께 만든 결과다.</p>
+        <p class="mt-mterm">돌산과 흙산의 바위</p>
+        <p class="mt-mdesc">돌산의 바위 봉우리는 땅속 깊은 곳에서 마그마가 굳은 단단한 바위(화강암 등)가 위의 땅이 깎이며 드러난 것이 많다. 흙산은 잘 부서지는 바위(편마암 등)가 오래 풍화되어 흙이 두껍게 덮인 경우가 많다.</p>
+        <p class="mt-mterm">산지는 지역의 경계</p>
+        <p class="mt-mdesc">산지는 지역과 지역을 나누는 경계가 되기도 한다. 예전에는 높은 고개를 넘어 다녔고, 지금은 터널을 뚫어 길을 잇기도 한다.</p>
+        <p class="mt-mterm">산지의 자원</p>
+        <p class="mt-mdesc">산지에는 나무 등 산림 자원과 땅속의 지하자원이 있어 사람들의 생활 터전이 된다.</p>
+      </div>
+      </details>
+      <button type="button" class="mt-btn mt-snap">지금 화면을 그림(PNG)으로 저장</button>
+    </div>
+
+    <div class="mt-scr" data-scr="quiz" hidden>
+      <p class="mt-ltitle">확인 문제</p>
+      <p class="mt-qside">문제는 3D 모형 자리에 크게 나온다. 번호를 눌러 원하는 문제로 옮겨 갈 수 있다.</p>
+      <p class="mt-qside mt-qprog"></p>
+      <button type="button" class="mt-btn main mt-qback">목록으로</button>
+    </div>
+
+    <p class="mt-credit">자료: 지도 해안선 Natural Earth · 장소는 실제 위경도 · 산맥 선은 대략 · 기온은 7월 높이 100m마다 0.5℃(「지형과 기후」와 같은 값) · 1월은 기상청 평년값(강릉 · 대관령)에 맞춤 · 산지 모형은 예시 모형</p>
+  </div>
+</aside>
+
+<script>
+(function () {
+  "use strict";
+  function Up(root) {
+    var NS = "http://www.w3.org/2000/svg";
+    var uid = "mt" + Math.random().toString(36).slice(2, 8);
+
+    /* 한반도 윤곽: 자료발췌/로직/지형/land-korea.js */
+    var LAND_KOREA = "M131.5 -43.5l0 .5 -.3 .4 -.5 -.1 0 .4 -.5 .1 -.4 .5 -.1 .8 -1.2 .8 -.9 .3 -.2 .6 .9 .5 1.1 1.6 0 1 .2 .2 -.4 .7 -.7 .1 -.1 .2 -.7 -.1 0 .3 -.3 -.1 .1 .2 -.3 .1 0 -.3 -.3 .4 -.4 .1 -.2 -.4 .3 -.1 -.2 0 -.1 -.4 .5 -.7 -.3 -.3 0 -.5 -.3 -.1 .3 -.2 .5 .1 -.3 -.3 -.1 -.6 -.5 .1 -.3 -.3 -.4 .3 -.4 -.2 .2 -.2 -.5 0 .4 -.5 .5 -.1 -.4 -.1 .2 -.7 -.6 -.3 -.2 .2 -.3 -.4 -.8 .2 0 -3.7zM126.9 -33.5l-.6 .3 0 -.3zM131.5 -33.3l0 .3 -1.2 0 -.1 -.2 0 .2 -.5 0 0 -.1 .2 .1 -.3 -.3 1.1 -.6 .8 .2 0 .4zM131.5 -34.1l-.6 .1 .1 -.4 .4 0 .1 -.1z";
+
+    /* 사례 장소(위경도는 대략): 중학 사회 ② 136~137쪽 */
+    var PLACES = [
+      { id: "gg", name: "금강산", lon: 128.07, lat: 38.65, dx: -8, dy: -6, anchor: "end", k: ["rock"], text: "금강산: 바위가 봉우리를 이루는 대표적인 돌산이다." },
+      { id: "sr", name: "설악산", lon: 128.47, lat: 38.12, dx: 9, dy: -4, anchor: "start", k: ["rock", 1], text: "설악산: 동쪽의 높은 산지에 있는 돌산으로, 바위 봉우리가 많다." },
+      { id: "bh", name: "북한산", lon: 126.98, lat: 37.66, dx: -8, dy: -4, anchor: "end", k: ["rock"], text: "북한산: 서울 북쪽의 돌산으로, 하얀 바위 봉우리가 드러나 있다." },
+      { id: "tb", name: "태백산", lon: 128.92, lat: 37.1, dx: 9, dy: 4, anchor: "start", k: [1], text: "태백산: 동해안을 따라 남북으로 이어진 태백산맥의 높은 산이다." },
+      { id: "dg", name: "대관령 양떼 목장", lon: 128.75, lat: 37.69, dx: 9, dy: -2, anchor: "start", k: [3], text: "대관령 양떼 목장: 해발 고도가 높고 서늘한 곳의 목초지를 이용해 양을 기른다." },
+      { id: "mb", name: "매봉산 고랭지 밭", lon: 128.97, lat: 37.2, dx: 9, dy: 12, anchor: "start", k: [3], text: "매봉산 고랭지 밭: 높고 평탄한 곳에서 여름에도 서늘한 기후를 이용해 배추를 기른다." },
+      { id: "sb", name: "소백산", lon: 128.48, lat: 36.95, dx: -8, dy: 10, anchor: "end", k: [3], text: "소백산: 등산로를 따라 산지 경관을 즐기는 사람이 많다." },
+      { id: "dy", name: "덕유산", lon: 127.75, lat: 35.86, dx: -8, dy: -4, anchor: "end", k: ["soil", 3], text: "덕유산: 두꺼운 흙으로 덮인 흙산이며, 비탈을 이용한 스키장이 있다." },
+      { id: "jr", name: "지리산", lon: 127.73, lat: 35.34, dx: 9, dy: 4, anchor: "start", k: ["soil"], text: "지리산: 두꺼운 흙으로 덮여 숲이 울창한 대표적인 흙산이다." },
+      { id: "hn", name: "호남평야", lon: 126.9, lat: 35.8, dx: -8, dy: 4, anchor: "end", k: [1], text: "호남평야: 서쪽의 낮고 넓은 평야로, 동고서저 지형 때문에 남서부에 평야가 넓게 발달했다." }
+    ];
+    var RANGES = [
+      ["태백산맥", [[128.35, 38.6], [128.75, 37.9], [129.05, 37.2], [129.2, 36.5], [129.3, 35.8]], [129.3, 36.3]],
+      ["소백산맥", [[128.6, 37.05], [128.15, 36.6], [127.85, 36.1], [127.7, 35.6], [127.6, 35.2]], [127.4, 36.2]]
+    ];
+
+    var QUIZ = [
+      {
+        title: "동쪽이 높고 서쪽이 낮은 까닭",
+        q: "우리나라가 동쪽이 높고 서쪽으로 갈수록 낮아진 까닭으로 알맞은 것은 무엇일까?",
+        opts: ["동쪽에 빙하가 많이 쌓였기 때문이다.", "땅이 솟아오를 때 동쪽이 서쪽보다 더 많이 솟았기 때문이다.", "서쪽에 화산이 많이 분출했기 때문이다."],
+        ans: 1,
+        ok: "정답이다. 한반도가 솟아오를 때 융기량이 많은 동쪽은 높아지고, 적은 서쪽은 낮아져 동고서저 지형이 되었다. 그래서 큰 하천은 대부분 황해 · 남해로 흐른다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「동쪽이 더 솟는 정도」를 「약함」과 「강함」 쪽으로 옮겨 비교해 본다."
+      },
+      {
+        title: "흙산",
+        q: "지리산과 덕유산처럼 두꺼운 흙으로 덮여 있는 산을 무엇이라고 할까?",
+        opts: ["화산", "돌산", "흙산"],
+        ans: 2,
+        ok: "정답이다. 지리산 · 덕유산은 흙산이고, 바위가 봉우리를 이루는 북한산 · 설악산 · 금강산은 돌산이다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「흙산」을 고르고 시간을 끝까지 옮겨 옆면의 흙 두께를 확인해 본다."
+      },
+      {
+        title: "고랭지 농업",
+        q: "태백산맥 · 소백산맥의 해발 고도가 높고 평탄한 곳에서 배추 · 감자를 기르는 고랭지 농업이 발달한 까닭은 무엇일까?",
+        opts: ["여름에도 기온이 낮아 서늘하기 때문이다.", "일 년 내내 눈이 덮여 있기 때문이다.", "바닷물이 들어와 땅이 기름지기 때문이다."],
+        ans: 0,
+        ok: "정답이다. 높이 올라갈수록 기온이 낮아져 여름에도 서늘하다. 평탄한 곳은 밭을 일구기 좋아 배추 · 감자를 기르고, 목초지는 목장으로 이용한다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「높고 평탄한 곳」을 골라 7월 기온을 바닷가와 비교해 본다."
+      },
+      {
+        title: "돌산 고르기",
+        q: "북한산 · 설악산처럼 봉우리에 큰 바위가 드러난 산(돌산)이 생기는 까닭으로 알맞은 것은 무엇일까?",
+        opts: ["흙이 두껍게 쌓여 바위를 덮었기 때문이다.", "바닷물이 들어와 바위를 쌓았기 때문이다.", "땅속의 단단한 바위가 위를 덮은 땅이 깎이면서 드러났기 때문이다."],
+        ans: 2,
+        ok: "정답이다. 땅속 깊은 곳에서 굳은 단단한 바위(화강암 등)가 위를 덮은 땅이 오랫동안 깎이면서 드러나 바위 봉우리가 되었다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「돌산」을 고르고 시간을 끝까지 옮기며 옆면의 단단한 바위를 본다."
+      },
+      {
+        title: "스키장이 들어설 곳",
+        q: "스키장이 들어서기에 알맞은 곳은 어디일까?",
+        opts: ["바닷가의 낮고 평평한 땅", "높고 겨울에 눈이 많으며 알맞게 기울어진 산비탈", "아주 가팔라 사람이 오르기 어려운 절벽"],
+        ans: 1,
+        ok: "정답이다. 높은 곳은 기온이 낮아 눈이 오래 쌓이고, 알맞게 기울어진 비탈은 스키를 타기에 좋다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「높은 곳의 비탈」을 눌러 높이 · 경사 · 기온을 확인해 본다."
+      }
+    ];
+
+    function $(sel) { return root.querySelector(sel); }
+    /* 속도 확인(10-30): 주소에 ?fps=1 을 붙이면 무대 오른쪽 아래에 초당 화면 수(최근 1초 · 최근 5초 최저)와 캔버스 크기를 띄움. 교실 PC · 전자칠판 확인용 */
+    (function () {
+      if (!/[?&]fps=1(&|$)/.test(location.search)) return;
+      var st = $(".mt-stage") || root, box = document.createElement("div");
+      box.setAttribute("aria-hidden", "true");
+      box.style.cssText = "position:absolute;right:10px;bottom:10px;z-index:60;font:600 12px/1.4 Consolas,monospace;color:#fff;background:rgba(29,33,38,.8);padding:4px 8px;border-radius:6px;pointer-events:none";
+      box.textContent = "fps 재는 중";
+      st.appendChild(box);
+      var n = 0, t0 = performance.now(), hist = [];
+      function f(t) {
+        n++;
+        if (t - t0 >= 1000) {
+          var fps = Math.round(n * 1000 / (t - t0)), cv = root.querySelector("canvas");
+          hist.push(fps); if (hist.length > 5) hist.shift();
+          box.textContent = fps + " fps · 5초 최저 " + Math.min.apply(null, hist) + (cv ? " · " + cv.width + "×" + cv.height : "");
+          n = 0; t0 = t;
+        }
+        requestAnimationFrame(f);
+      }
+      requestAnimationFrame(f);
+    })();
+
+    /* 업그레이드(10-29): 설명 카드의 핵심 낱말을 파란 굵은 글씨로(예시처럼). 글이 바뀌면 낱말마다 처음 한 번만 <b>로 감쌈.
+       innerHTML 없이 글 조각 · 요소를 만들어 넣음. 이미 감싼 글이면 건드리지 않음(감시가 되풀이되지 않게) */
+    (function () {
+      var W = ["경동성 지형", "고랭지 농업", "요곡 운동", "동고서저", "화강암", "고랭지", "침식", "풍화", "돌산", "융기", "흙산"], el = $(".mt-rt"); if (!el || !window.MutationObserver) return;
+      var re = new RegExp("(" + W.map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")", "g");
+      function mark() {
+        if (el.querySelector(".mt-term")) return;
+        var s = el.textContent; if (!s) return; re.lastIndex = 0; if (!re.test(s)) return;
+        var seen = {}, parts = s.split(re), frag = document.createDocumentFragment();
+        parts.forEach(function (t, i) { if (!t) return; if (i % 2 === 1 && !seen[t]) { seen[t] = 1; var b = document.createElement("b"); b.className = "mt-term"; b.textContent = t; frag.appendChild(b); } else frag.appendChild(document.createTextNode(t)); });
+        while (el.firstChild) el.removeChild(el.firstChild);
+        el.appendChild(frag);
+      }
+      new MutationObserver(mark).observe(el, { childList: true, characterData: true, subtree: true });
+      mark();
+    })();
+    function $$(sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
+    function attrs(e, at) { for (var k in at) if (Object.prototype.hasOwnProperty.call(at, k)) e.setAttribute(k, at[k]); }
+    function S(tag, at, parent, text) { var e = document.createElementNS(NS, tag); attrs(e, at); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+    function E(tag, cls, parent, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+    function setText(e, s) { if (e.textContent !== s) e.textContent = s; }
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function mix(a, b, u) { u = clamp(u, 0, 1); return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u]; }
+    function mix1(a, b, u) { return a + (b - a) * clamp(u, 0, 1); }
+    function rgb(c, k, al) {
+      k = k == null ? 1 : k;
+      var s = Math.round(clamp(c[0] * k, 0, 255)) + "," + Math.round(clamp(c[1] * k, 0, 255)) + "," + Math.round(clamp(c[2] * k, 0, 255));
+      return al == null ? "rgb(" + s + ")" : "rgba(" + s + "," + al + ")";
+    }
+    function sm(a, b, t) { var u = clamp((t - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); }
+    function rnd(n) { var x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+    function n2(x, z) { return 0.5 * Math.sin(7.1 * x + 3.3 * z) + 0.3 * Math.sin(13 * x - 5 * z + 1) + 0.2 * Math.sin(23 * x + 11 * z + 2); }
+
+    var RM = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var RAD = Math.PI / 180;
+    var cv = $(".mt-cv"), ctx = cv.getContext("2d");
+    var CW = 1, CH = 1, DPR = 1, TS = 1, FONT = "Pretendard,'Malgun Gothic',system-ui,sans-serif";
+    var view = 1;
+    /* 완성본(10-19 개선): 느린 컴퓨터면 저절로 가볍게 — 정지 화면 그리기가 0.07초 넘게 세 번 걸리면 화면 배율을 1로, 그래도 0.11초 넘으면 늘 성긴 칸 */
+    var DPRMAX = 2, slowN = 0, SLOW = false;
+    function noteSpeed(ms) {
+      if (ms > 70) slowN++; else slowN = Math.max(0, slowN - 1);
+      if (slowN < 3) return;
+      slowN = 0;
+      if (DPRMAX > 1 && DPR > 1) { DPRMAX = 1; sizeCanvas(); layerKey = ""; requestRender(); }
+      else if (!SLOW && ms > 110) { SLOW = true; layerKey = ""; requestRender(); }
+    }
+    function sizeCanvas() { var r = cv.getBoundingClientRect(); CW = Math.max(1, r.width); CH = Math.max(1, r.height); DPR = Math.min(DPRMAX, window.devicePixelRatio || 1); cv.width = Math.round(CW * DPR); cv.height = Math.round(CH * DPR); }
+    var LIGHT = (function () { var v = [-0.5, 0.8, -0.35], l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); return [v[0] / l, v[1] / l, v[2] / l]; })();
+
+    /* ================= 3D 부품: 「건조 지형」 1차본과 같음 ================= */
+    function Cam(yaw, pitch) {
+      var C = { yaw: yaw, pitch: pitch, k: 1, cx: 0, cy: 0, oz: 0 }, cY = 1, sY = 0, cP = 1, sP = 0, DP = 5;
+      C.rot = function () { cY = Math.cos(C.yaw * RAD); sY = Math.sin(C.yaw * RAD); cP = Math.cos(C.pitch * RAD); sP = Math.sin(C.pitch * RAD); };
+      C.proj = function (x, y, z, out) { z -= C.oz; var x1 = cY * x - sY * z, z1 = sY * x + cY * z, up = y * cP + z1 * sP, d = z1 * cP - y * sP, s = DP / (DP + d); out[0] = C.cx + x1 * s * C.k; out[1] = C.cy - up * s * C.k; out[2] = d; out[3] = s; return out; };
+      C.P = function (x, y, z) { return C.proj(x, y, z, [0, 0, 0, 1]); };
+      var fitKey = "", ext = null;
+      C.fit = function (rect, pts, yA, yB, fill, vy) {
+        C.rot();
+        var key = C.pitch.toFixed(1) + "|" + rect.w.toFixed(0) + "|" + rect.h.toFixed(0) + "|" + pts.length + "|" + pts[0].join(",");
+        if (key !== fitKey) {
+          fitKey = key;
+          var y0 = C.yaw, q = [0, 0, 0, 1], e = [1e9, -1e9, 1e9, -1e9];
+          C.k = 1; C.cx = 0; C.cy = 0;
+          for (var a = yA; a <= yB + 1e-6; a += (yB - yA) / 12) { C.yaw = a; C.rot(); for (var i = 0; i < pts.length; i++) { C.proj(pts[i][0], pts[i][1], pts[i][2], q); if (q[0] < e[0]) e[0] = q[0]; if (q[0] > e[1]) e[1] = q[0]; if (q[1] < e[2]) e[2] = q[1]; if (q[1] > e[3]) e[3] = q[1]; } }
+          C.yaw = y0; C.rot(); ext = e;
+        }
+        C.k = Math.min(rect.w * fill / (ext[1] - ext[0]), rect.h * fill / (ext[3] - ext[2])) * (C.zoom || 1);
+        C.cx = rect.x + rect.w / 2 - (ext[0] + ext[1]) / 2 * C.k;
+        C.cy = rect.y + rect.h * vy - (ext[2] + ext[3]) / 2 * C.k;
+      };
+      C.rot();
+      return C;
+    }
+    /* 높이 격자 겉면. 업그레이드(완성본): 층(눈 · 물 · 빙하)의 경계를 칸 안에서 잘라 칠해 톱니 없이 매끄럽게 그림
+       layers[k] = { s(x, z, h): 0보다 작으면 그 층, c(x, z): 색, line: 경계선 색, flat: 그늘 없이 }. 뒤에 있는 층이 위에 덮임
+       s는 hf를 부른 바로 뒤에 같은 점에서 부르므로, 장면이 hf에서 남긴 값을 써도 됨 */
+    function makeSurf(o) {
+      var SL = o.sl || (o.nx * o.nz > 7000 ? 3 : 2), NX = Math.ceil(o.nx / SL) * SL, NZ = Math.ceil(o.nz / SL) * SL, VX = NX + 1, N = VX * (NZ + 1), NC = NX * NZ, LY = o.layers || [], NL = LY.length;
+      var wx = new Float32Array(N), wy = new Float32Array(N), wz = new Float32Array(N);
+      var px = new Float32Array(N), py = new Float32Array(N), pd = new Float32Array(N);
+      var cd = new Float32Array(NC), col = new Array(NC), lamA = new Float32Array(NC), order = [], order2 = [];
+      var vS = new Float32Array(N), vU = new Float32Array(N), vO = new Float32Array(N), coolA = new Float32Array(NC);
+      var ls = LY.map(function () { return new Float32Array(N); }), lc = LY.map(function () { return new Array(NC); });
+      for (var j = 0; j <= NZ; j++) for (var i = 0; i <= NX; i++) {
+        var n = j * VX + i;
+        wx[n] = o.x0 + (o.x1 - o.x0) * i / NX; wz[n] = o.z0 + (o.z1 - o.z0) * j / NZ;
+      }
+      for (var c = 0; c < NC; c++) order.push(c);
+      /* 성긴 칸(재생 · 끄는 동안): 칸 수가 SL로 나누어떨어지게 맞춰 마지막 줄이 빠지지 않음. 큰 격자는 3칸씩(10-20) */
+      for (var j2 = 0; j2 < NZ; j2 += SL) for (var i2 = 0; i2 < NX; i2 += SL) order2.push(j2 * NX + i2);
+      var T = { lod: false, NX: NX, NZ: NZ, VX: VX, wx: wx, wy: wy, wz: wz, px: px, py: py, x0: o.x0, x1: o.x1, z0: o.z0, z1: o.z1 };
+      /* 품질(10-21): 성긴 칸(재생 · 끄는 동안)일 때는 그리는 꼭짓점(SL칸마다)과 블록 가장자리만 다시 셈. 끝나면 draw에서 한 번 전부 셈 */
+      T.partial = false;
+      T.reshape = function () {
+        var k, S = T.lod ? SL : 1;
+        T.partial = S > 1;
+        for (var j1 = 0; j1 <= NZ; j1++) {
+          var rowL = j1 % S === 0, edgeR = j1 === 0 || j1 === NZ;
+          for (var i1 = 0; i1 <= NX; i1++) {
+            if (!(rowL && i1 % S === 0) && !edgeR && i1 !== 0 && i1 !== NX) continue;
+            var n2 = j1 * VX + i1;
+            wy[n2] = o.hf(wx[n2], wz[n2]);
+            for (k = 0; k < NL; k++) ls[k][n2] = LY[k].s(wx[n2], wz[n2], wy[n2]);
+          }
+        }
+        /* 꼭짓점마다: 빛을 받는 정도(vS) · 위를 보는 정도(vU) · 움푹한 정도(vO) */
+        var dX = (o.x1 - o.x0) / NX, dZ = (o.z1 - o.z0) / NZ, SV = S * VX;
+        for (var vj = 0; vj <= NZ; vj += S) for (var vi = 0; vi <= NX; vi += S) {
+          var vn = vj * VX + vi, il = vi > 0 ? vn - S : vn, ir = vi < NX ? vn + S : vn, iu = vj > 0 ? vn - SV : vn, idn = vj < NZ ? vn + SV : vn;
+          var sgx = (wy[ir] - wy[il]) / ((ir - il) * dX || dX), sgz = (wy[idn] - wy[iu]) / (((idn - iu) / VX) * dZ || dZ);
+          var sl = Math.sqrt(sgx * sgx + 1 + sgz * sgz);
+          vS[vn] = Math.max(0, (-sgx * LIGHT[0] + LIGHT[1] - sgz * LIGHT[2]) / sl);
+          vU[vn] = 1 / sl;
+          var lap = (wy[il] + wy[ir] + wy[iu] + wy[idn]) * 0.25 - wy[vn], cv2 = lap / (Math.max(dX, dZ) * S);
+          vO[vn] = cv2 > 0 ? Math.min(0.17, cv2 * 0.11) : Math.max(-0.05, cv2 * 0.04);
+        }
+        for (var jj = 0; jj < NZ; jj += S) for (var ii = 0; ii < NX; ii += S) {
+          var a = jj * VX + ii, b = a + S, d = a + SV, e = d + S, cc = jj * NX + ii;
+          var gx = (wy[b] + wy[e] - wy[a] - wy[d]) / 2 / (wx[b] - wx[a]), gz = (wy[d] + wy[e] - wy[a] - wy[b]) / 2 / (wz[d] - wz[a]);
+          var nl = Math.sqrt(gx * gx + 1 + gz * gz), lam = Math.max(0, (-gx * LIGHT[0] + LIGHT[1] - gz * LIGHT[2]) / nl);
+          /* 품질 다듬기(10-20): 꼭짓점 법선으로 부드럽게 비춤 + 움푹한 곳은 어둡게(그늘) · 등성이는 밝게 + 하늘빛 */
+          var sh = 0.25 * (vS[a] + vS[b] + vS[d] + vS[e]), lamS = 0.68 * sh + 0.32 * lam;
+          lamA[cc] = 0.53 + 0.5 * lamS + 0.06 * (vU[a] + vU[b] + vU[d] + vU[e]) * 0.25 - 0.3 * (vO[a] + vO[b] + vO[d] + vO[e]) - 0.02;
+          coolA[cc] = clamp(1 - lamS, 0, 1);
+          col[cc] = shadeRGB(o.color((wy[a] + wy[b] + wy[d] + wy[e]) / 4, (wx[a] + wx[e]) / 2, (wz[a] + wz[e]) / 2), lamA[cc] * (0.977 + 0.046 * (((Math.sin(cc * 12.9898 + 78.233) * 43758.5453) % 1 + 1) % 1)), coolA[cc]);
+          for (k = 0; k < NL; k++) lc[k][cc] = null;
+        }
+      };
+      function lcol(k, cc) {
+        var v = lc[k][cc];
+        if (v == null) {
+          var jj = (cc / NX) | 0, a = jj * VX + cc - jj * NX;
+          v = lc[k][cc] = shadeRGB(LY[k].c((wx[a] + wx[a + 1]) / 2, (wz[a] + wz[a + VX]) / 2), LY[k].flat ? 0.985 + 0.035 * Math.sin(wx[a] * 31 + wz[a] * 19) * Math.sin(wx[a] * 7 - wz[a] * 23) : 0.04 + lamA[cc], LY[k].flat ? 0 : coolA[cc]);
+        }
+        return v;
+      }
+      var XS = [0, 0, 0, 0], YS = [0, 0, 0, 0], SS = [0, 0, 0, 0], CR = [0, 0, 0, 0];
+      /* 네 꼭짓점 중 s < 0 인 부분만 남긴 다각형을 칠하고, 경계선 두 점을 CR에 남김(점 수를 돌려줌) */
+      function clipFill(fill, line) {
+        var nc = 0, first = true;
+        ctx.beginPath();
+        for (var q = 0; q < 4; q++) {
+          var r2 = (q + 1) & 3, s0 = SS[q], s1 = SS[r2];
+          if (s0 < 0) { if (first) { ctx.moveTo(XS[q], YS[q]); first = false; } else ctx.lineTo(XS[q], YS[q]); }
+          if ((s0 < 0) !== (s1 < 0)) {
+            var u = s0 / (s0 - s1), X = XS[q] + (XS[r2] - XS[q]) * u, Y = YS[q] + (YS[r2] - YS[q]) * u;
+            if (first) { ctx.moveTo(X, Y); first = false; } else ctx.lineTo(X, Y);
+            if (nc < 4) { CR[nc] = X; CR[nc + 1] = Y; } nc += 2;
+          }
+        }
+        ctx.closePath();
+        ctx.fillStyle = fill; ctx.fill();
+        ctx.strokeStyle = fill; ctx.lineWidth = 0.8; ctx.stroke();
+        if (line && nc === 4) { ctx.strokeStyle = line; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(CR[0], CR[1]); ctx.lineTo(CR[2], CR[3]); ctx.stroke(); }
+      }
+      /* 재생 속도(10-29): 성긴 칸 꼭짓점을 칸 가운데에서 0.75px 밀어 냄 */
+      function grow(n, mx, my, first) { var dx = px[n] - mx, dy = py[n] - my, k = 0.75 / (Math.sqrt(dx * dx + dy * dy) || 1); if (first) ctx.moveTo(px[n] + dx * k, py[n] + dy * k); else ctx.lineTo(px[n] + dx * k, py[n] + dy * k); }
+      T.draw = function (cam) {
+        if (!T.lod && T.partial) T.reshape();
+        var q = [0, 0, 0, 1], nn, cc, k;
+        for (nn = 0; nn < N; nn++) { cam.proj(wx[nn], wy[nn], wz[nn], q); px[nn] = q[0]; py[nn] = q[1]; pd[nn] = q[2]; }
+        var st = T.lod ? SL : 1, ord = T.lod ? order2 : order;
+        for (var oi = 0; oi < ord.length; oi++) { cc = ord[oi]; var jj = (cc / NX) | 0, a = jj * VX + cc - jj * NX; cd[cc] = pd[a] + pd[a + st] + pd[a + st * VX] + pd[a + st * VX + st]; }
+        ord.sort(function (A1, B1) { return cd[B1] - cd[A1]; });
+        ctx.lineJoin = "round";
+        for (var t = 0; t < ord.length; t++) {
+          var c2 = ord[t], j3 = (c2 / NX) | 0, a2 = j3 * VX + c2 - j3 * NX, b2 = a2 + st, d2 = a2 + st * VX, e3 = d2 + st;
+          var F = -1;
+          if (T.lod) {
+            /* 재생 · 끄는 동안(성긴 칸): 칸 가운데 값으로 한 색만 칠함(빠르게) */
+            for (k = NL - 1; k >= 0; k--) { var L0 = ls[k]; if (L0[a2] + L0[b2] + L0[d2] + L0[e3] < 0) { F = k; break; } }
+            var fl = F < 0 ? col[c2] : lcol(F, c2);
+            var mx = (px[a2] + px[b2] + px[e3] + px[d2]) / 4, my = (py[a2] + py[b2] + py[e3] + py[d2]) / 4;
+            ctx.beginPath(); grow(a2, mx, my, 1); grow(b2, mx, my); grow(e3, mx, my); grow(d2, mx, my); ctx.closePath();
+            ctx.fillStyle = fl; ctx.fill();
+            continue;
+          }
+          for (k = NL - 1; k >= 0; k--) { var L = ls[k]; if (L[a2] < 0 && L[b2] < 0 && L[d2] < 0 && L[e3] < 0) { F = k; break; } }
+          var fc = F < 0 ? col[c2] : lcol(F, c2);
+          ctx.beginPath(); ctx.moveTo(px[a2], py[a2]); ctx.lineTo(px[b2], py[b2]); ctx.lineTo(px[e3], py[e3]); ctx.lineTo(px[d2], py[d2]); ctx.closePath();
+          ctx.fillStyle = fc; ctx.fill();
+          ctx.strokeStyle = fc; ctx.lineWidth = 0.9; ctx.stroke();
+          for (k = F + 1; k < NL; k++) {
+            var L2 = ls[k];
+            SS[0] = L2[a2]; SS[1] = L2[b2]; SS[2] = L2[e3]; SS[3] = L2[d2];
+            if (SS[0] >= 0 && SS[1] >= 0 && SS[2] >= 0 && SS[3] >= 0) continue;
+            XS[0] = px[a2]; XS[1] = px[b2]; XS[2] = px[e3]; XS[3] = px[d2];
+            YS[0] = py[a2]; YS[1] = py[b2]; YS[2] = py[e3]; YS[3] = py[d2];
+            clipFill(lcol(k, c2), LY[k].line);
+          }
+        }
+        /* 세 번째 다듬기: 블록 위 가장자리에 옅은 빛 테두리(모형이 또렷해 보임) */
+        ctx.save(); ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.4;
+        [0, 1, 2, 3].forEach(function (w) { var ed = T.edge(w); ctx.beginPath(); ed.forEach(function (n, i) { if (i) ctx.lineTo(px[n], py[n]); else ctx.moveTo(px[n], py[n]); }); ctx.stroke(); });
+        ctx.restore();
+      };
+      /* 업그레이드(10-20): 풀 · 숲 색인 땅 위에만 나무를 심음(물 · 눈 · 모래 · 바위 · 밭 층은 뺌). 재생 · 끄는 동안은 그리지 않음 */
+      T.trees = function (cam, o2) {
+        if (T.lod) return;
+        o2 = o2 || {};
+        var dens = o2.dens || 0.3, size = o2.size || 0.03, sp = o2.step || 2, out = [], dxc = (o.x1 - o.x0) / NX, dzc = (o.z1 - o.z0) / NZ, shf = o2.shift, seen = {};
+        function h2(v) { var q = Math.sin(v * 127.1 + 311.7) * 43758.5453; return q - Math.floor(q); }
+        for (var j = 1; j < NZ; j += sp) for (var i = 1; i < NX; i += sp) {
+          var n = j * VX + i, key = n, bx = 0, bz = 0;
+          /* 땅이 움직이는 장면: 나무 자리를 움직이기 전 땅의 칸으로 정하고(같은 나무가 계속 같은 땅에), 움직인 만큼 옮겨 심음 */
+          if (shf) { var s0 = shf(wx[n], wz[n]), mi = Math.round((wx[n] - s0[0] - o.x0) / (dxc * sp)), mj = Math.round((wz[n] - s0[1] - o.z0) / (dzc * sp)); key = mj * 7919 + mi; if (seen[key]) continue; seen[key] = 1; bx = o.x0 + mi * dxc * sp + s0[0] - wx[n]; bz = o.z0 + mj * dzc * sp + s0[1] - wz[n]; }
+          var r1 = h2(key * 1.7 + 3), r2 = h2(key * 2.3 + 11), r3 = h2(key * 3.1 + 5), k, skip = false;
+          if (r1 > dens) continue;
+          for (k = 0; k < NL; k++) if (ls[k][n] < 0) { skip = true; break; }
+          if (skip) continue;
+          if (o2.hmin != null && wy[n] < o2.hmin) continue;
+          if (o2.hmax != null && wy[n] > o2.hmax) continue;
+          var gx = (wy[n + 1] - wy[n - 1]) / (2 * dxc), gz = (wy[n + VX] - wy[n - VX]) / (2 * dzc), sl = Math.sqrt(gx * gx + gz * gz);
+          if (sl > (o2.maxSlope || 1.5) || (o2.minSlope && sl < o2.minSlope)) continue;
+          var x = wx[n] + bx + (r2 - 0.5) * dxc * sp, z = wz[n] + bz + (r3 - 0.5) * dzc * sp;
+          if (x < o.x0 || x > o.x1 || z < o.z0 || z > o.z1) continue;
+          if (o2.ok && !o2.ok(x, z)) continue;
+          var y = o.hf(x, z), c = o.color(y, x, z);
+          if (!(c[1] > c[0] + 12 && c[1] > c[2] + 6)) continue;
+          out.push([x, y, z, r2]);
+        }
+        out.sort(function (A, B) { return cam.P(B[0], B[1], B[2])[2] - cam.P(A[0], A[1], A[2])[2]; });
+        out.forEach(function (q) { tree3(cam, q[0], q[1], q[2], size * (0.8 + 0.45 * q[3]), q[3] > (o2.broad == null ? 0.55 : o2.broad) ? 1 : 0, 0.82 + 0.28 * q[3]); });
+      };
+      T.edge = function (w) {
+        var out = [], k;
+        if (w < 2) for (k = 0; k <= NX; k++) out.push((w ? NZ * VX : 0) + k);
+        else for (k = 0; k <= NZ; k++) out.push(k * VX + (w === 3 ? NX : 0));
+        return out;
+      };
+      return T;
+    }
+    function wallPt(T, w, u, y) { return w === 0 ? [u, y, T.z0] : w === 1 ? [u, y, T.z1] : w === 2 ? [T.x0, y, u] : [T.x1, y, u]; }
+    function wallRange(T, w) { return w < 2 ? [T.x0, T.x1] : [T.z0, T.z1]; }
+    function wallOutline(cam, T, w, bot) { var ed = T.edge(w), top = ed.map(function (n) { return [T.px[n], T.py[n]]; }), r = wallRange(T, w); var a = wallPt(T, w, r[0], bot), b = wallPt(T, w, r[1], bot), pa = cam.P(a[0], a[1], a[2]), pb = cam.P(b[0], b[1], b[2]);
+      var ol = top.concat([[pb[0], pb[1]], [pa[0], pa[1]]]);
+      if (WALLQ) { var key = Math.round(ol[0][0]) + "," + Math.round(ol[0][1]) + "," + Math.round(pb[0]) + "," + Math.round(pa[1]); if (!WALLQ.keys[key]) { WALLQ.keys[key] = 1; WALLQ.list.push(ol); } }
+      return ol;
+    }
+    /* 큰 다듬기(10-20): 단면 그늘 — 옆면마다 위는 살짝 밝게, 아래로 갈수록 어둡게(입체감) */
+    var WALLQ = null;
+    function shadeWalls() {
+      var q = WALLQ; WALLQ = null;
+      if (!q) return;
+      q.list.forEach(function (ol) {
+        var n = ol.length, ty = 0, k = 0, i;
+        for (i = 0; i < n - 2; i++) { ty += ol[i][1]; k++; }
+        ty /= Math.max(1, k);
+        var by = (ol[n - 1][1] + ol[n - 2][1]) / 2;
+        if (by - ty < 4) return;
+        var g = ctx.createLinearGradient(0, ty, 0, by);
+        g.addColorStop(0, "rgba(255,255,255,.12)"); g.addColorStop(0.18, "rgba(255,255,255,0)"); g.addColorStop(0.6, "rgba(18,24,36,.06)"); g.addColorStop(1, "rgba(18,24,36,.24)");
+        poly(ol); ctx.fillStyle = g; ctx.fill();
+      });
+    }
+    function facingWalls(cam, T, ymid) {
+      var cx = (T.x0 + T.x1) / 2, cz = (T.z0 + T.z1) / 2, mid = cam.P(cx, ymid, cz)[2], out = [];
+      [[cx, T.z0], [cx, T.z1], [T.x0, cz], [T.x1, cz]].forEach(function (c, w) { var d = cam.P(c[0], ymid, c[1])[2]; if (d < mid) out.push([w, d]); });
+      out.sort(function (a, b) { return b[1] - a[1]; });
+      return out.map(function (q) { return q[0]; });
+    }
+    /* 품질 다듬기: 이름표 바탕(옅은 그림자 · 테두리) */
+    function pillBox(x0, y, w, bg) {
+      ctx.save();
+      ctx.shadowColor = "rgba(20,32,52,.18)"; ctx.shadowBlur = 7 * TS; ctx.shadowOffsetY = 1.5 * TS;
+      ctx.fillStyle = bg || "rgba(255,255,255,.95)";
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x0 - 8, y - 11.5 * TS, w + 16, 23 * TS, 11 * TS); else ctx.rect(x0 - 8, y - 11.5 * TS, w + 16, 23 * TS);
+      ctx.fill();
+      ctx.restore();
+      ctx.strokeStyle = "rgba(20,32,52,.10)"; ctx.lineWidth = 1; ctx.stroke();
+    }
+    /* 품질 다듬기: 밝기 + 그늘 쪽은 살짝 푸르게(햇빛 · 하늘빛 느낌) */
+    function shadeRGB(c, k, cool) {
+      var r = c[0] * k, g = c[1] * k, b = c[2] * k, m = 0.16 * cool;
+      r = r * (1 - m) + r * 0.86 * m; g = g * (1 - m) + g * 0.95 * m; b = b * (1 - m) + Math.min(255, b * 1.12 + 6) * m;
+      return "rgb(" + Math.round(clamp(r, 0, 255)) + "," + Math.round(clamp(g, 0, 255)) + "," + Math.round(clamp(b, 0, 255)) + ")";
+    }
+    /* 품질 다듬기: 흰 테를 두른 이름표 선과 점(어두운 땅 위에서도 잘 보임) */
+    function leaderLine(ax, ay, lx, ly) {
+      ctx.setLineDash([]); ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = 3.2;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx, ly); ctx.stroke();
+      ctx.strokeStyle = "rgba(29,33,38,.62)"; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(lx, ly); ctx.stroke();
+      ctx.lineCap = "butt";
+      ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(ax, ay, 4.2, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = "#1d2126"; ctx.beginPath(); ctx.arc(ax, ay, 2.6, 0, 2 * Math.PI); ctx.fill();
+    }
+    function ctext(text, x, y, o) {
+      o = o || {};
+      ctx.font = (o.bold ? "700 " : "") + ((o.size || 13) * TS).toFixed(1) + "px " + FONT;
+      ctx.textAlign = o.align || "left"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
+      var w = ctx.measureText(text).width;
+      if (o.pill) { var x0 = o.align === "center" ? x - w / 2 : o.align === "right" ? x - w : x; pillBox(x0, y, w, o.bg); }
+      else { ctx.lineWidth = o.halo || 4; ctx.strokeStyle = "rgba(255,255,255,.92)"; ctx.strokeText(text, x, y); }
+      ctx.fillStyle = o.color || "#1d2126"; ctx.fillText(text, x, y);
+      return w;
+    }
+    /* 완성본(10-19 개선): 이름표는 모았다가(LQ) 겹치지 않게 위아래로 비켜 놓은 뒤 한꺼번에 그림. 먼저 넣은 이름표가 제자리를 지킴 */
+    var LQ = null;
+    /* ver02: 장면마다 보일 3D 이름표(앞글자 목록). null이면 모두 */
+    var LABF = null;
+    function callout(text, ax, ay, lx, ly, o) {
+      if (LABF && !LABF.some(function (p) { return text.indexOf(p) === 0; })) return;
+      o = Object.assign({ pill: true, bold: true, size: 13, align: "center" }, o || {});
+      if (LQ) { LQ.push({ t: text, ax: ax, ay: ay, lx: lx, ly: ly, o: o }); return; }
+      drawLeader({ ax: ax, ay: ay, lx: lx, ly: ly }); ctext(text, lx, ly, o);
+    }
+    function drawLeader(L) {
+      leaderLine(L.ax, L.ay, L.lx, L.ly);
+    }
+    function flushLabels(rect) {
+      var q = LQ, placed = [];
+      LQ = null;
+      if (!q || !q.length) return;
+      q.forEach(function (L) {
+        ctx.font = (L.o.bold ? "700 " : "") + ((L.o.size || 13) * TS).toFixed(1) + "px " + FONT;
+        var tw = ctx.measureText(L.t).width, w = tw + 18, h = 22 * TS + 5, al = L.o.align || "left";
+        var off = al === "center" ? -tw / 2 : al === "right" ? -tw : 0;
+        var x0 = clamp(L.lx + off - 9, rect.x + 2, rect.x + rect.w - w - 2);
+        L.lx = x0 + 9 - off;
+        var y0 = clamp(L.ly, rect.y + h / 2 + 2, rect.y + rect.h - h / 2 - 2), best = y0;
+        for (var i = 0; i < 13; i++) {
+          var dy = (i % 2 ? 1 : -1) * Math.ceil(i / 2) * h * 0.8;
+          var y = clamp(y0 + dy, rect.y + h / 2 + 2, rect.y + rect.h - h / 2 - 2), hit = false;
+          for (var j = 0; j < placed.length; j++) { var P = placed[j]; if (x0 < P.x + P.w && x0 + w > P.x && y - h / 2 < P.y + P.h / 2 && y + h / 2 > P.y - P.h / 2) { hit = true; break; } }
+          if (!hit) { best = y; break; }
+        }
+        L.ly = best;
+        placed.push({ x: x0, w: w, y: best, h: h });
+      });
+      q.forEach(drawLeader);
+      q.forEach(function (L) { ctext(L.t, L.lx, L.ly, L.o); });
+      LASTLAB = q.map(function (L) { return L.t; }); srUpdate();
+    }
+    function rrect(r, rad) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(r.x, r.y, r.w, r.h, rad); else ctx.rect(r.x, r.y, r.w, r.h); }
+    /* 품질 다듬기: 바탕 위쪽 가운데의 옅은 빛 */
+    function backdrop(rect) {
+      backdrop0(rect);
+      var gl2 = ctx.createRadialGradient(rect.x + rect.w * 0.5, rect.y + rect.h * 0.15, 10, rect.x + rect.w * 0.5, rect.y + rect.h * 0.15, Math.max(rect.w, rect.h) * 0.7);
+      gl2.addColorStop(0, "rgba(255,255,255,.7)"); gl2.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = gl2; rrect(rect, 12); ctx.fill();
+      /* 다듬기(10-20): 바탕 위쪽에 옅은 구름 세 무리 */
+      ctx.save(); rrect(rect, 12); ctx.clip();
+      [[0.16, 0.13, 1], [0.58, 0.08, 0.8], [0.86, 0.2, 0.65]].forEach(function (c) {
+        var cx = rect.x + rect.w * c[0], cy = rect.y + rect.h * c[1], r = Math.min(rect.w, rect.h) * 0.07 * c[2];
+        ctx.fillStyle = "rgba(255,255,255,.55)";
+        [[0, 0, 1.25, 0.55], [-0.9, 0.18, 0.8, 0.42], [0.95, 0.15, 0.85, 0.45], [0.2, -0.32, 0.75, 0.48]].forEach(function (e) { ctx.beginPath(); ctx.ellipse(cx + e[0] * r, cy + e[1] * r, e[2] * r, e[3] * r, 0, 0, 2 * Math.PI); ctx.fill(); });
+      });
+      ctx.restore();
+    }
+    function backdrop0(rect) { var g = ctx.createLinearGradient(0, rect.y, 0, rect.y + rect.h); g.addColorStop(0, "#f4f9fe"); g.addColorStop(1, "#e2edf7"); ctx.fillStyle = g; rrect(rect, 12); ctx.fill(); }
+    function poly(pts) { ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.closePath(); }
+    function quad(a, b, c, d, fill) { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(c[0], c[1]); ctx.lineTo(d[0], d[1]); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.strokeStyle = fill; ctx.lineWidth = 0.7; ctx.stroke(); }
+    function fitBlock(cam, rect, T, top, bot) {
+      var corners = [];
+      cam.oz = (T.z0 + T.z1) / 2;
+      [T.x0, T.x1].forEach(function (x) { [T.z0, T.z1].forEach(function (z) { corners.push([x, top, z]); corners.push([x, bot, z]); }); });
+      cam.fit(rect, corners, 0, 360, 0.9, 0.55);
+      var sh = cam.P((T.x0 + T.x1) / 2, bot, (T.z0 + T.z1) / 2);
+      ctx.save(); ctx.filter = "blur(" + Math.round(10 * TS) + "px)"; ctx.fillStyle = "rgba(30,40,60,.15)"; ctx.beginPath(); ctx.ellipse(sh[0], sh[1] + 10, (T.x1 - T.x0) * 0.5 * cam.k, Math.max(8, (T.z1 - T.z0) * 0.5 * cam.k * Math.sin(cam.pitch * RAD)), 0, 0, 2 * Math.PI); ctx.fill(); ctx.restore();
+    }
+    /* 블록 옆면: layers(x, z) → [[윗면 높이, 색], ...] 위에서 아래로. 마지막 층 아래는 바탕 바위 */
+    function drawWallLayers(cam, T, w, bot, layersF, waterF) {
+      var P2 = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); };
+      var r = wallRange(T, w), outline = wallOutline(cam, T, w, bot), N = 80, i, l;
+      ctx.save(); poly(outline); ctx.clip();
+      poly(outline); ctx.fillStyle = "#8c8478"; ctx.fill();
+      var us = [], L = [], wat = [];
+      for (i = 0; i <= N; i++) { var u = r[0] + (r[1] - r[0]) * i / N, p = wallPt(T, w, u, 0); us.push(u); L.push(layersF(p[0], p[2])); wat.push(waterF ? waterF(p[0], p[2]) : -9); }
+      var nl = L[0].length;
+      for (l = 0; l < nl; l++) for (i = 0; i < N; i++) {
+        var t0 = L[i][l][0], t1 = L[i + 1][l][0], b0 = l + 1 < nl ? L[i][l + 1][0] : bot, b1 = l + 1 < nl ? L[i + 1][l + 1][0] : bot;
+        if (t0 - b0 < 1e-4 && t1 - b1 < 1e-4) continue;
+        quad(P2(us[i], t0), P2(us[i + 1], t1), P2(us[i + 1], Math.min(t1, b1)), P2(us[i], Math.min(t0, b0)), rgb(L[i][l][1]));
+      }
+      for (i = 0; i < N; i++) if (wat[i] > L[i][0][0] + 0.0005 && wat[i + 1] > L[i + 1][0][0] + 0.0005) quad(P2(us[i], wat[i]), P2(us[i + 1], wat[i + 1]), P2(us[i + 1], L[i + 1][0][0]), P2(us[i], L[i][0][0]), "rgb(79,140,196)");
+      ctx.restore();
+      poly(outline); ctx.strokeStyle = "rgba(70,60,50,.5)"; ctx.lineWidth = 1; ctx.stroke();
+    }
+    function arrowPx(a, b, col, w) {
+      var ang = Math.atan2(b[1] - a[1], b[0] - a[0]), hs = 12 * TS;
+      ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = w + 4; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+      ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0] - Math.cos(ang) * hs * 0.5, b[1] - Math.sin(ang) * hs * 0.5); ctx.stroke(); ctx.lineCap = "butt";
+      ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(b[0] - Math.cos(ang - 0.45) * hs, b[1] - Math.sin(ang - 0.45) * hs); ctx.lineTo(b[0] - Math.cos(ang + 0.45) * hs, b[1] - Math.sin(ang + 0.45) * hs); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    }
+    /* 산지 업그레이드(10-20): 3D 위의 나무 · 집(작은 그림). kind 0 바늘잎(소나무) · 1 넓은잎 */
+    function tree3(cam, x, y, z, s, kind, shade) {
+      var b = cam.P(x, y, z), t = cam.P(x, y + s, z), h = b[1] - t[1];
+      if (h < 2) return;
+      var w = h * (kind ? 0.42 : 0.32), k = shade == null ? 1 : shade;
+      ctx.strokeStyle = "rgba(86,62,40,.9)"; ctx.lineWidth = Math.max(1, h * 0.09);
+      ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(b[0], b[1] - h * 0.3); ctx.stroke();
+      if (kind) {
+        ctx.fillStyle = rgb([74, 124, 64], k); ctx.beginPath(); ctx.ellipse(b[0], b[1] - h * 0.62, w, h * 0.4, 0, 0, 2 * Math.PI); ctx.fill();
+        ctx.fillStyle = rgb([110, 156, 84], k); ctx.beginPath(); ctx.ellipse(b[0] - w * 0.3, b[1] - h * 0.72, w * 0.5, h * 0.22, 0, 0, 2 * Math.PI); ctx.fill();
+      } else {
+        ctx.fillStyle = rgb([46, 96, 60], k);
+        ctx.beginPath(); ctx.moveTo(b[0], t[1]); ctx.lineTo(b[0] + w, b[1] - h * 0.22); ctx.lineTo(b[0] - w, b[1] - h * 0.22); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = rgb([70, 124, 78], k);
+        ctx.beginPath(); ctx.moveTo(b[0], t[1]); ctx.lineTo(b[0] - w * 0.55, b[1] - h * 0.5); ctx.lineTo(b[0], b[1] - h * 0.42); ctx.closePath(); ctx.fill();
+      }
+    }
+    function house3(cam, x, y, z, s) {
+      var a = cam.P(x - s, y, z - s), b = cam.P(x + s, y, z - s), c = cam.P(x + s, y, z + s), d = cam.P(x - s, y, z + s);
+      var a2 = cam.P(x - s, y + s * 1.2, z - s), b2 = cam.P(x + s, y + s * 1.2, z - s), c2 = cam.P(x + s, y + s * 1.2, z + s), d2 = cam.P(x - s, y + s * 1.2, z + s), r = cam.P(x, y + s * 2, z);
+      poly([a, b, b2, a2]); ctx.fillStyle = "#f1ece2"; ctx.fill();
+      poly([b, c, c2, b2]); ctx.fillStyle = "#d9d1c3"; ctx.fill();
+      poly([a2, b2, r]); ctx.fillStyle = "#c0533a"; ctx.fill();
+      poly([b2, c2, r]); ctx.fillStyle = "#9c4130"; ctx.fill();
+      poly([c2, d2, r]); ctx.fillStyle = "#b14a35"; ctx.fill();
+    }
+    var SEA = [80, 142, 200], SEA_D = [46, 100, 166], PLAIN = [168, 194, 112], FOREST = [92, 132, 78], HIGH = [128, 128, 100], ROCKC = [176, 170, 162];
+
+    /* ================= 보기 ① 동쪽이 높고 서쪽이 낮은 땅 (예시 모형) =================
+       블록 가로(x, 서 → 동) 약 250km(1 = 125km), 앞뒤(z, 남 → 북). 높이는 1 = 5km(크게 늘려 그림). 서쪽 · 남쪽 끝은 황해 · 남해, x > 0.86은 동해
+       처음: 오래 깎여 낮고 평평한 땅. 시간에 따라 최대 0.32(약 1,600m)까지 솟음
+       솟는 모양 = (1 − 기울기) × 고르게 솟는 고원 × 0.75 + 기울기 × 서쪽에서 동쪽으로 높아지는 경사면(1.4제곱), 동해 쪽 0.66 ~ 0.86에서 급히 낮아짐. 북쪽이 조금 더 솟음
+       하천: 땅이 가장 높은 줄(분수계)의 양옆에서 출발해 비탈을 따라 가장 가파른 쪽으로 내려간 길(모형 표면에서 계산). 하천이 지난 곳은 골짜기로 깎임 */
+    var KM_H = 125, M_V = 5000;
+    /* 업그레이드(10-20): 무대 오른쪽 아래 작은 그래프 칸(「하천 지형」과 같은 방식) */
+    function splitRect(rect, iw, ih) {
+      if (rect.w >= 640) { var w = Math.min(iw, rect.w * 0.38); return { r3: { x: rect.x, y: rect.y, w: rect.w - w * 0.55, h: rect.h - ih * 0.25 }, box: { x: rect.x + rect.w - w, y: rect.y + rect.h - ih, w: w, h: ih } }; }
+      var h = Math.min(ih, rect.h * 0.34);
+      return { r3: { x: rect.x, y: rect.y, w: rect.w, h: rect.h - h - 10 }, box: { x: rect.x, y: rect.y + rect.h - h, w: rect.w, h: h } };
+    }
+    function panelBox(b) {
+      ctx.fillStyle = "rgba(255,255,255,.94)"; rrect(b, 10); ctx.fill();
+      ctx.strokeStyle = "#dfe3e8"; ctx.lineWidth = 1; rrect(b, 10); ctx.stroke();
+    }
+    var UP = (function () {
+      var st = { tilt: 0.75, t: 0, play: false };
+      var cam = Cam(-30, 32), BOT = -0.2;
+      var Q = { rivers: [], inc: null };
+      function xw(z) { return -0.86 + 0.05 * Math.sin(9 * z) + 0.03 * Math.sin(23 * z + 1); }
+      function zs(x) { return -0.6 + 0.04 * Math.sin(11 * x) + 0.02 * Math.sin(27 * x + 2); }
+      function shape(x, z) {
+        var k = st.tilt, plateau = sm(-0.88, -0.45, x) * (0.8 + 0.2 * Math.cos(Math.PI * (x - 0.05) / 1.6)), ramp = Math.pow(clamp((x + 0.9) / 1.55, 0, 1), 1.4);
+        return ((1 - k) * plateau * 0.75 + k * ramp) * (1 - sm(0.66, 0.86, x)) * (0.85 + 0.15 * (z + 0.7) / 1.4);
+      }
+      function landMask(x, z) { return sm(xw(z) - 0.03, xw(z) + 0.03, x) * sm(zs(x) - 0.03, zs(x) + 0.03, z) * (1 - sm(0.84, 0.9, x)); }
+      function smooth(x, z) {
+        var land = 0.012 + 0.008 * n2(1.3 * x, 1.3 * z) + 0.32 * st.t * shape(x, z) * (1 + 0.22 * n2(2.3 * x + 1, 2.3 * z));
+        return mix1(x > 0.5 ? -0.12 : -0.05, land, landMask(x, z));
+      }
+      /* 하천 · 빗물이 따라가는 큰 땅 모양(잔물결을 뺌) */
+      function broad(x, z) { return mix1(x > 0.5 ? -0.12 : -0.05, 0.012 + 0.006 * (z + 0.7) / 1.4 + 0.32 * st.t * shape(x, z), landMask(x, z)); }
+      /* 하천이 깎은 골짜기: 굵은 격자에 도장 찍듯 */
+      var GW = 64, GH = 46, inc = new Float32Array(GW * GH);
+      function incAt(x, z) { var fx = (x + 1) / 2 * (GW - 1), fz = (z + 0.7) / 1.4 * (GH - 1), i = clamp(Math.floor(fx), 0, GW - 2), j = clamp(Math.floor(fz), 0, GH - 2), u = fx - i, v = fz - j; return (inc[j * GW + i] * (1 - u) + inc[j * GW + i + 1] * u) * (1 - v) + (inc[(j + 1) * GW + i] * (1 - u) + inc[(j + 1) * GW + i + 1] * u) * v; }
+      function grad(x, z) { var e = 0.01; return [(broad(x + e, z) - broad(x - e, z)) / (2 * e), (broad(x, z + e) - broad(x, z - e)) / (2 * e)]; }
+      function trace(x, z) {
+        var pts = [[x, z]];
+        for (var i = 0; i < 260; i++) {
+          var g = grad(x, z), gl = Math.hypot(g[0], g[1]);
+          if (gl < 1e-5) break;
+          x -= 0.012 * g[0] / gl; z -= 0.012 * g[1] / gl;
+          pts.push([x, z]);
+          if (broad(x, z) < 0.003 || Math.abs(x) > 0.99 || Math.abs(z) > 0.69) break;
+        }
+        return pts;
+      }
+      function divideX(z) { var bx = 0, bh = -9; for (var x = -0.8; x <= 0.85; x += 0.02) { var h = broad(x, z); if (h > bh) { bh = h; bx = x; } } return bx; }
+      function riverLen(p) { var L = 0; for (var i = 1; i < p.length; i++) L += Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); return L; }
+      function prm() {
+        Q.rivers = []; inc.fill(0);
+        if (st.t > 0.12) {
+          [-0.38, 0.06, 0.45].forEach(function (z) {
+            var xd = divideX(z);
+            Q.rivers.push({ side: "w", pts: trace(xd - 0.05, z) });
+            Q.rivers.push({ side: "e", pts: trace(xd + 0.05, z) });
+          });
+          var depth = 0.04 * sm(0.12, 1, st.t);
+          Q.rivers.forEach(function (rv) {
+            rv.pts.forEach(function (p, idx) {
+              var cx = (p[0] + 1) / 2 * (GW - 1), cz = (p[1] + 0.7) / 1.4 * (GH - 1), f = Math.min(1, idx / 15);
+              for (var dj = -2; dj <= 2; dj++) for (var di = -2; di <= 2; di++) {
+                var i = Math.round(cx) + di, j = Math.round(cz) + dj; if (i < 0 || j < 0 || i >= GW || j >= GH) continue;
+                var d = Math.hypot(i - cx, j - cz), v = depth * f * Math.exp(-d * d / 1.4);
+                if (v > inc[j * GW + i]) inc[j * GW + i] = v;
+              }
+            });
+          });
+        }
+        var hiE = -9, sw = 0, nw = 0;
+        for (var x = 0.2; x <= 0.85; x += 0.025) for (var z = -0.55; z <= 0.65; z += 0.05) hiE = Math.max(hiE, rock(x, z));
+        for (var x2 = -0.7; x2 <= -0.3; x2 += 0.05) for (var z2 = -0.45; z2 <= 0.6; z2 += 0.05) { var h = rock(x2, z2); if (h > 0) { sw += h; nw++; } }
+        Q.hiE = hiE; Q.west = nw ? sw / nw : 0;
+        var W = Q.rivers.filter(function (r) { return r.side === "w"; }), Ee = Q.rivers.filter(function (r) { return r.side === "e"; });
+        function avg(list, f) { return list.length ? list.reduce(function (s, r) { return s + f(r); }, 0) / list.length : 0; }
+        Q.lenW = avg(W, function (r) { return riverLen(r.pts); }) * KM_H; Q.lenE = avg(Ee, function (r) { return riverLen(r.pts); }) * KM_H;
+        Q.dropW = avg(W, function (r) { return Math.max(0, broad(r.pts[0][0], r.pts[0][1])); }) * M_V; Q.dropE = avg(Ee, function (r) { return Math.max(0, broad(r.pts[0][0], r.pts[0][1])); }) * M_V;
+      }
+      function rock(x, z) { var s = smooth(x, z); return s > 0.004 ? s - incAt(x, z) * clamp(s / 0.05, 0, 1) : s; }
+      var R1 = 0;
+      function hf(x, z) { var r = rock(x, z); R1 = r; return Math.max(r, 0); }
+      function color(h, x, z) {
+        var r = rock(x, z);
+        if (r <= 0) return mix(SEA, SEA_D, clamp(-r / 0.1, 0, 1));
+        if (h < 0.03) return PLAIN;
+        if (h < 0.1) return mix(PLAIN, FOREST, (h - 0.03) / 0.07);
+        return mix(FOREST, HIGH, clamp((h - 0.1) / 0.25, 0, 1));
+      }
+      /* 완성본: 바닷가를 층으로(톱니), 격자 100×70 → 108×76 */
+      var surf = makeSurf({ nx: 108, nz: 76, x0: -1, x1: 1, z0: -0.7, z1: 0.7, hf: hf, color: color, layers: [
+        { s: function () { return R1; }, c: function (x, z) { return mix(SEA, SEA_D, clamp(-rock(x, z) / 0.1, 0, 1)); }, flat: true, line: "rgba(255,255,255,.7)" }
+      ] });
+      var M = { st: st, cam: cam, yaw0: -30, pitch0: 32, Q: Q, surf: surf };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.tilt.toFixed(3)].join(","); };
+      /* 업그레이드(10-20): 동서 단면 그래프 — z = PZ(북쪽 가운데) 줄을 서해에서 동해까지 자른 높이. 처음 땅(점선)과 비교 */
+      var PZ = 0.3;
+      function profile(box) {
+        panelBox(box);
+        var pad = 10, g = { x: box.x + pad + 26, y: box.y + 28, w: box.w - pad * 2 - 30, h: box.h - 56 }, top = 0.34, bot = -0.13;
+        ctext("동서 단면(" + (st.t > 0.05 ? "솟은 뒤" : "처음") + ")", box.x + pad, box.y + 13, { size: 11.5, bold: true });
+        var Y = function (h) { return g.y + g.h - (h - bot) / (top - bot) * g.h; }, X = function (x) { return g.x + (x + 1) / 2 * g.w; };
+        ctx.strokeStyle = "#dee2e6"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(g.x, Y(0)); ctx.lineTo(g.x + g.w, Y(0)); ctx.stroke();
+        [0, 1000].forEach(function (m) { ctext(m ? "1,000m" : "0m", g.x - 3, Y(m / M_V), { size: 9.5, align: "right", color: "#6c757d", halo: 2 }); });
+        var N = 100, pts = [], i, x, best = [0, -9];
+        for (i = 0; i <= N; i++) { x = -1 + 2 * i / N; var h = rock(x, PZ); pts.push([X(x), Y(Math.max(h, bot))]); if (h > best[1]) best = [x, h]; }
+        ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y - 4, g.w, g.h + 4); ctx.clip();
+        ctx.fillStyle = "rgba(79,140,196,.55)"; ctx.fillRect(g.x, Y(0), g.w, Y(bot) - Y(0));
+        ctx.beginPath(); pts.forEach(function (q, j) { if (j) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }); ctx.lineTo(g.x + g.w, g.y + g.h); ctx.lineTo(g.x, g.y + g.h); ctx.closePath(); ctx.fillStyle = "#b99d74"; ctx.fill();
+        ctx.strokeStyle = "#7a5c3a"; ctx.lineWidth = 1.6; ctx.beginPath(); pts.forEach(function (q, j) { if (j) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }); ctx.stroke();
+        if (st.t > 0.05) { var t0 = st.t; st.t = 0; ctx.setLineDash([4, 3]); ctx.strokeStyle = "rgba(90,90,90,.7)"; ctx.lineWidth = 1.2; ctx.beginPath(); for (i = 0; i <= N; i++) { x = -1 + 2 * i / N; var q0 = [X(x), Y(Math.max(smooth(x, PZ), bot))]; if (i) ctx.lineTo(q0[0], q0[1]); else ctx.moveTo(q0[0], q0[1]); } ctx.stroke(); ctx.setLineDash([]); st.t = t0; }
+        ctx.restore();
+        ctext("서쪽(황해)", g.x, g.y + g.h + 11, { size: 10.5, color: "#1864ab", halo: 2 });
+        ctext("동쪽(동해)", g.x + g.w, g.y + g.h + 11, { size: 10.5, align: "right", color: "#1864ab", halo: 2 });
+        if (st.t > 0.3 && best[1] > 0.05) ctext("단면의 가장 높은 곳 약 " + (Math.round(best[1] * M_V / 100) * 100).toLocaleString("ko-KR") + "m", X(best[0]), Y(best[1]) - 9, { size: 10.5, bold: true, align: best[0] > 0.3 ? "right" : "center", color: "#7a2e12", halo: 3 });
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var sp = splitRect(rect, 280, 170);
+        rect = sp.r3;
+        fitBlock(cam, rect, surf, 0.45, BOT);
+        surf.draw(cam);
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWallLayers(cam, surf, w, BOT, function (x, z) { var r = rock(x, z); return [[r, r > 0 ? [150, 120, 92] : [120, 110, 98]], [r - 0.03, [132, 124, 112]]]; }, function (x, z) { return 0; }); });
+        /* 하천 */
+        Q.rivers.forEach(function (rv) {
+          ctx.strokeStyle = rv.side === "w" ? "rgba(28,110,200,.95)" : "rgba(28,110,200,.85)"; ctx.lineWidth = (rv.side === "w" ? 3 : 2) * TS; ctx.lineJoin = "round"; ctx.lineCap = "round";
+          ctx.beginPath(); rv.pts.forEach(function (p, i) { var q = cam.P(p[0], hf(p[0], p[1]) + 0.004, p[1]); if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }); ctx.stroke();
+        });
+        ctx.lineCap = "butt";
+        /* 산지 업그레이드: 황해 · 남해로 가는 하천 하류의 넓은 평야에 마을 · 도시(사람이 모여 사는 곳) */
+        var towns = [];
+        if (st.t > 0.25) Q.rivers.forEach(function (rv, ri) {
+          if (rv.side !== "w" || rv.pts.length < 12) return;
+          var p = null; for (var i = rv.pts.length - 1; i >= 0; i--) { var q = rv.pts[i]; if (smooth(q[0], q[1]) > 0.012) { p = q; break; } }
+          if (!p) return;
+          for (var k = 0; k < 6; k++) { var dx = (rnd(ri * 13 + k) - 0.5) * 0.12, dz = (rnd(ri * 7 + k * 3 + 1) - 0.5) * 0.12, x = p[0] + 0.03 + dx, z = p[1] + dz; if (smooth(x, z) > 0.008 && smooth(x, z) < 0.07) towns.push([x, z]); }
+        });
+        towns.sort(function (A, B) { return cam.P(B[0], 0, B[1])[2] - cam.P(A[0], 0, A[1])[2]; }).forEach(function (q) { house3(cam, q[0], hf(q[0], q[1]), q[1], 0.011); });
+        /* 솟은 양 화살표 */
+        if (st.t > 0.05) {
+          [[-0.55, "서쪽"], [0.5, "동쪽"]].forEach(function (a) {
+            var x = a[0], z = -0.68, u = 0.32 * st.t * shape(x, z), b = cam.P(x, 0.0, z), tp = cam.P(x, Math.max(0.03, u * 1.8), z);
+            arrowPx(b, tp, "#e8590c", 4);
+            callout(a[1] + " 솟은 양", tp[0], tp[1], tp[0], tp[1] - 16 * TS, { size: 11.5, color: "#c2410c", bg: "rgba(255,255,255,.8)" });
+          });
+        }
+        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        var sea = function (t, x, z) { var p = cam.P(x, 0.01, z); ctext(t, p[0], p[1], { size: 13, bold: true, color: "#1864ab", align: "center" }); };
+        sea("황해", -0.95, 0.35); sea("동해", 0.95, 0.2); sea("남해", -0.2, -0.67);
+        if (st.t > 0.12) {
+          var w0 = Q.rivers.filter(function (r) { return r.side === "w"; })[1], e0 = Q.rivers.filter(function (r) { return r.side === "e"; })[1];
+          if (w0 && w0.pts.length > 10) { var pw = w0.pts[Math.floor(w0.pts.length * 0.6)]; L("길고 완만한 하천(황해 · 남해로)", pw[0], pw[1], -0.1, 0.3); }
+          if (e0 && e0.pts.length > 2) { var pe = e0.pts[Math.floor(e0.pts.length * 0.5)]; L("짧고 급한 하천(동해로)", pe[0], pe[1], 0.15, 0.38); }
+        }
+        if (st.t > 0.5 && st.tilt > 0.4) { var xd = divideX(0.3); L("높은 산지(동쪽)", xd, 0.3, -0.05, 0.25); }
+        if (towns.length > 2) L("넓은 평야 · 도시(사람이 많이 모여 삶)", towns[0][0], towns[0][1], -0.25, 0.2, { size: 12 });
+        /* 단면 자리 선 */
+        ctx.strokeStyle = "rgba(232,89,12,.85)"; ctx.lineWidth = 1.8; ctx.setLineDash([6, 4]); ctx.beginPath();
+        for (var pi = 0; pi <= 50; pi++) { var px = -1 + 2 * pi / 50, pq = cam.P(px, hf(px, PZ) + 0.006, PZ); if (pi) ctx.lineTo(pq[0], pq[1]); else ctx.moveTo(pq[0], pq[1]); }
+        ctx.stroke(); ctx.setLineDash([]);
+        flushLabels(rect);
+        profile(sp.box);
+      };
+      var drops = [], clock = 0;
+      for (var d = 0; d < 70; d++) drops.push([rnd(d) * 1.7 - 0.85, rnd(d + 7) * 1.2 - 0.55, rnd(d + 13)]);
+      M.step = function (dt) {
+        var sec = dt / 1000; clock += sec;
+        drops.forEach(function (p, i) {
+          var g = grad(p[0], p[1]), gl = Math.hypot(g[0], g[1]);
+          if (gl > 1e-4) { var sp = 0.04 + 0.25 * Math.min(gl, 1.2); p[0] -= g[0] / gl * sp * sec; p[1] -= g[1] / gl * sp * sec; }
+          p[2] += sec * 0.25;
+          if (broad(p[0], p[1]) < 0.004 || p[2] > 1 || Math.abs(p[0]) > 0.99 || Math.abs(p[1]) > 0.69) { p[0] = rnd(i + clock * 13) * 1.6 - 0.8; p[1] = rnd(i * 3 + clock * 7) * 1.1 - 0.5; p[2] = 0; }
+        });
+      };
+      M.renderDynamic = function () {
+        if (RM || st.t < 0.12) return;
+        ctx.fillStyle = "rgba(40,120,220,.85)";
+        drops.forEach(function (p) { if (smooth(p[0], p[1]) < 0.004) return; var q = cam.P(p[0], hf(p[0], p[1]) + 0.006, p[1]); ctx.beginPath(); ctx.arc(q[0], q[1], 1.8 * TS, 0, 2 * Math.PI); ctx.fill(); });
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ② 돌산과 흙산 (예시 모형) =================
+       블록 가로 약 10km(1 = 5km), 높이 1 = 3.2km. 시간 끝 = 수천만 년
+       흙산: 잘 부서지는 바위가 풍화되어 흙이 두꺼워짐(0.004 + 0.03 × 시간, 비탈이 급하면 얇음 · 그림은 크게 늘림, 읽은 값은 0.03 = 1.5m). 높이 0.52 → 0.37, 봉우리가 둥글어짐
+       돌산: 땅속에 단단한 바위 덩어리(꼭대기 0.5 남짓, 앞뒤로 긴 모양)가 있고, 위를 덮은 바위 · 흙이 0.58 → 0.2로 깎임. 덮은 바위보다 높아진 곳이 바위 봉우리로 드러남(흙 거의 없음) */
+    var MT = (function () {
+      var st = { kind: "rock", t: 0, play: false, cv: 0 };
+      var cam = Cam(-28, 30), BOT = -0.3, HM = 3200;
+      var Q = {};
+      function envelope(x, z, sx, sz) { return Math.exp(-(x * x / (sx * sx) + z * z / (sz * sz))); }
+      function ridges(x, z) { return 0.5 + 0.3 * Math.sin(6 * x + 2 * z) + 0.2 * Math.sin(11 * z - 3 * x + 1); }
+      function soilTop(x, z) { var H = 0.52 - 0.15 * st.t, E = envelope(x, z, 0.58, 0.48); return 0.03 + H * E * (0.82 + 0.18 * ridges(x, z) * (1 - 0.6 * st.t)); }
+      /* 완성본: 끝 시점에 덮은 땅이 거의 평지처럼 보였음 → 0.58 → 0.24까지만 깎이고, 땅속 바위를 조금 높임 */
+      function coverTop(x, z) { var E = envelope(x, z, 0.6, 0.62); return 0.03 + (0.58 - 0.34 * st.t) * E * (0.85 + 0.15 * ridges(x, z)); }
+      function graniteTop(x, z) {
+        var Eg = envelope(x - 0.05, z, 0.34, 0.62), jag = 0.7 + 0.18 * Math.abs(Math.sin(17 * x + 5 * z)) * Math.abs(Math.cos(13 * z - 4 * x)) + 0.12 * Math.pow(Math.max(0, Math.sin(7.3 * x - 9.1 * z + 0.6)), 3);
+        return -0.24 + (0.8 - 0.04 * st.t) * Eg * jag;
+      }
+      /* 업그레이드(10-20): 나란히 — 왼쪽은 돌산, 오른쪽은 흙산을 한 블록에 놓고 같은 시간을 흘려 비교. KX = 그 자리의 산 종류와 그 산의 좁힌 x */
+      function KX(x, z) {
+        if (st.kind !== "both") return [st.kind, x];
+        var a = (x + 0.48) * 1.7, b = (x - 0.48) * 1.7;
+        return Math.max(coverTop(a, z), graniteTop(a, z)) >= soilTop(b, z) ? ["rock", a] : ["soil", b];
+      }
+      function rock(x, z) { var k = KX(x, z); return k[0] === "soil" ? soilTop(k[1], z) : Math.max(coverTop(k[1], z), graniteTop(k[1], z)); }
+      function slopeAt(x, z) { var e = 0.01, gx = (rock(x + e, z) - rock(x - e, z)) / (2 * e), gz = (rock(x, z + e) - rock(x, z - e)) / (2 * e); return Math.hypot(gx, gz); }
+      function soilThick(x, z) {
+        var k = KX(x, z);
+        if (k[0] === "soil") return (0.004 + 0.03 * st.t) * clamp(1.2 - slopeAt(x, z) * 0.6, 0.2, 1);
+        return graniteTop(k[1], z) >= coverTop(k[1], z) - 0.002 ? 0.0008 : 0.004 + 0.006 * st.t;
+      }
+      function exposed(x, z) { var k = KX(x, z); return k[0] === "rock" && graniteTop(k[1], z) >= coverTop(k[1], z) - 0.002; }
+      /* 산지 업그레이드: 드러난 화강암에 갈라진 금(절리) — 세로 금과 둥글게 벗겨진 판(판상 절리) */
+      function graniteCol(x, z) {
+        var c = mix([218, 211, 201], [182, 176, 169], 0.5 + 0.5 * Math.sin(40 * x + 30 * z));
+        var j1 = Math.abs(((x * 11 + z * 3.2 + 0.3 * Math.sin(z * 9)) % 1 + 1) % 1 - 0.5), j2 = Math.abs(((graniteTop(KX(x, z)[1], z) * 38) % 1 + 1) % 1 - 0.5);
+        if (j1 < 0.035) c = mix(c, [120, 112, 104], 0.55);
+        if (j2 < 0.05) c = mix(c, [150, 142, 134], 0.35);
+        return c;
+      }
+      function color(h, x, z) {
+        if (exposed(x, z)) return graniteCol(x, z);
+        var th = soilThick(x, z);
+        return KX(x, z)[0] === "soil" ? mix([92, 132, 74], [58, 110, 60], clamp(th / 0.03, 0, 1)) : mix([132, 140, 96], [92, 128, 76], clamp(th / 0.01, 0, 1));
+      }
+      /* 완성본: 드러난 바위 경계를 층으로(톱니), 격자 96×76 → 104×82 */
+      var surfOpt = { nx: 104, nz: 82, x0: -1, x1: 1, z0: -0.75, z1: 0.75, hf: rock, color: color, layers: [
+        { s: function (x, z) { var k = KX(x, z); return k[0] === "rock" ? coverTop(k[1], z) - 0.002 - graniteTop(k[1], z) : 1; }, c: graniteCol, line: "rgba(90,84,76,.35)" }
+      ] };
+      var full = makeSurf(surfOpt), surf = full, half = null, halfZ = null;
+      /* 단면: 앞에서부터 자른 블록은 높이 격자를 다시 만듦(자르는 위치가 바뀔 때만) */
+      function curSurf() {
+        if (!st.cv || st.cv < 0.005) return full;
+        var z = -0.75 + (0 - -0.75) * st.cv;
+        if (!half || halfZ !== z) { var o2 = Object.assign({}, surfOpt, { z0: z, nz: Math.max(8, Math.round(82 * (0.75 - z) / 1.5)) }); half = makeSurf(o2); half.lod = full.lod; halfZ = z; half.reshape(); }
+        return half;
+      }
+      var M = { st: st, cam: cam, yaw0: -28, pitch0: 30, Q: Q };
+      function stats() {
+        var hi = 0, gs = 0, n = 0, ex = 0, th = 0, m = 0, hiR = 0, hiS = 0, thS = 0, mS = 0, exR = 0, mR = 0;
+        /* 완성본: 통계를 성긴 격자로(재생이 느렸음) */
+        for (var i = 0; i <= 24; i++) for (var j = 0; j <= 18; j++) {
+          var x = -0.7 + 1.4 * i / 24, z = -0.6 + 1.2 * j / 18, h = rock(x, z);
+          if (h > hi) hi = h;
+          var kk = KX(x, z)[0]; if (kk === "rock") hiR = Math.max(hiR, h); else hiS = Math.max(hiS, h);
+          if (h > 0.08) { gs += Math.atan(slopeAt(x, z) * HM / 5000) / RAD; n++; var tk = soilThick(x, z); th += tk; m++; if (exposed(x, z)) ex++; if (kk === "soil") { thS += tk; mS++; } else { mR++; if (exposed(x, z)) exR++; } }
+        }
+        Q.hi = hi; Q.slope = n ? gs / n : 0; Q.soil = m ? th / m : 0; Q.ex = m ? ex / m : 0;
+        Q.hiR = hiR; Q.hiS = hiS; Q.soilS = mS ? thS / mS : 0; Q.exR = mR ? exR / mR : 0;
+      }
+      M.update = function () { surf = curSurf(); surf.reshape(); stats(); };
+      M.setLod = function (v) { full.lod = v; if (half) half.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.kind, st.cv.toFixed(3)].join(","); };
+      M.hiM = function () { return Q.hi * HM; };
+      M.renderStatic = function (rect) {
+        surf = curSurf();
+        backdrop(rect);
+        fitBlock(cam, rect, full, 0.5, BOT);
+        surf.draw(cam);
+        facingWalls(cam, surf, 0).forEach(function (w) {
+          drawWallLayers(cam, surf, w, BOT, function (x, z) {
+            var top = rock(x, z), th = soilThick(x, z), kw = KX(x, z);
+            if (kw[0] === "soil") return [[top, [132, 92, 58]], [top - th * 2.2, [170, 140, 108]], [top - th * 2.2 - 0.05, [150, 132, 118]]];
+            var g = graniteTop(kw[1], z), gtop = Math.min(g, top);
+            if (exposed(x, z)) return [[top, [208, 200, 192]], [top - 0.001, [208, 200, 192]], [top - 0.002, [208, 200, 192]]];
+            return [[top, [132, 100, 70]], [top - th * 2, [140, 128, 112]], [Math.max(gtop, -0.29), g > -0.2 ? [206, 196, 188] : [140, 128, 112]]];
+          }, null);
+        });
+        /* 산지 업그레이드: 나무 — 흙산은 흙이 두꺼워질수록 빽빽한 숲, 돌산은 바위가 드러난 곳을 빼고 듬성듬성 소나무 */
+        var trees = [], zMin = surf.z0 + 0.03;
+        for (var ti = 0; ti < 34; ti++) for (var tj = 0; tj < 26; tj++) {
+          var tx = -0.95 + 1.9 * (ti + rnd(ti * 31 + tj)) / 34, tz = -0.72 + 1.44 * (tj + rnd(ti * 17 + tj * 5 + 2)) / 26, rr = rnd(ti * 7 + tj * 13 + 5);
+          if (tz < zMin) continue;
+          var kt = KX(tx, tz);
+          if (kt[0] === "soil") { if (rr > 0.25 + 0.65 * sm(0, 0.6, st.t)) continue; }
+          else { if (exposed(tx, tz) || rr > 0.22 || graniteTop(kt[1], tz) > coverTop(kt[1], tz) - 0.02) continue; }
+          trees.push([tx, tz, rr, kt[0]]);
+        }
+        trees.sort(function (A, B) { return cam.P(B[0], 0, B[1])[2] - cam.P(A[0], 0, A[1])[2]; }).forEach(function (q) {
+          var y = rock(q[0], q[1]), sz = q[3] === "soil" ? 0.03 + 0.012 * q[2] : 0.028;
+          tree3(cam, q[0], y, q[1], sz, q[3] === "soil" && q[2] > 0.45 ? 1 : 0, 0.85 + 0.25 * q[2]);
+        });
+        var best = [0, 0, -1]; for (var i = 0; i <= 40; i++) for (var j = 0; j <= 30; j++) { var x = -0.6 + 1.2 * i / 40, z = Math.max(-0.5, surf.z0 + 0.03) + (0.5 - Math.max(-0.5, surf.z0 + 0.03)) * j / 30, h = rock(x, z); if (h > best[2]) best = [x, z, h]; }
+        if (st.kind === "both") {
+          [[-1, "rock"], [1, "soil"]].forEach(function (sd) {
+            var bb = [0, 0, -1]; for (var i2 = 0; i2 <= 24; i2++) for (var j2 = 0; j2 <= 20; j2++) { var x2 = sd[0] * (0.1 + 0.8 * i2 / 24), z2 = Math.max(-0.5, surf.z0 + 0.03) + (0.5 - Math.max(-0.5, surf.z0 + 0.03)) * j2 / 20, h2 = rock(x2, z2); if (KX(x2, z2)[0] === sd[1] && h2 > bb[2]) bb = [x2, z2, h2]; }
+            if (bb[2] < 0) return;
+            var a2 = cam.P(bb[0], bb[2] + 0.004, bb[1]), b2 = cam.P(bb[0] + sd[0] * 0.3, bb[2] + 0.22, bb[1]);
+            callout((sd[1] === "rock" ? "돌산(바위 봉우리)" : "흙산(둥근 봉우리 · 숲)") + " · 약 " + Math.round((sd[1] === "rock" ? Q.hiR : Q.hiS) * HM / 10) * 10 + "m", a2[0], a2[1], b2[0], b2[1], { size: 12.5 });
+          });
+          return;
+        }
+        var a = cam.P(best[0], best[2] + 0.004, best[1]), b = cam.P(best[0] - 0.35, best[2] + 0.2, best[1]);
+        callout((st.kind === "rock" ? (Q.ex > 0.05 ? "바위 봉우리" : "봉우리") : "둥근 봉우리") + " · 약 " + Math.round(Q.hi * HM / 10) * 10 + "m", a[0], a[1], b[0], b[1], { size: 12.5 });
+        var zl = surf.z0, q0 = cam.P(0.05, rock(0.05, zl) - 0.04, zl), q1 = cam.P(0.6, 0.38, zl);
+        if (st.kind === "soil") callout(st.t > 0.3 ? "두껍게 쌓인 흙" : "얇은 흙", q0[0], q0[1], q1[0], q1[1], { size: 12 });
+        else { var qg = cam.P(0.05, -0.1, zl); callout("땅속의 단단한 바위(단면)", qg[0], qg[1], q1[0], q1[1], { size: 12 }); }
+      };
+      M.step = function () {};
+      M.renderDynamic = function () {};
+      return M;
+    })();
+
+    /* ================= 보기 ③ 산지를 어떻게 이용할까 (예시 모형) =================
+       블록 가로 약 20km(1 = 10km), 높이 1 = 3km. 서쪽은 하천 골짜기, 가운데는 높고 평탄한 땅(약 800m)과 둥근 봉우리, 동쪽은 동해로 급히 낮아지는 비탈(x 0.47 ~ 0.7)과 바닷가 평지
+       「살펴볼 곳」 단추 네 개는 고랭지 밭 · 스키장 · 숲 · 논과 마을 칸 가운데 기준점에서 가장 가까운 곳을 찾아감
+       7월 평균 기온 = 24℃ − 높이 100m마다 0.5℃(「지형과 기후」와 같은 값). 경사는 실제 비율로 계산
+       알맞은 이용: 바다 · 바닷가 · 골짜기 평지(150m 아래 · 5° 아래) → 논 · 마을 / 25° 넘음 → 숲 / 700m 넘고 8° 아래 → 고랭지 밭 / 600m 넘고 15° 아래 → 목장 / 750m 넘고 12 ~ 25° → 스키장 / 나머지 낮은 완만한 곳 → 밭 · 마을, 그 밖 → 숲 · 등산로 */
+    var USES = {
+      town: ["논 · 마을", [196, 206, 128]], farm: ["고랭지 밭(배추 · 감자)", [150, 200, 90]], pasture: ["목장(목초지)", [206, 214, 120]],
+      ski: ["스키장", [214, 232, 246]], forest: ["숲", [70, 118, 70]], trail: ["숲 · 등산로", [104, 140, 84]], field: ["밭 · 과수원 · 마을", [184, 196, 120]], sea: ["바다", SEA]
+    };
+    var US = (function () {
+      var st = { mx: 0.05, mz: 0.1, paint: true, play: false, t: 0, season: "summer" };
+      var cam = Cam(-30, 36), BOT = -0.15, H3 = 3000, X3 = 10000;
+      var SPOTS = { flat: [0.05, 0.1], slope: [-0.18, -0.38], east: [0.62, 0.0], low: [0.86, -0.3] };
+      function rock(x, z) {
+        var plat = 0.27 * sm(-0.8, -0.3, x) * (1 - sm(0.47, 0.7, x));
+        var hills = 0.16 * Math.max(0, Math.sin(4.2 * x + 1.1) * Math.sin(3.6 * z + 0.4)) * sm(-0.4, 0, x) * (1 - sm(0.3, 0.55, x));
+        var bump = 0.07 * Math.exp(-(Math.pow(x + 0.18, 2) / 0.02 + Math.pow(z + 0.38, 2) / 0.05));
+        var vz = 0.08 * Math.sin(2.2 * x + 0.5), valley = 0.12 * Math.exp(-Math.pow((z - vz) / 0.12, 2)) * (1 - sm(-0.6, 0.0, x));
+        var h = Math.max(0.018, 0.02 + plat + hills + bump - valley + 0.008 * n2(1.4 * x, 1.4 * z));
+        if (x > 0.88) h = mix1(h, -0.06, sm(0.88, 0.96, x));
+        return h;
+      }
+      var U_ = "";
+      function hf(x, z) { var r = rock(x, z); U_ = st.paint || r <= 0 ? useOf(x, z) : ""; return Math.max(r, 0); }
+      function slopeDeg(x, z) { var e = 0.01, gx = (rock(x + e, z) - rock(x - e, z)) / (2 * e), gz = (rock(x, z + e) - rock(x, z - e)) / (2 * e); return Math.atan(Math.hypot(gx, gz) * H3 / X3) / RAD; }
+      function hM(x, z) { return Math.max(0, rock(x, z)) * H3; }
+      /* 7월 = 24℃ − 100m마다 0.5℃(「지형과 기후」와 같은 값)
+         1월(품질 10-20): 기상청 평년값(1991~2020) 강릉 0.9℃(관측소 약 30m) · 대관령 −7.0℃(약 770m)에 맞춤 → 1.2℃ − 100m마다 1.07℃. 겨울 산지는 바닷가보다 훨씬 춥게 내려감 */
+      function tempJ(x, z) { return st.season === "winter" ? 1.2 - 1.07 * hM(x, z) / 100 : 24 - 0.5 * hM(x, z) / 100; }
+      /* 겨울 색: 높은 곳 눈 · 고랭지 밭은 쉬는 밭 · 스키장은 하얀 눈 */
+      function useCol(u, x, z) {
+        var c = USES[u][1];
+        if (st.season !== "winter" || u === "sea") return c;
+        if (u === "farm") c = [184, 168, 140];
+        if (u === "ski") return [252, 253, 255];
+        if (u === "town" || u === "field" || u === "pasture") c = mix(c, [176, 164, 132], 0.55);
+        return mix(c, [236, 240, 246], 0.42 * sm(500, 1000, hM(x, z)));
+      }
+      function useOf(x, z) {
+        if (rock(x, z) <= 0) return "sea";
+        var h = hM(x, z), s = slopeDeg(x, z);
+        if (h < 150 && s < 5) return "town";
+        if (s > 25) return "forest";
+        if (h > 700 && s < 8) return "farm";
+        if (h > 600 && s < 15) return "pasture";
+        if (h > 720 && s >= 10) return "ski";
+        if (h < 500 && s < 12) return "field";
+        return "trail";
+      }
+      function color(h, x, z) {
+        var u = useOf(x, z);
+        if (u === "sea") return mix(SEA, SEA_D, clamp(-rock(x, z) / 0.06, 0, 1));
+        if (st.paint) return useCol(u, x, z);
+        var c0 = h < 0.05 ? PLAIN : mix(FOREST, HIGH, clamp((h - 0.15) / 0.25, 0, 1));
+        return st.season === "winter" ? mix(mix(c0, [170, 160, 128], 0.4), [236, 240, 246], 0.42 * sm(500, 1000, hM(x, z))) : c0;
+      }
+      /* 완성본: 이용 칸 경계를 층으로(계단 → 비스듬한 선). 이용 값은 hf에서 남긴 U_를 씀 */
+      var ORDER = ["trail", "field", "forest", "pasture", "ski", "farm", "town", "sea"];
+      var surf = makeSurf({ nx: 100, nz: 70, x0: -1, x1: 1, z0: -0.7, z1: 0.7, hf: hf, color: function (h, x, z) { return st.paint ? USES.trail[1] : color(h, x, z); }, layers: ORDER.map(function (u) {
+        return { s: function () { return (u === "sea" || st.paint) && U_ === u ? -1 : 1; }, c: function (x, z) { return u === "sea" ? mix(SEA, SEA_D, clamp(-rock(x, z) / 0.06, 0, 1)) : useCol(u, x, z); }, flat: u === "sea" };
+      }) });
+      /* 빠른 선택 단추: 바라는 이용 칸 가운데 기준점에서 가장 가까운 곳 */
+      function findSpot(use, pref) {
+        var best = null, bd = 1e9;
+        for (var x = -0.95; x <= 0.95; x += 0.0125) for (var z = -0.65; z <= 0.65; z += 0.025) if (useOf(x, z) === use) { var d = Math.hypot(x - pref[0], z - pref[1]); if (d < bd) { bd = d; best = [x, z]; } }
+        return best || pref;
+      }
+      SPOTS.flat = findSpot("farm", SPOTS.flat); SPOTS.slope = findSpot("ski", [0.4, 0.2]); SPOTS.east = findSpot("forest", SPOTS.east); SPOTS.low = findSpot("town", SPOTS.low);
+      st.mx = SPOTS.flat[0]; st.mz = SPOTS.flat[1];
+      var M = { st: st, cam: cam, yaw0: -30, pitch0: 36, surf: surf, SPOTS: SPOTS };
+      M.update = function () { surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.mx.toFixed(3), st.mz.toFixed(3), st.paint, st.season].join(","); };
+      M.read = function () { var x = st.mx, z = st.mz; return { h: hM(x, z), s: slopeDeg(x, z), t: tempJ(x, z), use: useOf(x, z), sea: rock(x, z) <= 0 }; };
+      M.coast = function () { return tempJ(0.92, 0); };
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.45, BOT);
+        surf.draw(cam);
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWallLayers(cam, surf, w, BOT, function (x, z) { var r = rock(x, z); return [[r, [140, 110, 80]], [r - 0.02, [150, 140, 126]]]; }, function () { return 0; }); });
+        var sp = cam.P(0.98, 0.01, 0.4); ctext("동해", sp[0], sp[1], { size: 13, bold: true, color: "#1864ab", align: "center" });
+        var x = st.mx, z = st.mz, y = hf(x, z), b = cam.P(x, y, z), t = cam.P(x, y + 0.14, z);
+        ctx.strokeStyle = "#c2410c"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(t[0], t[1]); ctx.stroke();
+        ctx.fillStyle = "#e8590c"; ctx.beginPath(); ctx.moveTo(t[0], t[1]); ctx.lineTo(t[0] + 16 * TS, t[1] + 6 * TS); ctx.lineTo(t[0], t[1] + 12 * TS); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = "#c2410c"; ctx.beginPath(); ctx.arc(b[0], b[1], 4, 0, 2 * Math.PI); ctx.fill();
+        var r = M.read();
+        ctext(r.sea ? "바다" : USES[r.use][0], t[0] + 20 * TS, t[1] + 2 * TS, { pill: true, bold: true, size: 12.5, color: "#c2410c" });
+        /* 완성본: 색으로 칠했을 때 이용 이름표(고른 곳이 아닌 곳) */
+        if (st.paint) [["farm", SPOTS.flat], ["ski", SPOTS.slope], ["forest", SPOTS.east], ["town", SPOTS.low]].forEach(function (q) {
+          if (Math.hypot(q[1][0] - x, q[1][1] - z) < 0.08) return;
+          var p = cam.P(q[1][0], hf(q[1][0], q[1][1]) + 0.004, q[1][1]), l = cam.P(q[1][0], hf(q[1][0], q[1][1]) + 0.16, q[1][1]);
+          callout(USES[q[0]][0], p[0], p[1], l[0], l[1], { size: 11.5, bold: false });
+        });
+      };
+      M.step = function () {};
+      M.renderDynamic = function () {};
+      return M;
+    })();
+
+    /* ================= 그리기 ================= */
+    var stage = $(".mt-stage"), cap = $(".mt-cap"), legend = $(".mt-legend");
+    var padL = 18;
+    function drawRect() { var top = cap.offsetTop + cap.offsetHeight + 8, bot = legend.offsetHeight + 20; return { x: padL, y: top, w: Math.max(10, CW - padL - 18), h: Math.max(10, CH - top - bot) }; }
+    function scene() { return view === 1 ? UP : view === 2 ? MT : US; }
+    var rq = 0, layer = document.createElement("canvas"), layerKey = "";
+    /* 품질 다듬기: 장면을 바꾸거나 「처음 시점으로」를 누르면 시점이 부드럽게 옮겨 감(0.55초) */
+    var camTween = 0, INTRO = false;
+    function camTo(sc, y, p, z) {
+      if (z && stage && stage.clientWidth > 1300) z *= 1.15;
+      var c = sc && sc.cam; if (!c) return;
+      var DUR = 550;
+      if (INTRO && c.yaw != null && !RM) { INTRO = false; c.yaw = y - 34; c.pitch = Math.min(70, p + 9); c.zoom = z * 0.84; DUR = 950; }
+      if (RM || c.yaw == null) { c.yaw = y; c.pitch = p; c.zoom = z; requestRender(); return; }
+      var y0 = c.yaw, p0 = c.pitch, z0 = c.zoom || 1, dy = ((y - y0) % 360 + 540) % 360 - 180, t0 = 0, id = ++camTween;
+      if (Math.abs(dy) < 0.5 && Math.abs(p - p0) < 0.5 && Math.abs(z - z0) < 0.01) { c.yaw = y; c.pitch = p; c.zoom = z; requestRender(); return; }
+      if (sc.setLod) sc.setLod(true);
+      function f(now) {
+        if (id !== camTween) return;
+        if (!t0) t0 = now;
+        var u = Math.min(1, (now - t0) / DUR), e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+        c.yaw = y0 + dy * e; c.pitch = p0 + (p - p0) * e; c.zoom = z0 + (z - z0) * e;
+        if (u < 1) { layerKey = ""; requestRender(); requestAnimationFrame(f); }
+        else { c.yaw = y; if (sc.setLod && !(sc.st && sc.st.play)) sc.setLod(false); layerKey = ""; requestRender(); }
+      }
+      requestAnimationFrame(f);
+    }
+    function requestRender() { if (!rq) rq = requestAnimationFrame(function () { rq = 0; render(); }); }
+    /* 두 번째 다듬기: 컴퓨터가 빠르면 재생 중에도 칸을 성기게 하지 않음(정지 화면 그리기 20ms 안쪽일 때) */
+    var LASTFULL = 99, DRAG2 = false, PLAYK = 1, FDT = 16, NOFULL = false;
+    function render() {
+      var scA = scene();
+      if (scA.st && scA.st.play && FDT > 34 && !NOFULL) { NOFULL = true; if (scA.setLod && scA.lod && !scA.lod()) scA.setLod(true); }
+      if (!SLOW && !NOFULL && FDT < 24 && LASTFULL < 20 && !DRAG2 && scA.st && scA.st.play && scA.lod && scA.lod() && scA.setLod) scA.setLod(false);
+      syncStageBtns();
+      var sc = scene(), rect = drawRect();
+      if (rect.w < 40 || rect.h < 40) return;
+      TS = clamp(rect.w / 900, 0.78, 1.1);
+      var key = [view, sc.cam.yaw.toFixed(2), sc.cam.pitch.toFixed(2), (sc.cam.zoom || 1).toFixed(3), sc.lod(), CW, CH, DPR, rect.x, rect.y.toFixed(1), rect.w.toFixed(1), rect.h.toFixed(1), sc.skey()].join("|");
+      var main = ctx;
+      if (key !== layerKey) {
+        if (layer.width !== cv.width || layer.height !== cv.height) { layer.width = cv.width; layer.height = cv.height; }
+        ctx = layer.getContext("2d"); ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, CW, CH);
+        sc.cam.rot();
+        var t0s = performance.now();
+        if (SLOW) sc.setLod(true);
+        LQ = [];
+        ctx.save(); rrect(rect, 12); ctx.clip();
+        WALLQ = { list: [], keys: {} };
+        sc.renderStatic(rect);
+        shadeWalls();
+        ctx.restore();
+        flushLabels(rect);
+        var msS = performance.now() - t0s; if (!sc.lod()) LASTFULL = msS; noteSpeed(msS);
+        ctx = main; layerKey = key;
+      }
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.drawImage(layer, 0, 0);
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      sc.renderDynamic(rect);
+    }
+    var raf = 0, lastT = 0, PLAY_MS = 14000;
+    function needAnim() { return scene().st.play || (!RM && view === 1); }
+    function tick(t) {
+      raf = 0;
+      var dt = lastT ? Math.min(80, t - lastT) : 16, sc = scene();
+      lastT = t;
+      FDT = FDT * 0.85 + dt * 0.15;
+      if (sc.st.play) { var lim = stopAt != null ? stopAt : 1, nt = Math.min(lim, sc.st.t + dt * PLAYK / PLAY_MS); setTime(nt, true); if (nt >= lim) { sc.st.play = false; stopAt = null; sc.setLod(false); sc.update(); syncPlay(); } }
+      sc.step(dt); requestRender();
+      if (needAnim()) raf = requestAnimationFrame(tick); else lastT = 0;
+    }
+    function kick() { if (!raf && needAnim()) { lastT = 0; raf = requestAnimationFrame(tick); } }
+
+    /* ================= 패널: 읽은 값 ================= */
+    var elReadH = $(".mt-readh"), elRes = $(".mt-result"), elRk = $(".mt-rk"), elRt = $(".mt-rt"), elNote = $(".mt-readnote");
+    var elTitle = $(".mt-title"), elGuide = $(".mt-guide");
+    /* 개편(10-21): 측정 값은 한 줄에 하나씩(최대 5행). 이번에 채우지 않은 행은 숨김 */
+    var K_ = [1, 2, 3, 4, 5].map(function (i) { var k = $(".mt-k" + i); return { k: k, v: $(".mt-v" + i), row: k.parentNode, used: false }; });
+    function stat(i, k, v) { setText(K_[i].k, k); setText(K_[i].v, v); K_[i].used = true; }
+    function statsBegin() { K_.forEach(function (r) { r.used = false; }); }
+    function statsEnd() { K_.forEach(function (r) { if (r.row.hidden === r.used) r.row.hidden = !r.used; }); }
+    function result(head, text, cls) { var c = "mt-result" + (cls ? " " + cls : ""); if (elRes.className !== c) elRes.className = c; setText(elRk, head); setText(elRt, text); }
+    function round10(v) { return Math.round(v / 10) * 10; }
+    /* 개편(10-21): 시기 단계 — 경동성 요곡 운동 기준. 모형 시간 0 · 0.2 · 0.62 · 1 */
+    var STG = [0, 0.2, 0.62, 1], STG_NAME = ["중생대 말", "신생대 제3기 초", "신생대 제3기 후반", "신생대 제4기(오늘날)"];
+    function stageNow() { var t = UP.st.t, k = 0; for (var i = 0; i < STG.length; i++) if (t >= STG[i] - 0.005) k = i; return k; }
+    function stageA() {
+      var st = UP.st, k = stageNow();
+      if (k === 0) return ["중생대 말: 오랜 침식으로 낮고 평평해진 땅이다", "오랫동안 비 · 바람 · 하천에 깎여 땅이 낮고 평평해졌다. 시기 버튼을 눌러 땅이 휘어 솟는 과정을 본다.", "calm"];
+      if (k === 1) return st.tilt < 0.25 ? ["신생대 제3기 초: 땅이 고르게 솟기 시작한다", "땅덩어리가 솟아오르기 시작했다. 아직 땅이 낮아 하천의 길이 뚜렷하지 않다.", ""]
+        : ["신생대 제3기 초: 땅이 휘어지며 동쪽이 먼저 솟기 시작한다", "땅이 활처럼 휘어 솟는 운동(경동성 요곡 운동)이 일어나 동해 쪽이 서쪽보다 더 많이 솟기 시작한다.", ""];
+      if (st.tilt < 0.25) return ["땅이 고르게 솟아올랐다", "동쪽과 서쪽이 비슷하게 솟으면 높은 땅이 한쪽에 치우치지 않고, 하천이 양쪽으로 비슷하게 흐른다. 「동쪽이 더 솟는 정도」를 강함 쪽으로 옮겨 우리나라와 비교해 본다.", ""];
+      if (k === 2) return ["신생대 제3기 후반: 동쪽이 크게 솟아 높은 산지가 생겼다", "동해 쪽이 높이 솟아 태백산맥 · 함경산맥 같은 높은 산지가 되고, 서쪽으로 갈수록 완만하게 낮아진다. 하천은 길고 완만하게 황해 · 남해로, 짧고 급하게 동해로 흐르기 시작한다.", ""];
+      return ["신생대 제4기 ~ 오늘날: 동쪽은 높고 서쪽은 낮은 동고서저 지형이 되었다", "높은 산지는 동쪽에 치우치고, 큰 하천은 길고 완만하게 황해와 남해로 흘러간다. 동해로 가는 하천은 짧고 급하다. 그래서 남서쪽에 평야가 넓고 사람이 많이 산다.", ""];
+    }
+    function stageB() {
+      var st = MT.st, t = st.t, Q = MT.Q;
+      if (st.kind === "both") {
+        if (t < 0.02) return ["돌산과 흙산을 나란히 놓았다", "왼쪽은 땅속에 단단한 바위 덩어리가 든 산, 오른쪽은 잘 부서지는 바위로 된 산이다. 시간 막대를 옮겨 같은 시간 동안 어떻게 달라지는지 본다.", "calm", "처음"];
+        if (t < 0.6) return ["같은 시간 동안 두 산이 다르게 깎인다", "왼쪽 돌산은 덮은 흙과 바위가 깎여 단단한 바위가 드러나기 시작하고, 오른쪽 흙산은 바위가 풍화되어 흙이 두꺼워진다.", "", "비교 중"];
+        return ["바위 봉우리의 돌산과 숲이 울창한 흙산이 되었다", "돌산(북한산 · 설악산 · 금강산)은 바위 봉우리가 드러나 험하고, 흙산(지리산 · 덕유산)은 두꺼운 흙에 숲이 울창하고 봉우리가 둥글다.", "", "비교"];
+      }
+      if (st.kind === "soil") {
+        if (t < 0.02) return ["땅이 솟아 높은 산지가 되었다", "이 산은 잘 부서지는 바위로 되어 있다. 시간 막대를 옮겨 오랜 풍화와 침식을 살펴본다.", "calm", "처음"];
+        if (t < 0.6) return ["바위가 풍화되어 흙이 쌓여 간다", "잘게 부서진 바위가 흙이 되어 산을 덮고, 그 위에 숲이 자란다. 봉우리는 조금씩 낮고 둥글어진다.", "", "풍화 중"];
+        return ["두꺼운 흙으로 덮인 흙산이 되었다", "지리산 · 덕유산처럼 흙이 두껍게 덮여 봉우리가 둥글고 숲이 울창하다. 오랜 풍화와 침식으로 낮고 완만해졌다.", "", "흙산"];
+      }
+      if (t < 0.02) return ["땅이 솟아 높은 산지가 되었다", "땅속에는 단단한 바위 덩어리가 들어 있고, 그 위를 다른 바위와 흙이 덮고 있다. 시간 막대를 옮겨 본다.", "calm", "처음"];
+      if (Q.ex < 0.03) return ["위를 덮은 바위와 흙이 깎여 나간다", "비와 바람, 하천이 산을 덮은 바위와 흙을 조금씩 깎아 낸다. 땅속의 단단한 바위는 아직 드러나지 않았다.", "", "깎이는 중"];
+      if (Q.ex < 0.1) return ["땅속의 단단한 바위가 드러나기 시작한다", "단단한 바위는 잘 깎이지 않아 주변보다 높게 남아 봉우리가 된다.", "", "드러남"];
+      return ["바위가 봉우리를 이루는 돌산이 되었다", "북한산 · 설악산 · 금강산처럼 하얀 바위 봉우리가 드러나 있고 흙이 얇다. 산 전체는 오랜 침식으로 낮아졌다.", "", "돌산"];
+    }
+    /* 품질 다듬기(정확하게): 한 지형에 맞춘 장면은 위 설명 줄을 그 장면의 요점으로 */
+    /* 품질(10-20): 화면 읽기 — 캔버스 설명에 지금 장면 · 위 설명 줄을 넣고, 무대에 보이는 이름표를 숨은 글로 둠 */
+    var LASTLAB = [], srEl = null, srKey = "";
+    function srUpdate() {
+      if (!LABELS || !TITLES || !elGuide) return;
+      if (!srEl) srEl = $(".mt-sr");
+      var S1 = typeof SCENES !== "undefined" && curScr === "scene" ? SCENES[curScene] : null;
+      var head = (S1 ? S1.title : TITLES[view]) + ". " + (elGuide.textContent || "");
+      var key = head + "|" + LASTLAB.join("|");
+      if (key === srKey) return;
+      srKey = key;
+      cv.setAttribute("aria-label", head + ". " + LABELS[view]);
+      if (srEl) srEl.textContent = LASTLAB.length ? "무대에 보이는 이름표: " + LASTLAB.join(", ") + "." : "";
+    }
+    function updRead() {
+      statsBegin();
+      updRead0();
+      statsEnd();
+      var S0 = typeof SCENES !== "undefined" && curScr === "scene" ? SCENES[curScene] : null;
+      if (S0 && S0.sub) setText(elGuide, S0.sub);
+      srUpdate();
+    }
+    function updRead0() {
+      var s;
+      if (view === 1) {
+        var Q = UP.Q, st = UP.st;
+        s = stageA();
+        setText(elReadH, "측정 값");
+        stat(0, "동쪽의 가장 높은 곳", "약 " + round10(Math.max(0, Q.hiE) * M_V) + "m");
+        stat(1, "서쪽의 평균 높이", "약 " + round10(Q.west * M_V) + "m");
+        if (Q.rivers.length) {
+          stat(2, "하천 길이(황해 · 남해로)", "약 " + Math.round(Q.lenW) + "km");
+          stat(3, "하천 길이(동해로)", "약 " + Math.round(Q.lenE) + "km");
+          var gw = Q.dropW / Math.max(1, Q.lenW), ge = Q.dropE / Math.max(1, Q.lenE);
+          stat(4, "하천 경사", ge > gw * 1.15 ? "동해 쪽이 약 " + (ge / Math.max(0.01, gw)).toFixed(1) + "배 급함" : "비슷함");
+        } else { stat(2, "하천 길이(황해 · 남해로)", "—"); stat(3, "하천 길이(동해로)", "—"); stat(4, "하천 경사", "—"); }
+        result(s[0], s[1], s[2]);
+        setText(elNote, "높이를 크게 늘려 그린 예시 모형이다. 하천은 모형 표면에서 가장 가파른 내리막을 따라 그었다. 파란 점은 빗물이 흘러가는 방향이다.");
+        setText($(".mt-tval[data-for=\"1\"]"), STG_NAME[stageNow()]);
+        markStage(stageNow());
+        $(".mt-trange[data-for=\"1\"]").setAttribute("aria-valuetext", s[0]);
+      } else if (view === 2) {
+        var Q2 = MT.Q;
+        s = stageB();
+        var both = MT.st.kind === "both";
+        setText(elReadH, "측정 값 · " + (both ? "돌산과 흙산" : MT.st.kind === "rock" ? "돌산" : "흙산"));
+        stat(0, both ? "높이(돌산 / 흙산)" : "가장 높은 곳", both ? "약 " + round10(Q2.hiR * 3200) + "m / " + round10(Q2.hiS * 3200) + "m" : "약 " + round10(MT.hiM()) + "m");
+        stat(1, "산비탈의 평균 경사", "약 " + Math.round(Q2.slope) + "°");
+        var soilM = (both ? Q2.soilS : Q2.soil) / 0.03 * 1.5;
+        stat(2, both ? "흙의 두께(흙산 평균)" : "흙의 두께(평균)", "약 " + (soilM >= 1 ? soilM.toFixed(1) + "m" : Math.max(1, Math.round(soilM * 100)) + "cm"));
+        stat(3, both ? "드러난 바위(돌산)" : "드러난 바위", Math.round((both ? Q2.exR : Q2.ex) * 100) + "%");
+        result(s[0], s[1], s[2]);
+        setText(elNote, "블록 가로를 약 10km로 본 예시 모형이다. 흙의 두께는 크게 늘려 그렸고, 시간 막대 끝은 아주 오랜 시간(수천만 년)이다.");
+        setText($(".mt-tval[data-for=\"2\"]"), s[3]);
+        setText($(".mt-kindhint"), MT.st.kind === "both" ? "왼쪽은 돌산, 오른쪽은 흙산이다. 같은 시간 동안의 변화를 비교한다." : MT.st.kind === "rock" ? "땅속에 단단한 바위 덩어리가 들어 있는 산이다." : "잘 부서지는 바위로 된 산이다.");
+        $(".mt-trange[data-for=\"2\"]").setAttribute("aria-valuetext", s[3] + " · " + s[0]);
+      } else {
+        var r = US.read(), u = USES[r.use][0];
+        setText(elReadH, "측정 값 · 살펴볼 곳");
+        stat(0, "높이", r.sea ? "바다" : "약 " + round10(r.h) + "m");
+        stat(1, "경사", r.sea ? "—" : "약 " + Math.round(r.s) + "°");
+        stat(2, (US.st.season === "winter" ? "1월" : "7월") + " 평균 기온", r.sea ? "—" : "약 " + r.t.toFixed(1) + "℃");
+        stat(3, "알맞은 이용", u);
+        var why = {
+          farm: US.st.season === "winter" ? ["겨울에는 고랭지 밭이 쉰다", "바닷가보다 약 " + (US.coast() - r.t).toFixed(1) + "℃ 추워 겨울에는 농사를 짓지 않고, 여름에 서늘한 기후를 이용해 배추 · 감자를 기른다."] : ["높고 평탄해 고랭지 밭에 알맞다", "바닷가보다 약 " + (US.coast() - r.t).toFixed(1) + "℃ 서늘해 여름에도 배추 · 감자를 기를 수 있고, 평탄해 밭을 일구기 좋다(매봉산 고랭지 밭)."],
+          pasture: ["서늘하고 완만해 목장에 알맞다", "서늘한 기후에서 풀이 잘 자라 목초지를 만들어 양 · 소를 기른다(대관령 양떼 목장)."],
+          ski: US.st.season === "winter" ? ["눈이 쌓여 스키장이 문을 연다", "높은 곳은 기온이 낮아 눈이 오래 쌓이고, 알맞게 기운 비탈은 스키장이 된다(덕유산 스키장)."] : ["눈이 많고 비탈이 알맞아 스키장에 쓰인다", "높은 곳의 알맞게 기운 비탈은 겨울에 스키장이 된다. 여름에는 풀밭 · 산책로로 쓴다(덕유산 스키장)."],
+          forest: ["너무 가파라 숲으로 두는 곳이다", "경사가 급하면 밭이나 건물을 짓기 어렵고 흙이 쓸려 가기 쉬워 숲을 지킨다."],
+          trail: ["숲과 등산로로 이용한다", "산지 경관을 즐기는 등산로와 휴양림이 만들어진다(소백산 등산로)."],
+          town: ["낮고 평평해 논과 마을이 들어선다", "바닷가와 골짜기의 평지는 농사짓기 좋고 사람이 모여 산다."],
+          field: ["낮고 완만해 밭과 마을로 쓴다", "골짜기 주변의 완만한 땅은 밭 · 과수원 · 마을이 된다."],
+          sea: ["바다다", "블록 위의 땅을 골라 본다."]
+        }[r.use];
+        result(why[0], why[1], r.use === "sea" ? "calm" : "");
+        setText(elNote, US.st.season === "winter" ? "블록 가로를 약 20km로 본 예시 모형이다. 1월 기온은 기상청 평년값(1991~2020) 강릉 0.9℃ · 대관령 −7.0℃에 맞춰 높이 100m마다 약 1.1℃씩 낮게 셈했다." : "블록 가로를 약 20km로 본 예시 모형이다. 7월 기온은 바닷가 24℃에서 높이 100m마다 0.5℃씩 낮게 셈했다(기상청 평년값: 강릉 24.7℃ · 대관령 19.6℃).");
+        s = why;
+        $$(".mt-spotseg .mt-segb").forEach(function (b) { var p = US.SPOTS[b.getAttribute("data-spot")]; b.setAttribute("aria-pressed", Math.abs(p[0] - US.st.mx) < 1e-3 && Math.abs(p[1] - US.st.mz) < 1e-3 ? "true" : "false"); });
+      }
+      setText(elGuide, s[0]);
+      updMap();
+    }
+
+    /* ================= 사례 지도 ================= */
+    var map = $(".mt-map"), elPlace = $(".mt-place"), elUse = $(".mt-use");
+    var MX0 = 124.4, MY0 = 40.2, MK = 46.5;
+    function mx(lon) { return (lon - MX0) * MK; }
+    function my(lat) { return (MY0 - lat) * MK; }
+    S("path", { d: LAND_KOREA, "class": "mt-land", transform: "translate(" + (-MX0 * MK).toFixed(1) + "," + (MY0 * MK).toFixed(1) + ") scale(" + MK + ")", "vector-effect": "non-scaling-stroke" }, map);
+    S("text", { x: mx(124.7), y: my(37.0), "class": "mt-mt" }, map, "황해");
+    S("text", { x: mx(129.75), y: my(38.3), "class": "mt-mt" }, map, "동해");
+    S("text", { x: mx(127.0), y: my(34.25), "class": "mt-mt" }, map, "남해");
+    var rangeEls = RANGES.map(function (rg) {
+      var g = S("g", {}, map);
+      S("path", { d: rg[1].map(function (p, i) { return (i ? "L" : "M") + mx(p[0]).toFixed(1) + " " + my(p[1]).toFixed(1); }).join(""), "class": "mt-range-line" }, g);
+      S("text", { x: mx(rg[2][0]).toFixed(1), y: my(rg[2][1]).toFixed(1), "class": "mt-rname", "text-anchor": "middle" }, g, rg[0]);
+      return g;
+    });
+    var pinEls = {}, placeOn = null;
+    PLACES.forEach(function (pl) {
+      var g = S("g", { "class": "mt-pin", tabindex: "0", role: "button", "aria-label": pl.name + " 설명 보기" }, map), x = mx(pl.lon), y = my(pl.lat);
+      S("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: 8, "class": "mt-pring" }, g);
+      S("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: 4.5, "class": "mt-pdot" }, g);
+      S("text", { x: (x + pl.dx).toFixed(1), y: (y + pl.dy).toFixed(1), "text-anchor": pl.anchor, "class": "mt-pname" }, g, pl.name);
+      function pick() { placeOn = pl.id; updMap(); }
+      g.addEventListener("click", pick);
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
+      pinEls[pl.id] = g;
+    });
+    function updMap() {
+      var hk = view === 2 ? (MT.st.kind === "both" ? ["rock", "soil"] : [MT.st.kind]) : [view];
+      PLACES.forEach(function (pl) { pinEls[pl.id].classList.toggle("hot", pl.k.some(function (k) { return hk.indexOf(k) >= 0; })); pinEls[pl.id].classList.toggle("on", placeOn === pl.id); });
+      rangeEls.forEach(function (g) { g.style.opacity = view === 1 || view === 3 ? "1" : "0.35"; });
+      var pl = PLACES.filter(function (q) { return q.id === placeOn; })[0];
+      setText(elPlace, pl ? pl.text : "파란 점은 지금 보기와 닮은 곳이다. 점을 누르면 설명이 나온다.");
+      setText(elUse, view === 1 ? "동고서저 지형 때문에 북동부에는 산지가 많고, 남서부에는 평야가 발달해 남서부에 인구가 많이 모여 사는 편이다."
+        : view === 2 ? "돌산은 바위 봉우리가 아름다워 등산 · 관광지로 이름난 곳이 많고, 흙산은 숲이 울창해 산림 자원이 풍부하다."
+        : "태백산맥 · 소백산맥의 해발 고도가 높고 평탄한 곳에서는 고랭지 농업과 목축업이 발달했고, 스키장 · 휴양 시설 등 관광 산업도 활발하다.");
+    }
+
+    /* ================= 무대 글 · 범례 ================= */
+    var LEG = {
+      1: [["#a8c270", "평야"], ["#5c844e", "산지(숲)"], ["#808064", "높은 산지"], ["#508ec8", "바다"], ["#1c6ec8", "하천"], ["#2878dc", "빗물", true], ["#e8590c", "솟은 양"]],
+      2: [["#d6cec4", "드러난 바위"], ["#3a6e3c", "두꺼운 흙 위의 숲"], ["#84705a", "흙"], ["#cec4bc", "단단한 바위(땅속)"], ["#8c8070", "다른 바위"]],
+      3: [["#96c85a", "고랭지 밭"], ["#ced678", "목장"], ["#d6e8f6", "스키장"], ["#46764a", "숲"], ["#688c54", "숲 · 등산로"], ["#b8c478", "밭 · 마을"], ["#c4ce80", "논 · 마을"]]
+    };
+    var MODEL = { 1: "예시 모형이다 · 높이를 크게 늘려 그렸다", 2: "예시 모형이다 · 실제 속도와 크기는 다르다", 3: "예시 모형이다 · 이용은 높이 · 경사 · 기온으로만 나눔" };
+    var legKey = 0;
+    function updLegend() {
+      if (legKey === view) return;
+      legKey = view; legend.textContent = "";
+      LEG[view].forEach(function (it) { var s = E("span", "mt-lg", legend), c = E("span", it[2] ? "mt-chip dot" : "mt-chip", s); c.style.background = it[0]; E("span", "", s, it[1]); });
+      E("span", "mt-model", legend, MODEL[view]);
+    }
+    var TITLES = { 1: "한반도의 경동성 지형", 2: "돌산과 흙산", 3: "산지를 어떻게 이용할까" };
+    var KEYS = "끌어서 돌릴 수 있다. 왼쪽 · 오른쪽 화살표 키로 돌리고, 위아래 화살표 키로 시간을 옮기며, Page Up · Page Down 키로 내려다보는 각도를 바꾼다. 스페이스 키로 재생하거나 멈춘다.";
+    var LABELS = {
+      1: "3D 한반도 모양 블록. 땅이 솟는 모양에 따라 높은 곳과 하천이 흐르는 방향이 바뀐다. " + KEYS,
+      2: "3D 산 블록. 오랜 풍화와 침식으로 돌산과 흙산이 만들어지는 과정이다. " + KEYS,
+      3: "3D 산지 블록. 블록 위를 눌러 살펴볼 곳을 고르면 높이 · 경사 · 기온과 알맞은 이용이 나온다. W · A · S · D 키로 살펴볼 곳을 옮기고, 왼쪽 · 오른쪽 화살표 키로 돌린다."
+    };
+
+    /* ================= 조작 ================= */
+    var ranges = { 1: $(".mt-trange[data-for=\"1\"]"), 2: $(".mt-trange[data-for=\"2\"]") }, plays = { 1: $(".mt-play[data-for=\"1\"]"), 2: $(".mt-play[data-for=\"2\"]") };
+    function setTime(t, fromPlay) {
+      if (view === 3) return;
+      var sc = scene();
+      sc.st.t = clamp(t, 0, 1);
+      if (!fromPlay && sc.st.play) { sc.st.play = false; sc.setLod(false); syncPlay(); }
+      ranges[view].value = String(Math.round(sc.st.t * 100));
+      sc.update(); updRead(); updStages(); requestRender();
+      if (!fromPlay) kick();
+    }
+    function syncPlay() {
+      $$(".mt-play[data-for]").forEach(function (b) { var sc = [UP, MT, US][Number(b.getAttribute("data-for")) - 1], on = !!(sc && sc.st.play), tx = on ? "멈춤" : "재생"; if (b.textContent !== tx) { b.textContent = tx; b.setAttribute("aria-label", on ? "멈춤" : "재생"); } });
+      updStages();
+    }
+    /* 개편(10-26): 재생 단계 — 보기마다 모형 시간 경계(1단계, 2단계, …). 단계 단추는 그 단계 처음부터 끝까지만 재생하고 멈춤 */
+    var STGV = {2: [0, 0.3, 0.6, 1]}, stopAt = null, stgSel = -1, stgBtns = null;
+    /* 업그레이드(10-29): 무대 왼쪽 위 「N단계 · 이름」(예시의 「1단계 · 도시 형성」처럼). 표지 · 확인 문제에서는 제목 줄째 숨음 */
+    var hudEl = $(".mt-hud");
+    function hud(k, nm) { if (!hudEl) return; var tx = k >= 0 && nm ? (k + 1) + "단계 · " + nm : ""; if (hudEl.textContent !== tx) hudEl.textContent = tx; if (hudEl.hidden === !!tx) hudEl.hidden = !tx; }
+    var STGN = {}, STGNS = {"rock": ["덮개 깎임", "더 깎임", "바위 드러남"], "soil": ["풍화", "흙 쌓임", "흙산"], "both": ["깎이기 시작", "차이 커짐", "돌산과 흙산"]};
+    function stgName(v, k) { var S = SCENES[curScene], L = (S && String(S.view) === String(v) && STGNS[curScene]) || STGN[v] || []; return L[k] || ((k + 1) + "단계"); }
+    function updStages() {
+      if (!stgBtns) { stgBtns = {}; Object.keys(STGV).forEach(function (v) { var el = $(".mt-stages[data-for=\"" + v + "\"]"), b = STGV[v]; if (!el) return; el.style.gridTemplateColumns = "repeat(" + (b.length - 1) + ",minmax(0,1fr))"; stgBtns[v] = b.slice(0, -1).map(function (x, k) { var bt = E("button", "mt-stg", el, (k + 1) + "단계"); bt.type = "button"; bt.addEventListener("click", function () { playStage(k); }); return bt; }); }); }
+      /* 보기마다 그 모형의 시간으로 표시(장면을 열 때 보기가 바뀌기 전에 불려도 맞게) */
+      Object.keys(stgBtns).forEach(function (v) {
+        var b = STGV[v], L = stgBtns[v], sc = [UP, MT, US][Number(v) - 1]; if (!b || !L || !sc) return;
+        var t = sc.st.t, cur = 0;
+        for (var j = 0; j < b.length - 1; j++) if (t > b[j] + 1e-6) cur = j;
+        if (String(view) === v) { if (stgSel >= 0 && t >= b[stgSel] - 1e-6 && t <= b[stgSel + 1] + 1e-6) cur = stgSel; else stgSel = -1; }
+        L.forEach(function (bt, j) { var nm = stgName(v, j); if (bt.textContent !== nm) { bt.textContent = nm; bt.setAttribute("aria-label", (j + 1) + "단계 " + nm); } var on = j === cur ? "true" : "false"; if (bt.getAttribute("aria-pressed") !== on) bt.setAttribute("aria-pressed", on); });
+        if (String(view) === v) hud(cur, stgName(v, cur));
+      });
+      if (!stgBtns[view]) hud(-1);
+    }
+    function playStage(k) {
+      var b = STGV[view]; if (!b) return;
+      setTime(b[k]);
+      stopAt = b[k + 1]; stgSel = k;
+      var sc = scene(); sc.st.play = true; sc.setLod(true); syncPlay(); requestRender(); kick();
+    }
+    function togglePlay() {
+      stopAt = null;
+      if (view === 3) return;
+      var sc = scene();
+      if (!sc.st.play && sc.st.t >= 1) setTime(0);
+      sc.st.play = !sc.st.play; sc.setLod(sc.st.play);
+      if (!sc.st.play) sc.update();
+      syncPlay(); requestRender(); kick();
+    }
+    [1, 2].forEach(function (v) {
+      ranges[v].addEventListener("input", function () { setTime(Number(ranges[v].value) / 100); });
+      plays[v].addEventListener("click", togglePlay);
+      var rb = $(".mt-reset[data-for=\"" + v + "\"]"); if (rb) rb.addEventListener("click", function () { setTime(0); });
+    });
+    /* 개편(10-21): 시기 버튼 — 고른 시기까지 모형이 약 0.9초 동안 부드럽게 바뀜 */
+    var stBtns = $$(".mt-stb"), stTw = 0;
+    function markStage(k) { if (!stBtns) return; stBtns.forEach(function (b) { var on = Number(b.getAttribute("data-stage")) === k; if (b.getAttribute("aria-pressed") !== String(on)) b.setAttribute("aria-pressed", on ? "true" : "false"); }); }
+    function goStage(k) {
+      k = clamp(k, 0, STG.length - 1);
+      if (view !== 1) return;
+      if (UP.st.play) { UP.st.play = false; syncPlay(); }
+      var t0 = UP.st.t, t1 = STG[k], id = ++stTw;
+      markStage(k);
+      if (RM || Math.abs(t1 - t0) < 0.001) { UP.setLod(false); setTime(t1); return; }
+      var start = performance.now();
+      UP.setLod(true);
+      (function step(now) {
+        if (id !== stTw) return;
+        var u = Math.min(1, (now - start) / (900 / PLAYK)), e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+        UP.st.t = t0 + (t1 - t0) * e; ranges[1].value = String(Math.round(UP.st.t * 100));
+        if (u < 1) { UP.update(); updRead(); markStage(k); requestRender(); requestAnimationFrame(step); }
+        else {
+          /* 움직임이 끝난 그 프레임은 성긴 칸 그대로 그리고, 잠깐 뒤에 자세히 다시 그림(끝에서 멈칫하지 않게) */
+          UP.update(); updRead(); markStage(k); requestRender();
+          setTimeout(function () { if (id !== stTw || UP.st.play) return; UP.setLod(false); UP.update(); layerKey = ""; requestRender(); }, 80);
+        }
+      })(start);
+    }
+    stBtns.forEach(function (b) { b.addEventListener("click", function () { goStage(Number(b.getAttribute("data-stage"))); }); });
+    $(".mt-tiltrange").addEventListener("input", function (e) { UP.st.tilt = clamp(Number(e.target.value) / 100, 0, 1); UP.update(); updRead(); requestRender(); });
+    function seg(sel, attr, fn) {
+      var bs = $$(sel + " .mt-segb");
+      bs.forEach(function (b) { b.addEventListener("click", function () { fn(b.getAttribute(attr)); }); });
+      return function (v) { bs.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute(attr) === String(v) ? "true" : "false"); }); };
+    }
+    var markKind = seg(".mt-kindseg", "data-kind", function (v) { MT.st.kind = v === "soil" || v === "both" ? v : "rock"; markKind(MT.st.kind); MT.update(); updRead(); requestRender(); });
+    seg(".mt-spotseg", "data-spot", function (v) { var p = US.SPOTS[v]; if (p) { US.st.mx = p[0]; US.st.mz = p[1]; updRead(); requestRender(); } });
+    var markSeason = seg(".mt-seasonseg", "data-season", function (v) { US.st.season = v === "winter" ? "winter" : "summer"; markSeason(US.st.season); US.update(); updRead(); requestRender(); });
+    var useBtn = $(".mt-usebtn");
+    useBtn.addEventListener("click", function () { US.st.paint = !US.st.paint; useBtn.setAttribute("aria-pressed", US.st.paint ? "true" : "false"); US.update(); requestRender(); });
+    function moveSpot(dx, dz) { US.st.mx = clamp(US.st.mx + dx, -0.98, 0.98); US.st.mz = clamp(US.st.mz + dz, -0.68, 0.68); updRead(); requestRender(); }
+
+    var vbtns = $$(".mt-vbtn"), vctls = $$(".mt-vctl");
+    function setView(v) {
+      v = v === 2 || v === 3 ? v : 1;
+      var old = scene();
+      if (old.st.play && v !== view) { old.st.play = false; old.setLod(false); old.update(); syncPlay(); }
+      view = v;
+      vbtns.forEach(function (b) { b.setAttribute("aria-pressed", Number(b.getAttribute("data-view")) === v ? "true" : "false"); });
+      vctls.forEach(function (c) { c.classList.toggle("mt-off", Number(c.getAttribute("data-for")) !== v); });
+      setText(elTitle, TITLES[v]); cv.setAttribute("aria-label", LABELS[v]); srKey = "";
+      cv.style.cursor = v === 3 ? "crosshair" : "grab";
+      scene().update(); updLegend(); updRead();
+      layerKey = ""; requestRender(); kick();
+      syncSceneFromView(v);
+    }
+    vbtns.forEach(function (b) { b.addEventListener("click", function () { setView(Number(b.getAttribute("data-view"))); }); });
+    $(".mt-resetview").addEventListener("click", function () { var sc = scene(); camTo(sc, sc.yaw0, sc.pitch0, 1); requestRender(); });
+    /* 완성본(10-19 개선): 확대 · 축소 — 마우스 휠 · 두 손가락 · + − 키 · 단추. 0.7 ~ 2.5배, 「처음 시점으로」에서 1배 */
+    function zoomBy(f) { var sc = scene(); sc.cam.zoom = clamp((sc.cam.zoom || 1) * f, 0.7, 2.5); requestRender(); }
+    $(".mt-zin").addEventListener("click", function () { zoomBy(1.2); });
+    $(".mt-zout").addEventListener("click", function () { zoomBy(1 / 1.2); });
+    cv.addEventListener("wheel", function (e) { e.preventDefault(); zoomBy(e.deltaY < 0 ? 1.1 : 1 / 1.1); }, { passive: false });
+    cv.addEventListener("keydown", function (e) { if (e.key === "+" || e.key === "=") zoomBy(1.15); else if (e.key === "-") zoomBy(1 / 1.15); else return; e.preventDefault(); });
+    (function () {
+      var pts = {}, d0 = 0, z0 = 1;
+      function n() { return Object.keys(pts).length; }
+      function dist() { var k = Object.keys(pts), a = pts[k[0]], b = pts[k[1]]; return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
+      cv.addEventListener("pointerdown", function (e) {
+        pts[e.pointerId] = [e.clientX, e.clientY];
+        if (n() === 2) { d0 = dist(); z0 = scene().cam.zoom || 1; cv.dispatchEvent(new PointerEvent("pointercancel", { pointerId: e.pointerId })); e.stopImmediatePropagation(); }
+      }, true);
+      cv.addEventListener("pointermove", function (e) {
+        if (!pts[e.pointerId]) return;
+        pts[e.pointerId] = [e.clientX, e.clientY];
+        if (n() >= 2 && d0 > 0) { scene().cam.zoom = clamp(z0 * dist() / d0, 0.7, 2.5); requestRender(); e.stopImmediatePropagation(); }
+      }, true);
+      function up(e) { delete pts[e.pointerId]; if (n() < 2) d0 = 0; }
+      cv.addEventListener("pointerup", up, true);
+      cv.addEventListener("pointercancel", function (e) { if (e.isTrusted) up(e); }, true);
+    })();
+
+
+    (function () {
+      var drag = null;
+      function turn(sc, dyaw, dpitch) { sc.cam.yaw += dyaw; sc.cam.pitch = clamp(sc.cam.pitch + dpitch, 8, 70); requestRender(); }
+      cv.addEventListener("pointerdown", function (e) { var sc = scene(); drag = { x: e.clientX, y: e.clientY, yaw: sc.cam.yaw, pitch: sc.cam.pitch, moved: false }; if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+      cv.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        var sc = scene(), dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+        if (drag.moved) { cv.style.cursor = "grabbing"; sc.setLod(true); sc.cam.yaw = drag.yaw; sc.cam.pitch = drag.pitch; turn(sc, dx * 0.4, dy * 0.25); }
+      });
+      function end(e) {
+        if (!drag) return;
+        var sc = scene(), moved = drag.moved;
+        if (!sc.st.play) sc.setLod(false);
+        drag = null; cv.style.cursor = view === 3 ? "crosshair" : "grab";
+        if (!moved && view === 3 && e.type === "pointerup") { var r = cv.getBoundingClientRect(), p = US.surf.pick(e.clientX - r.left, e.clientY - r.top); if (p) { US.st.mx = p[0]; US.st.mz = p[1]; updRead(); } }
+        requestRender();
+      }
+      cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+      cv.addEventListener("keydown", function (e) {
+        var k = e.key, sc = scene();
+        if (view === 3 && "wasdWASD".indexOf(k) >= 0) { var m = { w: [0, 0.04], s: [0, -0.04], a: [-0.04, 0], d: [0.04, 0] }[k.toLowerCase()]; moveSpot(m[0], m[1]); }
+        else if (k === "ArrowLeft" || k === "ArrowRight") turn(sc, k === "ArrowLeft" ? -10 : 10, 0);
+        else if (k === "PageUp" || k === "PageDown") turn(sc, 0, k === "PageUp" ? 5 : -5);
+        else if ((k === "ArrowUp" || k === "ArrowDown") && view === 1) goStage(stageNow() + (k === "ArrowUp" ? 1 : -1));
+        else if (k === "ArrowUp" || k === "ArrowDown") setTime(sc.st.t + (k === "ArrowUp" ? 0.05 : -0.05));
+        else if (k === "Home" || k === "End") setTime(k === "Home" ? 0 : 1);
+        else if (k === " " || k === "Enter") togglePlay();
+        else return;
+        e.preventDefault();
+      });
+    })();
+
+    var panel = $(".mt-panel"), phead = $(".mt-head"), fold = $(".mt-fold");
+    var mode = "right", panelMoved = false, posBtns = $$(".mt-posseg .mt-segb");
+    function layout() {
+      if (mode === "float" && panelMoved) { var px = parseFloat(panel.style.left) || 0, py = parseFloat(panel.style.top) || 0; panel.style.left = clamp(px, 0, Math.max(0, root.clientWidth - panel.offsetWidth)) + "px"; panel.style.top = clamp(py, 0, Math.max(0, root.clientHeight - Math.min(panel.offsetHeight, 60))) + "px"; }
+      var pad = 18, side = panel.offsetWidth + 32;
+      if (mode === "float" && !panelMoved && !root.classList.contains("mt-collapsed") && stage.clientWidth - side >= 360) pad = side;
+      padL = pad; cap.style.left = pad + "px"; legend.style.left = pad + "px";
+      sizeCanvas(); layerKey = ""; requestRender();
+    }
+    function setPanel(m) {
+      if (["right", "left", "float"].indexOf(m) < 0) m = "right";
+      mode = m; panelMoved = false;
+      root.classList.remove("mt-pos-right", "mt-pos-left", "mt-pos-float", "mt-collapsed"); root.classList.add("mt-pos-" + m);
+      panel.style.left = ""; panel.style.top = "";
+      fold.textContent = "접기"; fold.setAttribute("aria-expanded", "true");
+      if (typeof syncReopen === "function" && reopen) syncReopen();
+      posBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-pos") === m ? "true" : "false"); });
+      layout();
+    }
+    posBtns.forEach(function (b) { b.addEventListener("click", function () { setPanel(b.getAttribute("data-pos")); }); });
+    var reopen = $(".mt-reopen");
+    function syncReopen() {
+      var on = root.classList.contains("mt-collapsed") && mode !== "float";
+      reopen.hidden = !on;
+      if (on) reopen.querySelector(".mt-reic").textContent = mode === "left" ? "›" : "‹";
+    }
+    fold.addEventListener("click", function () {
+      var c = root.classList.toggle("mt-collapsed");
+      fold.textContent = c ? "펴기" : "접기"; fold.setAttribute("aria-expanded", c ? "false" : "true");
+      syncReopen();
+      layout();
+      if (!c) { var hb = $(".mt-hmbtn"); if (hb) hb.focus(); } else reopen.focus();
+    });
+    reopen.addEventListener("click", function () { if (root.classList.contains("mt-collapsed")) fold.click(); });
+    var pDrag = null;
+    phead.addEventListener("pointerdown", function (e) { if (mode !== "float" || e.target.closest("button")) return; var pb = panel.getBoundingClientRect(), rb = root.getBoundingClientRect(); pDrag = { dx: e.clientX - pb.left, dy: e.clientY - pb.top, rb: rb, w: pb.width, h: pb.height }; if (phead.setPointerCapture) phead.setPointerCapture(e.pointerId); e.preventDefault(); });
+    phead.addEventListener("pointermove", function (e) { if (!pDrag) return; var x = clamp(e.clientX - pDrag.rb.left - pDrag.dx, 0, Math.max(0, pDrag.rb.width - pDrag.w)), y = clamp(e.clientY - pDrag.rb.top - pDrag.dy, 0, Math.max(0, pDrag.rb.height - Math.min(pDrag.h, 60))); panel.style.left = x + "px"; panel.style.top = y + "px"; if (!panelMoved) { panelMoved = true; layout(); } });
+    phead.addEventListener("pointerup", function () { pDrag = null; });
+    phead.addEventListener("pointercancel", function () { pDrag = null; });
+
+    /* ================= ver02: 목록 → 하위 목록 → 장면 (하천 · 빙하 ver02와 같은 틀) =================
+       장면은 기존 보기를 그대로 쓰고, 정해 둔 값으로 맞춘 뒤 필요 없는 조작 · 이름표만 숨김 */
+    var SCENES = {
+      east: { view: 1, title: "한반도의 경동성 지형", list: "home" },
+      rock: { view: 2, title: "돌산", list: "kinds", hide: ["kind"], set: function () { MT.st.kind = "rock"; markKind("rock"); } },
+      soil: { view: 2, title: "흙산", list: "kinds", hide: ["kind"], set: function () { MT.st.kind = "soil"; markKind("soil"); } },
+      both: { view: 2, title: "돌산과 흙산 나란히", list: "kinds", hide: ["kind"], set: function () { MT.st.kind = "both"; markKind("both"); } },
+      use: { view: 3, title: "산지와 생활", list: "home" }
+    };
+    var GOMAP = {}, VIEWSCENE = {"1": "east", "2": "rock", "3": "use"}, HIDES = ["kind"];
+    var scrEls = {}; $$(".mt-scr[data-scr]").forEach(function (e) { scrEls[e.getAttribute("data-scr")] = e; });
+    var backBtn = $(".mt-back"), sName = $(".mt-sname"), ovSeg = $(".mt-ovseg");
+    var curScr = "home", curScene = "", backTo = "home", inOpen = false;
+    /* 개편(10-23): 목차 화면에서는 무대에 표지 */
+    var coverEl = $(".mt-cover");
+    $$(".mt-covc[data-go], .mt-covgo").forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
+    function showScr(k) {
+      Object.keys(scrEls).forEach(function (n) { scrEls[n].hidden = n !== k; });
+      curScr = k;
+      backBtn.classList.toggle("is-back", k !== "home");
+      backBtn.setAttribute("aria-label", k === "home" ? "index(처음 화면)" : "index로 돌아가기");
+      root.classList.toggle("mt-quizmode", k === "quiz");
+      root.classList.toggle("mt-covermode", k === "home");
+      coverEl.hidden = k !== "home";
+      if (k === "home") { var sc0 = scene(), v0 = STEP[0] && SCENES[STEP[0]] ? SCENES[STEP[0]].view : 1; if (sc0.st && sc0.st.play) togglePlay(); if (view !== v0) setView(v0); }
+      quizEl.hidden = k !== "quiz";
+      panel.scrollTop = 0;
+      layout();
+    }
+    function go(k) {
+      if (k === "quiz") { showRes = false; renderQuiz(); showScr("quiz"); var d = dotEls[qCur]; if (d) d.focus(); return; }
+      if (GOMAP[k]) { openScene(GOMAP[k], "home"); return; }
+      if (SCENES[k]) { openScene(k); return; }
+      showScr(k);
+      var f = scrEls[k] && (scrEls[k].querySelector(".mt-toci[aria-current]") || scrEls[k].querySelector(".mt-toci, .mt-item")); if (f) f.focus();
+    }
+    function sceneUI(k) {
+      var S = SCENES[k];
+      curScene = k;
+      LABF = S.lab || null;
+      HIDES.forEach(function (c) { $$(".mt-c-" + c).forEach(function (e) { e.classList.toggle("mt-c-hide", (S.hide || []).indexOf(c) >= 0); }); });
+      $$(".mt-more [data-k]").forEach(function (e) { e.classList.toggle("mt-off", e.getAttribute("data-k").split(" ").indexOf(k) < 0); });
+      var inOv = ovSeg && S.ov;
+      if (ovSeg) { ovSeg.hidden = !inOv; if (inOv) markOv(k); }
+      setText(sName, S.title); updStep(k); firstHint(); if (!helpC.hidden) { helpC.hidden = true; helpB.setAttribute("aria-expanded", "false"); }
+      setText(elTitle, S.title);
+    }
+    function openScene(k, from) {
+      INTRO = !RM;
+      var S = SCENES[k]; if (!S) return;
+      var sc = [UP, MT, US][S.view - 1];
+      if (sc.st && sc.st.play) { sc.st.play = false; if (sc.setLod) sc.setLod(false); if (typeof syncPlay === "function") syncPlay(); }
+      inOpen = true;
+      if (S.set) S.set();
+      if (sc.st && typeof sc.st.t === "number" && !S.keepT) { sc.st.t = S.t || 0; var rg = $(".mt-trange[data-for=\"" + S.view + "\"]"); if (rg) rg.value = String(Math.round(sc.st.t * 100)); }
+      if (sc.cam) { camTo(sc, S.cam ? S.cam[0] : sc.yaw0, S.cam ? S.cam[1] : sc.pitch0, S.cam ? S.cam[2] : 1); }
+      backTo = from || "home";
+      showScr("scene");
+      setView(S.view);
+      if (typeof updStages === "function") updStages();
+      inOpen = false;
+      sceneUI(k);
+      layerKey = ""; requestRender();
+    }
+    /* 장면 안에서 다른 보기로 넘어가는 단추(예: 동굴로 들어가기)를 누르면 그 보기의 장면 이름으로 맞춤 */
+    function syncSceneFromView(v) {
+      if (inOpen || curScr !== "scene" || !VIEWSCENE[v]) return;
+      if (SCENES[curScene] && SCENES[curScene].view === v) return;
+      sceneUI(VIEWSCENE[v]);
+    }
+    var markOv = ovSeg ? seg(".mt-ovseg", "data-ov", function (v) { openScene(v, "home"); }) : function () {};
+    $$(".mt-item[data-go], .mt-toci[data-go]").forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
+    /* 키보드(10-30): 표지 카드 · 시작 단추를 누르면 초점을 패널의 장면 이름으로(화면 읽기 프로그램이 새 장면을 읽음) */
+    (function () {
+      var nm = $(".mt-sname"); if (!nm) return; nm.setAttribute("tabindex", "-1");
+      $$(".mt-covc[data-go], .mt-covgo").forEach(function (c) { c.addEventListener("click", function () { setTimeout(function () { if (curScr === "scene") nm.focus(); }, 0); }); });
+    })();
+    backBtn.addEventListener("click", function () {
+      if (curScr === "scene") go(backTo === "quiz" ? "quiz" : backTo);
+      else go("home");
+    });
+    /* ================= 두 번째 다듬기: 장면 이전/다음 · 무대 재생 단추 · 패널 열기 · 전체 화면 · 끌기 관성 · 재생 빠르기 ================= */
+    var STEP = [];
+    (function () {
+      var home = scrEls.home ? Array.prototype.slice.call(scrEls.home.querySelectorAll(".mt-toci[data-go]")) : [];
+      function resolve(k) {
+        if (SCENES[k]) return k;
+        if (typeof GOMAP !== "undefined" && GOMAP[k]) return GOMAP[k];
+        if (k === "overview" && SCENES.overview1) return "overview1";
+        if (k === "life" && SCENES.dam) return "dam";
+        return null;
+      }
+      home.forEach(function (b) {
+        var k = b.getAttribute("data-go");
+        if (k === "quiz") return;
+        if (scrEls[k]) { Array.prototype.slice.call(scrEls[k].querySelectorAll(".mt-item[data-go]")).forEach(function (c) { var r = resolve(c.getAttribute("data-go")); if (r && STEP.indexOf(r) < 0) STEP.push(r); }); return; }
+        var r = resolve(k);
+        if (r && STEP.indexOf(r) < 0) STEP.push(r);
+        if (r === "overview1" && SCENES.overview2 && STEP.indexOf("overview2") < 0) STEP.push("overview2");
+      });
+    })();
+    /* 개편(10-26): 이전 · 다음 단추 없이 목차에서 하나씩 고름. 목차에 지금 항목 표시 */
+    function updStep(k) {
+      $$(".mt-toci[data-go]").forEach(function (b) { var g = b.getAttribute("data-go"); if (g === k || (g === "overview" && (k === "overview1" || k === "overview2"))) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
+      updStages();
+    }
+    /* 무대 재생 단추(교실 화면에서 바로 누름) · 패널 열기 단추 */
+    var sPlay = $(".mt-splay"), openP = $(".mt-openp");
+    function visPlay() { var b = $$(".mt-play").filter(function (x) { return x.offsetParent !== null; })[0]; return b || null; }
+    /* 세 번째 다듬기: 패널을 숨겼을 때 무대 아래 시간 막대(패널의 시간 막대와 함께 움직임) */
+    var tbar = $(".mt-tbar"), trng = $(".mt-trng"), tlab = $(".mt-tlab"), tDrag = false;
+    function realRange() { return view === 1 ? null : $(".mt-trange[data-for=\"" + view + "\"]"); }
+    trng.addEventListener("input", function () { var r = realRange(); if (!r) return; r.value = trng.value; r.dispatchEvent(new Event("input", { bubbles: true })); });
+    trng.addEventListener("pointerdown", function () { tDrag = true; });
+    trng.addEventListener("pointerup", function () { tDrag = false; });
+    function syncTbar(collapsed) {
+      var r = curScr === "scene" ? realRange() : null, on = !!r && collapsed && !root.classList.contains("mt-quizmode");
+      if (tbar.hidden === on) tbar.hidden = !on;
+      if (!on) return;
+      if (!tDrag && trng.value !== r.value) trng.value = r.value;
+      var tv = $(".mt-tval[data-for=\"" + view + "\"]"); setText(tlab, tv ? tv.textContent : "");
+    }
+    /* 도움말 · 처음 안내 */
+    var helpB = $(".mt-helpb"), helpC = $(".mt-help"), toast = $(".mt-toast"), toastDone = false;
+    helpB.addEventListener("click", function () { var o = helpC.hidden; helpC.hidden = !o; if (o) toast.hidden = true; helpB.setAttribute("aria-expanded", o ? "true" : "false"); });
+    function firstHint() { if (toastDone) return; toastDone = true; var S0 = SCENES[curScene], hp = S0 && $(".mt-play[data-for=\"" + S0.view + "\"]"); setText(toast, hp ? "끌어서 돌리기 · 휠로 확대 · ▶로 재생" : "끌어서 돌리기 · 휠로 확대"); toast.hidden = false; setTimeout(function () { toast.hidden = true; }, 4700); }
+    function syncStageBtns() {
+      syncTbar(root.classList.contains("mt-collapsed") && !root.classList.contains("mt-pos-float"));
+      if (helpB.hidden === (curScr !== "scene")) helpB.hidden = curScr !== "scene";
+      var vp = curScr === "scene" ? visPlay() : null, collapsed = root.classList.contains("mt-collapsed") && !root.classList.contains("mt-pos-float");
+      if (collapsed && curScr === "scene") { var sc0 = scene(); vp = sc0 && sc0.st && typeof sc0.st.t === "number" && $(".mt-play[data-for=\"" + view + "\"]") ? $(".mt-play[data-for=\"" + view + "\"]") : null; }
+      var on = !!vp && !root.classList.contains("mt-quizmode");
+      if (sPlay.hidden === on) sPlay.hidden = !on;
+      if (on) { var pl = scene().st && scene().st.play, tx = pl ? "❚❚" : "▶"; if (sPlay.textContent !== tx) { sPlay.textContent = tx; sPlay.setAttribute("aria-label", pl ? "멈춤" : "재생"); } }
+      if (!openP.hidden) openP.hidden = true;
+    }
+    sPlay.addEventListener("click", function () { togglePlay(); requestRender(); });
+    openP.addEventListener("click", function () { fold.click(); });
+    /* 전체 화면 */
+    var fullBtn = $(".mt-full");
+    fullBtn.addEventListener("click", function () {
+      var d = document;
+      if (d.fullscreenElement || d.webkitFullscreenElement) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
+      var rq = root.requestFullscreen || root.webkitRequestFullscreen;
+      if (rq) rq.call(root);
+    });
+    ["fullscreenchange", "webkitfullscreenchange"].forEach(function (ev) { document.addEventListener(ev, function () { var on = (document.fullscreenElement || document.webkitFullscreenElement) === root; fullBtn.textContent = on ? "크게 보기 끝내기" : "크게 보기"; setTimeout(layout, 50); }); });
+    /* 재생 빠르기 */
+    var markSpd = seg(".mt-spdseg", "data-spd", function (v) { setSpd(v); });
+    /* 개편(10-21): 패널의 재생 속도 단추 — 설정의 「재생 빠르기」와 같은 값(느리게 0.6 · 보통 1 · 빠르게 1.7). 시기 바뀜 시간도 속도에 맞춤 */
+    var markPspd = seg(".mt-pspdseg", "data-spd", function (v) { setSpd(v); });
+    function setSpd(v) { PLAYK = Number(v) || 1; markSpd(String(PLAYK)); markPspd(String(PLAYK)); }
+    /* 품질(10-20): 가볍게 보기 — 느린 컴퓨터용. 늘 성긴 칸 · 화면 배율 1(저절로 가벼워지는 것과 같은 길을 손으로 켬) */
+    var LITE = false;
+    function setLite(on) {
+      LITE = on; markLite(on ? 1 : 0);
+      if (on) { SLOW = true; DPRMAX = 1; }
+      else { SLOW = false; DPRMAX = 2; slowN = 0; var sc0 = scene(); if (sc0 && sc0.setLod && !(sc0.st && sc0.st.play)) sc0.setLod(false); }
+      sizeCanvas(); layerKey = ""; requestRender();
+    }
+    var markLite = seg(".mt-liteseg", "data-lite", function (v) { setLite(v === "1"); });
+    /* 끌어 돌린 뒤 손을 떼면 조금 더 돌다가 멈춤(관성) */
+    (function () {
+      var hist = [], ptrs = 0, inert = 0;
+      cv.addEventListener("pointerdown", function (e) { ptrs++; DRAG2 = true; hist = [[e.clientX, performance.now()]]; inert++; }, true);
+      cv.addEventListener("pointermove", function (e) { if (ptrs === 1 && DRAG2) { hist.push([e.clientX, performance.now()]); if (hist.length > 6) hist.shift(); } }, true);
+      function up(e) {
+        ptrs = Math.max(0, ptrs - 1); if (ptrs > 0) return;
+        DRAG2 = false;
+        var sc = scene(), now = performance.now();
+        if (RM || !sc || !sc.cam || typeof sc.cam.yaw !== "number" || sc.turn || hist.length < 2) return;
+        var a = hist[0], b = hist[hist.length - 1];
+        if (now - b[1] > 60 || b[1] - a[1] < 10) return;
+        var v = (b[0] - a[0]) / (b[1] - a[1]) * 0.4 * 16;
+        if (Math.abs(v) < 1.2) return;
+        var id = ++inert, last = 0;
+        if (sc.setLod) sc.setLod(true);
+        (function f(t) {
+          if (id !== inert) return;
+          var dt = last ? Math.min(40, t - last) : 16; last = t;
+          sc.cam.yaw += v * dt / 16; v *= Math.pow(0.9, dt / 16);
+          layerKey = ""; requestRender();
+          if (Math.abs(v) > 0.08) requestAnimationFrame(f);
+          else { if (sc.setLod && !(sc.st && sc.st.play)) sc.setLod(false); layerKey = ""; requestRender(); }
+        })(performance.now());
+      }
+      cv.addEventListener("pointerup", up, true);
+      cv.addEventListener("pointercancel", function (e) { ptrs = Math.max(0, ptrs - 1); if (!ptrs) DRAG2 = false; }, true);
+    })();
+
+    /* 다듬기(10-20): 화면 그림 저장(제목 · 3D 모형 · 범례 글) — 학습지 만들 때 씀 */
+    $(".mt-snap").addEventListener("click", function () {
+      var c2 = document.createElement("canvas"), pad = 18, th = 52, w = cv.width, h = cv.height;
+      c2.width = w; c2.height = h + th * DPR;
+      var g = c2.getContext("2d");
+      g.fillStyle = "#ffffff"; g.fillRect(0, 0, c2.width, c2.height);
+      g.drawImage(cv, 0, th * DPR);
+      g.fillStyle = "#1d2126"; g.font = "800 " + (20 * DPR) + "px " + FONT; g.textBaseline = "middle"; g.fillText(elTitle.textContent || "", pad * DPR, 18 * DPR);
+      g.fillStyle = "#5b636d"; g.font = (13 * DPR) + "px " + FONT; g.fillText(elGuide.textContent || "", pad * DPR, 40 * DPR);
+      var name = ($(".mt-ptitle").textContent + " - " + (elTitle.textContent || "")).replace(/[\\/:*?"<>|]/g, "") + ".png";
+      var a = document.createElement("a"); a.href = c2.toDataURL("image/png"); a.download = name; a.style.display = "none"; root.appendChild(a); a.click(); root.removeChild(a);
+    });
+    /* 발표용 리모컨 · 키: PageDown · PageUp = 다음 · 이전 장면(모형을 누른 때는 내려다보는 각도), F = 전체 화면, H = 다루는 법 */
+    document.addEventListener("keydown", function (e) {
+      var ae = document.activeElement;
+      if (!((ae && ae.tagName === "BODY") || root.contains(ae)) || ae === cv || (ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName))) return;
+      if (curScr !== "scene" && !(curScr === "quiz")) return;
+      var k = e.key;
+      if (curScr === "quiz") { if (k === "PageDown") { dNext.click(); e.preventDefault(); } else if (k === "PageUp") { dPrev.click(); e.preventDefault(); } return; }
+      if (k === "PageDown" || k === "PageUp") { var si = STEP.indexOf(curScene), sj = k === "PageDown" ? si + 1 : si - 1; if (curScr === "scene" && sj >= 0 && sj < STEP.length) openScene(STEP[sj]); e.preventDefault(); }
+            else if (k === "f" || k === "F") { fullBtn.click(); e.preventDefault(); }
+      else if (k === "h" || k === "H") { helpB.click(); e.preventDefault(); }
+    });
+    /* 큰 다듬기: ↻ 천천히 돌려 보기 — 1초에 6° 돌아감. 끌거나 문제 화면에서는 멈춤 */
+    var orbitB = $(".mt-orbit"), ORBIT = false, orbLast = 0;
+    function orbitTick(t) {
+      if (!ORBIT) return;
+      var dt = orbLast ? Math.min(50, t - orbLast) : 16; orbLast = t;
+      var sc = scene();
+      if (curScr === "scene" && !DRAG2 && sc) {
+        if (sc.st && sc.st.lon0 != null && sc.turn) sc.turn(dt * 0.006, 0);
+        else if (sc.cam) sc.cam.yaw += dt * 0.006;
+        layerKey = ""; requestRender();
+      }
+      requestAnimationFrame(orbitTick);
+    }
+    orbitB.addEventListener("click", function () { ORBIT = !ORBIT; orbitB.setAttribute("aria-pressed", ORBIT ? "true" : "false"); orbLast = 0; if (ORBIT) requestAnimationFrame(orbitTick); });
+    (function () {
+      if (!window.MutationObserver) return;
+      var last = elGuide.textContent;
+      new MutationObserver(function () { if (elGuide.textContent === last) return; last = elGuide.textContent; elGuide.classList.remove("mt-gpop"); void elGuide.offsetWidth; elGuide.classList.add("mt-gpop"); }).observe(elGuide, { childList: true, characterData: true, subtree: true });
+    })();
+    /* 업그레이드(10-20): 단면 자르는 위치 — 앞에서부터 블록을 잘라 속을 봄 */
+    $(".mt-cutr[data-for=\"2\"]").addEventListener("input", function (e) {
+      var v = clamp(Number(e.target.value) / 100, 0, 1); MT.st.cv = v;
+      setText($(".mt-cutv[data-for=\"2\"]"), v < 0.005 ? "자르지 않음" : v > 0.995 ? "가운데" : "안쪽 " + Math.round(v * 100) + "%");
+      MT.update(); updRead(); requestRender();
+    });
+    var hMenu = $(".mt-hmenu"), hBtn = $(".mt-hmbtn");
+    hBtn.addEventListener("click", function () {
+      if (root.classList.contains("mt-collapsed")) { fold.click(); return; }
+      var o = !hMenu.classList.contains("open"); hMenu.classList.toggle("open", o); hBtn.setAttribute("aria-expanded", o ? "true" : "false");
+    });
+    $$(".mt-hmi").forEach(function (b) { if (b.classList.contains("mt-gear")) return; b.addEventListener("click", function () { closeMenu(); }); });
+    document.addEventListener("pointerdown", function (e) { if (!hMenu.contains(e.target) && !posPop.contains(e.target) && hMenu.classList.contains("open")) closeMenu(); });
+    hMenu.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeMenu(); hBtn.focus(); } });
+    /* 「패널 위치」: 누르면 옆에 말풍선(오른쪽 · 왼쪽 · 플로팅). 말풍선이 열린 동안 메뉴도 열어 둠 */
+    var gear = $(".mt-gear"), posPop = $(".mt-pospop");
+    /* 말풍선은 패널 밖(무대 위)에 띄움: 패널이 오른쪽 · 플로팅이면 메뉴 왼쪽, 왼쪽이면 메뉴 오른쪽 */
+    function placePop() {
+      var rb = root.getBoundingClientRect(), gb = gear.getBoundingClientRect(), lb = $(".mt-hmlist").getBoundingClientRect(), w = posPop.offsetWidth || 220, right = mode === "left";
+      posPop.classList.toggle("tail-left", right);
+      posPop.style.left = Math.round(right ? lb.right - rb.left + 12 : lb.left - rb.left - w - 12) + "px";
+      posPop.style.top = Math.round(gb.top - rb.top - 6) + "px";
+    }
+    posPop.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeMenu(); hBtn.focus(); } });
+    function closeMenu() { hMenu.classList.remove("open"); hBtn.setAttribute("aria-expanded", "false"); posPop.hidden = true; gear.setAttribute("aria-expanded", "false"); }
+    gear.addEventListener("click", function () {
+      var o = posPop.hidden; posPop.hidden = !o; gear.setAttribute("aria-expanded", o ? "true" : "false");
+      if (o) { hMenu.classList.add("open"); hBtn.setAttribute("aria-expanded", "true"); placePop(); var f = posPop.querySelector('[aria-pressed="true"]'); if (f) f.focus(); }
+    });
+    $$(".mt-posseg .mt-segb").forEach(function (b) { b.addEventListener("click", function () { closeMenu(); }); });
+
+    /* ================= 확인 문제 (ver02: 무대 안 카드 · 한 문제씩 · 번호 점 · 결과 요약 · 장면에서 확인) ================= */
+    var QSCENE = ["east", "soil", "use", "rock", "use"];
+    var answered = QUIZ.map(function () { return null; });
+    var quizEl = $(".mt-quiz"), qDots = $(".mt-qdots"), qTitle = $(".mt-qtitle"), dQ = $(".mt-dq"), dOpts = $(".mt-dopts"), dFb = $(".mt-dfb");
+    var qRes = $(".mt-qres"), qScore = $(".mt-qscore"), qRows = $(".mt-qrows"), qBody = $(".mt-qbody");
+    var dPrev = $(".mt-prev"), dNext = $(".mt-next"), dGo = $(".mt-goscene"), qProg = $(".mt-qprog");
+    var qCur = 0, showRes = false;
+    var dotEls = QUIZ.map(function (item, i) {
+      var b = E("button", "mt-qdot", qDots, String(i + 1));
+      b.type = "button"; b.setAttribute("aria-label", (i + 1) + "번 문제 · " + item.title);
+      b.addEventListener("click", function () { qCur = i; showRes = false; renderQuiz(); });
+      return b;
+    });
+    var resDot = E("button", "mt-qdot", qDots, "끝"); resDot.type = "button"; resDot.setAttribute("aria-label", "결과 보기");
+    resDot.addEventListener("click", function () { showRes = true; renderQuiz(); });
+    function updateQuizList() {
+      var n = 0, ok = 0;
+      QUIZ.forEach(function (item, i) {
+        var p = answered[i], d = dotEls[i];
+        d.className = "mt-qdot" + (p === null ? "" : p === item.ans ? " ok" : " no") + (!showRes && i === qCur ? " cur" : "");
+        if (p !== null) { n++; if (p === item.ans) ok++; }
+      });
+      resDot.className = "mt-qdot" + (showRes ? " cur" : "");
+      setText(qProg, QUIZ.length + "문제 중 " + n + "문제 풀었고 " + ok + "문제 맞혔다.");
+    }
+    function renderQuiz() {
+      qRes.hidden = !showRes; qBody.hidden = showRes; dOpts.hidden = showRes; dFb.hidden = showRes;
+      dGo.hidden = showRes;
+      if (showRes) {
+        var ok = 0; qRows.textContent = "";
+        QUIZ.forEach(function (item, i) {
+          var p = answered[i], row = E("div", "mt-qrow", qRows);
+          E("b", "mt-qn", row, (i + 1) + "번");
+          E("span", p === null ? "na" : p === item.ans ? "ok" : "no", row, p === null ? "안 풂" : p === item.ans ? "정답" : "다시");
+          E("span", "", row, item.title);
+          if (p === item.ans) ok++;
+        });
+        setText(qScore, ok === QUIZ.length ? "모두 맞혔다! " + QUIZ.length + "문제 중 " + ok + "문제" : ok >= QUIZ.length - 1 ? "잘했다! " + QUIZ.length + "문제 중 " + ok + "문제 맞혔다" : QUIZ.length + "문제 중 " + ok + "문제 맞혔다 · 틀린 문제는 「장면에서 확인」으로 다시 본다");
+        dPrev.disabled = false; dNext.textContent = "다시 풀기"; dNext.disabled = false;
+        updateQuizList();
+        return;
+      }
+      var item = QUIZ[qCur], picked = answered[qCur];
+      setText(qTitle, "확인 문제 " + (qCur + 1) + " / " + QUIZ.length + " · " + item.title);
+      dQ.textContent = item.q;
+      dOpts.textContent = "";
+      item.opts.forEach(function (txt, i) {
+        var b = E("button", "mt-opt", dOpts, txt);
+        b.type = "button";
+        if (picked === i) b.classList.add(i === item.ans ? "ok" : "no");
+        b.addEventListener("click", function () { answered[qCur] = i; renderQuiz(); dOpts.children[i].focus(); });
+      });
+      if (picked === null) { dFb.className = "mt-dfb"; dFb.textContent = ""; }
+      else { var right = picked === item.ans; dFb.className = "mt-dfb " + (right ? "ok" : "no"); dFb.textContent = right ? item.ok : item.no; }
+      dPrev.disabled = qCur === 0;
+      dNext.textContent = qCur === QUIZ.length - 1 ? "결과 보기" : "다음 문제";
+      updateQuizList();
+    }
+    dPrev.addEventListener("click", function () { if (showRes) { showRes = false; qCur = QUIZ.length - 1; } else if (qCur > 0) qCur--; renderQuiz(); });
+    dNext.addEventListener("click", function () {
+      if (showRes) { answered = QUIZ.map(function () { return null; }); qCur = 0; showRes = false; }
+      else if (qCur < QUIZ.length - 1) qCur++; else showRes = true;
+      renderQuiz();
+    });
+    dGo.addEventListener("click", function () { openScene(QSCENE[qCur] || "overview1", "quiz"); });
+    $(".mt-qback").addEventListener("click", function () { go("home"); });
+
+    /* ================= 처음 상태: ?view=1&tilt=0~100&time=0~100 · ?view=2&kind=rock|soil&time=0~100 · ?view=3&spot=flat|slope|east|low&paint=0 · &play=1 · &panel=float ================= */
+    var qs = new URLSearchParams(location.search);
+    if (qs.get("lite") === "1") setLite(true);
+    var qv = qs.get("view") === "2" ? 2 : qs.get("view") === "3" ? 3 : 1, qt = parseInt(qs.get("time"), 10), qtilt = parseInt(qs.get("tilt"), 10);
+    if (isFinite(qtilt)) UP.st.tilt = clamp(qtilt / 100, 0, 1);
+    $(".mt-tiltrange").value = String(Math.round(UP.st.tilt * 100));
+    if (qs.get("kind") === "soil" || qs.get("kind") === "both") MT.st.kind = qs.get("kind");
+    markKind(MT.st.kind);
+    if (US.SPOTS[qs.get("spot")]) { US.st.mx = US.SPOTS[qs.get("spot")][0]; US.st.mz = US.SPOTS[qs.get("spot")][1]; }
+    if (qs.get("paint") === "0") { US.st.paint = false; useBtn.setAttribute("aria-pressed", "false"); }
+    if (qs.get("season") === "winter") { US.st.season = "winter"; markSeason("winter"); US.update(); }
+    if (isFinite(qt) && qv !== 3) (qv === 1 ? UP : MT).st.t = clamp(qt / 100, 0, 1);
+    ranges[1].value = String(Math.round(UP.st.t * 100)); ranges[2].value = String(Math.round(MT.st.t * 100));
+    UP.update(); MT.update(); US.update();
+    setPanel(qs.get("panel") || "right");
+    updateQuizList();
+    setView(qv);
+    /* ver02: ?scene=…(+ time) · ?quiz=1 · 없으면 목록 */
+    var qscene = qs.get("scene");
+    var qstage = parseInt(qs.get("stage"), 10);
+    if (SCENES[qscene]) { openScene(qscene); if (isFinite(qt)) setTime(clamp(qt / 100, 0, 1)); if (qstage >= 1 && qstage <= 4 && view === 1) { UP.st.t = STG[qstage - 1]; setTime(UP.st.t); } }
+    else if (qs.get("quiz") === "1") go("quiz");
+    else { showScr("home"); setText(elTitle, "산지 지형"); }
+    if (qs.get("play") === "1") togglePlay();
+    if (window.ResizeObserver) new ResizeObserver(layout).observe(root); else window.addEventListener("resize", layout);
+  }
+  Up(document.currentScript.parentElement);
+})();
+</script>
+</div>
+</body>
+</html>
