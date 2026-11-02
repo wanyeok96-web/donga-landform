@@ -224,6 +224,8 @@
 .ds-lf-coast .co-covl.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:400px}
 .ds-lf-coast.co-covermode .co-tbar{display:none}
 .ds-lf-coast .co-c-hide{display:none}
+.ds-lf-coast .co-mechs{display:grid;gap:6px;margin-top:4px}
+.ds-lf-coast .co-mechs[hidden]{display:none}
 .ds-lf-coast .co-ovseg[hidden]{display:none}
 .ds-lf-coast.co-quizmode .co-src{display:none}
 .ds-lf-coast .co-sum{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--ink2)}
@@ -584,14 +586,14 @@
     <div class="co-covin">
       <p class="co-coveye">중학 사회 ② · 8단원 · 우리나라의 자연환경과 인간 생활</p>
       <p class="co-covt">해안 지형</p>
-      <p class="co-covs">우리나라는 삼면이 바다이고, 동해안 · 서해안 · 남해안의 모습이 서로 다르다. 파랑이 깎고 쌓아 만든 해안 지형과 밀물 · 썰물, 리아스 해안을 3D 모형으로 살펴본다.</p>
+      <p class="co-covs">우리나라는 삼면이 바다이고, 동해안 · 서해안 · 남해안의 모습이 서로 다르다. 파랑 · 연안류 · 조류 · 바람이 깎고 쌓아 만든 해안 지형과 세계 여러 해안의 모습을 3D 모형으로 살펴본다.</p>
       <div class="co-covl two">
-        <button type="button" class="co-covc" data-go="tide"><b class="co-covn">1</b>개요</button>
-        <button type="button" class="co-covc" data-go="cape"><b class="co-covn">2</b>해안 침식 지형</button>
-        <button type="button" class="co-covc" data-go="bay"><b class="co-covn">3</b>해안 퇴적 지형</button>
-        <button type="button" class="co-covc" data-go="ria"><b class="co-covn">4</b>리아스 해안</button>
+        <button type="button" class="co-covc" data-go="capebay"><b class="co-covn">1</b>개요</button>
+        <button type="button" class="co-covc" data-go="cliff"><b class="co-covn">2</b>해안 침식 지형</button>
+        <button type="button" class="co-covc" data-go="beach"><b class="co-covn">3</b>해안 퇴적 지형</button>
+        <button type="button" class="co-covc" data-go="sandy"><b class="co-covn">4</b>세계 해안의 유형</button>
       </div>
-      <button type="button" class="co-btn main co-covgo" data-go="tide">개요부터 시작한다</button>
+      <button type="button" class="co-btn main co-covgo" data-go="capebay">개요부터 시작한다</button>
       <p class="co-covh">옆의 목차에서 살펴볼 내용을 골라도 된다.</p>
     </div>
   </div>
@@ -649,14 +651,26 @@
   <div class="co-body">
     <nav class="co-scr co-toc" data-scr="home" aria-label="해안 지형 목차">
       <p class="co-toch">index</p>
-      <button type="button" class="co-toci" data-go="tide"><span class="co-tocn">1</span><span class="co-toct">개요</span><span class="co-arr" aria-hidden="true">›</span></button>
-      <button type="button" class="co-toci" data-go="cape"><span class="co-tocn">2</span><span class="co-toct">해안 침식 지형</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <p class="co-tocg"><span class="co-tocn">1</span>개요</p>
+      <button type="button" class="co-toci sub" data-go="capebay"><span class="co-tocn">1-1</span><span class="co-toct">곶과 만</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="wave"><span class="co-tocn">1-2</span><span class="co-toct">파랑</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="drift"><span class="co-tocn">1-3</span><span class="co-toct">연안류</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="tide"><span class="co-tocn">1-4</span><span class="co-toct">조류(밀물과 썰물)</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="wind"><span class="co-tocn">1-5</span><span class="co-toct">바람</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <p class="co-tocg"><span class="co-tocn">2</span>해안 침식 지형</p>
+      <button type="button" class="co-toci sub" data-go="cliff"><span class="co-tocn">2-1</span><span class="co-toct">해식애 · 해식동 · 파식대 · 해안 단구</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="stack"><span class="co-tocn">2-2</span><span class="co-toct">시 아치 · 시 스택</span><span class="co-arr" aria-hidden="true">›</span></button>
       <p class="co-tocg"><span class="co-tocn">3</span>해안 퇴적 지형</p>
-      <button type="button" class="co-toci sub" data-go="bay"><span class="co-tocn">3-1</span><span class="co-toct">만의 모래사장</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="beach"><span class="co-tocn">3-1</span><span class="co-toct">사빈 · 해안 사구</span><span class="co-arr" aria-hidden="true">›</span></button>
       <button type="button" class="co-toci sub" data-go="spit"><span class="co-tocn">3-2</span><span class="co-toct">사주 · 석호</span><span class="co-arr" aria-hidden="true">›</span></button>
-      <button type="button" class="co-toci sub" data-go="flat"><span class="co-tocn">3-3</span><span class="co-toct">갯벌</span><span class="co-arr" aria-hidden="true">›</span></button>
-      <button type="button" class="co-toci sub" data-go="tombolo"><span class="co-tocn">3-4</span><span class="co-toct">육계도 · 해안 사구</span><span class="co-arr" aria-hidden="true">›</span></button>
-      <button type="button" class="co-toci" data-go="ria"><span class="co-tocn">4</span><span class="co-toct">리아스 해안</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="tombolo"><span class="co-tocn">3-3</span><span class="co-toct">육계 사주 · 육계도</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <p class="co-tocg"><span class="co-tocn">4</span>세계 해안의 유형</p>
+      <button type="button" class="co-toci sub" data-go="sandy"><span class="co-tocn">4-1</span><span class="co-toct">모래 해안</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="rocky"><span class="co-tocn">4-2</span><span class="co-toct">암석 해안</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="flat"><span class="co-tocn">4-3</span><span class="co-toct">갯벌</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="coral"><span class="co-tocn">4-4</span><span class="co-toct">산호초 해안</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="ria"><span class="co-tocn">4-5</span><span class="co-toct">리아스 해안</span><span class="co-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="co-toci sub" data-go="fjord"><span class="co-tocn">4-6</span><span class="co-toct">피오르 해안</span><span class="co-arr" aria-hidden="true">›</span></button>
       <button type="button" class="co-toci quiz" data-go="quiz"><span class="co-tocn">?</span><span class="co-toct">확인 문제</span><span class="co-arr" aria-hidden="true">›</span></button>
     </nav>
 
@@ -668,6 +682,15 @@
           <span class="co-sub">3D 보기</span>
           <span class="co-zbtns"><button type="button" class="co-mini co-zin" aria-label="확대">＋</button><button type="button" class="co-mini co-zout" aria-label="축소">－</button><button type="button" class="co-mini co-resetview">처음 시점으로</button></span>
         </div>
+      <div class="co-mechs" hidden>
+        <span class="co-sub">해안을 바꾸는 네 가지 힘(형성 기구) 보기</span>
+        <div class="co-seg four co-mechseg" role="group" aria-label="형성 기구 장면으로 가기">
+          <button type="button" class="co-segb" data-go="wave">① 파랑</button>
+          <button type="button" class="co-segb" data-go="drift">② 연안류</button>
+          <button type="button" class="co-segb" data-go="tide">③ 조류</button>
+          <button type="button" class="co-segb" data-go="wind">④ 바람</button>
+        </div>
+      </div>
       <div class="co-vctl" data-for="1">
         <div class="co-line2">
           <span class="co-sub">파랑 세기</span>
@@ -678,11 +701,9 @@
           </div>
         </div>
       </div>
-
       <div class="co-vctl co-off" data-for="2">
-        <div class="co-c-coast co-scr">
-        <span class="co-sub">해안을 따라 흐르는 물</span>
-        <div class="co-seg two co-driftseg" role="group" aria-label="해안을 따라 흐르는 물의 방향">
+        <span class="co-sub">연안류 방향(파랑이 밀려오는 쪽에서)</span>
+        <div class="co-seg two co-driftseg" role="group" aria-label="연안류 방향">
           <button type="button" class="co-segb" data-drift="R" aria-pressed="true">왼쪽 → 오른쪽</button>
           <button type="button" class="co-segb" data-drift="L" aria-pressed="false">오른쪽 → 왼쪽</button>
         </div>
@@ -693,15 +714,15 @@
             <button type="button" class="co-segb" data-sand="2" aria-pressed="true">많음</button>
           </div>
         </div>
-        </div>
       </div>
-
       <div class="co-vctl co-off" data-for="3">
+        <div class="co-c-coast">
         <span class="co-sub">해안</span>
         <div class="co-seg co-coastseg" role="group" aria-label="해안 고르기">
           <button type="button" class="co-segb" data-coast="W" aria-pressed="true">서해안</button>
           <button type="button" class="co-segb" data-coast="S" aria-pressed="false">남해안</button>
           <button type="button" class="co-segb" data-coast="E" aria-pressed="false">동해안</button>
+        </div>
         </div>
         <span class="co-sub">달의 모양(물때)</span>
         <div class="co-seg two co-moonseg" role="group" aria-label="달의 모양">
@@ -709,20 +730,37 @@
           <button type="button" class="co-segb" data-moon="neap" aria-pressed="false">반달 → 조금</button>
         </div>
       </div>
-
-      <div class="co-vctl co-off" data-for="4">
+      <div class="co-vctl co-off" data-for="4"></div>
+      <div class="co-vctl co-off" data-for="5"></div>
+      <div class="co-vctl co-off" data-for="6">
+        <span class="co-sub">파랑이 밀려오는 쪽</span>
+        <div class="co-seg two co-lsseg" role="group" aria-label="파랑이 밀려오는 쪽">
+          <button type="button" class="co-segb" data-lsdir="R" aria-pressed="true">왼쪽 앞바다에서</button>
+          <button type="button" class="co-segb" data-lsdir="L" aria-pressed="false">오른쪽 앞바다에서</button>
+        </div>
       </div>
-
-      <div class="co-vctl co-off" data-for="5">
+      <div class="co-vctl co-off" data-for="7">
         <div class="co-line2">
           <span class="co-sub">바닷바람</span>
-          <div class="co-seg co-tbwindseg" role="group" aria-label="바닷바람 세기">
-            <button type="button" class="co-segb" data-tbwind="1" aria-pressed="false">약함</button>
-            <button type="button" class="co-segb" data-tbwind="2" aria-pressed="true">보통</button>
-            <button type="button" class="co-segb" data-tbwind="3" aria-pressed="false">강함</button>
+          <div class="co-seg co-bdwindseg" role="group" aria-label="바닷바람">
+            <button type="button" class="co-segb" data-bdwind="1" aria-pressed="false">약함</button>
+            <button type="button" class="co-segb" data-bdwind="2" aria-pressed="true">보통</button>
+            <button type="button" class="co-segb" data-bdwind="3" aria-pressed="false">강함</button>
           </div>
         </div>
       </div>
+      <div class="co-vctl co-off" data-for="8">
+        <div class="co-line2">
+          <span class="co-sub">파랑 세기</span>
+          <div class="co-seg co-clwaveseg" role="group" aria-label="파랑 세기">
+            <button type="button" class="co-segb" data-clwave="1" aria-pressed="false">약함</button>
+            <button type="button" class="co-segb" data-clwave="2" aria-pressed="true">보통</button>
+            <button type="button" class="co-segb" data-clwave="3" aria-pressed="false">강함</button>
+          </div>
+        </div>
+      </div>
+      <div class="co-vctl co-off" data-for="9"></div>
+      <div class="co-vctl co-off" data-for="10"></div>
       <div class="co-line2">
         <span class="co-sub">재생 빠르기</span>
         <div class="co-seg co-spdseg" role="group" aria-label="재생 빠르기">
@@ -792,6 +830,66 @@
         </div>
         <div class="co-stages" data-for="5" role="group" aria-label="재생 단계"></div>
       </section>
+      <section class="co-card co-vctl co-playcard co-off" data-for="6">
+        <h3 class="co-h">재생</h3>
+        <div class="co-row co-prow">
+          <button type="button" class="co-btn main co-play" data-for="6" aria-label="재생">재생</button>
+          <button type="button" class="co-btn co-reset" data-for="6">처음으로</button>
+        </div>
+        <div class="co-rangerow">
+          <input class="co-range co-trange" data-for="6" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="co-rv co-tval" data-for="6"></span>
+        </div>
+        <div class="co-stages" data-for="6" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="co-card co-vctl co-playcard co-off" data-for="7">
+        <h3 class="co-h">재생</h3>
+        <div class="co-row co-prow">
+          <button type="button" class="co-btn main co-play" data-for="7" aria-label="재생">재생</button>
+          <button type="button" class="co-btn co-reset" data-for="7">처음으로</button>
+        </div>
+        <div class="co-rangerow">
+          <input class="co-range co-trange" data-for="7" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="co-rv co-tval" data-for="7"></span>
+        </div>
+        <div class="co-stages" data-for="7" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="co-card co-vctl co-playcard co-off" data-for="8">
+        <h3 class="co-h">재생</h3>
+        <div class="co-row co-prow">
+          <button type="button" class="co-btn main co-play" data-for="8" aria-label="재생">재생</button>
+          <button type="button" class="co-btn co-reset" data-for="8">처음으로</button>
+        </div>
+        <div class="co-rangerow">
+          <input class="co-range co-trange" data-for="8" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="co-rv co-tval" data-for="8"></span>
+        </div>
+        <div class="co-stages" data-for="8" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="co-card co-vctl co-playcard co-off" data-for="9">
+        <h3 class="co-h">재생</h3>
+        <div class="co-row co-prow">
+          <button type="button" class="co-btn main co-play" data-for="9" aria-label="재생">재생</button>
+          <button type="button" class="co-btn co-reset" data-for="9">처음으로</button>
+        </div>
+        <div class="co-rangerow">
+          <input class="co-range co-trange" data-for="9" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="co-rv co-tval" data-for="9"></span>
+        </div>
+        <div class="co-stages" data-for="9" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="co-card co-vctl co-playcard co-off" data-for="10">
+        <h3 class="co-h">재생</h3>
+        <div class="co-row co-prow">
+          <button type="button" class="co-btn main co-play" data-for="10" aria-label="재생">재생</button>
+          <button type="button" class="co-btn co-reset" data-for="10">처음으로</button>
+        </div>
+        <div class="co-rangerow">
+          <input class="co-range co-trange" data-for="10" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="co-rv co-tval" data-for="10"></span>
+        </div>
+        <div class="co-stages" data-for="10" role="group" aria-label="재생 단계"></div>
+      </section>
 
       <details class="co-card co-readcard">
         <summary class="co-csum">자료 해설</summary>
@@ -815,14 +913,14 @@
       <p class="co-p">우리나라는 삼면이 바다로 둘러싸여 있다. 서해안과 남해안은 해안선이 복잡하고 섬이 많지만, 동해안은 해안선이 단조롭고 섬이 적은 편이다.</p>
       <p class="co-p co-use"></p>
       <div class="co-more">
-        <p class="co-mterm">파랑과 연안류</p>
-        <p class="co-mdesc">파랑은 바람에 의해 생기는 물결이다. 해안에 비스듬히 밀려오는 파랑은 해안을 따라 흐르는 물(연안류)을 만들어 모래를 옆으로 옮긴다.</p>
-        <p class="co-mterm">파도가 깎은 지형의 이름</p>
-        <p class="co-mdesc">해안 절벽을 해식애, 절벽 아래 동굴을 해식동, 구멍이 뚫린 바위를 시 아치, 절벽이 물러난 자리의 평평한 바위 바닥을 파식대라고도 한다.</p>
-        <p class="co-mterm">해안 단구와 해안 사구</p>
-        <p class="co-mdesc">파식대가 땅이 솟아 높아지면 계단 모양 땅(해안 단구)이 되고, 모래사장의 모래가 바람에 날려 뒤쪽에 쌓이면 모래 언덕(해안 사구)이 된다.</p>
-        <p class="co-mterm">섬과 이어진 모래 길</p>
-        <p class="co-mdesc">섬 뒤쪽에 모래가 쌓여 육지와 이어지면 육계도라고 한다.</p>
+        <p class="co-mterm">해안을 바꾸는 네 가지 힘(형성 기구)</p>
+        <p class="co-mdesc">파랑은 바람이 일으킨 물결로 바다에서 해안 쪽으로 에너지를 전한다. 연안류는 비스듬히 밀려온 파랑이 만든, 해안을 따라 흐르는 물이다. 조류는 밀물 · 썰물 때 드나드는 바닷물이고, 바닷바람은 사빈의 모래를 날린다.</p>
+        <p class="co-mterm">해안 침식 지형</p>
+        <p class="co-mdesc">해식애(파랑에 깎인 절벽) · 해식동(절벽에 파인 동굴) · 파식대(절벽이 물러난 자리의 평평한 바위 바닥) · 해안 단구(솟아오른 옛 파식대) · 시 아치(구멍이 뚫린 바위) · 시 스택(홀로 남은 바위 기둥)</p>
+        <p class="co-mterm">해안 퇴적 지형</p>
+        <p class="co-mdesc">사빈(모래사장) · 해안 사구(바람이 쌓은 모래 언덕) · 사주(길게 쌓인 모래) · 석호(사주가 만을 막아 생긴 호수) · 육계 사주와 육계도(사주로 육지와 이어진 섬)</p>
+        <p class="co-mterm">세계 해안의 유형</p>
+        <p class="co-mdesc">모래 해안 · 암석 해안 · 갯벌 · 산호초 해안 · 리아스 해안(V자 골짜기가 잠김) · 피오르 해안(빙하가 깎은 U자 골짜기가 잠김)</p>
         <p class="co-mterm">갯벌의 가치</p>
         <p class="co-mdesc">갯벌은 조개 · 게 등 많은 생물이 사는 곳이고, 오염 물질을 걸러 내며, 큰 물결을 약하게 해 준다.</p>
       </div>
@@ -837,7 +935,7 @@
       <button type="button" class="co-btn main co-qback">목록으로</button>
     </div>
 
-    <p class="co-credit">자료: 조차 해양환경정보포털(사리 때 대조차: 인천 부근 9.3m · 여수 3.0m · 동해안 0.3m 내외) · 지도 해안선 Natural Earth 1:10m · 장소는 실제 위경도 · 해안 모형은 예시 모형</p>
+    <p class="co-credit">자료: 조차 해양환경정보포털(사리 때 대조차: 인천 부근 9.3m · 여수 3.0m · 동해안 0.3m 내외) · 지도 해안선 Natural Earth 1:10m · 장소는 실제 위경도 · 해안 모형은 예시 모형 · 세계 해안 사례는 대표 지역</p>
   </div>
 </aside>
 
@@ -853,64 +951,99 @@
 
     /* 사례 장소(위경도는 대략): 중학 사회 ② 139쪽 */
     var PLACES = [
-      { id: "ca", name: "추암 촛대바위", lon: 129.16, lat: 37.48, dx: 8, dy: 4, anchor: "start", k: [1], text: "강원특별자치도 동해시 추암: 파랑에 깎이고 단단한 부분만 남은 바위 기둥(시 스택)과 해안 절벽을 볼 수 있다." },
-      { id: "tj", name: "부산 태종대", lon: 129.08, lat: 35.05, dx: 8, dy: 6, anchor: "start", k: [1], text: "부산 태종대: 바다로 튀어나온 곳이 파랑에 깎여 높은 해안 절벽이 이어진다." },
-      { id: "yr", name: "속초 영랑호", lon: 128.585, lat: 38.215, dx: -7, dy: -2, anchor: "end", k: [2], text: "강원특별자치도 속초시 영랑호: 사주가 만의 입구를 막아 생긴 석호다." },
-      { id: "gp", name: "강릉 경포호 · 경포대", lon: 128.9, lat: 37.8, dx: -7, dy: 4, anchor: "end", k: [2, "E"], text: "강원특별자치도 강릉시: 경포호는 석호이고, 파랑에 모래가 쌓인 경포대 해수욕장에는 여름이면 많은 사람이 찾는다." },
-      { id: "ss", name: "제주 성산 일출봉", lon: 126.94, lat: 33.46, dx: 7, dy: 3, anchor: "start", k: [5], text: "제주 성산 일출봉: 바다 위 화산섬이 모래가 쌓인 사주로 육지와 이어진 육계도다." },
-      { id: "ta", name: "충남 태안", lon: 126.2, lat: 36.75, dx: -7, dy: 4, anchor: "end", k: ["W", 5], text: "충청남도 태안군: 조차가 커서 썰물 때 넓은 갯벌이 드러나고, 갯벌에서 조개 · 게를 잡거나 염전을 만들어 소금을 얻는다." },
-      { id: "ic", name: "인천 앞바다", lon: 126.55, lat: 37.4, dx: -7, dy: -3, anchor: "end", k: ["W"], text: "인천 앞바다: 우리나라에서 조차가 가장 큰 곳 가운데 하나로, 사리 때 조차가 9m를 넘는다." },
-      { id: "ty", name: "통영 · 한려 해상", lon: 128.43, lat: 34.84, dx: 7, dy: 9, anchor: "start", k: ["S", 4], text: "경상남도 통영시: 크고 작은 섬이 바다와 어우러진 한려 해상 국립 공원이 있고, 굴 등을 기르는 양식장이 많다." }
+      { id: "ca", name: "추암 촛대바위", lon: 129.16, lat: 37.48, dx: 8, dy: 4, anchor: "start", k: ["stack", "rocky"], text: "강원특별자치도 동해시 추암: 파랑에 깎이고 단단한 부분만 남은 바위 기둥(시 스택)과 해식애를 볼 수 있다." },
+      { id: "jd", name: "강릉 정동진", lon: 129.03, lat: 37.69, dx: 8, dy: 2, anchor: "start", k: ["cliff"], text: "강원특별자치도 강릉시 정동진: 옛 파식대가 솟아올라 생긴 해안 단구가 해안을 따라 계단처럼 이어진다." },
+      { id: "tj", name: "부산 태종대", lon: 129.08, lat: 35.05, dx: 8, dy: 6, anchor: "start", k: ["capebay", "wave", "rocky", "cliff"], text: "부산 태종대: 바다로 튀어나온 곶이 파랑에 깎여 높은 해식애가 이어진다." },
+      { id: "yr", name: "속초 영랑호", lon: 128.585, lat: 38.215, dx: -7, dy: -2, anchor: "end", k: ["spit"], text: "강원특별자치도 속초시 영랑호: 사주가 만의 입구를 막아 생긴 석호다." },
+      { id: "gp", name: "강릉 경포호 · 경포대", lon: 128.9, lat: 37.8, dx: -7, dy: 4, anchor: "end", k: ["spit", "beach", "sandy", "drift"], text: "강원특별자치도 강릉시: 경포호는 석호이고, 파랑과 연안류가 모래를 쌓은 경포대 해수욕장(사빈)에는 여름이면 많은 사람이 찾는다." },
+      { id: "ss", name: "제주 성산 일출봉", lon: 126.94, lat: 33.46, dx: 7, dy: 3, anchor: "start", k: ["tombolo"], text: "제주 성산 일출봉: 바다 위 화산섬이 모래가 쌓인 사주(육계 사주)로 육지와 이어진 육계도다." },
+      { id: "sd", name: "태안 신두리 사구", lon: 126.19, lat: 36.84, dx: -7, dy: -4, anchor: "end", k: ["wind", "beach"], text: "충청남도 태안군 신두리: 바닷바람이 사빈의 모래를 날라 쌓은 우리나라의 대표적인 해안 사구로, 보호 구역으로 지정되어 있다." },
+      { id: "ta", name: "충남 태안 갯벌", lon: 126.3, lat: 36.6, dx: -7, dy: 8, anchor: "end", k: ["tide", "flat"], text: "충청남도 태안군: 조차가 커서 썰물 때 넓은 갯벌이 드러나고, 갯벌에서 조개 · 게를 잡거나 염전을 만들어 소금을 얻는다." },
+      { id: "ic", name: "인천 앞바다", lon: 126.55, lat: 37.4, dx: -7, dy: -3, anchor: "end", k: ["tide", "flat"], text: "인천 앞바다: 우리나라에서 조차가 가장 큰 곳 가운데 하나로, 사리 때 조차가 9m를 넘는다." },
+      { id: "ty", name: "통영 · 한려 해상", lon: 128.43, lat: 34.84, dx: 7, dy: 9, anchor: "start", k: ["ria"], text: "경상남도 통영시: 크고 작은 섬이 바다와 어우러진 한려 해상 국립 공원이 있고, 굴 등을 기르는 양식장이 많다." }
     ];
 
+    /* 개편(11-02): 새 목차에 맞춘 확인 문제 10개(장면 순서) */
     var QUIZ = [
       {
-        title: "곶에서 일어나는 일",
-        q: "바다로 튀어나온 곶에서 주로 일어나는 일로 알맞은 것은 무엇일까?",
-        opts: ["강물이 흙을 쌓아 넓은 평야가 생긴다.", "파랑의 힘이 모여 깎이고, 해안 절벽과 시 스택이 생긴다.", "파랑의 힘이 약해 모래가 쌓여 모래사장이 넓어진다."],
+        title: "곶과 만",
+        q: "바다에서 해안으로 밀려온 파랑의 에너지는 주로 어디에 모일까?",
+        opts: ["육지 쪽으로 들어간 만", "바다 쪽으로 튀어나온 곶", "하천이 흘러드는 어귀"],
         ans: 1,
-        ok: "정답이다. 파랑은 튀어나온 곶에 모여 절벽 아래를 깎는다. 절벽이 물러나면서 단단한 부분만 남아 시 스택이 된다. 들어간 만에서는 파랑이 흩어져 모래가 쌓인다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 시간을 옮기며 곶 끝과 만이 어떻게 달라지는지 비교해 본다."
+        ok: "정답이다. 해안에 가까워진 파랑은 휘어지며 곶에 모인다. 그래서 곶은 깎이고 만에는 모래가 쌓여 해안선이 점점 단조로워진다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 주황색 파랑 에너지 화살표가 어디로 모이는지 본다."
       },
       {
-        title: "영랑호 · 경포호",
-        q: "동해안의 영랑호 · 경포호 같은 석호는 어떻게 만들어졌을까?",
-        opts: ["빙하가 땅을 깊게 판 곳에 물이 고였다.", "화산이 폭발한 자리에 물이 고였다.", "모래가 길게 쌓인 사주가 만의 입구를 막았다."],
-        ans: 2,
-        ok: "정답이다. 해안을 따라 흐르는 물이 모래를 옮겨 곶 끝에 길게 쌓으면 사주가 된다. 사주가 만의 입구를 막으면 바다와 떨어진 석호가 생긴다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 시간을 끝까지 옮겨 만의 입구가 어떻게 되는지 본다."
+        title: "연안류와 돌제",
+        q: "파랑이 해안에 비스듬히 밀려와 연안류가 흐르는 해안에 바다로 뻗은 돌제를 쌓으면 어떻게 될까?",
+        opts: ["돌제 양쪽에 모래가 똑같이 쌓인다.", "연안류가 오는 쪽에는 모래가 쌓이고, 반대쪽은 모래가 모자라 깎인다.", "모래가 전혀 움직이지 않는다."],
+        ans: 1,
+        ok: "정답이다. 연안류가 옮기던 모래가 돌제에 막혀 한쪽에 쌓이고, 반대쪽은 모래가 공급되지 않아 해안이 깎인다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 오른쪽 아래 해안선 변화 그래프를 본다."
       },
       {
         title: "넓은 갯벌",
         q: "서해안과 남해안에 갯벌이 넓게 발달한 까닭으로 알맞은 것은 무엇일까?",
         opts: ["밀물과 썰물의 물 높이 차(조차)가 커서 썰물 때 넓은 땅이 드러나기 때문이다.", "바닷물이 일 년 내내 얼어 있기 때문이다.", "파랑이 아주 강하기 때문이다."],
         ans: 0,
-        ok: "정답이다. 서 · 남해안은 조차가 커서 썰물 때 넓은 갯벌이 드러난다. 사람들은 갯벌에서 조개 · 게를 잡거나 양식장 · 염전을 만들어 이용한다.",
+        ok: "정답이다. 서 · 남해안은 조차가 크고 바닷가가 완만해 조류가 실어 온 고운 흙이 쌓이고, 썰물 때 넓은 갯벌이 드러난다.",
         no: "다시 생각해 보자. 「장면에서 확인」을 눌러 서해안과 동해안의 조차와 드러난 갯벌 폭을 비교해 본다."
       },
       {
-        title: "시 스택이 생기는 차례",
-        q: "곶 끝의 바위가 파도에 깎여 가는 차례로 알맞은 것은 무엇일까?",
-        opts: ["시 스택 → 아치 → 동굴 → 해안 절벽", "모래사장 → 사주 → 석호 → 해안 절벽", "해안 절벽 → 동굴 → 아치(구멍 뚫린 바위) → 시 스택(홀로 남은 바위 기둥)"],
-        ans: 2,
-        ok: "정답이다. 파도가 곶의 절벽 아래를 파 동굴이 되고, 동굴이 뚫려 아치가 되었다가, 아치 윗부분이 무너지면 바위 기둥(시 스택)만 남는다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 파랑 세기를 「강함」으로 두고 시간을 천천히 옮기며 곶 끝을 본다."
-      },
-      {
-        title: "동해안의 바닷가",
-        q: "동해안에 넓은 갯벌이 거의 없고 모래사장(해수욕장)이 많은 까닭으로 알맞은 것은 무엇일까?",
-        opts: ["하천이 바다로 흘러들지 않기 때문이다.", "밀물과 썰물의 차(조차)가 작고 바닷가가 가파르기 때문이다.", "바닷물이 하루 종일 빠져 있기 때문이다."],
+        title: "해안 사구",
+        q: "충남 태안 신두리의 해안 사구는 어떻게 만들어졌을까?",
+        opts: ["빙하가 실어 온 흙이 쌓였다.", "사빈의 모래가 바닷바람에 날려 뒤쪽에 쌓였다.", "하천이 실어 온 자갈이 쌓였다."],
         ans: 1,
-        ok: "정답이다. 동해안은 조차가 작고 바닷가가 가팔라 갯벌이 넓게 드러나지 않고, 파랑이 모래를 쌓아 모래사장이 발달했다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「동해안」을 고르고 하루 동안 물 높이와 드러난 땅을 서해안과 비교해 본다."
+        ok: "정답이다. 사빈의 마른 모래가 바다에서 육지로 부는 바람에 날려 뒤쪽에 쌓이면 해안 사구가 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 바닷바람과 날리는 모래를 본다."
       },
       {
-        title: "리아스 해안이 생긴 까닭",
-        q: "우리나라 서 · 남해안처럼 해안선이 복잡하고 섬이 많은 리아스 해안은 어떻게 생겼을까?",
-        opts: ["해수면이 높아져 하천이 깎은 V자 골짜기에 바닷물이 들어와 생겼다.", "파랑이 모래를 쌓아 만의 입구를 막아 생겼다.", "빙하가 깎은 U자 골짜기에 바닷물이 들어와 생겼다."],
+        title: "해안 단구",
+        q: "강릉 정동진처럼 해안을 따라 계단 모양의 평평한 땅(해안 단구)이 생긴 까닭은 무엇일까?",
+        opts: ["파식대가 솟아올라(융기) 바다 위로 드러났다.", "바람이 모래를 쌓았다.", "밀물 때 고운 흙이 쌓였다."],
         ans: 0,
-        ok: "정답이다. 빙기가 끝나 해수면이 오르자 하천이 깎은 V자 골짜기에 바닷물이 들어와 만과 곶이 번갈아 나타나고, 낮은 산꼭대기는 섬으로 남았다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 해수면이 오르는 동안 골짜기가 어떻게 되는지 본다."
+        ok: "정답이다. 해식애가 물러나며 생긴 파식대가 땅이 솟아오르면서 바다 위로 드러나 해안 단구가 되었다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 마지막 단계(해안 단구)를 재생해 본다."
+      },
+      {
+        title: "시 스택이 생기는 차례",
+        q: "곶 끝의 바위가 파랑에 깎여 가는 차례로 알맞은 것은 무엇일까?",
+        opts: ["시 스택 → 시 아치 → 해식동 → 해식애", "사빈 → 사주 → 석호 → 해식애", "해식애 → 해식동 → 시 아치 → 시 스택"],
+        ans: 2,
+        ok: "정답이다. 파랑이 해식애 아래를 파 해식동이 되고, 해식동이 뚫려 시 아치가 되었다가, 아치 윗부분이 무너지면 시 스택만 남는다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 시간을 천천히 옮기며 곶 끝을 본다."
+      },
+      {
+        title: "석호의 변화",
+        q: "사주로 바다와 분리된 석호가 시간이 지나면서 점점 작아지는 까닭은 무엇일까?",
+        opts: ["하천이 실어 온 흙이 쌓여 메워지기 때문이다.", "바닷물이 얼기 때문이다.", "파랑이 석호 바닥을 깎기 때문이다."],
+        ans: 0,
+        ok: "정답이다. 석호는 물결이 잔잔해 흘러드는 하천이 실어 온 흙이 잘 쌓인다. 하천 어귀부터 메워져 습지와 논이 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 마지막 단계(석호 메워짐)를 재생해 본다."
+      },
+      {
+        title: "성산 일출봉",
+        q: "제주 성산 일출봉처럼 섬이 모래가 쌓인 사주로 육지와 이어진 지형을 무엇이라고 할까?",
+        opts: ["석호", "육계도", "시 스택"],
+        ans: 1,
+        ok: "정답이다. 섬 뒤쪽은 파랑이 약해 모래가 쌓이고, 사주(육계 사주)가 자라 육지와 이어진 섬을 육계도라고 한다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 섬 뒤쪽에 무엇이 쌓이는지 본다."
+      },
+      {
+        title: "산호초 해안",
+        q: "섬이 조금씩 가라앉을 때 산호초가 바뀌는 차례로 알맞은 것은 무엇일까?",
+        opts: ["환초 → 보초 → 거초", "거초 → 보초 → 환초", "보초 → 거초 → 환초"],
+        ans: 1,
+        ok: "정답이다. 섬에 붙은 거초는 섬이 가라앉아도 위로 자라 보초가 되고, 섬이 잠기면 고리 모양의 환초만 남는다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 단계 단추를 차례로 눌러 본다."
+      },
+      {
+        title: "리아스 해안과 피오르",
+        q: "리아스 해안과 피오르 해안의 차이로 알맞은 것은 무엇일까?",
+        opts: ["리아스 해안은 하천이 깎은 V자 골짜기, 피오르 해안은 빙하가 깎은 U자 골짜기에 바닷물이 들어왔다.", "둘 다 바람이 모래를 쌓아 생겼다.", "리아스 해안은 산호초가 자라 생겼다."],
+        ans: 0,
+        ok: "정답이다. 해수면이 높아져 V자 골짜기가 잠기면 리아스 해안, 빙하가 깎은 깊은 U자 골짜기가 잠기면 피오르 해안이 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 피오르의 단면 모양을 리아스 해안과 비교해 본다."
       }
     ];
 
@@ -940,7 +1073,7 @@
     /* 업그레이드(10-29): 설명 카드의 핵심 낱말을 파란 굵은 글씨로(예시처럼). 글이 바뀌면 낱말마다 처음 한 번만 <b>로 감쌈.
        innerHTML 없이 글 조각 · 요소를 만들어 넣음. 이미 감싼 글이면 건드리지 않음(감시가 되풀이되지 않게) */
     (function () {
-      var W = ["리아스 해안", "해안 사구", "해안 절벽", "시 스택", "모래사장", "육계도", "썰물", "파랑", "사주", "밀물", "조차", "석호", "아치", "갯벌", "곶"], el = $(".co-rt"); if (!el || !window.MutationObserver) return;
+      var W = ["U자 골짜기", "V자 골짜기", "리아스 해안", "해안 사구", "해안 단구", "해안 절벽", "육계 사주", "시 스택", "시 아치", "모래사장", "해식애", "해식동", "파식대", "연안류", "육계도", "피오르", "갯벌", "썰물", "밀물", "파랑", "사주", "사빈", "조차", "조류", "석호", "초호", "거초", "보초", "환초", "돌제", "곶"], el = $(".co-rt"); if (!el || !window.MutationObserver) return;
       var re = new RegExp("(" + W.map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|") + ")", "g");
       function mark() {
         if (el.querySelector(".co-term")) return;
@@ -1483,29 +1616,175 @@
     var SEA_S = [118, 178, 222], SEA_D = [36, 92, 160], SAND = [228, 206, 150], ROCK = [138, 128, 116], GRASS = [118, 154, 86], MUD = [130, 112, 90];
     function seaCol(depth) { return mix(SEA_S, SEA_D, clamp(depth / 0.14, 0, 1)); }
 
-    /* ================= 보기 ① 곶과 만 (예시 모형) =================
-       블록 가로 약 1km(1 = 500m), 앞쪽(z −)이 바다. 처음 해안선 = 0.25 − 0.6·e^−(x/0.26)²(가운데 x = 0이 곶, 양쪽이 만)
-       파랑 에너지 E(x) = 0.25 + 0.75·e^−(x/0.3)²(곶에 모임). 파랑 세기 약함 · 보통 · 강함 = 0.4 · 0.75 · 1.1(파도 높이 약 1 · 2 · 4m)
-       해안이 물러난 거리 = 0.45 × 세기 × 시간 × E² → 곶 끝은 최대 약 250m, 만은 거의 그대로. 물러난 자리는 물속의 평평한 바위 바닥
-       만의 모래사장 폭 = (1 − E) × 0.2 × (세기 × 시간 × 1.2를 0 ~ 1로)
-       곶 끝(0, −0.29)의 단단한 바위: 물러난 거리 0.04까지 절벽 → 0.1까지 동굴 → 0.17까지 아치(바위와 육지를 잇는 좁은 다리) → 그 뒤 시 스택(따로 선 기둥) */
+    /* ================= 개편(11-02): 파랑 마당 — 물결 줄 · 파랑 에너지 화살표(파향선) =================
+       바다 칸마다 가장 가까운 육지까지의 거리 d를 구함(앞뒤로 두 번 훑는 거리 셈)
+       물결 자리 ψ = (1 − w)·(x·sinA + z·cosA) + w·(−d), w = e^(−d/0.2)
+         먼 바다: 곧은 물결(A = 파랑이 나아가는 방향, 0이면 곧장 해안 쪽 +z) · 해안 가까이: 해안선과 나란한 물결(굴절)
+       시간이 지나면 ψ가 커지는 쪽으로 물결 줄이 옮겨 가므로, 물결은 늘 바다 → 해안 쪽으로 다가와 부서짐(에너지가 해안으로 들어옴)
+       에너지 화살표는 ψ가 커지는 방향을 따라 그려, 곶에는 모이고 만에서는 벌어짐 */
+    function WaveField(o) {
+      var NX = o.nx || 70, NZ = o.nz || 56, VX = NX + 1, N = VX * (NZ + 1), DX = (o.x1 - o.x0) / NX, DZ = (o.z1 - o.z0) / NZ, DG = Math.sqrt(DX * DX + DZ * DZ);
+      var D = new Float32Array(N), P = new Float32Array(N), L = new Uint8Array(N), F = { ok: false };
+      function X(i) { return o.x0 + DX * i; }
+      function Z(j) { return o.z0 + DZ * j; }
+      F.update = function () {
+        var A = (o.ang ? o.ang() : o.A || 0) * RAD, sA = Math.sin(A), cA = Math.cos(A), i, j, n, any = false, bl = o.blend || 0.2;
+        for (j = 0; j <= NZ; j++) for (i = 0; i <= NX; i++) { n = j * VX + i; L[n] = o.land(X(i), Z(j)) ? 1 : 0; D[n] = L[n] ? 0 : 1e6; if (L[n]) any = true; }
+        if (any) {
+          for (j = 0; j <= NZ; j++) for (i = 0; i <= NX; i++) {
+            n = j * VX + i; if (L[n]) continue; var d = D[n];
+            if (i > 0) d = Math.min(d, D[n - 1] + DX);
+            if (j > 0) { d = Math.min(d, D[n - VX] + DZ); if (i > 0) d = Math.min(d, D[n - VX - 1] + DG); if (i < NX) d = Math.min(d, D[n - VX + 1] + DG); }
+            D[n] = d;
+          }
+          for (j = NZ; j >= 0; j--) for (i = NX; i >= 0; i--) {
+            n = j * VX + i; if (L[n]) continue; var d2 = D[n];
+            if (i < NX) d2 = Math.min(d2, D[n + 1] + DX);
+            if (j < NZ) { d2 = Math.min(d2, D[n + VX] + DZ); if (i < NX) d2 = Math.min(d2, D[n + VX + 1] + DG); if (i > 0) d2 = Math.min(d2, D[n + VX - 1] + DG); }
+            D[n] = d2;
+          }
+        }
+        for (j = 0; j <= NZ; j++) for (i = 0; i <= NX; i++) { n = j * VX + i; var dd = Math.min(D[n], 9), w = Math.exp(-dd / bl); P[n] = (1 - w) * (X(i) * sA + Z(j) * cA) + w * (-dd); }
+        F.ok = true;
+      };
+      function samp(A, x, z) {
+        var fi = clamp((x - o.x0) / DX, 0, NX - 1e-4), fj = clamp((z - o.z0) / DZ, 0, NZ - 1e-4), i = fi | 0, j = fj | 0, u = fi - i, v = fj - j, n = j * VX + i;
+        return (A[n] * (1 - u) + A[n + 1] * u) * (1 - v) + (A[n + VX] * (1 - u) + A[n + VX + 1] * u) * v;
+      }
+      F.d = function (x, z) { return samp(D, x, z); };
+      F.psi = function (x, z) { return samp(P, x, z); };
+      /* 물결 줄 · 해안의 물보라: 바다 끝(앞쪽)에서 해안 쪽으로 칸을 따라가다 첫 육지에서 멈춤(섬 뒤 · 석호 안은 물결이 약함) */
+      F.draw = function (cam, clock, op) {
+        if (!F.ok) return;
+        op = op || {};
+        var lam = op.lam || 0.1, off = frac(clock * (op.speed || 0.05) / lam) * lam, y0 = op.y || 0.002, W0 = op.w || 1.6 * TS, seg = {}, foam = [], i, j, n;
+        for (i = 0; i <= NX; i++) {
+          var x = X(i), pk = null, pz = 0, pp = 0;
+          for (j = 0; j <= NZ; j++) {
+            n = j * VX + i;
+            if (L[n]) { if (j > 0) foam.push([x, Z(j) - DZ * 0.35, P[n - VX]]); break; }
+            var k = Math.floor((P[n] - off) / lam), z = Z(j);
+            if (pk !== null && k !== pk) {
+              var key = k > pk ? k : pk, lv = key * lam + off, u = (lv - pp) / ((P[n] - pp) || 1e-6), zc = pz + (z - pz) * clamp(u, 0, 1);
+              var a = seg[key] || (seg[key] = []);
+              if (!a.length || a[a.length - 1][0] !== i) a.push([i, x, zc, F.d(x, zc)]);
+            }
+            pk = k; pz = z; pp = P[n];
+          }
+        }
+        ctx.lineCap = "round";
+        Object.keys(seg).forEach(function (key) {
+          var a = seg[key];
+          for (var q = 1; q < a.length; q++) {
+            var A1 = a[q - 1], B1 = a[q]; if (B1[0] - A1[0] > 1) continue;
+            var dm = (A1[3] + B1[3]) / 2, zm = (A1[2] + B1[2]) / 2;
+            var al = sm(o.z0, o.z0 + 0.14, zm) * sm(0.006, 0.03, dm) * (op.alpha || 0.85), brk = 1 - sm(0.025, 0.07, dm);
+            if (al < 0.02) continue;
+            var p1 = cam.P(A1[1], y0, A1[2]), p2 = cam.P(B1[1], y0, B1[2]);
+            ctx.strokeStyle = "rgba(255,255,255," + Math.min(1, al * (0.75 + 0.35 * brk)).toFixed(3) + ")"; ctx.lineWidth = W0 * (1 + 0.9 * brk);
+            ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+          }
+        });
+        ctx.lineCap = "butt";
+        /* 물결이 닿을 때마다 해안에 하얀 물보라(같은 물결 자리 ψ로 맞춤) */
+        foam.forEach(function (f, q) {
+          if (q % 2) return;
+          var ph = (f[2] - off) / lam, pul = Math.pow(0.5 + 0.5 * Math.cos(2 * Math.PI * (ph - Math.floor(ph) - 0.9)), 3);
+          var p = cam.P(f[0], y0 + 0.002, f[1]);
+          ctx.fillStyle = "rgba(255,255,255," + (0.18 + 0.62 * pul).toFixed(3) + ")";
+          ctx.beginPath(); ctx.ellipse(p[0], p[1], (3 + 3 * pul) * TS, (1.6 + 1.4 * pul) * TS, 0, 0, 2 * Math.PI); ctx.fill();
+        });
+      };
+      /* 파랑 에너지 화살표(파향선): 먼 바다에서 해안까지 */
+      F.rays = function (cam, op) {
+        if (!F.ok) return [];
+        op = op || {};
+        var col = op.col || "#e8590c", out = [];
+        (op.xs || []).forEach(function (x0) {
+          var x = x0, z = op.z0 != null ? op.z0 : o.z0 + 0.05, pts = [], k;
+          for (k = 0; k < 120; k++) {
+            if (F.d(x, z) < (op.stop || 0.045)) break;
+            var e = 0.012, gx = F.psi(x + e, z) - F.psi(x - e, z), gz = F.psi(x, z + e) - F.psi(x, z - e), gl = Math.sqrt(gx * gx + gz * gz) || 1;
+            pts.push(cam.P(x, op.y || 0.004, z));
+            x += 0.02 * gx / gl; z += 0.02 * gz / gl;
+            if (x < o.x0 || x > o.x1 || z < o.z0 || z > o.z1) break;
+          }
+          if (pts.length < 4) return;
+          ctx.lineJoin = "round"; ctx.lineCap = "round";
+          ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = 4.6 * TS; ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+          ctx.strokeStyle = col; ctx.lineWidth = 2.2 * TS; ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+          ctx.lineCap = "butt";
+          var b = pts[pts.length - 1], a = pts[pts.length - 3], ang = Math.atan2(b[1] - a[1], b[0] - a[0]), hs = 10 * TS;
+          ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(b[0] + Math.cos(ang) * 3, b[1] + Math.sin(ang) * 3); ctx.lineTo(b[0] - Math.cos(ang - 0.48) * hs, b[1] - Math.sin(ang - 0.48) * hs); ctx.lineTo(b[0] - Math.cos(ang + 0.48) * hs, b[1] - Math.sin(ang + 0.48) * hs); ctx.closePath(); ctx.fill();
+          out.push(pts);
+        });
+        return out;
+      };
+      return F;
+    }
+    /* 개편(11-02): 화면 위 곧은 화살표(흰 테 + 색) */
+    function arrow2(a, b, col, w, hs) {
+      w = (w || 3.5) * TS; hs = (hs || 11) * TS;
+      var ang = Math.atan2(b[1] - a[1], b[0] - a[0]), ex = b[0] - Math.cos(ang) * hs * 0.6, ey = b[1] - Math.sin(ang) * hs * 0.6;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = w + 4; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.lineCap = "butt";
+      ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.beginPath(); ctx.moveTo(b[0] + Math.cos(ang) * 4, b[1] + Math.sin(ang) * 4); ctx.lineTo(b[0] - Math.cos(ang - 0.5) * (hs + 3), b[1] - Math.sin(ang - 0.5) * (hs + 3)); ctx.lineTo(b[0] - Math.cos(ang + 0.5) * (hs + 3), b[1] - Math.sin(ang + 0.5) * (hs + 3)); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(b[0] + Math.cos(ang) * 2, b[1] + Math.sin(ang) * 2); ctx.lineTo(b[0] - Math.cos(ang - 0.45) * hs, b[1] - Math.sin(ang - 0.45) * hs); ctx.lineTo(b[0] - Math.cos(ang + 0.45) * hs, b[1] - Math.sin(ang + 0.45) * hs); ctx.closePath(); ctx.fill();
+    }
+    /* 점선 선(처음 해안선 등) */
+    function dashLine(pts, col) {
+      ctx.setLineDash([6 * TS, 5 * TS]); ctx.lineJoin = "round";
+      ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = 3.6 * TS; ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+      ctx.strokeStyle = col || "rgba(29,33,38,.8)"; ctx.lineWidth = 1.6 * TS; ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    /* 단면 그림 칸: 가로 a ~ b(바다 → 육지), 세로 y0 ~ y1을 상자 안 그래프 영역으로 */
+    function profBox(box, title, a, b, y0, y1) {
+      panelBox(box);
+      ctext(title, box.x + 10, box.y + 13 * TS, { size: 11.5, bold: true });
+      var g = { x: box.x + 10, y: box.y + 26 * TS, w: box.w - 20, h: box.h - 34 * TS - 14 };
+      g.X = function (u) { return g.x + (u - a) / (b - a) * g.w; };
+      g.Y = function (v) { return g.y + g.h - (v - y0) / (y1 - y0) * g.h; };
+      return g;
+    }
+    function profPath(g, us, f) { ctx.beginPath(); us.forEach(function (u, i) { var x = g.X(u), y = g.Y(f(u)); if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); }); }
+    function profFill(g, us, f, col, base) {
+      profPath(g, us, f); ctx.lineTo(g.X(us[us.length - 1]), g.Y(base)); ctx.lineTo(g.X(us[0]), g.Y(base)); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    }
+    function rangeU(a, b, n) { var o = []; for (var i = 0; i <= n; i++) o.push(a + (b - a) * i / n); return o; }
+
+    /* ================= 보기 ① 곶과 만 · 파랑 · 시 아치와 시 스택 (예시 모형) =================
+       블록 가로 약 1km(1 = 500m), 앞쪽(z −)이 바다. 모양(11-02 개편):
+         sys(1-1 곶과 만): 곶 두 개(x = ±0.5)와 만 세 개가 번갈아 있는 해안. 처음 해안선 = 0.22 − 0.52·(e^−((x−0.5)/0.21)² + e^−((x+0.5)/0.21)²)
+         wave(1-2 파랑) · stack(2-2 시 아치 · 시 스택): 가운데 곶 하나. 처음 해안선 = 0.25 − 0.6·e^−(x/0.26)²
+       파랑 에너지 E(x): 곶에 모임(0.22 ~ 1). 파랑 세기 약함 · 보통 · 강함 = 0.4 · 0.75 · 1.1(파도 높이 약 1 · 2 · 4m)
+       해안이 물러난 거리 = 0.45 × 세기 × 시간 × E² → 곶 끝은 최대 약 250m, 만은 거의 그대로. 물러난 자리는 물속의 평평한 바위 바닥(파식대)
+       만의 사빈 폭 = (1 − E) × 0.2 × (세기 × 시간 × 1.2를 0 ~ 1로) → 곶은 물러나고 만은 메워져 해안선이 단조로워짐
+       stack: 곶 끝(0, −0.29)의 단단한 바위가 물러난 거리 0.04까지 해식애 → 0.1까지 해식동 → 0.17까지 시 아치 → 그 뒤 시 스택 */
     var WAVE_K = [0.4, 0.75, 1.1], WAVE_H = [1, 2, 4];
     var CA = (function () {
-      var st = { wave: 2, t: 0, play: false };
+      var st = { wave: 2, t: 0, play: false, mode: "stack" };
       var cam = Cam(-22, 34), BOT = -0.2, SZ = -0.29, SR = 0.045;
       var Q = {};
-      function coast0(x) { return 0.25 - 0.6 * Math.exp(-Math.pow(x / 0.26, 2)); }
-      function energy(x) { return 0.25 + 0.75 * Math.exp(-Math.pow(x / 0.3, 2)); }
+      function g(u, w) { return Math.exp(-u * u / (w * w)); }
+      function sys() { return st.mode === "sys"; }
+      function coast0(x) { return sys() ? 0.22 - 0.52 * (g(x - 0.5, 0.21) + g(x + 0.5, 0.21)) : 0.25 - 0.6 * g(x, 0.26); }
+      function energy(x) { return sys() ? 0.22 + 0.78 * Math.max(g(x - 0.5, 0.26), g(x + 0.5, 0.26)) : 0.25 + 0.75 * g(x, 0.3); }
       function retreat(x) { var e = energy(x); return 0.45 * WAVE_K[st.wave - 1] * st.t * e * e; }
       function coastNow(x) { return coast0(x) + retreat(x); }
       function beachW(x) { return (1 - energy(x)) * 0.2 * clamp(WAVE_K[st.wave - 1] * st.t * 1.2, 0, 1); }
-      function prm() { Q.r0 = retreat(0); Q.stage = Q.r0 < 0.04 ? 0 : Q.r0 < 0.1 ? 1 : Q.r0 < 0.17 ? 2 : 3; Q.bw = beachW(0.75); }
+      var HX = function () { return sys() ? 0.5 : 0; }, BX = function () { return sys() ? 0 : 0.75; };
+      function prm() { Q.r0 = retreat(HX()); Q.stage = Q.r0 < 0.04 ? 0 : Q.r0 < 0.1 ? 1 : Q.r0 < 0.17 ? 2 : 3; Q.bw = beachW(BX()); Q.stk = st.mode === "stack"; Q.gap = Math.max(0, (coastNow(BX()) - beachW(BX())) - coastNow(HX())); Q.gap0 = coast0(BX()) - coast0(HX()); }
       function landH(x) { return 0.04 + 0.1 * energy(x); }
       function rock(x, z) {
         var c0 = coast0(x), c = coastNow(x), bw = beachW(x), H = landH(x), cw = 0.015 + 0.04 * (1 - energy(x));
-        var ds = Math.hypot(x, z - SZ);
-        if (Q.stage >= 2 && ds < SR) return 0.13 * (Q.r0 > 0.42 ? 0.7 : 1) * (1 - Math.pow(ds / SR, 6) * 0.15);
-        if (Q.stage === 2 && Math.abs(x) < 0.02 && z > SZ && z < c + 0.01) return 0.13;
+        if (Q.stk) {
+          var ds = Math.hypot(x, z - SZ);
+          if (Q.stage >= 2 && ds < SR) return 0.13 * (Q.r0 > 0.42 ? 0.7 : 1) * (1 - Math.pow(ds / SR, 6) * 0.15);
+          if (Q.stage === 2 && Math.abs(x) < 0.02 && z > SZ && z < c + 0.01) return 0.13;
+        }
         if (z >= c) return H * sm(c, c + cw, z) + 0.004 + 0.008 * n2(2 * x, 2 * z) * sm(c + cw, c + 0.2, z);
         if (bw > 0.004 && z > c - bw) return 0.012 * (z - (c - bw)) / bw;
         if (z > c0) return -0.008 + 0.002 * n2(9 * x, 9 * z);
@@ -1520,68 +1799,104 @@
         if (r < 0) return seaC(x, z);
         var c = coastNow(x), cw = 0.015 + 0.04 * (1 - energy(x));
         if (z < c) return SAND;
-        if (Math.hypot(x, z - SZ) < SR && Q.stage >= 2) return ROCK;
+        if (Q.stk && Math.hypot(x, z - SZ) < SR && Q.stage >= 2) return ROCK;
         if (z < c + cw * 0.9 && energy(x) > 0.4) return ROCK;
         return z < c + 0.03 ? mix(SAND, GRASS, 0.6) : GRASS;
       }
-      /* 완성본: 바위 · 모래사장 · 바다 경계를 층으로(톱니) */
       var surf = makeSurf({ nx: 110, nz: 90, x0: -1, x1: 1, z0: -0.8, z1: 0.8, hf: hf, color: color, layers: [
         { s: function (x, z) { if (energy(x) <= 0.4) return 1; var c = coastNow(x), cw = 0.015 + 0.04 * (1 - energy(x)); return z - (c + cw * 0.9); }, c: function () { return ROCK; } },
         { s: function (x, z) { return z - coastNow(x); }, c: function () { return SAND; } },
         { s: function () { return R_; }, c: seaC, flat: true, line: "rgba(255,255,255,.75)" }
       ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -0.8, z1: 0.8, nx: 61, nz: 49, land: function (x, z) { return rock(x, z) >= 0; }, A: 0 });
       var M = { st: st, cam: cam, yaw0: -22, pitch0: 34, Q: Q };
-      M.update = function () { prm(); surf.reshape(); };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
       M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
-      M.skey = function () { return [st.t.toFixed(4), st.wave].join(","); };
+      M.skey = function () { return [st.t.toFixed(4), st.wave, st.mode].join(","); };
+      M.setMode = function (m) { if (st.mode === m) return; st.mode = m; M.update(); };
+      M.energy = energy;
+      /* 파랑 장면: 해안을 따라 본 파랑 에너지 막대그래프 */
+      function energyInset(box) {
+        panelBox(box);
+        ctext("해안을 따라 본 파랑 에너지", box.x + 10, box.y + 13 * TS, { size: 11.5, bold: true });
+        var g = { x: box.x + 14, y: box.y + 28 * TS, w: box.w - 28, h: box.h - 50 * TS }, n = 15, bw = g.w / n;
+        ctx.strokeStyle = "#dee2e6"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(g.x, g.y + g.h); ctx.lineTo(g.x + g.w, g.y + g.h); ctx.stroke();
+        for (var i = 0; i < n; i++) {
+          var x = -0.95 + 1.9 * (i + 0.5) / n, e = energy(x), h = e * g.h * 0.95;
+          ctx.fillStyle = rgb(mix([255, 212, 168], [232, 89, 12], e)); ctx.fillRect(g.x + i * bw + 1.5, g.y + g.h - h, bw - 3, h);
+        }
+        [[-0.75, "만"], [0, "곶"], [0.75, "만"]].forEach(function (q) { ctext(q[1], g.x + (q[0] + 0.95) / 1.9 * g.w, g.y + g.h + 10 * TS, { size: 10.5, bold: true, align: "center", color: "#495057", halo: 2 }); });
+        ctext("에너지 큼 → 많이 깎임", g.x + g.w, g.y + 4, { size: 9.5, align: "right", color: "#c2410c", halo: 2 });
+      }
       M.renderStatic = function (rect) {
         backdrop(rect);
-        fitBlock(cam, rect, surf, 0.2, BOT);
+        var r3 = rect, sp = null;
+        if (st.mode === "wave") { sp = splitRect(rect, 280 * TS, 140 * TS); r3 = sp.r3; }
+        fitBlock(cam, r3, surf, 0.2, BOT);
         surf.draw(cam);
         surf.trees(cam, { dens: 0.3, size: 0.03 });
         facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { var r = rock(x, z); return r < 0 ? [160, 150, 130] : z < coastNow(x) ? SAND : [128, 112, 92]; }); });
-        var zt = coastNow(0), L = function (t, x, y, z, dx, dy, o) { var p = cam.P(x, y, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
-        if (Q.stage === 1) { var cvp = cam.P(0, 0.035, zt - 0.003), rr = (0.012 + 0.2 * (Q.r0 - 0.04)) * cam.k * cvp[3]; ctx.fillStyle = "rgba(30,30,36,.85)"; ctx.beginPath(); ctx.ellipse(cvp[0], cvp[1], rr * 1.2, rr, 0, 0, 2 * Math.PI); ctx.fill(); }
-        if (Q.stage === 2) { var ap = cam.P(0, 0.04, (SZ + SR + zt) / 2), ar = 0.022 * cam.k * ap[3]; ctx.fillStyle = "rgba(30,30,36,.85)"; ctx.beginPath(); ctx.ellipse(ap[0], ap[1], ar * 1.5, ar, 0, 0, 2 * Math.PI); ctx.fill(); }
-        var lab = ["해안 절벽", "파도가 뚫은 동굴", "구멍이 뚫린 바위(아치)", "시 스택(홀로 남은 바위 기둥)"][Q.stage];
-        if (Q.stage === 3) L(lab, 0, 0.13, SZ, -0.35, 0.22, { color: "#c2410c" }); else L(lab, 0, landH(0) * 0.6, zt, -0.38, 0.25, { color: "#c2410c" });
-        L("곶(파랑이 모임)", 0.05, landH(0.05) + 0.004, coastNow(0.05) + 0.12, 0.35, 0.22);
-        L(Q.bw > 0.02 ? "만의 모래사장" : "만(파랑이 흩어짐)", 0.75, 0.01, coastNow(0.75) - beachW(0.75) * 0.5, 0.05, 0.25);
-        if (Q.r0 > 0.12) L("깎여 평평해진 바위 바닥", 0.12, -0.006, (coast0(0.12) + coastNow(0.12)) / 2, 0.3, 0.18, { size: 11.5 });
+        var L = function (t, x, y, z, dx, dy, o) { var p = cam.P(x, y, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        if (!Q.stk) {
+          if (st.t > 0.02) { var cp = []; for (var x = -1; x <= 1.0001; x += 0.025) cp.push(cam.P(x, 0.004, coast0(x))); dashLine(cp); }
+          WF.rays(cam, { xs: sys() ? [-0.9, -0.66, -0.42, -0.18, 0.06, 0.3, 0.54, 0.78] : [-0.8, -0.55, -0.3, -0.1, 0.1, 0.3, 0.55, 0.8], z0: -0.76 });
+        }
+        if (sys()) {
+          L(Q.r0 > 0.12 ? "곶: 깎여 물러남(해식애)" : "곶: 파랑 에너지가 모임", 0.5, landH(0.5) * 0.7, coastNow(0.5) + 0.03, 0.3, 0.22, { color: "#c2410c" });
+          L(Q.bw > 0.03 ? "만: 모래가 쌓임(사빈)" : "만: 파랑 에너지가 흩어짐", 0, 0.01, coastNow(0) - beachW(0) * 0.5, -0.05, 0.27, { color: "#1864ab" });
+          if (st.t > 0.02) L("처음 해안선(점선)", -0.5, 0.004, coast0(-0.5), -0.3, 0.16, { size: 11.5 });
+          L("파랑 에너지(바다 → 해안)", -0.66, 0.004, -0.6, -0.15, 0.14, { size: 11.5, color: "#c2410c" });
+        } else if (st.mode === "wave") {
+          L("파랑: 바다에서 해안으로 밀려옴", 0.62, 0.004, -0.62, 0.15, 0.16, { size: 11.5, color: "#1864ab" });
+          L(Q.r0 > 0.1 ? "곶: 많이 깎여 물러남" : "곶: 에너지가 모임", 0, landH(0) * 0.6, coastNow(0) + 0.02, -0.36, 0.24, { color: "#c2410c" });
+          L(Q.bw > 0.03 ? "만: 모래가 쌓임" : "만: 에너지가 흩어짐", 0.75, 0.01, coastNow(0.75) - beachW(0.75) * 0.5, 0.05, 0.25, { color: "#1864ab" });
+          if (st.t > 0.02) L("처음 해안선(점선)", -0.62, 0.004, coast0(-0.62), -0.2, 0.16, { size: 11.5 });
+        } else {
+          var zt = coastNow(0);
+          if (Q.stage === 1) { var cvp = cam.P(0, 0.035, zt - 0.003), rr = (0.012 + 0.2 * (Q.r0 - 0.04)) * cam.k * cvp[3]; ctx.fillStyle = "rgba(30,30,36,.85)"; ctx.beginPath(); ctx.ellipse(cvp[0], cvp[1], rr * 1.2, rr, 0, 0, 2 * Math.PI); ctx.fill(); }
+          if (Q.stage === 2) { var ap = cam.P(0, 0.04, (SZ + SR + zt) / 2), ar = 0.022 * cam.k * ap[3]; ctx.fillStyle = "rgba(30,30,36,.85)"; ctx.beginPath(); ctx.ellipse(ap[0], ap[1], ar * 1.5, ar, 0, 0, 2 * Math.PI); ctx.fill(); }
+          var lab = ["해식애(파랑에 깎인 절벽)", "해식동(파랑이 판 동굴)", "시 아치(구멍이 뚫린 바위)", "시 스택(홀로 남은 바위 기둥)"][Q.stage];
+          if (Q.stage === 3) L(lab, 0, 0.13, SZ, -0.35, 0.22, { color: "#c2410c" }); else L(lab, 0, landH(0) * 0.6, zt, -0.38, 0.25, { color: "#c2410c" });
+          L("곶(파랑이 모임)", 0.05, landH(0.05) + 0.004, coastNow(0.05) + 0.12, 0.35, 0.22);
+          L(Q.bw > 0.02 ? "만의 사빈(모래사장)" : "만(파랑이 흩어짐)", 0.75, 0.01, coastNow(0.75) - beachW(0.75) * 0.5, 0.05, 0.25);
+          if (Q.r0 > 0.12) L("파식대(깎여 평평해진 바위 바닥)", 0.12, -0.006, (coast0(0.12) + coastNow(0.12)) / 2, 0.3, 0.18, { size: 11.5 });
+        }
+        if (sp) energyInset(sp.box);
       };
       var clock = 0;
       M.step = function (dt) { clock += dt / 1000; };
       M.renderDynamic = function () {
         if (RM) return;
-        var sp = [0.06, 0.1, 0.15][st.wave - 1];
-        ctx.lineWidth = (1 + st.wave * 0.5) * TS;
-        for (var k = 0; k < 6; k++) {
-          var d = frac(clock * sp + k / 6) * 0.7, f = d / 0.7, al = (1 - f) * 0.9 * (f > 0.03 ? 1 : f / 0.03);
-          ctx.strokeStyle = "rgba(255,255,255," + al.toFixed(3) + ")"; ctx.beginPath(); var on = false;
-          for (var i = 0; i <= 60; i++) { var x = -1 + i / 30, base = mix1(coastNow(x) - beachW(x), -0.45, f * f), z = base - d * (1 - f * 0.4); if (z < -0.79 || rock(x, z) >= 0) { on = false; continue; } var p = cam.P(x, 0.002, z); if (on) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); on = true; }
-          ctx.stroke();
-        }
-        var tp = cam.P(0, 0.01, Q.stage === 3 ? SZ - SR : coastNow(0) - 0.01), pul = 0.5 + 0.5 * Math.sin(clock * 4);
-        ctx.fillStyle = "rgba(255,255,255," + (0.35 + 0.3 * pul).toFixed(3) + ")"; ctx.beginPath(); ctx.ellipse(tp[0], tp[1], (10 + 6 * st.wave) * TS, (4 + 2 * st.wave) * TS, 0, 0, 2 * Math.PI); ctx.fill();
+        WF.draw(cam, clock, { lam: 0.11, speed: 0.035 + 0.018 * st.wave, w: (0.9 + 0.4 * st.wave) * TS });
+        if (Q.stk) { var tp = cam.P(0, 0.01, Q.stage === 3 ? SZ - SR : coastNow(0) - 0.01), pul = 0.5 + 0.5 * Math.sin(clock * 4); ctx.fillStyle = "rgba(255,255,255," + (0.3 + 0.3 * pul).toFixed(3) + ")"; ctx.beginPath(); ctx.ellipse(tp[0], tp[1], (8 + 5 * st.wave) * TS, (3 + 2 * st.wave) * TS, 0, 0, 2 * Math.PI); ctx.fill(); }
       };
       return M;
     })();
 
-    /* ================= 보기 ② 사주와 석호 (예시 모형) =================
-       블록 가로 약 2km(1 = 1km), 앞쪽(z −)이 바다. 가운데 x −0.5 ~ 0.5가 육지 쪽으로 0.45 들어간 만
-       해안을 따라 흐르는 물의 방향으로 모래가 옮겨져, 흐름이 시작되는 쪽 곶 끝(x = ∓0.5)에서 사주가 자람
-       사주 길이 = 만 입구(1.0) × 모래 양(적음 0.75 · 많음 1.4) × 시간 → 1.0에 닿으면 입구가 막혀 석호. 석호에는 뒤쪽 하천이 흙을 날라 조금씩 얕아짐 */
+    /* ================= 보기 ② 사주와 석호 (예시 모형, 11-02 개편) =================
+       블록 가로 약 2km(1 = 1km), 앞쪽(z −)이 바다. 가운데 x −0.5 ~ 0.5가 육지 쪽으로 0.45 들어간 만이고, 만 안쪽 가운데(x = 0)로 하천이 흘러듦
+       파랑이 비스듬히(28°) 밀려와 연안류가 생기고, 흐름이 시작되는 쪽 곶 끝(x = ∓0.5)에서 사주가 자람
+       사주 길이 = 0.968 × 시간 ÷ tc(tc = 막히는 시간: 모래 많음 0.5 · 적음 0.625) → 끝에 폭 약 30m의 좁은 물길이 남아 석호의 물이 바다로 빠짐
+       석호가 생긴 뒤(tc + 0.08 ~ 1) 하천이 실어 온 흙이 하천 어귀부터 쌓여 석호가 절반 넘게 메워짐(습지 → 논). 하천은 처음부터 끝까지 물 · 흙을 보탬 */
     var SP = (function () {
       var st = { drift: "R", sand: 2, t: 0, play: false };
       var cam = Cam(-24, 38), BOT = -0.2;
       var Q = {};
       function bay(x) { return Math.abs(x) < 0.5 ? 0.45 * Math.pow(Math.cos(Math.PI * x), 2) : 0; }
       function coastZ(x) { return -0.05 + bay(x) + 0.01 * Math.sin(9 * x); }
-      function prm() { Q.s = st.drift === "R" ? 1 : -1; Q.x0 = -0.5 * Q.s; Q.L = Math.min(1.0, (st.sand === 2 ? 1.4 : 0.75) * st.t); Q.closed = Q.L >= 0.995; Q.fill = Q.closed ? sm(0, 1, ((st.sand === 2 ? 1.4 : 0.75) * st.t - 1) / 0.4) * 0.25 : 0; }
       function spitZ(u) { return -0.045 + 0.06 * Math.pow(u, 2); }
+      function prm() {
+        Q.s = st.drift === "R" ? 1 : -1; Q.x0 = -0.5 * Q.s;
+        Q.tc = st.sand === 2 ? 0.5 : 0.625;
+        Q.L = 0.968 * clamp(st.t / Q.tc, 0, 1);
+        Q.closed = st.t >= Q.tc - 1e-6;
+        Q.fill = Q.closed ? 0.68 * sm(Q.tc + 0.08, 1, st.t) : 0;
+      }
       function spitAt(x) { var u = (x - Q.x0) * Q.s; if (u < -0.02 || u > Q.L) return null; return [u, spitZ(Math.max(0, u))]; }
-      function inLagoon(x, z) { if (!Q.closed || Math.abs(x) >= 0.5) return false; var sp = spitAt(x); return sp && z > sp[1] + 0.03 && z < coastZ(x); }
+      /* 메워진 땅의 앞끝(석호 쪽 경계): 하천 어귀(x = 0) 쪽이 더 많이 메워짐 */
+      function lagBack(x) { var c = coastZ(x), f = spitZ(clamp((x - Q.x0) * Q.s, 0, 1)) + 0.03; return c - Q.fill * Math.max(0, c - f) * (0.55 + 0.45 * Math.exp(-x * x / 0.05)); }
+      function inLagoon(x, z) { if (!Q.closed || Math.abs(x) >= 0.5) return false; var u = (x - Q.x0) * Q.s, f = u <= Q.L ? spitZ(Math.max(0, u)) + 0.03 : -0.03; return z > f && z < lagBack(x); }
       function rock(x, z) {
         var c = coastZ(x), h;
         if (z > c) h = 0.02 + 0.06 * sm(c, c + 0.4, z) + 0.01 * n2(2 * x, 2 * z) * sm(c + 0.1, c + 0.4, z);
@@ -1589,85 +1904,115 @@
         if (z > c - 0.05 && z < c + 0.02 && !(Math.abs(x) < 0.5 && z > -0.03)) h = Math.max(h, 0.008 * (z - (c - 0.05)) / 0.07);
         var sp = spitAt(x);
         if (sp) { var d = Math.abs(z - sp[1]); if (d < 0.04) h = Math.max(h, 0.022 * (1 - Math.pow(d / 0.04, 2)) * sm(-0.02, 0.06, sp[0]) * (1 - sm(Q.L - 0.03, Q.L + 0.001, sp[0]) * 0.6)); }
-        if (Q.fill > 0 && Math.abs(x) < 0.12 && z > coastZ(x) - 0.12 && z < coastZ(x) + 0.01 && inLagoon(x, z - 0.001)) h = Math.max(h, -0.002 + 0.004 * Q.fill);
+        if (Q.fill > 0 && Math.abs(x) < 0.5) { var lb = lagBack(x); if (z > lb && z <= c + 0.001) h = Math.max(h, 0.002 + 0.008 * sm(lb, c, z)); }
         return h;
       }
       function water(x, z) { return rock(x, z) < 0 ? 0 : -9; }
       var R2 = 0;
       function hf(x, z) { var r = rock(x, z); R2 = r; return Math.max(r, 0); }
-      function wcol(x, z) { var r = rock(x, z); return inLagoon(x, z) ? mix([96, 168, 168], [60, 132, 140], clamp(-r / 0.03, 0, 1)) : seaCol(-r); }
+      var LAG = [96, 168, 168], LAGD = [60, 132, 140], MARSH = [150, 146, 92], PADDY = [184, 200, 118];
+      function wcol(x, z) { var r = rock(x, z); return inLagoon(x, z) ? mix(LAG, LAGD, clamp(-r / 0.03, 0, 1)) : seaCol(-r); }
+      function filled(x, z) { if (Q.fill <= 0 || Math.abs(x) >= 0.5) return -1; var lb = lagBack(x), c = coastZ(x); return z > lb && z <= c ? (z - lb) / Math.max(1e-3, c - lb) : -1; }
       function color(h, x, z) {
-        var r = rock(x, z), c = coastZ(x);
-        if (r < 0) return inLagoon(x, z) ? mix([96, 168, 168], [60, 132, 140], clamp(-r / 0.03, 0, 1)) : seaCol(-r);
-        if (spitAt(x) && Math.abs(z - spitAt(x)[1]) < 0.045) return SAND;
+        if (R2 < 0) return wcol(x, z);
+        var sp = spitAt(x), c = coastZ(x);
+        if (sp && Math.abs(z - sp[1]) < 0.045) return SAND;
+        var f = filled(x, z); if (f >= 0) { var pd = clamp(f * 1.6 * sm(0.3, 0.8, Q.fill / 0.68), 0, 1); return mix(MARSH, Math.floor((x + 1) * 22) % 2 ? PADDY : mix(PADDY, [150, 176, 96], 0.6), pd); }
         if (z < c + 0.02) return SAND;
-        if (Math.abs(x) < 0.015 && z > c && z < c + 0.5) return [90, 150, 200];
         return GRASS;
       }
-      /* 완성본: 모래사장 · 사주 · 하천 · 석호 · 바다 경계를 층으로(톱니) */
-      var surf = makeSurf({ nx: 110, nz: 90, x0: -1, x1: 1, z0: -0.8, z1: 0.8, hf: hf, color: function (h, x, z) { return R2 < 0 ? wcol(x, z) : GRASS; }, layers: [
-        { s: function (x, z) { return Math.max(Math.abs(x) - 0.015, coastZ(x) - z, z - coastZ(x) - 0.5); }, c: function () { return [90, 150, 200]; } },
-        { s: function (x, z) { return z - coastZ(x) - 0.02; }, c: function () { return SAND; } },
-        { s: function (x, z) { var sp = spitAt(x); return sp ? Math.abs(z - sp[1]) - 0.045 : 1; }, c: function () { return SAND; } },
+      function riverS(x, z) { var c = coastZ(x), m = Q.fill > 0 ? lagBack(0) : c; return Math.max(Math.abs(x) - 0.014, m - 0.004 - z, z - c - 0.55); }
+      var surf = makeSurf({ nx: 110, nz: 90, x0: -1, x1: 1, z0: -0.8, z1: 0.8, hf: hf, color: color, layers: [
+        { s: riverS, c: function () { return [90, 150, 200]; } },
+        { s: function (x, z) { var sp = spitAt(x), a = sp ? Math.abs(z - sp[1]) - 0.045 : 1, c = coastZ(x), f = filled(x, z) >= 0 ? 1 : z - c - 0.02; return Math.min(a, f); }, c: function () { return SAND; } },
         { s: function () { return R2; }, c: wcol, flat: true, line: "rgba(255,255,255,.75)" }
       ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -0.8, z1: 0.8, nx: 61, nz: 49, land: function (x, z) { return rock(x, z) >= 0; }, ang: function () { return 28 * Q.s; }, blend: 0.16 });
       var M = { st: st, cam: cam, yaw0: -24, pitch0: 38, Q: Q };
-      M.update = function () { prm(); surf.reshape(); };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
       M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
       M.skey = function () { return [st.t.toFixed(4), st.drift, st.sand].join(","); };
+      M.tc = function () { return st.sand === 2 ? 0.5 : 0.625; };
       M.lagoonArea = function () { var n = 0; for (var x = -0.5; x < 0.5; x += 0.02) for (var z = -0.05; z < 0.45; z += 0.02) if (inLagoon(x, z) && rock(x, z) < 0) n++; return n * 0.0004; };
+      var A0 = null;
+      M.fillPct = function () { if (!Q.closed) return 0; if (A0 == null || A0.key !== st.drift + st.sand) { var f = Q.fill, a; Q.fill = 0; a = M.lagoonArea(); Q.fill = f; A0 = { v: a, key: st.drift + st.sand }; } return A0.v > 0 ? Math.round(100 * (1 - M.lagoonArea() / A0.v)) : 0; };
       M.renderStatic = function (rect) {
         backdrop(rect);
         fitBlock(cam, rect, surf, 0.15, BOT);
         surf.draw(cam);
-        surf.trees(cam, { dens: 0.28, size: 0.028 });
+        surf.trees(cam, { dens: 0.28, size: 0.028, ok: function (x, z) { return filled(x, z) < 0; } });
         facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return rock(x, z) < 0 ? [180, 168, 140] : SAND; }); });
+        WF.rays(cam, { xs: [-0.85, -0.55, -0.25, 0.05].map(function (v) { return v * Q.s; }), z0: -0.76 });
         var L = function (t, x, y, z, dx, dy, o) { var p = cam.P(x, y, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
-        if (Q.L > 0.08) { var um = Q.L * 0.5, xm = Q.x0 + Q.s * um; L("사주(길게 쌓인 모래)", xm, 0.02, spitZ(um), -0.1, 0.25); }
-        if (Q.closed) L("석호(경포호 · 영랑호처럼)", 0.18, 0.002, 0.2, 0.3, 0.25, { color: "#0b7285" }); else L("만", 0.15, 0.002, 0.25, 0.3, 0.25);
-        L("모래사장", -0.75, 0.006, coastZ(-0.75) - 0.02, -0.05, 0.2);
-        var ay = 0.02, a0 = cam.P(-0.35 * Q.s - 0.25 * Q.s, ay, -0.42), a1 = cam.P(0.25 * Q.s, ay, -0.42);
-        ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 8 * TS; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(a1[0], a1[1]); ctx.stroke();
-        ctx.strokeStyle = "#1c7ed6"; ctx.lineWidth = 4 * TS; ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(a1[0], a1[1]); ctx.stroke(); ctx.lineCap = "butt";
-        var ang = Math.atan2(a1[1] - a0[1], a1[0] - a0[0]), hs = 12 * TS; ctx.fillStyle = "#1c7ed6"; ctx.beginPath(); ctx.moveTo(a1[0] + Math.cos(ang) * 4, a1[1] + Math.sin(ang) * 4); ctx.lineTo(a1[0] - Math.cos(ang - 0.45) * hs, a1[1] - Math.sin(ang - 0.45) * hs); ctx.lineTo(a1[0] - Math.cos(ang + 0.45) * hs, a1[1] - Math.sin(ang + 0.45) * hs); ctx.closePath(); ctx.fill();
-        callout("해안을 따라 흐르는 물", (a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2, (a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2 - 18 * TS, { size: 11.5, color: "#1864ab", bg: "rgba(255,255,255,.8)" });
+        if (Q.L > 0.08) { var um = Q.L * 0.45, xm = Q.x0 + Q.s * um; L("사주(연안류가 옮긴 모래)", xm, 0.02, spitZ(um), -0.12 * Q.s, 0.25); }
+        if (Q.closed) {
+          L(Q.fill > 0.1 ? "석호(점점 작아짐)" : "석호(바다와 분리된 호수)", 0.2 * Q.s, 0.002, Math.max(0.06, lagBack(0.2 * Q.s) - 0.08), 0.3 * Q.s, 0.24, { color: "#0b7285" });
+          var xi = Q.x0 + Q.s * (Q.L + 0.016); L("좁은 물길(석호 물이 바다로 빠짐)", xi, 0.002, -0.02, 0.18 * Q.s, 0.2, { size: 11.5 });
+          if (Q.fill > 0.12) L("하천이 실어 온 흙으로 메워진 땅(습지 · 논)", -0.12, 0.006, (lagBack(-0.12) + coastZ(-0.12)) / 2, -0.4, 0.22, { size: 11.5, color: "#5c7a2e" });
+        } else L("만", 0.15, 0.002, 0.25, 0.3, 0.25);
+        L("하천(물과 흙을 보탬)", 0, 0.02, coastZ(0) + 0.3, 0.25, 0.18, { size: 11.5, color: "#1864ab" });
+        L("사빈", -0.75, 0.006, coastZ(-0.75) - 0.02, -0.05, 0.2);
+        var a0 = cam.P(-0.6 * Q.s, 0.02, -0.34), a1 = cam.P(0.05 * Q.s, 0.02, -0.34);
+        arrow2(a0, a1, "#1c7ed6", 4, 12);
+        callout("연안류(해안을 따라 흐르는 물)", (a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2, (a0[0] + a1[0]) / 2, (a0[1] + a1[1]) / 2 + 20 * TS, { size: 11.5, color: "#1864ab", bg: "rgba(255,255,255,.85)" });
       };
-      var grains = [], clock = 0;
+      var grains = [], rgr = [], clock = 0;
       for (var g = 0; g < 50; g++) grains.push([rnd(g), rnd(g + 9)]);
-      M.step = function (dt) { clock += dt / 1000; grains.forEach(function (p) { p[0] = frac(p[0] + dt / 1000 * 0.05); }); };
+      for (var g2 = 0; g2 < 34; g2++) rgr.push([rnd(g2 * 3 + 5), rnd(g2 * 7 + 2)]);
+      M.step = function (dt) { clock += dt / 1000; grains.forEach(function (p) { p[0] = frac(p[0] + dt / 1000 * 0.045); }); };
       M.renderDynamic = function () {
         if (RM) return;
-        ctx.fillStyle = "rgba(196,160,96,.9)";
-        grains.forEach(function (p) {
-          var u = p[0] * 1.9, x = -0.95 * Q.s + Q.s * u, z;
-          if (Q.s * (x - Q.x0) > -0.02 && Q.s * (x - Q.x0) < Q.L) z = spitZ(Q.s * (x - Q.x0)) - 0.03 * p[1];
-          else if (Math.abs(x) < 0.5 && Q.s * (x - Q.x0) >= Q.L) return;
-          else z = coastZ(x) - 0.05 - 0.04 * p[1];
+        WF.draw(cam, clock, { lam: 0.1, speed: 0.06, w: 1.6 * TS });
+        /* 연안류를 따라 지그재그로 옮겨 가는 모래 */
+        ctx.fillStyle = "rgba(196,160,96,.95)";
+        grains.forEach(function (p, i) {
+          var u = p[0] * 1.9, x = -0.95 * Q.s + Q.s * u, z, ph = frac(clock * 0.8 + p[1] * 5), sw = ph < 0.5 ? ph / 0.5 : 1 - (ph - 0.5) / 0.5;
+          var us = Q.s * (x - Q.x0);
+          if (us > -0.02 && us < Q.L) z = spitZ(Math.max(0, us)) - 0.05 + 0.025 * sw;
+          else if (Math.abs(x) < 0.5 && us >= Q.L) return;
+          else z = coastZ(x) - 0.06 + 0.03 * sw;
           var q = cam.P(x, 0.004, z); ctx.beginPath(); ctx.arc(q[0], q[1], 1.8 * TS, 0, 2 * Math.PI); ctx.fill();
         });
+        /* 하천이 실어 오는 흙: 하천을 따라 내려와 어귀에서 퍼져 가라앉음 */
+        var zm = Q.fill > 0 ? lagBack(0) : coastZ(0), reach = Q.closed ? Math.max(0.05, (zm - 0.02) * 0.8) : 0.3;
+        rgr.forEach(function (g3) {
+          var p = frac(g3[0] + clock * 0.055), x, z, a = 0.9;
+          if (p < 0.5) { x = 0.004 * Math.sin(p * 40 + g3[1] * 6); z = 0.85 - (0.85 - zm) * p / 0.5; }
+          else { var q = (p - 0.5) / 0.5, ang = (g3[1] - 0.5) * 2.4, r = q * reach; x = Math.sin(ang) * r; z = zm - Math.cos(ang) * r * 0.9; a = 0.9 * (1 - sm(0.65, 1, q)); }
+          var pp = cam.P(x, 0.006, z); ctx.fillStyle = "rgba(122,86,56," + a.toFixed(3) + ")"; ctx.beginPath(); ctx.arc(pp[0], pp[1], 1.7 * TS, 0, 2 * Math.PI); ctx.fill();
+        });
+        /* 좁은 물길: 석호 물이 바다로 빠져나감 */
+        if (Q.closed) {
+          var xi = Q.x0 + Q.s * (Q.L + 0.016);
+          ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 2 * TS; ctx.lineCap = "round";
+          for (var k = 0; k < 3; k++) { var f = frac(clock * 0.5 + k / 3), za = 0.03 - 0.12 * f, p1 = cam.P(xi, 0.003, za), p2 = cam.P(xi, 0.003, za - 0.025); ctx.globalAlpha = 1 - f; ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke(); }
+          ctx.globalAlpha = 1; ctx.lineCap = "butt";
+        }
       };
       return M;
     })();
 
-    /* ================= 보기 ③ 밀물과 썰물 (예시 모형) =================
+    /* ================= 보기 ③ 조류(밀물과 썰물) · 갯벌 (예시 모형) =================
        블록 앞뒤 약 3km(1 = 1.5km), 앞쪽이 바다. 물 높이 = 조차 ÷ 2 × cos(2π(시각 − 3) ÷ 12.4) → 하루에 두 번 밀물(만조) · 썰물(간조)
        조차(사리 때 대조차, 해양환경정보포털 「조석(물때)이란?」 2026-10-20 확인): 인천 부근 9.3m · 여수 3.0m · 동해안 0.3m 내외(군산 6.0 · 목포 3.5 · 부산 1.2 · 포항 0.2 미만)
-       바닥 모양: 서해안 = 아주 완만한 갯벌(갯골이 굽이침) · 남해안 = 조금 가파른 바닥과 섬 · 동해안 = 가파른 모래사장. 높이는 1m = 0.008 */
+       바닥 모양: 서해안 = 아주 완만한 갯벌(갯골이 굽이침) · 남해안 = 조금 가파른 바닥과 섬 · 동해안 = 가파른 모래사장. 높이는 1m = 0.008
+       조류(11-02 추가): 물 높이가 오르는 동안(밀물) 바닷물이 육지 쪽으로, 내리는 동안(썰물) 바다 쪽으로 흐름. 빠르기는 물 높이가 바뀌는 빠르기에 비례 */
     var TIDE = { W: 9.3, S: 3.0, E: 0.3 }, TPLACE = { W: "인천 부근", S: "여수 부근", E: "동해안" }, CNAME = { W: "서해안", S: "남해안", E: "동해안" }, YM = 0.008;
     /* 업그레이드(10-20): 사리 · 조금 — 조금 때 조차는 사리 때의 절반쯤으로 둠(대략 값) */
     var NEAP = 0.5;
     var TD = (function () {
-      var st = { coast: "W", t: 0, play: false, moon: "spring" };
+      var st = { coast: "W", t: 0, play: false, moon: "spring", mode: "tide" };
       var cam = Cam(-26, 34), BOT = -0.22;
       var Q = {};
       function hourOf(t) { return t * 24; }
       function fac() { return st.moon === "neap" ? NEAP : 1; }
       function tideM(h, c) { return fac() * TIDE[c || st.coast] / 2 * Math.cos(2 * Math.PI * (h - 3) / 12.42); }
-      function prm() { Q.h = hourOf(st.t); Q.wl = tideM(Q.h); Q.A = fac() * TIDE[st.coast] / 2; Q.rising = tideM(Q.h + 0.05) > Q.wl; }
+      function prm() { Q.h = hourOf(st.t); Q.wl = tideM(Q.h); Q.A = fac() * TIDE[st.coast] / 2; Q.rising = tideM(Q.h + 0.05) > Q.wl; Q.rate = (tideM(Q.h + 0.05) - tideM(Q.h - 0.05)) / 0.1; }
+      function gx(z) { return 0.12 * Math.sin(3 * z + 1) + 0.06 * Math.sin(8 * z); }
       function groundM(x, z) {
         var c = st.coast;
-        if (c === "W") { var b = 4.5 - 9.5 * clamp((0.35 - z) / 1.15, 0, 1.2) + 0.25 * n2(2 * x, 2 * z); if (z > 0.35) b = 4.5 + 9 * (z - 0.35); var gx = 0.12 * Math.sin(3 * z + 1) + 0.06 * Math.sin(8 * z), gd = Math.exp(-Math.pow((x - gx) / 0.04, 2)) * sm(0.35, 0.1, z); return b - 2 * gd; }
+        if (c === "W") { var b = 4.5 - 9.5 * clamp((0.35 - z) / 1.15, 0, 1.2) + 0.25 * n2(2 * x, 2 * z); if (z > 0.35) b = 4.5 + 9 * (z - 0.35); var gd = Math.exp(-Math.pow((x - gx(z)) / 0.04, 2)) * sm(0.35, 0.1, z); return b - 2 * gd; }
         if (c === "S") { var b2 = z > 0.35 ? 3 + 14 * (z - 0.35) : 3 - 6 * clamp((0.35 - z) / 0.35, 0, 1) - 14 * clamp((0.0 - z) / 0.8, 0, 1); var isl = 18 * Math.exp(-(Math.pow(x + 0.45, 2) + Math.pow(z + 0.45, 2)) / 0.02) + 12 * Math.exp(-(Math.pow(x - 0.5, 2) + Math.pow(z + 0.6, 2)) / 0.012); return b2 + isl + 0.3 * n2(2 * x, 2 * z); }
         var b3 = z > 0.3 ? 3 + 10 * (z - 0.3) : 3 - 12 * clamp((0.3 - z) / 0.12, 0, 1) - 20 * clamp((0.18 - z) / 0.9, 0, 1);
         return b3 + 0.2 * n2(2 * x, 2 * z);
@@ -1681,12 +2026,11 @@
       function color(h, x, z) {
         var g = groundM(x, z);
         if (g < Q.wl) return seaCol((Q.wl - g) * YM * 1.6);
-        if (g < Q.A) return st.coast === "E" ? SAND : st.coast === "W" ? mix(MUD, [150, 132, 104], 0.3 + 0.2 * n2(6 * x, 6 * z)) : mix([150, 138, 112], MUD, 0.5);
+        if (g < Q.A) return mudC(x, z);
         if (g < Q.A + 0.8) return SAND;
         if (st.coast === "W" && x < -0.15 && x > -0.75 && z > 0.42 && z < 0.62) return Math.floor((x + 1) * 25) % 2 ? [232, 236, 236] : [196, 204, 206];
         return GRASS;
       }
-      /* 완성본: 모래 · 갯벌 · 바닷물 경계를 층으로(톱니) */
       var surf = makeSurf({ nx: 100, nz: 90, x0: -1, x1: 1, z0: -0.8, z1: 0.8, hf: hf, color: color, layers: [
         { s: function () { return G_ - (Q.A + 0.8); }, c: function () { return SAND; } },
         { s: function () { return G_ - Q.A; }, c: mudC },
@@ -1696,7 +2040,8 @@
       M.update = function () { prm(); surf.reshape(); };
       M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
-      M.skey = function () { return [st.t.toFixed(4), st.coast, st.moon].join(","); };
+      M.skey = function () { return [st.t.toFixed(4), st.coast, st.moon, st.mode].join(","); };
+      M.setMode = function (m) { st.mode = m; };
       function lineZ(level) { for (var z = 0.8; z >= -0.8; z -= 0.004) if (groundM(0.3, z) < level) return z; return -0.8; }
       M.flatKm = function () { return Math.max(0, lineZ(Q.A) - lineZ(Q.wl)) * 1.5; };
       M.maxFlatKm = function () { return Math.max(0, lineZ(Q.A) - lineZ(-Q.A)) * 1.5; };
@@ -1705,7 +2050,6 @@
         panelBox(box);
         var g = { x: box.x + 30, y: box.y + 24, w: box.w - 42, h: box.h - 50 }, ym = 5.2;
         ctext("하루 동안의 물 높이(" + CNAME[st.coast] + " · " + (st.moon === "neap" ? "조금" : "사리") + ")", box.x + 10, box.y + 12, { size: 11.5, bold: true });
-        /* 달 모양: 사리 = 보름달, 조금 = 반달 */
         (function () { var mx = box.x + box.w - 16, my = box.y + 13, r = 7; ctx.fillStyle = "#3b4252"; ctx.beginPath(); ctx.arc(mx, my, r, 0, 2 * Math.PI); ctx.fill(); ctx.fillStyle = "#ffe066"; ctx.beginPath(); if (st.moon === "neap") { ctx.arc(mx, my, r, -Math.PI / 2, Math.PI / 2); ctx.closePath(); } else ctx.arc(mx, my, r, 0, 2 * Math.PI); ctx.fill(); })();
         function Y(v) { return g.y + g.h / 2 - v / ym * g.h / 2; }
         ctx.strokeStyle = "#dee2e6"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(g.x, Y(0)); ctx.lineTo(g.x + g.w, Y(0)); ctx.moveTo(g.x, g.y); ctx.lineTo(g.x, g.y + g.h); ctx.stroke();
@@ -1729,20 +2073,39 @@
         facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { var g = groundM(x, z); return g < Q.A ? (st.coast === "E" ? SAND : MUD) : GRASS; }); });
         var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.002, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
         var zw = lineZ(Q.wl), zh = lineZ(Q.A);
-        if (zh - zw > 0.04) L(st.coast === "E" ? "드러난 모래사장" : "썰물 때 드러난 갯벌", 0.3, (zw + zh) / 2, 0.25, 0.2);
+        if (zh - zw > 0.04) L(st.coast === "E" ? "드러난 모래사장" : st.mode === "flat" ? "갯벌(고운 흙이 쌓인 평평한 땅)" : "썰물 때 드러난 갯벌", 0.3, (zw + zh) / 2, 0.25, 0.2);
         else L(Q.wl > 0 ? "밀물: 바닷물이 들어옴" : "물 높이가 거의 그대로", 0.3, zw + 0.02, 0.25, 0.2);
-        if (st.coast === "W") L("염전", -0.45, 0.52, -0.2, 0.18);
+        if (st.coast === "W") { L("갯골(조류가 드나드는 물길)", gx(-0.05), -0.05, -0.32, 0.16, { size: 11.5 }); L("염전", -0.45, 0.52, -0.2, 0.18); }
         if (st.coast === "S") L("섬", -0.45, -0.45, -0.25, 0.2);
         if (st.coast === "E") L("해수욕장", -0.3, 0.33, -0.2, 0.18);
+        /* 조류 화살표: 밀물이면 육지 쪽, 썰물이면 바다 쪽. 물 높이가 거의 안 바뀔 때(만조 · 간조 무렵)는 짧게 */
+        var k = clamp(Math.abs(Q.rate) / (Math.PI * Q.A / 6.21 + 1e-6), 0, 1), y0 = Math.max(wlY(), 0) + 0.02, xa = 0.7;
+        if (st.coast !== "E" && k > 0.12) {
+          var za = -0.55, zb = za + 0.38 * k * (Q.rate > 0 ? 1 : -1), a0 = cam.P(xa, y0, Q.rate > 0 ? za : za + 0.38 * k), a1 = cam.P(xa, y0, Q.rate > 0 ? zb : za);
+          arrow2(a0, a1, "#1971c2", 4, 12);
+          callout(Q.rate > 0 ? "조류(밀물): 바다 → 육지 쪽" : "조류(썰물): 육지 → 바다 쪽", a1[0], a1[1], a1[0], a1[1] - 22 * TS, { size: 11.5, color: "#1864ab", bg: "rgba(255,255,255,.88)" });
+        }
         inset(sp.box);
       };
       var clock = 0;
       M.step = function (dt) { clock += dt / 1000; };
       M.renderDynamic = function () {
         if (RM) return;
+        /* 갯골을 따라 드나드는 바닷물(조류) */
+        if (st.coast === "W" && Math.abs(Q.rate) > 0.15) {
+          var dir = Q.rate > 0 ? 1 : -1, sp = Math.min(1.2, Math.abs(Q.rate) / 1.6);
+          ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 2 * TS; ctx.lineCap = "round";
+          for (var k = 0; k < 9; k++) {
+            var f = frac(k / 9 + dir * clock * 0.08 * sp), z = -0.75 + 1.05 * f, x = gx(z), y = Math.max(rock(x, z), wlY()) + 0.003;
+            if (rock(x, z) > wlY() + 0.002 && z > lineZ(Q.wl) + 0.02) continue;
+            var p1 = cam.P(x, y, z), p2 = cam.P(gx(z + 0.03 * dir), y, z + 0.03 * dir);
+            ctx.globalAlpha = 0.85; ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+          }
+          ctx.globalAlpha = 1; ctx.lineCap = "butt";
+        }
         if (st.coast === "S") { ctx.strokeStyle = "rgba(60,60,70,.75)"; ctx.lineWidth = 2 * TS; for (var i = 0; i < 5; i++) { var x0 = -0.1 + i * 0.12, a = cam.P(x0, wlY() + 0.002, -0.25), b = cam.P(x0, wlY() + 0.002, -0.05); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); } }
-        if (st.coast !== "E" && M.flatKm() > 0.3) { ctx.fillStyle = "#c2410c"; var zw = lineZ(Q.wl), zh = lineZ(Q.A); for (var k = 0; k < 8; k++) { var x = -0.7 + 0.18 * k + 0.03 * Math.sin(clock + k), z = zw + (zh - zw) * (0.3 + 0.5 * rnd(k)), p = cam.P(x, rock(x, z) + 0.006, z); ctx.beginPath(); ctx.arc(p[0], p[1], 2.4 * TS, 0, 2 * Math.PI); ctx.fill(); } }
-        if (st.coast === "E" && Q.wl > -9) { ctx.fillStyle = "#e8590c"; for (var u = 0; u < 6; u++) { var x2 = -0.6 + u * 0.2, z2 = 0.33, p2 = cam.P(x2, rock(x2, z2) + 0.02, z2); ctx.beginPath(); ctx.arc(p2[0], p2[1], 4 * TS, Math.PI, 2 * Math.PI); ctx.fill(); } }
+        if (st.coast !== "E" && M.flatKm() > 0.3) { ctx.fillStyle = "#c2410c"; var zw = lineZ(Q.wl), zh = lineZ(Q.A); for (var k2 = 0; k2 < 8; k2++) { var x2 = -0.7 + 0.18 * k2 + 0.03 * Math.sin(clock + k2), z2 = zw + (zh - zw) * (0.3 + 0.5 * rnd(k2)), p = cam.P(x2, rock(x2, z2) + 0.006, z2); ctx.beginPath(); ctx.arc(p[0], p[1], 2.4 * TS, 0, 2 * Math.PI); ctx.fill(); } }
+        if (st.coast === "E") { ctx.fillStyle = "#e8590c"; for (var u = 0; u < 6; u++) { var x3 = -0.6 + u * 0.2, z3 = 0.33, p3 = cam.P(x3, rock(x3, z3) + 0.02, z3); ctx.beginPath(); ctx.arc(p3[0], p3[1], 4 * TS, Math.PI, 2 * Math.PI); ctx.fill(); } }
       };
       return M;
     })();
@@ -1781,7 +2144,9 @@
         { s: function () { return R_ - Q.ys; }, c: function (x, z) { return seaCol((Q.ys - rock(x, z)) * 1.4); }, flat: true, line: "rgba(255,255,255,.8)" }
       ] });
       var M = { st: st, cam: cam, yaw0: -22, pitch0: 40, Q: Q };
-      M.update = function () { prm(); surf.reshape(); stats(); };
+      /* 안정(11-02): 해안선 · 섬 셈은 무거워 재생 중에는 시간이 0.03 넘게 바뀌었을 때만 다시 셈 */
+      var lastS = -1;
+      M.update = function () { prm(); surf.reshape(); if (!st.play || Math.abs(st.t - lastS) > 0.03 || st.t >= 1 || st.t <= 0) { stats(); lastS = st.t; } };
       M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
       M.skey = function () { return [st.t.toFixed(4)].join(","); };
@@ -1802,12 +2167,11 @@
         function reach(ys) { var len = 0; for (var k = 0; k < 3; k++) { for (var z = -1; z < 1; z += 0.01) if (rock(xc(k, z), z) < ys) len = Math.max(len, (z + 1)); } return len; }
         Q.bay = Math.max(0, reach(Q.ys) - reach(-0.12)) * 2;
       }
-      var walls = [];
       M.renderStatic = function (rect) {
         backdrop(rect);
         fitBlock(cam, rect, surf, 0.25, BOT);
         surf.draw(cam);
-        if (surf.trees) surf.trees(cam, { dens: 0.3, size: 0.03 });
+        surf.trees(cam, { dens: 0.3, size: 0.03 });
         facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return rock(x, z) < Q.ys ? [170, 150, 120] : [128, 112, 92]; }); });
         var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
         var zb = -0.35;
@@ -1822,31 +2186,26 @@
     })();
 
 
-    /* ================= 육계도 · 해안 사구 (예시 모형, 10-20 추가) =================
+    /* ================= 육계 사주 · 육계도 (예시 모형, 10-20 추가 · 11-02 개편) =================
        블록 가로 약 2km(1 = 1km), 높이 1 = 300m(크게 늘림). 앞쪽(z −)이 바다, 곧은 모래 해안 z ≈ −0.1
-       앞바다의 섬(가운데 x = 0.15, z = −0.62) 뒤쪽은 파랑이 약해져 모래가 쌓임 → 해안에서 섬 쪽으로 사주가 자라 섬과 이어지면 육계도(제주 성산 일출봉)
-       사주 길이 = 0.36 × (시간을 0.05~0.7로 늘인 값). 해안 뒤에는 바닷바람이 모래를 날라 쌓은 언덕(해안 사구) — 높이 0.05 × 바람 세기 × 시간(충남 태안 신두리) */
+       앞바다의 섬(가운데 x = 0.15, z = −0.62)에 막힌 파랑은 섬 양쪽으로 휘어 돌아 들어가 섬 뒤에서 약해짐 → 해안에서 섬 쪽으로 사주가 자람
+       사주 길이 = 0.36 × (시간을 0.05~0.7로 늘인 값). 사주가 섬에 닿으면 육계 사주, 이어진 섬은 육계도(제주 성산 일출봉)
+       (11-02) 해안 사구는 「사빈 · 해안 사구」 장면으로 옮겨 감 */
     var TB = (function () {
-      var st = { t: 0, wind: 2, play: false };
+      var st = { t: 0, play: false };
       var cam = Cam(-26, 36), BOT = -0.22, IX = 0.15, IZ = -0.62, IR = 0.16, CZ = -0.1;
-      var Q = {}, R_ = 0, WF = [0.5, 1, 1.5];
-      function coastZ(x) { return CZ + 0.012 * Math.sin(7 * x + 0.3); }
-      function prm() { Q.L = 0.36 * sm(0.05, 0.7, st.t); Q.joined = Q.L > 0.355; Q.dune = 0.05 * WF[st.wind - 1] * sm(0.15, 1, st.t); }
+      var Q = {}, R_ = 0;
+      function coastZ(x) { return CZ + 0.012 * Math.sin(7 * x + 0.3) - 0.05 * Math.exp(-Math.pow((x - IX) / 0.22, 2)) * sm(0, 0.3, st.t); }
+      function prm() { Q.L = 0.36 * sm(0.05, 0.7, st.t); Q.joined = Q.L > 0.355; }
       function island(x, z) { var d = Math.hypot(x - IX, (z - IZ) * 1.1) / IR; return d < 1 ? 0.18 * Math.pow(1 - d * d, 0.8) + 0.02 * Math.sin(9 * x + 7 * z) * (1 - d) : -1; }
-      /* 사주: 해안(z = 해안선)에서 섬 쪽(−z)으로. 해안 쪽은 넓고 섬 쪽은 좁음 */
       function bar(x, z) {
         var c = coastZ(x), u = (c - z) / 0.36; if (u < 0 || u > Q.L / 0.36) return -1;
         var w = 0.13 - 0.08 * u, d = Math.abs(x - IX - 0.01 * Math.sin(10 * z)) / w; if (d >= 1) return -1;
         return 0.012 * (1 - d * d) * (1 - 0.4 * u) * (1 - sm(Q.L / 0.36 - 0.04, Q.L / 0.36 + 0.001, u) * 0.7);
       }
-      function dune(x, z) {
-        var c = coastZ(x), a = z - c; if (a < 0.03 || a > 0.24 || Q.dune <= 0) return 0;
-        var across = Math.sin(Math.PI * (a - 0.03) / 0.21), along = 0.65 + 0.35 * Math.sin(11 * x + 1.3) * Math.sin(5.3 * x - 0.4);
-        return Q.dune * Math.pow(across, 1.3) * along;
-      }
       function rock(x, z) {
         var c = coastZ(x), h;
-        if (z > c) h = 0.008 + 0.06 * sm(c + 0.2, c + 0.9, z) + 0.008 * n2(2 * x, 2 * z) * sm(c + 0.3, c + 0.6, z) + dune(x, z);
+        if (z > c) h = 0.008 + 0.06 * sm(c + 0.2, c + 0.9, z) + 0.008 * n2(2 * x, 2 * z) * sm(c + 0.3, c + 0.6, z);
         else h = -0.01 - 0.11 * clamp((c - z) / 0.8, 0, 1);
         if (z > c - 0.05 && z <= c) h = Math.max(h, 0.008 * (z - (c - 0.05)) / 0.05);
         var b = bar(x, z); if (b > 0) h = Math.max(h, b);
@@ -1860,53 +2219,533 @@
         if (r < 0) return seaCol(-r);
         var il = island(x, z); if (il > 0.01) return mix([126, 116, 104], [104, 140, 82], clamp((il - 0.06) / 0.08, 0, 1));
         if (bar(x, z) > 0 || z < c + 0.03) return SAND;
-        if (dune(x, z) > 0.006) return mix([226, 206, 152], [198, 176, 124], clamp(dune(x, z) / 0.06, 0, 1));
         return mix(GRASS, [96, 134, 80], clamp((z - c - 0.25) / 0.2, 0, 1));
       }
       var surf = makeSurf({ nx: 100, nz: 90, x0: -1, x1: 1, z0: -1, z1: 0.8, hf: hf, color: color, layers: [
         { s: function (x, z) { if (island(x, z) > 0.012) return 1; if (bar(x, z) > 0.0005) return -1; var c = coastZ(x); return Math.max(z - c - 0.03, c - 0.06 - z); }, c: function () { return SAND; } },
-        { s: function (x, z) { return 0.006 - dune(x, z); }, c: function (x, z) { return mix([226, 206, 152], [198, 176, 124], clamp(dune(x, z) / 0.06, 0, 1)); } },
         { s: function () { return R_; }, c: function (x, z) { return seaCol(-rock(x, z)); }, flat: true, line: "rgba(255,255,255,.8)" }
       ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -1, z1: 0.8, nx: 61, nz: 54, land: function (x, z) { return rock(x, z) >= 0; }, A: 0, blend: 0.17 });
       var M = { st: st, cam: cam, yaw0: -26, pitch0: 36, Q: Q };
-      M.update = function () { prm(); surf.reshape(); };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
       M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
-      M.skey = function () { return [st.t.toFixed(4), st.wind].join(","); };
+      M.skey = function () { return [st.t.toFixed(4)].join(","); };
       M.renderStatic = function (rect) {
         backdrop(rect);
         fitBlock(cam, rect, surf, 0.25, BOT);
         surf.draw(cam);
         surf.trees(cam, { dens: 0.32, size: 0.03 });
         facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return rock(x, z) < 0 ? [176, 164, 136] : SAND; }); });
+        WF.rays(cam, { xs: [-0.6, -0.3, -0.05, 0.08, 0.22, 0.36, 0.6, 0.85], z0: -0.95 });
         var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
         L(Q.joined ? "육계도(사주로 육지와 이어진 섬)" : "섬", IX, IZ, 0.3, 0.26);
         if (Q.L > 0.06) L(Q.joined ? "육계 사주" : "자라는 사주", IX + 0.05, coastZ(IX) - Q.L * 0.45, 0.35, 0.18);
-        if (Q.dune > 0.012) L("해안 사구(바람이 쌓은 모래 언덕)", -0.55, coastZ(-0.55) + 0.12, -0.15, 0.22);
-        if (st.t > 0.3) L("사구 뒤 숲(모래 막이)", 0.65, coastZ(0.65) + 0.42, 0.1, 0.2);
-        /* 바닷바람 화살표(바다 → 육지) */
-        var a0 = cam.P(-0.75, 0.12, -0.75), a1 = cam.P(-0.75, 0.12, -0.25), ang = Math.atan2(a1[1] - a0[1], a1[0] - a0[0]), hs = 11 * TS;
-        ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 7 * TS; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(a1[0], a1[1]); ctx.stroke();
-        ctx.strokeStyle = "#e8590c"; ctx.lineWidth = 3.5 * TS; ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(a1[0], a1[1]); ctx.stroke(); ctx.lineCap = "butt";
-        ctx.fillStyle = "#e8590c"; ctx.beginPath(); ctx.moveTo(a1[0] + Math.cos(ang) * 4, a1[1] + Math.sin(ang) * 4); ctx.lineTo(a1[0] - Math.cos(ang - 0.45) * hs, a1[1] - Math.sin(ang - 0.45) * hs); ctx.lineTo(a1[0] - Math.cos(ang + 0.45) * hs, a1[1] - Math.sin(ang + 0.45) * hs); ctx.closePath(); ctx.fill();
-        callout("바닷바람", a0[0], a0[1], a0[0], a0[1] - 16 * TS, { size: 11.5, color: "#c2410c", bg: "rgba(255,255,255,.8)" });
+        if (!Q.joined) L("섬 뒤쪽: 파랑이 약해 모래가 쌓임", IX - 0.02, coastZ(IX) - Q.L - 0.06, -0.45, 0.14, { size: 11.5, color: "#1864ab" });
+        L("섬 양쪽으로 휘어 드는 파랑", IX - IR - 0.05, IZ + 0.02, -0.4, 0.2, { size: 11.5, color: "#c2410c" });
       };
       var grains = [], clock = 0;
-      for (var g = 0; g < 40; g++) grains.push([rnd(g * 3 + 1) * 1.8 - 0.9, rnd(g * 5 + 2)]);
-      M.step = function (dt) { clock += dt / 1000; grains.forEach(function (p) { p[1] = frac(p[1] + dt / 1000 * 0.12 * WF[st.wind - 1]); }); };
+      for (var g = 0; g < 40; g++) grains.push([rnd(g * 3 + 1), rnd(g * 5 + 2) < 0.5 ? -1 : 1, rnd(g * 7 + 4)]);
+      M.step = function (dt) { clock += dt / 1000; };
       M.renderDynamic = function () {
-        if (RM || st.t < 0.05) return;
-        ctx.fillStyle = "rgba(200,166,104,.85)";
-        grains.forEach(function (p) { var x = p[0], z = coastZ(x) + 0.02 + 0.22 * p[1], q = cam.P(x, hf(x, z) + 0.01 + 0.02 * Math.sin(p[1] * 9), z); ctx.beginPath(); ctx.arc(q[0], q[1], 1.6 * TS, 0, 2 * Math.PI); ctx.fill(); });
+        if (RM) return;
+        WF.draw(cam, clock, { lam: 0.1, speed: 0.055, w: 1.6 * TS });
+        /* 양쪽에서 섬 뒤(사주 뿌리)로 모이는 모래, 사주가 자란 뒤에는 사주를 따라 섬 쪽으로 */
+        if (st.t < 0.03) return;
+        ctx.fillStyle = "rgba(196,160,96,.95)";
+        grains.forEach(function (gq) {
+          var p = frac(gq[0] + clock * 0.06), x, z, ph = frac(clock * 0.8 + gq[2] * 5), sw = ph < 0.5 ? ph / 0.5 : 1 - (ph - 0.5) / 0.5;
+          if (p < 0.65) { x = IX + gq[1] * 0.75 * (1 - p / 0.65); z = coastZ(x) - 0.05 + 0.03 * sw; }
+          else { var q = (p - 0.65) / 0.35; if (Q.L < 0.05) return; x = IX + gq[1] * 0.03 * (1 - q); z = coastZ(IX) - 0.02 - Q.L * 0.95 * q; }
+          var pp = cam.P(x, Math.max(0, rock(x, z)) + 0.004, z); ctx.beginPath(); ctx.arc(pp[0], pp[1], 1.8 * TS, 0, 2 * Math.PI); ctx.fill();
+        });
       };
       return M;
     })();
+
+    /* ================= 연안류 (예시 모형, 11-02 추가) =================
+       블록 가로 약 2km(1 = 1km), 앞쪽(z −)이 바다. 곧은 모래 해안 z = −0.1, x = 0.1에 바다로 뻗은 돌 둑(돌제, 길이 약 300m)
+       파랑이 해안에 비스듬히(35°) 밀려오면 해안을 따라 흐르는 연안류가 생기고, 모래는 지그재그로(비스듬히 올라갔다 곧장 내려옴) 흐름 쪽으로 옮겨짐
+       돌제의 흐름이 오는 쪽: 모래가 막혀 해안선이 바다 쪽으로 나아감(최대 0.22 = 220m) · 반대쪽: 모래가 모자라 깎임(최대 0.1 = 100m)
+       해안선 변화 = 최대값 × 시간을 부드럽게 × e^(−돌제와의 거리 ÷ 0.4(쌓임) · 0.32(깎임)) */
+    var LS = (function () {
+      var st = { t: 0, play: false, dir: "R" };
+      var cam = Cam(-18, 36), BOT = -0.2, JX = 0.1, JL = 0.3, JW = 0.035, CZ = -0.1;
+      var Q = { s: 1, G: 0 }, R_ = 0;
+      function prm() { Q.s = st.dir === "R" ? 1 : -1; Q.G = sm(0, 1, st.t); Q.acc = 0.22 * Q.G; Q.ero = 0.1 * Q.G; }
+      function shore(x) {
+        var u = (x - JX) * Q.s, a;
+        if (u < 0) a = Q.acc * Math.exp(u / 0.4); else a = -Q.ero * Math.exp(-u / 0.32) * sm(0.005, 0.05, u);
+        return CZ - a + 0.006 * Math.sin(8 * x + 0.5);
+      }
+      function jet(x, z) { return Math.abs(x - JX) < JW / 2 && z > CZ - JL && z < CZ + 0.1; }
+      function rock(x, z) {
+        var c = shore(x), h;
+        if (z >= c) h = 0.003 + 0.013 * sm(c, c + 0.12, z) + 0.03 * sm(c + 0.22, c + 0.75, z) + 0.006 * n2(2 * x, 2 * z) * sm(c + 0.25, c + 0.6, z);
+        else h = -0.006 - 0.11 * clamp((c - z) / 0.75, 0, 1);
+        if (jet(x, z)) h = Math.max(h, 0.028);
+        return h;
+      }
+      function water(x, z) { return rock(x, z) < 0 ? 0 : -9; }
+      function hf(x, z) { var r = rock(x, z); R_ = r; return Math.max(r, 0); }
+      var JC = [150, 146, 140];
+      function color(h, x, z) {
+        var r = rock(x, z), c = shore(x);
+        if (r < 0) return seaCol(-r);
+        if (jet(x, z)) return JC;
+        if (z < c + 0.12) return SAND;
+        return mix(GRASS, [96, 134, 80], clamp((z - c - 0.3) / 0.3, 0, 1));
+      }
+      var surf = makeSurf({ nx: 110, nz: 90, x0: -1, x1: 1, z0: -0.85, z1: 0.75, hf: hf, color: color, layers: [
+        { s: function (x, z) { return z - shore(x) - 0.12; }, c: function () { return SAND; } },
+        { s: function (x, z) { return Math.max(Math.abs(x - JX) - JW / 2, CZ - JL - z, z - CZ - 0.1); }, c: function () { return JC; } },
+        { s: function () { return R_; }, c: function (x, z) { return seaCol(-rock(x, z)); }, flat: true, line: "rgba(255,255,255,.8)" }
+      ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -0.85, z1: 0.75, nx: 63, nz: 49, land: function (x, z) { return rock(x, z) >= 0; }, ang: function () { return 35 * Q.s; }, blend: 0.14 });
+      var M = { st: st, cam: cam, yaw0: -18, pitch0: 36, Q: Q };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.dir].join(","); };
+      /* 오른쪽 아래: 해안선의 변화(위가 바다 쪽) */
+      function inset(box) {
+        var g = profBox(box, "해안선의 변화(위쪽이 바다 쪽)", -1, 1, -0.12, 0.25), us = rangeU(-1, 1, 120);
+        var f = function (x) { return CZ - shore(x); };
+        ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip();
+        profFill(g, us, function (x) { return Math.max(0, f(x)); }, "rgba(232,200,120,.85)", 0);
+        profFill(g, us, function (x) { return Math.min(0, f(x)); }, "rgba(224,49,49,.35)", 0);
+        ctx.restore();
+        ctx.strokeStyle = "#868e96"; ctx.lineWidth = 1; ctx.setLineDash([4, 3]); ctx.beginPath(); ctx.moveTo(g.X(-1), g.Y(0)); ctx.lineTo(g.X(1), g.Y(0)); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = "#1d2126"; ctx.lineWidth = 1.6; profPath(g, us, f); ctx.stroke();
+        ctx.fillStyle = "#868e96"; ctx.fillRect(g.X(JX) - 2, g.y, 4, g.h);
+        ctext("돌제", g.X(JX), g.y + g.h + 8 * TS, { size: 9.5, align: "center", color: "#495057", halo: 2 });
+        ctext("쌓임", g.X(JX - 0.32 * Q.s), g.Y(0.16), { size: 10, bold: true, align: "center", color: "#8a6a10", halo: 2 });
+        ctext("깎임", g.X(JX + 0.3 * Q.s), g.Y(-0.08), { size: 10, bold: true, align: "center", color: "#c92a2a", halo: 2 });
+        ctext("점선: 처음 해안선", g.x + 2, g.y + g.h - 4, { size: 9, color: "#6c757d", halo: 2 });
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var sp = splitRect(rect, 270 * TS, 150 * TS);
+        fitBlock(cam, sp.r3, surf, 0.15, BOT);
+        surf.draw(cam);
+        surf.trees(cam, { dens: 0.3, size: 0.028 });
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return rock(x, z) < 0 ? [176, 164, 136] : SAND; }); });
+        WF.rays(cam, { xs: [-0.95, -0.7, -0.45, -0.2].map(function (v) { return v * Q.s; }), z0: -0.82 });
+        if (st.t > 0.02) { var cp = []; for (var x = -1; x <= 1.0001; x += 0.025) cp.push(cam.P(x, 0.004, CZ + 0.006 * Math.sin(8 * x + 0.5))); dashLine(cp); }
+        /* 연안류 화살표: 해안선과 나란히, 파랑이 비스듬히 나아가는 쪽으로 */
+        [-0.78, -0.42, 0.42, 0.78].forEach(function (x0, i) {
+          var x1 = x0 + 0.22 * Q.s; if ((x0 - JX) * (x1 - JX) < 0) return;
+          var a = cam.P(x0, 0.004, shore(x0) - 0.07), b = cam.P(x1, 0.004, shore(x1) - 0.07); arrow2(a, b, "#1c7ed6", 3.6, 11);
+          if (i === (Q.s > 0 ? 0 : 3)) callout("연안류(해안을 따라 흐르는 물)", (a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2 + 24 * TS, { size: 11.5, color: "#1864ab", bg: "rgba(255,255,255,.88)" });
+        });
+        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        L("돌제(바다로 뻗은 둑)", JX, CZ - JL * 0.8, 0.28 * Q.s, 0.16);
+        if (Q.G > 0.2) { var xa = JX - 0.12 * Q.s; L("모래가 쌓여 넓어진 사빈", xa, shore(xa) + 0.04, -0.3 * Q.s, 0.2, { color: "#8a6a10" }); var xb = JX + 0.2 * Q.s; L("모래가 모자라 깎인 해안", xb, shore(xb) + 0.03, 0.25 * Q.s, 0.2, { color: "#c92a2a" }); }
+        L("비스듬히 밀려오는 파랑", -0.75 * Q.s, -0.7, -0.12 * Q.s, 0.12, { size: 11.5, color: "#c2410c" });
+        inset(sp.box);
+      };
+      var grains = [], clock = 0;
+      for (var g = 0; g < 46; g++) grains.push([rnd(g * 2 + 3), rnd(g * 5 + 1)]);
+      M.step = function (dt) { clock += dt / 1000; };
+      M.renderDynamic = function () {
+        if (RM) return;
+        WF.draw(cam, clock, { lam: 0.1, speed: 0.06, w: 1.7 * TS });
+        /* 모래 알갱이: 파랑에 밀려 비스듬히 올라갔다가(앞으로) 곧장 내려옴(뒤로) → 지그재그로 흐름 쪽에 옮겨 감 */
+        ctx.fillStyle = "rgba(190,150,80,.95)";
+        grains.forEach(function (gq) {
+          var cyc = clock * 0.9 + gq[1] * 7, n = Math.floor(cyc), ph = cyc - n, adv = (n + Math.min(1, ph / 0.5)) * 0.025;
+          var u = frac(gq[0] + adv / 1.9) * 1.9, x = -0.95 * Q.s + Q.s * u, rel = (x - JX) * Q.s;
+          var al = 1;
+          if (Q.G > 0.15 && rel > -0.08 && rel < 0) al = clamp(-rel / 0.08, 0, 1);
+          if (Q.G > 0.15 && rel >= 0 && rel < 0.12) al = clamp(rel / 0.12, 0, 1);
+          if (al < 0.05) return;
+          var sw = ph < 0.5 ? ph / 0.5 : 1 - (ph - 0.5) / 0.5, z = shore(x) - 0.045 + 0.04 * sw, p = cam.P(x, Math.max(0, rock(x, z)) + 0.004, z);
+          ctx.globalAlpha = al; ctx.beginPath(); ctx.arc(p[0], p[1], 2 * TS, 0, 2 * Math.PI); ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+      };
+      return M;
+    })();
+
+    /* ================= 바람 · 사빈 · 해안 사구 · 모래 해안 (예시 모형, 11-02 추가) =================
+       블록 가로 약 2km(1 = 1km), 높이 1 = 300m(크게 늘림). 앞쪽(z −)이 바다, 곧은 모래 해안 z ≈ −0.2
+       wind(1-5 바람): 바닷바람이 사빈의 마른 모래를 육지 쪽으로 날림 → 사구 높이 = 0.06 × 바람(0.55 · 1 · 1.45) × 시간, 사구가 육지 쪽으로 최대 0.06 × 바람 옮겨 감
+       beach(3-1 사빈 · 해안 사구): 사빈 폭 0.035 → 0.135(파랑 · 연안류 · 하천이 모래를 쌓음, 시간 0 ~ 0.45) → 그 뒤 사구가 자람(0.45 ~ 1)
+       sand(4-1 모래 해안): 모래가 넉넉해 해안선이 바다 쪽으로 최대 0.14(140m) 나아가고, 넓은 사빈 · 사구가 이어짐
+       사구 단면: 바람을 받는 쪽은 완만, 반대쪽은 가파름. 사구 아래에는 빗물이 스며 고인 지하수(민물)가 있음 */
+    var BD = (function () {
+      var st = { t: 0, play: false, wind: 2, mode: "wind" };
+      var cam = Cam(-26, 30), BOT = -0.2;
+      var Q = {}, WK = [0.55, 1, 1.45], R_ = 0;
+      function prm() {
+        var t = st.t, m = st.mode, k = WK[st.wind - 1];
+        Q.prog = m === "sand" ? 0.14 * sm(0, 1, t) : 0;
+        Q.W = m === "beach" ? 0.035 + 0.1 * sm(0.02, 0.45, t) : 0.135;
+        Q.dune = 0.06 * k * (m === "beach" ? sm(0.45, 1, t) : m === "wind" ? sm(0.04, 1, t) : 0.55 + 0.45 * sm(0, 1, t));
+        Q.mig = m === "wind" ? 0.06 * k * sm(0.35, 1, t) : 0;
+        Q.blow = m === "wind" ? st.t > 0.02 : m === "beach" ? st.t > 0.42 : st.t > 0.02;
+      }
+      function shore(x) { return -0.2 - Q.prog + 0.008 * Math.sin(6 * x + 0.4); }
+      function duneA(x, z) { return z - (shore(x) + Q.W + 0.015 + Q.mig); }
+      function dune(x, z) {
+        var a = duneA(x, z) / 0.24; if (a <= 0 || a >= 1 || Q.dune <= 0) return 0;
+        var p = a < 0.62 ? Math.sin(Math.PI / 2 * a / 0.62) : Math.cos(Math.PI / 2 * (a - 0.62) / 0.38);
+        return Q.dune * Math.pow(p, 1.25) * (0.6 + 0.4 * Math.sin(9 * x + 1.3) * Math.sin(4.1 * x - 0.4));
+      }
+      function back(x, z) { return z - (shore(x) + Q.W + 0.27 + Q.mig); }
+      function rock(x, z) {
+        var c = shore(x), h;
+        if (z >= c) h = 0.003 + 0.013 * sm(c, c + Q.W, z) + 0.006 * sm(0, 0.3, back(x, z)) + 0.004 * n2(2 * x, 2 * z) * sm(0.05, 0.3, back(x, z)) + dune(x, z);
+        else h = -0.006 - 0.11 * clamp((c - z) / 0.7, 0, 1);
+        return h;
+      }
+      function water(x, z) { return rock(x, z) < 0 ? 0 : -9; }
+      function hf(x, z) { var r = rock(x, z); R_ = r; return Math.max(r, 0); }
+      var DUNE = [222, 202, 150], PINE = [70, 112, 72];
+      function color(h, x, z) {
+        var r = rock(x, z), c = shore(x);
+        if (r < 0) return seaCol(-r);
+        if (z < c + Q.W) return z < c + 0.02 ? mix(SAND, [196, 178, 132], 0.5) : SAND;
+        var d = dune(x, z), b = back(x, z);
+        if (d > 0.003) return mix(DUNE, [168, 176, 108], 0.35 * sm(0.55, 0.95, duneA(x, z) / 0.24));
+        if (b < 0) return mix(DUNE, [170, 172, 112], 0.5);
+        if (b < 0.22) return PINE;
+        return Math.floor((x + 1) * 9 + Math.sin(z * 7)) % 2 ? GRASS : [150, 172, 96];
+      }
+      var surf = makeSurf({ nx: 110, nz: 92, x0: -1, x1: 1, z0: -1, z1: 0.8, hf: hf, color: color, layers: [
+        { s: function (x, z) { return Math.min(z - shore(x) - Q.W, 0.003 - dune(x, z)); }, c: function (x, z) { return z < shore(x) + Q.W ? SAND : DUNE; } },
+        { s: function () { return R_; }, c: function (x, z) { return seaCol(-rock(x, z)); }, flat: true, line: "rgba(255,255,255,.8)" }
+      ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -1, z1: 0.8, nx: 60, nz: 53, land: function (x, z) { return rock(x, z) >= 0; }, A: 8, blend: 0.16 });
+      var M = { st: st, cam: cam, yaw0: -26, pitch0: 30, Q: Q };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.wind, st.mode].join(","); };
+      M.setMode = function (m) { if (st.mode === m) return; st.mode = m; M.update(); };
+      M.duneM = function () { return Q.dune * 300 * 0.95; };
+      /* 오른쪽 아래: 해안의 단면(바다 → 사빈 → 사구 → 숲) */
+      function inset(box) {
+        var x0 = 0.1, a = shore(x0) - 0.18, b = shore(x0) + Q.W + 0.55, g = profBox(box, "해안의 단면(가운데)", a, b, -0.05, 0.11), us = rangeU(a, b, 100);
+        var f = function (z) { return rock(x0, z); };
+        ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip();
+        ctx.fillStyle = "rgba(116,176,222,.75)"; ctx.fillRect(g.X(a), g.Y(0), g.X(shore(x0)) - g.X(a), g.Y(-0.05) - g.Y(0));
+        profFill(g, us, f, "#cdb98a", -0.06);
+        /* 사구 아래 지하수(민물) */
+        if (st.mode !== "wind" && Q.dune > 0.01) { var za = shore(x0) + Q.W, zb = za + 0.3; ctx.fillStyle = "rgba(77,171,247,.45)"; ctx.beginPath(); ctx.ellipse((g.X(za) + g.X(zb)) / 2, g.Y(-0.004), (g.X(zb) - g.X(za)) / 2, (g.Y(-0.03) - g.Y(0)) * 0.9, 0, 0, Math.PI); ctx.fill(); ctext("지하수(민물)", (g.X(za) + g.X(zb)) / 2, g.Y(-0.026), { size: 9.5, align: "center", color: "#1864ab", halo: 2 }); }
+        ctx.restore();
+        ctx.strokeStyle = "#5c4d33"; ctx.lineWidth = 1.4; profPath(g, us, f); ctx.stroke();
+        ctx.strokeStyle = "#1c7ed6"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(g.X(a), g.Y(0)); ctx.lineTo(g.X(shore(x0)), g.Y(0)); ctx.stroke();
+        ctext("바다", g.X(a) + 4, g.Y(0.018), { size: 10, bold: true, color: "#1864ab", halo: 2 });
+        ctext("사빈", g.X(shore(x0) + Q.W * 0.5), g.Y(0.035), { size: 10, bold: true, align: "center", halo: 2 });
+        if (Q.dune > 0.008) ctext("해안 사구", g.X(shore(x0) + Q.W + Q.mig + 0.15), g.Y(rock(x0, shore(x0) + Q.W + Q.mig + 0.15) + 0.018), { size: 10, bold: true, align: "center", halo: 2 });
+        ctext("숲", g.X(shore(x0) + Q.W + Q.mig + 0.38), g.Y(0.035), { size: 10, bold: true, align: "center", color: "#2b8a3e", halo: 2 });
+        if (Q.blow) { var y = g.Y(0.09); ctx.strokeStyle = "#e8590c"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(g.X(a) + 8, y); ctx.lineTo(g.X(a) + 50, y); ctx.stroke(); ctx.fillStyle = "#e8590c"; ctx.beginPath(); ctx.moveTo(g.X(a) + 56, y); ctx.lineTo(g.X(a) + 48, y - 4); ctx.lineTo(g.X(a) + 48, y + 4); ctx.closePath(); ctx.fill(); ctext("바닷바람", g.X(a) + 60, y, { size: 9.5, color: "#c2410c", halo: 2 }); }
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var sp = splitRect(rect, 270 * TS, 150 * TS);
+        fitBlock(cam, sp.r3, surf, 0.2, BOT);
+        surf.draw(cam);
+        surf.trees(cam, { dens: 0.75, size: 0.034, broad: 0.95, ok: function (x, z) { var b = back(x, z); return b > 0.015 && b < 0.21; } });
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return rock(x, z) < 0 ? [176, 164, 136] : back(x, z) > 0 ? [128, 112, 92] : SAND; }); });
+        if (st.mode === "sand" && st.t > 0.02) { var cp = []; for (var x = -1; x <= 1.0001; x += 0.025) cp.push(cam.P(x, 0.004, -0.2 + 0.008 * Math.sin(6 * x + 0.4))); dashLine(cp); }
+        if (Q.blow) [[-0.62, 0.08], [0.58, 0.08]].forEach(function (q, i) {
+          var a = cam.P(q[0], q[1], shore(q[0]) - 0.14), b = cam.P(q[0], q[1], shore(q[0]) + Q.W + 0.12); arrow2(a, b, "#e8590c", 3.8, 12);
+          if (!i) callout("바닷바람(바다 → 육지)", a[0], a[1], a[0], a[1] - 22 * TS, { size: 11.5, color: "#c2410c", bg: "rgba(255,255,255,.88)" });
+        });
+        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        var xs = -0.25;
+        L(st.mode === "sand" ? "넓은 사빈(해수욕장)" : "사빈(모래사장)", xs, shore(xs) + Q.W * 0.5, -0.2, 0.16);
+        if (Q.dune > 0.008) { var zd = shore(0.2) + Q.W + Q.mig + 0.13; L("해안 사구(바람이 쌓은 모래 언덕)", 0.2, zd, 0.25, 0.2, { color: "#8a6a10" }); }
+        L("사구 뒤 숲(날리는 모래를 막음)", 0.7, shore(0.7) + Q.W + Q.mig + 0.38, 0.05, 0.2, { size: 11.5, color: "#2b8a3e" });
+        if (st.mode === "sand" && st.t > 0.3) L("바다 쪽으로 나아간 해안선", -0.7, shore(-0.7) + 0.01, -0.15, 0.16, { size: 11.5 });
+        inset(sp.box);
+      };
+      var grains = [], clock = 0;
+      for (var g = 0; g < 44; g++) grains.push([rnd(g * 3 + 2) * 1.9 - 0.95, rnd(g * 7 + 1)]);
+      M.step = function (dt) { clock += dt / 1000; };
+      M.renderDynamic = function () {
+        if (RM) return;
+        WF.draw(cam, clock, { lam: 0.1, speed: 0.055, w: 1.6 * TS });
+        if (!Q.blow) return;
+        /* 날리는 모래: 사빈에서 통통 튀듯 육지 쪽으로(바람이 셀수록 빠르고 높게) */
+        var k = WK[st.wind - 1];
+        ctx.fillStyle = "rgba(186,150,86,.95)";
+        grains.forEach(function (gq) {
+          var x = gq[0], p = frac(gq[1] + clock * 0.14 * k), c = shore(x), z = c + 0.015 + (Q.W + 0.16 + Q.mig) * p, hop = 0.012 * k * Math.abs(Math.sin(Math.PI * p * 5));
+          var pp = cam.P(x, rock(x, z) + 0.003 + hop, z); ctx.globalAlpha = 1 - sm(0.8, 1, p); ctx.beginPath(); ctx.arc(pp[0], pp[1], 1.8 * TS, 0, 2 * Math.PI); ctx.fill();
+        });
+        ctx.globalAlpha = 1;
+      };
+      return M;
+    })();
+
+    /* ================= 해식애 · 해식동 · 파식대 · 해안 단구 / 암석 해안 (예시 모형, 11-02 추가) =================
+       블록 가로 약 1km(1 = 500m), 높이 1 = 500m(크게 늘림). 앞쪽(z −)이 바다, 처음 절벽 밑 z ≈ −0.32, 절벽 높이 0.17
+       terrace(2-1): 절벽 아래가 파여 들어감(0.02 ~ 0.5) → 해식동(0.2 ~ 0.62) → 절벽이 0.3(약 150m) 물러나며 그 앞에 파식대(바닷물 높이 바로 아래의 평평한 바위)
+         → 땅이 0.085(약 40m) 솟아오름(융기, 0.76 ~ 0.93) → 옛 파식대가 계단 모양의 해안 단구가 되고, 새 해안에서 새 해식애가 생기기 시작(0.9 ~ 1)
+       rock(4-2 암석 해안): 융기 없이 절벽이 0.36 물러나고, 단단한 바위 세 곳은 시 스택으로 남음. 파랑 세기는 물러나는 거리에 비례 */
+    var CL = (function () {
+      var st = { t: 0, play: false, mode: "terrace", wave: 2 };
+      var cam = Cam(-32, 26), BOT = -0.24, Z0 = -0.32, H = 0.17;
+      var Q = {}, R_ = 0, HARD = [[-0.42, -0.27, 0.05], [0.38, -0.22, 0.045], [0.68, -0.29, 0.035]];
+      function prm() {
+        var t = st.t, k = WAVE_K[st.wave - 1] / 0.75, ter = st.mode === "terrace";
+        Q.ter = ter;
+        Q.R = (ter ? 0.3 * sm(0.04, 0.74, t) : 0.36 * sm(0.02, 0.95, t)) * k;
+        Q.U = ter ? 0.085 * sm(0.76, 0.93, t) : 0;
+        Q.R2 = ter ? 0.03 * sm(0.9, 1, t) : 0;
+        Q.notch = ter ? sm(0.02, 0.1, t) * (1 - sm(0.42, 0.55, t)) : 0;
+        Q.cave = ter ? sm(0.2, 0.34, t) * (1 - sm(0.5, 0.62, t)) : 0;
+        Q.stage = ter ? (t < 0.22 ? 0 : t < 0.48 ? 1 : t < 0.75 ? 2 : 3) : (t < 0.45 ? 0 : 1);
+      }
+      function c0(x) { return Z0 + 0.018 * Math.sin(5 * x + 0.3); }
+      function cl(x) { return c0(x) + Q.R * (1 + 0.22 * Math.sin(3.1 * x + 0.8) + 0.12 * Math.sin(7.3 * x)); }
+      function zn(x) { return c0(x) - Math.max(0, Q.U - 0.025) / 0.13 * 0.55; }
+      function hardAt(x, z) { if (Q.ter) return 0; for (var i = 0; i < HARD.length; i++) { var q = HARD[i], d = Math.hypot(x - q[0], z - q[1]); if (d < q[2]) return 1 - Math.pow(d / q[2], 4); } return 0; }
+      function base(x, z) {
+        var a = c0(x), c = cl(x), pl = -0.007 + 0.0015 * n2(8 * x, 8 * z), h;
+        if (z >= c) h = pl + (H + 0.01 * n2(2 * x, 2 * z) - pl) * sm(c, c + 0.028, z);
+        else if (z >= a) h = pl;
+        else h = pl - 0.018 - 0.13 * clamp((a - z) / 0.55, 0, 1);
+        var hd = hardAt(x, z); if (hd > 0 && z < c) h = Math.max(h, H * 0.9 * Math.min(1, hd * 3));
+        return h;
+      }
+      function rock(x, z) {
+        var h = base(x, z) + Q.U;
+        if (Q.U > 0.03 && h > -0.006) { var n = zn(x); if (z > n - 0.01) h = Math.min(h, mix1(-0.006, h, sm(n + Q.R2, n + Q.R2 + 0.015, z))); }
+        return h;
+      }
+      function water(x, z) { return rock(x, z) < 0 ? 0 : -9; }
+      function hf(x, z) { var r = rock(x, z); R_ = r; return Math.max(r, 0); }
+      var PLAT = [156, 144, 124], FIELD = [196, 184, 128];
+      function seaC(x, z) { var r = rock(x, z); if (z > c0(x) && z < cl(x) && Q.U < 0.01) return mix(PLAT, SEA_S, 0.5); return seaCol(-r); }
+      function color(h, x, z) {
+        var r = rock(x, z); if (r < 0) return seaC(x, z);
+        var c = cl(x);
+        if (hardAt(x, z) > 0 && z < c) return r > H * 0.85 ? [118, 140, 90] : ROCK;
+        if (z >= c + 0.026) return GRASS;
+        if (z >= c) return ROCK;
+        if (z >= c0(x)) return Q.U > 0.01 ? (Math.floor((x + 1) * 12) % 2 ? FIELD : mix(FIELD, GRASS, 0.5)) : PLAT;
+        return mix([176, 164, 136], ROCK, 0.3);
+      }
+      var surf = makeSurf({ nx: 120, nz: 90, x0: -1, x1: 1, z0: -0.85, z1: 0.6, hf: hf, color: color, layers: [
+        { s: function (x, z) { var c = cl(x); return Math.max(c - z, z - c - 0.026); }, c: function () { return ROCK; } },
+        { s: function () { return R_; }, c: seaC, flat: true, line: "rgba(255,255,255,.8)" }
+      ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -0.85, z1: 0.6, nx: 61, nz: 46, land: function (x, z) { return rock(x, z) >= 0; }, A: 0, blend: 0.16 });
+      var M = { st: st, cam: cam, yaw0: -32, pitch0: 26, Q: Q };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4), st.mode, st.wave].join(","); };
+      M.setMode = function (m) { if (st.mode === m) return; st.mode = m; M.update(); };
+      M.platM = function () { return Math.round(Q.R * 500 / 5) * 5; };
+      /* 오른쪽 아래: 해안의 단면(처음 모습 점선 · 지금 모습) */
+      function inset(box) {
+        var x0 = 0.05, a = -0.8, b = 0.2, g = profBox(box, "해안의 단면 변화", a, b, -0.12, 0.3), us = rangeU(a, b, 120);
+        var Rs = Q.R, Us = Q.U, R2s = Q.R2;
+        Q.R = 0; Q.U = 0; Q.R2 = 0; var p0 = us.map(function (z) { return rock(x0, z); });
+        Q.R = Rs; Q.U = Us; Q.R2 = R2s;
+        ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip();
+        ctx.fillStyle = "rgba(116,176,222,.7)"; ctx.fillRect(g.x, g.Y(0), g.w, g.Y(-0.12) - g.Y(0));
+        profFill(g, us, function (z) { return rock(x0, z); }, "#a8987e", -0.13);
+        ctx.restore();
+        ctx.strokeStyle = "#4a4034"; ctx.lineWidth = 1.5; profPath(g, us, function (z) { return rock(x0, z); }); ctx.stroke();
+        ctx.setLineDash([4, 3]); ctx.strokeStyle = "#495057"; ctx.lineWidth = 1.2; ctx.beginPath(); us.forEach(function (z, i) { var X = g.X(z), Y = g.Y(p0[i]); if (i) ctx.lineTo(X, Y); else ctx.moveTo(X, Y); }); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = "#1c7ed6"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(g.x, g.Y(0)); ctx.lineTo(g.x + g.w, g.Y(0)); ctx.stroke();
+        ctext("바다", g.x + 4, g.Y(-0.03), { size: 10, bold: true, color: "#1864ab", halo: 2 });
+        ctext("점선: 처음", g.x + 4, g.y + 6, { size: 9.5, color: "#495057", halo: 2 });
+        var c = cl(x0);
+        if (Q.R > 0.05) ctext(Q.U > 0.02 ? "해안 단구" : "파식대", g.X((c0(x0) + c) / 2), g.Y(Q.U + 0.03), { size: 10, bold: true, align: "center", color: Q.U > 0.02 ? "#5c7a2e" : "#495057", halo: 2 });
+        ctext("해식애", g.X(c + 0.02) + 4, g.Y(Q.U + H * 0.55), { size: 10, bold: true, color: "#c2410c", halo: 2 });
+        if (Q.U > 0.01) { var ax = g.X(-0.72); ctx.strokeStyle = "#2b8a3e"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ax, g.Y(0.0)); ctx.lineTo(ax, g.Y(Q.U)); ctx.stroke(); ctx.fillStyle = "#2b8a3e"; ctx.beginPath(); ctx.moveTo(ax, g.Y(Q.U) - 6); ctx.lineTo(ax - 4, g.Y(Q.U) + 1); ctx.lineTo(ax + 4, g.Y(Q.U) + 1); ctx.closePath(); ctx.fill(); ctext("솟아오름", ax + 6, g.Y(Q.U * 0.5 + 0.02), { size: 9.5, color: "#2b8a3e", halo: 2 }); }
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var sp = splitRect(rect, 280 * TS, 160 * TS);
+        fitBlock(cam, sp.r3, surf, 0.28, BOT);
+        surf.draw(cam);
+        surf.trees(cam, { dens: 0.3, size: 0.03, ok: function (x, z) { return z > cl(x) + 0.04; } });
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return rock(x, z) < 0 ? [150, 140, 122] : [134, 120, 100]; }); });
+        /* 절벽 아래 파인 홈 · 해식동(절벽 면 위에 어둡게) */
+        if (Q.notch > 0.02) { ctx.strokeStyle = "rgba(34,30,28," + (0.6 * Q.notch).toFixed(3) + ")"; ctx.lineWidth = 4.5 * TS; ctx.lineCap = "round"; ctx.beginPath(); for (var x = -0.95; x <= 0.95; x += 0.02) { var p = cam.P(x, Q.U + 0.006, cl(x) + 0.0015); if (x > -0.94) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); } ctx.stroke(); ctx.lineCap = "butt"; }
+        if (Q.cave > 0.02) { var cvx = 0.12, cp = cam.P(cvx, Q.U + 0.04, cl(cvx) + 0.002), rr = 0.035 * Q.cave * cam.k * cp[3]; ctx.fillStyle = "rgba(26,24,24,.88)"; ctx.beginPath(); ctx.ellipse(cp[0], cp[1], rr * 1.15, rr, 0, Math.PI, 2 * Math.PI); ctx.lineTo(cp[0] + rr * 1.15, cp[1] + rr * 0.35); ctx.lineTo(cp[0] - rr * 1.15, cp[1] + rr * 0.35); ctx.closePath(); ctx.fill(); }
+        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), pp = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, pp[0], pp[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        var xa = -0.3;
+        L(Q.U > 0.02 ? "옛 해식애" : "해식애(파랑에 깎인 해안 절벽)", xa, cl(xa) + 0.012, -0.25, 0.2, { color: "#c2410c" });
+        if (Q.notch > 0.3) L("절벽 아래가 파여 들어감", 0.55, cl(0.55) + 0.001, 0.25, 0.12, { size: 11.5 });
+        if (Q.cave > 0.3) L("해식동(파랑이 판 동굴)", 0.12, cl(0.12) + 0.002, 0.3, 0.16, { color: "#c2410c" });
+        if (Q.R > 0.08) { var xp = -0.62; L(Q.U > 0.02 ? "해안 단구(솟아오른 옛 파식대)" : "파식대(평평한 바위 바닥)", xp, (c0(xp) + cl(xp)) / 2, -0.2, 0.18, { color: Q.U > 0.02 ? "#5c7a2e" : "#1d2126" }); }
+        if (Q.R2 > 0.008) { var xn = 0.5; L("새 해식애", xn, zn(xn) + Q.R2 + 0.005, 0.2, 0.12, { size: 11.5 }); }
+        if (!Q.ter && Q.R > 0.12) L("시 스택(단단한 바위가 남음)", HARD[1][0], HARD[1][1], 0.2, 0.18, { color: "#c2410c" });
+        inset(sp.box);
+      };
+      var clock = 0;
+      M.step = function (dt) { clock += dt / 1000; };
+      M.renderDynamic = function () {
+        if (RM) return;
+        WF.draw(cam, clock, { lam: 0.1, speed: 0.035 + 0.018 * st.wave, w: (0.9 + 0.4 * st.wave) * TS });
+      };
+      return M;
+    })();
+
+    /* ================= 산호초 해안 (예시 모형, 11-02 추가) =================
+       블록 가로 약 4km(1 = 2km), 높이 1 = 1,000m(크게 늘림). 가운데 화산섬(꼭대기 0.24 ≈ 240m)이 시간에 따라 0.27 가라앉음
+       산호초는 반지름 0.6 둘레에서 위로 자라 늘 바다 높이에 머묾 → 섬 둘레의 해안선 반지름 = (0.24 − 가라앉은 깊이) ÷ 0.4
+         0.5보다 크면 거초(섬에 붙은 산호초) · 0보다 크면 보초(섬과 산호초 사이에 초호) · 섬이 잠기면 환초(고리 모양). 끝 무렵 산호초 위에 모래섬
+       파랑은 산호초 바깥 가장자리에서 부서지고, 안쪽 초호는 잔잔함 */
+    var CR = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-24, 42), BOT = -0.3, R0 = 0.6, RW = 0.045;
+      var Q = {}, R_ = 0;
+      function prm() { Q.S = 0.27 * sm(0.05, 0.95, st.t); Q.rs = Math.max(0, (0.24 - Q.S) / 0.4); Q.stage = Q.rs > 0.5 ? 0 : Q.rs > 0.005 ? 1 : 2; Q.motu = sm(0.82, 0.97, st.t); }
+      function cone(x, z) { var r = Math.hypot(x, z * 1.05); return 0.24 - 0.4 * r + 0.012 * n2(3 * x, 3 * z) - Q.S; }
+      function rock(x, z) {
+        var r = Math.hypot(x, z * 1.05), cn = cone(x, z), d = Math.abs(r - R0);
+        if (r < R0 - RW) return Math.max(cn, -0.045 + 0.006 * n2(5 * x, 5 * z));
+        if (d <= RW) {
+          var h = -0.003 + 0.002 * Math.cos(Math.PI * (r - R0) / (2 * RW));
+          if (Q.motu > 0) { var a = Math.atan2(z, x), m = Math.max(0, Math.sin(3 * a + 0.6)) * Math.max(0, Math.sin(5 * a - 0.3)); h = Math.max(h, (0.009 * m - 0.001) * Q.motu * Math.cos(Math.PI * (r - R0) / (2 * RW))); }
+          return Math.max(cn, h);
+        }
+        return Math.max(cn, Math.max(-0.27, -0.035 - 0.7 * (r - R0 - RW)));
+      }
+      function water(x, z) { return rock(x, z) < 0 ? 0 : -9; }
+      function hf(x, z) { var r = rock(x, z); R_ = r; return Math.max(r, 0); }
+      var REEF = [232, 220, 196], LAGOON = [92, 200, 206], VOLC = [98, 90, 84];
+      function seaC(x, z) {
+        var r = Math.hypot(x, z * 1.05), h = rock(x, z);
+        if (Math.abs(r - R0) <= RW) return mix(REEF, [120, 210, 214], 0.45);
+        if (r < R0) return mix(mix(LAGOON, [70, 170, 190], clamp(-h / 0.06, 0, 1)), SAND, h > -0.01 ? 0.3 : 0);
+        return mix([60, 150, 200], SEA_D, clamp(-h / 0.2, 0, 1));
+      }
+      function color(h, x, z) {
+        var r = rock(x, z); if (r < 0) return seaC(x, z);
+        var rr = Math.hypot(x, z * 1.05);
+        if (Math.abs(rr - R0) <= RW + 0.004) return mix(SAND, [240, 232, 206], 0.4);
+        if (r < 0.012) return SAND;
+        return mix([96, 142, 80], VOLC, clamp((r - 0.08) / 0.12, 0, 1));
+      }
+      var surf = makeSurf({ nx: 110, nz: 110, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: [
+        { s: function () { return R_; }, c: seaC, flat: true, line: "rgba(255,255,255,.85)" }
+      ] });
+      var WF = WaveField({ x0: -1, x1: 1, z0: -1, z1: 1, nx: 60, nz: 60, land: function (x, z) { return rock(x, z) > -0.006; }, A: 0, blend: 0.14 });
+      var M = { st: st, cam: cam, yaw0: -24, pitch0: 42, Q: Q };
+      M.update = function () { prm(); surf.reshape(); WF.update(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4)].join(","); };
+      /* 오른쪽 아래: 가운데를 지나는 단면(가라앉는 섬 · 위로 자라는 산호초) */
+      function inset(box) {
+        var g = profBox(box, "가운데를 자른 단면", -0.85, 0.85, -0.32, 0.26), us = rangeU(-0.85, 0.85, 140), f = function (x) { return rock(x, 0); };
+        ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip();
+        ctx.fillStyle = "rgba(116,176,222,.65)"; ctx.fillRect(g.x, g.Y(0), g.w, g.Y(-0.32) - g.Y(0));
+        /* 산호초 기둥: 처음 바닥에서 지금 바다 높이까지 위로 자람 */
+        [-R0, R0].forEach(function (cx) { var x1 = g.X(cx - RW), x2 = g.X(cx + RW); ctx.fillStyle = "#f2d4c8"; ctx.fillRect(x1, g.Y(0), x2 - x1, g.Y(-0.03 - Q.S) - g.Y(0)); ctx.strokeStyle = "rgba(200,120,110,.6)"; ctx.lineWidth = 0.8; for (var yy = 0; yy < Q.S + 0.03; yy += 0.025) { ctx.beginPath(); ctx.moveTo(x1, g.Y(-yy)); ctx.lineTo(x2, g.Y(-yy)); ctx.stroke(); } });
+        profFill(g, us, function (x) { return Math.min(cone(x, 0), Math.abs(Math.abs(x) - R0) <= RW ? -0.03 - Q.S : 9); }, "#7d6e62", -0.33);
+        ctx.restore();
+        ctx.setLineDash([4, 3]); ctx.strokeStyle = "#495057"; ctx.lineWidth = 1.1; ctx.beginPath(); us.forEach(function (x, i) { var X = g.X(x), Y = g.Y(cone(x, 0) + Q.S); if (i) ctx.lineTo(X, Y); else ctx.moveTo(X, Y); }); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = "#1c7ed6"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(g.x, g.Y(0)); ctx.lineTo(g.x + g.w, g.Y(0)); ctx.stroke();
+        ctext("점선: 처음 섬", g.x + 4, g.y + 6, { size: 9.5, color: "#495057", halo: 2 });
+        ctext("산호초", g.X(R0), g.Y(0.035), { size: 10, bold: true, align: "center", color: "#c2410c", halo: 2 });
+        if (Q.S > 0.02) { ctx.strokeStyle = "#5f3dc4"; ctx.lineWidth = 2; var ax = g.X(-0.06); ctx.beginPath(); ctx.moveTo(ax, g.Y(0.24 - Q.S + 0.05)); ctx.lineTo(ax, g.Y(0.24 - Q.S + 0.015)); ctx.stroke(); ctx.fillStyle = "#5f3dc4"; ctx.beginPath(); ctx.moveTo(ax, g.Y(0.24 - Q.S + 0.005)); ctx.lineTo(ax - 4, g.Y(0.24 - Q.S + 0.02)); ctx.lineTo(ax + 4, g.Y(0.24 - Q.S + 0.02)); ctx.closePath(); ctx.fill(); ctext("가라앉음", ax + 6, g.Y(0.24 - Q.S + 0.04), { size: 9.5, color: "#5f3dc4", halo: 2 }); }
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        var sp = splitRect(rect, 280 * TS, 150 * TS);
+        fitBlock(cam, sp.r3, surf, 0.25, BOT);
+        surf.draw(cam);
+        surf.trees(cam, { dens: 0.5, size: 0.028, broad: 0.0 });
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, rock, water, function (x, z) { return Math.abs(Math.hypot(x, z * 1.05) - R0) <= RW + 0.02 ? [238, 212, 196] : [126, 114, 102]; }); });
+        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        var nm = ["거초(섬 가장자리에 붙은 산호초)", "보초(섬과 떨어진 산호초)", "환초(고리 모양 산호초)"][Q.stage];
+        L(nm, R0 * 0.71, -R0 * 0.71 / 1.05, 0.3, 0.2, { color: "#c2410c" });
+        if (Q.stage >= 1) L("초호(산호초 안쪽의 잔잔한 바다)", -0.32, -0.12, -0.3, 0.18, { color: "#0b7285" });
+        if (Q.stage < 2) L("화산섬(조금씩 가라앉음)", 0, 0, 0.12, 0.28);
+        if (Q.motu > 0.3) L("산호초 위의 모래섬", -R0 * 0.85, R0 * 0.5, -0.2, 0.14, { size: 11.5 });
+        L("파랑이 부서지는 산호초 바깥", R0 * 0.2 + 0.02, -R0 - RW - 0.02, 0.25, 0.12, { size: 11.5 });
+        inset(sp.box);
+      };
+      var clock = 0;
+      M.step = function (dt) { clock += dt / 1000; };
+      M.renderDynamic = function () {
+        if (RM) return;
+        WF.draw(cam, clock, { lam: 0.1, speed: 0.06, w: 1.6 * TS });
+      };
+      return M;
+    })();
+
+    /* ================= 피오르 해안 (예시 모형, 11-02 추가) =================
+       블록 가로 약 10km(1 = 5km), 높이 1 = 1,500m(크게 늘림). 앞쪽(z −)이 바다
+       빙하가 깎은 U자 골짜기: 바닥 −0.26(바다 쪽) ~ +0.04(안쪽), 옆 산 높이 약 0.3. 단면 = 바닥 + (산 − 바닥) × (거리 ÷ 0.25)^2.6
+       시간 0 = 빙기: 빙하가 골짜기를 채우고 해수면이 지금보다 약 120m(0.12 → 그림에서는 크게) 낮음
+       0.1 ~ 0.62: 빙하가 녹아 골짜기 안쪽으로 물러남 · 0.3 ~ 1: 해수면이 높아져 U자 골짜기에 바닷물이 들어옴(피오르) */
+    var FJ = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-24, 36), BOT = -0.32;
+      var Q = {}, R_ = 0, I_ = -9;
+      function xv(z) { return 0.1 * Math.sin(1.7 * z + 0.5); }
+      function fl(z) { return -0.22 + 0.25 * sm(-1, 1.1, z); }
+      var VW = 0.32;
+      function mtn(x, z) { return 0.2 + 0.045 * Math.sin(2.3 * x + 1.1 * z) * Math.sin(1.7 * z - 0.6 * x + 0.4) + 0.022 * n2(1.5 * x, 1.5 * z) + 0.008 * n2(5 * x, 5 * z) + 0.07 * sm(0.4, 1, Math.abs(x - xv(z))); }
+      function rock(x, z) { var u = Math.abs(x - xv(z)) / VW, f = fl(z), m = mtn(x, z); return u < 1 ? f + (m - f) * Math.pow(u, 2.6) : m; }
+      function prm() { Q.ice = 1 - sm(0.1, 0.62, st.t); Q.gz = -1.05 + 2.25 * (1 - Q.ice); Q.ys = -0.12 * (1 - sm(0.3, 1, st.t)); }
+      function iceS(x, z) { if (Q.ice <= 0.001 || z < Q.gz) return -9; var u = Math.abs(x - xv(z)) / VW; if (u > 0.97) return -9; return fl(z) + (0.27 - 0.03 * u * u) * sm(Q.gz, Q.gz + 0.08, z); }
+      function water(x, z) { return Math.max(rock(x, z), iceS(x, z)) < Q.ys ? Q.ys : -9; }
+      function hf(x, z) { var r = rock(x, z), i = iceS(x, z); R_ = r; I_ = i; return Math.max(r, i, Q.ys); }
+      var ICE = [226, 238, 246];
+      function color(h, x, z) {
+        var r = rock(x, z);
+        if (iceS(x, z) > r) return ICE;
+        if (r < Q.ys) return seaCol((Q.ys - r) * 0.8);
+        if (r > 0.265) return mix([196, 200, 204], [248, 249, 251], clamp((r - 0.265) / 0.025, 0, 1));
+        var u = Math.abs(x - xv(z)) / VW;
+        if (u < 1 && r < 0.2) return mix([86, 118, 76], [128, 124, 118], clamp(u * 1.4 - 0.3, 0, 1));
+        return mix([128, 124, 118], [108, 112, 104], 0.5 + 0.5 * n2(4 * x, 4 * z));
+      }
+      var surf = makeSurf({ nx: 110, nz: 100, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: [
+        { s: function () { return I_ > -9 ? R_ - I_ : 1; }, c: function () { return ICE; } },
+        { s: function () { return Math.max(R_, I_) - Q.ys; }, c: function (x, z) { return seaCol((Q.ys - rock(x, z)) * 0.8); }, flat: true, line: "rgba(255,255,255,.8)" }
+      ] });
+      var M = { st: st, cam: cam, yaw0: -24, pitch0: 36, Q: Q };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return [st.t.toFixed(4)].join(","); };
+      M.fjordKm = function () { var n = 0; for (var z = -1; z <= 1; z += 0.01) if (fl(z) < Q.ys && iceS(xv(z), z) < Q.ys) n++; return n * 0.01 * 5; };
+      M.depthM = function () { return Math.max(0, Math.round((Q.ys - fl(-1)) * 1500 / 10) * 10); };
+      M.iceKm = function () { return Q.ice <= 0.001 ? 0 : Math.max(0, 1 - Q.gz) * 5; };
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.3, BOT);
+        surf.draw(cam);
+        surf.trees(cam, { dens: 0.4, size: 0.03, hmax: 0.18, ok: function (x, z) { return iceS(x, z) < rock(x, z); } });
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWall(cam, surf, w, BOT, function (x, z) { return Math.max(rock(x, z), iceS(x, z)); }, water, function (x, z) { return iceS(x, z) > rock(x, z) ? ICE : [120, 116, 110]; }); });
+        /* 매달린 골짜기의 폭포(빙하가 사라진 뒤) */
+        if (st.t > 0.7) { ctx.strokeStyle = "rgba(255,255,255," + (0.9 * sm(0.7, 0.85, st.t)).toFixed(3) + ")"; ctx.lineWidth = 2.2 * TS; [[-0.25, 1], [0.1, -1]].forEach(function (q) { var z = q[0], xr = xv(z) + q[1] * VW * 0.95, a = cam.P(xr, rock(xr, z), z), b = cam.P(xv(z) + q[1] * VW * 0.5, Q.ys + 0.004, z); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.quadraticCurveTo(a[0], (a[1] + b[1]) / 2, b[0], b[1]); ctx.stroke(); }); }
+        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
+        if (Q.ice > 0.05) { var zi = Math.max(Q.gz + 0.2, 0.2); L(Q.ice > 0.9 ? "빙하(골짜기를 U자로 깎음)" : "녹아 물러나는 빙하", xv(zi), zi, 0.32, 0.2, { color: "#1864ab" }); }
+        if (st.t > 0.6) L("피오르(바닷물이 들어온 U자 골짜기)", xv(-0.45), -0.45, 0.35, 0.22, { color: "#1864ab" });
+        else if (Q.ice < 0.9) L("U자 골짜기", xv(Q.gz - 0.12), Q.gz - 0.12, 0.35, 0.22);
+        if (st.t > 0.78) L("폭포(옆 골짜기에서 떨어짐)", xv(-0.25) + VW * 0.8, -0.25, 0.25, 0.2, { size: 11.5 });
+        L("양쪽의 높고 가파른 절벽", -0.55, 0.1, -0.2, 0.16, { size: 11.5 });
+      };
+      M.step = function () {};
+      M.renderDynamic = function () {};
+      return M;
+    })();
+
+    /* 개편(11-02): 보기 번호(1 ~ 10) → 모형 */
+    var MODS = [CA, SP, TD, RI, TB, LS, BD, CL, CR, FJ];
 
     /* ================= 그리기 ================= */
     var stage = $(".co-stage"), cap = $(".co-cap"), legend = $(".co-legend");
     var padL = 18;
     function drawRect() { var top = cap.offsetTop + cap.offsetHeight + 8, bot = legend.offsetHeight + 20; return { x: padL, y: top, w: Math.max(10, CW - padL - 18), h: Math.max(10, CH - top - bot) }; }
-    function scene() { return view === 1 ? CA : view === 2 ? SP : view === 3 ? TD : view === 4 ? RI : TB; }
+    function scene() { return MODS[view - 1] || CA; }
+    function rangeOf(v) { return $(".co-trange[data-for=\"" + v + "\"]"); }
     var rq = 0, layer = document.createElement("canvas"), layerKey = "";
     /* 품질 다듬기: 장면을 바꾸거나 「처음 시점으로」를 누르면 시점이 부드럽게 옮겨 감(0.55초) */
     var camTween = 0, INTRO = false;
@@ -1982,20 +2821,106 @@
     var K_ = [1, 2, 3, 4].map(function (i) { return { k: $(".co-k" + i), v: $(".co-v" + i) }; });
     function stat(i, k, v) { setText(K_[i].k, k); setText(K_[i].v, v); }
     function result(head, text, cls) { var c = "co-result" + (cls ? " " + cls : ""); if (elRes.className !== c) elRes.className = c; setText(elRk, head); setText(elRt, text); }
-    function stageA() {
-      var Q = CA.Q, t = CA.st.t;
-      if (t < 0.02) return ["바다로 튀어나온 곶과 들어간 만이 있는 해안이다", "파랑 세기를 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm", "처음"];
-      if (Q.stage === 0) return ["파랑이 곶에 모여 절벽 아래를 깎는다", "튀어나온 곶에는 파랑의 힘이 모이고, 들어간 만에서는 흩어진다. 곶은 깎여 가파른 해안 절벽이 된다.", "", "해안 절벽"];
-      if (Q.stage === 1) return ["절벽 아래가 깎여 동굴이 생겼다", "파랑이 절벽의 약한 곳을 집중해서 깎아 바닷물이 드나드는 동굴이 뚫린다. 만에는 모래가 쌓이기 시작한다.", "", "동굴"];
-      if (Q.stage === 2) return ["동굴이 반대쪽까지 뚫려 아치가 되었다", "곶 끝의 단단한 바위가 좁은 다리처럼 육지와 이어져 있고, 그 아래로 바닷물이 지나간다.", "", "아치"];
-      return ["단단한 부분만 남아 시 스택이 되었다", "아치 위가 무너지고 단단한 바위 기둥만 바다에 홀로 남았다. 곶은 육지 쪽으로 물러났고, 만에는 넓은 모래사장이 생겼다.", "", "시 스택"];
-    }
-    function stageB() {
-      var Q = SP.Q, t = SP.st.t;
-      if (t < 0.02) return ["입구가 열린 만이 있는 해안이다", "해안을 따라 흐르는 물의 방향과 모래 양을 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm"];
-      if (!Q.closed) return ["모래가 곶 끝에서 길게 자라 사주가 된다", "해안을 따라 흐르는 물이 모래를 옮기다, 해안이 꺾이는 곶 끝에서 바다 쪽으로 길게 쌓는다. 만의 입구가 점점 좁아진다.", ""];
-      if (Q.fill < 0.05) return ["사주가 만의 입구를 막아 석호가 생겼다", "바다와 떨어진 바닷가 호수가 되었다. 동해안의 경포호 · 영랑호가 이렇게 만들어졌다.", "good"];
-      return ["석호에 흙이 쌓여 조금씩 얕아진다", "석호로 흘러드는 하천이 흙을 날라 호수 가장자리부터 메워진다. 오랜 시간이 지나면 습지나 땅이 되기도 한다.", "good"];
+    /* 개편(11-02): 보기마다 설명 · 읽은 값. s = [위 설명 줄, 설명 카드 글, 색, 시간 막대 옆 이름] */
+    function mR(v, u) { return Math.round(v / u) * u; }
+    function readOf(v) {
+      var s, t;
+      if (v === 1) {
+        var Q = CA.Q, m = CA.st.mode, wv = "약 " + WAVE_H[CA.st.wave - 1] + "m"; t = CA.st.t;
+        if (m === "sys") {
+          s = t < 0.02 ? ["바다로 튀어나온 곶과 육지로 들어간 만이 번갈아 있는 해안이다", "파랑은 먼 바다에서 해안 쪽으로 밀려온다. 「재생」을 눌러 곶과 만이 어떻게 달라지는지 본다. 아래 단추로 해안을 바꾸는 네 가지 힘(형성 기구)을 하나씩 볼 수 있다.", "calm", "처음"]
+            : t < 0.25 ? ["파랑의 에너지가 튀어나온 곶에 모인다", "해안에 가까워진 파랑은 물이 얕은 곶 쪽으로 휘어 들어간다. 주황색 화살표처럼 곶에는 파랑 에너지가 모이고, 만에서는 흩어진다.", "", "에너지 모임"]
+            : t < 0.6 ? ["곶은 깎이고 만에는 모래가 쌓인다", "에너지가 모인 곶은 깎여 해식애 같은 침식 지형이 생기고, 에너지가 약한 만에는 모래가 쌓여 사빈 같은 퇴적 지형이 생긴다.", "", "깎이고 쌓임"]
+            : ["해안선이 점점 단조로워진다", "곶은 육지 쪽으로 물러나고 만은 메워져, 들쭉날쭉하던 해안선이 점점 매끈해진다. 점선은 처음 해안선이다.", "good", "단조로워짐"];
+          return { h: "곶과 만", s: s, n: "블록 가로를 약 1km로 본 예시 모형이다. 높이를 크게 늘려 그렸고, 시간 막대 끝은 수천 년이다.", k: [["파도 높이", wv], ["곶이 물러난 거리", "약 " + mR(Q.r0 * 500, 5) + "m"], ["만에 쌓인 사빈 폭", "약 " + mR(Q.bw * 500, 5) + "m"], ["곶과 만의 해안선 차이", "약 " + mR(Q.gap * 500, 5) + "m(처음 " + mR(Q.gap0 * 500, 5) + "m)"]] };
+        }
+        if (m === "wave") {
+          s = t < 0.02 ? ["파랑이 먼 바다에서 해안으로 밀려온다", "파랑은 바람이 바다 위를 불어 생긴 물결이다. 파랑의 에너지는 바다에서 해안 쪽으로 전해진다. 파랑 세기를 고른 뒤 「재생」을 누른다.", "calm", "처음"]
+            : t < 0.3 ? ["해안에 가까워진 파랑이 부서지며 해안을 친다", "물이 얕아지면 파랑은 높아지다 부서진다. 부서진 파랑이 바위를 때리고, 실려 온 자갈과 모래로 해안을 깎는다.", "", "부서짐"]
+            : t < 0.65 ? ["파랑 에너지가 모이는 곶이 빨리 깎인다", "오른쪽 아래 그래프처럼 곶은 파랑 에너지가 크고 만은 작다. 파랑이 셀수록 곶이 더 빨리 물러난다.", "", "곶이 깎임"]
+            : ["에너지가 약한 만에는 모래가 쌓인다", "곶에서 깎여 나온 물질과 하천이 실어 온 모래가 파랑이 약한 만에 쌓인다. 파랑은 해안을 깎기도 하고 쌓기도 하며 해안선을 바꾼다.", "good", "만에 쌓임"];
+          return { h: "파랑", s: s, n: "블록 가로를 약 1km로 본 예시 모형이다. 흰 물결 줄은 늘 바다에서 해안 쪽으로 다가와 부서진다.", k: [["파도 높이", wv], ["곶이 물러난 거리", "약 " + mR(Q.r0 * 500, 5) + "m"], ["만의 사빈 폭", "약 " + mR(Q.bw * 500, 5) + "m"], ["곶의 파랑 에너지", "만의 약 " + (CA.energy(0) / CA.energy(0.75)).toFixed(1) + "배"]] };
+        }
+        s = t < 0.02 ? ["바다로 튀어나온 곶이 있는 해안이다", "파랑 세기를 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm", "처음"]
+          : Q.stage === 0 ? ["파랑이 곶에 모여 절벽 아래를 깎는다", "튀어나온 곶에는 파랑의 힘이 모인다. 곶은 깎여 가파른 해안 절벽(해식애)이 된다.", "", "해식애"]
+          : Q.stage === 1 ? ["절벽의 약한 곳이 깎여 해식동이 생겼다", "파랑이 절벽의 약한 곳을 집중해서 깎아 바닷물이 드나드는 동굴(해식동)이 뚫린다.", "", "해식동"]
+          : Q.stage === 2 ? ["해식동이 반대쪽까지 뚫려 시 아치가 되었다", "곶 끝의 단단한 바위가 좁은 다리처럼 육지와 이어져 있고, 그 아래로 바닷물이 지나간다.", "", "시 아치"]
+          : ["시 아치가 무너지고 시 스택이 남았다", "아치 윗부분이 무너지고 단단한 바위 기둥(시 스택)만 바다에 홀로 남았다. 곶은 육지 쪽으로 물러나고 그 자리에 파식대가 남았다.", "good", "시 스택"];
+        return { h: "시 아치 · 시 스택", s: s, n: "블록 가로를 약 1km로 본 예시 모형이다. 높이를 크게 늘려 그렸고, 시간 막대 끝은 수천 년이다.", k: [["파도 높이", wv], ["곶이 물러난 거리", "약 " + mR(Q.r0 * 500, 5) + "m"], ["만의 사빈 폭", "약 " + mR(Q.bw * 500, 5) + "m"], ["곶 끝의 모습", ["해식애", "해식동", "시 아치", "시 스택"][Q.stage]]] };
+      }
+      if (v === 2) {
+        var Q2 = SP.Q; t = SP.st.t;
+        s = t < 0.02 ? ["입구가 열린 만에 하천이 흘러든다", "파랑이 비스듬히 밀려와 해안을 따라 흐르는 연안류가 생긴다. 연안류 방향과 모래 양을 고른 뒤 「재생」을 누른다.", "calm", "처음"]
+          : !Q2.closed ? ["연안류가 옮긴 모래가 곶 끝에서 길게 자라 사주가 된다", "연안류가 모래를 옮기다 해안이 꺾이는 곶 끝에서 바다 쪽으로 길게 쌓는다. 만의 입구가 점점 좁아진다.", "", "사주 자람"]
+          : Q2.fill < 0.04 ? ["사주가 만을 막아 바다와 분리된 석호가 생겼다", "석호에는 하천이 계속 물을 보태고, 남는 물은 좁은 물길로 바다에 빠져나간다. 강릉 경포호 · 속초 영랑호가 이렇게 만들어졌다.", "good", "석호"]
+          : ["하천이 실어 온 흙이 쌓여 석호가 메워진다", "석호는 물결이 잔잔해 하천이 실어 온 흙이 잘 쌓인다. 하천 어귀부터 메워져 습지가 되고, 오랜 시간이 지나면 논 같은 평야가 된다. 석호는 점점 작아진다.", "good", "메워짐"];
+        return { h: "사주 · 석호", s: s, n: "블록 가로를 약 2km로 본 예시 모형이다. 시간 막대 끝은 수천 년이다.", k: [["사주 길이", "약 " + mR(Q2.L * 1000, 10) + "m"], ["만의 입구", Q2.closed ? "좁은 물길(약 30m)만 남음" : "약 " + mR((1 - Q2.L) * 1000, 10) + "m"], ["석호 넓이", Q2.closed ? "약 " + SP.lagoonArea().toFixed(2) + "km²" : "아직 없음"], ["석호가 메워진 정도", Q2.closed ? "약 " + SP.fillPct() + "%" : "—"]] };
+      }
+      if (v === 4) {
+        var Q4 = RI.Q; t = RI.st.t;
+        s = t < 0.03 ? ["빙기: 해수면이 낮아 하천이 깎은 V자 골짜기가 드러나 있다", "빙기에는 바닷물이 빙하로 많이 얼어 해수면이 지금보다 약 120m 낮았다. 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm", "빙기"]
+          : t < 0.7 ? ["해수면이 오르며 골짜기에 바닷물이 들어온다", "빙기가 끝나고 빙하가 녹아 해수면이 높아지자, 바다 가까이의 V자 골짜기부터 바닷물에 잠긴다.", "", "오르는 중"]
+          : ["해안선이 복잡한 리아스 해안이 되었다", "하천이 깎은 V자 골짜기에 바닷물이 들어와 만과 곶이 번갈아 나타나고, 낮은 산꼭대기는 섬으로 남았다. 우리나라 서 · 남해안, 에스파냐 북서부 해안처럼 해안선이 복잡하고 섬이 많다. 빙하가 깎은 U자 골짜기에 바닷물이 들어온 피오르와 비교해 본다.", "good", "지금"];
+        return { h: "리아스 해안", s: s, n: "블록 가로를 약 4km로 본 예시 모형이다. 실제 해수면 상승은 약 1만 8천 년 전부터 수천 년에 걸쳐 일어났다.", k: [["해수면(지금과 비교)", Q4.ys > -0.004 ? "지금 높이" : "약 " + mR(-Q4.ys * 1000, 10) + "m 낮음"], ["바닷물이 들어온 골짜기 길이", Q4.bay < 0.05 ? "없음" : "약 " + Q4.bay.toFixed(1) + "km"], ["해안선의 꾸불꾸불한 정도", "곧은 해안의 약 " + Math.max(1, Q4.wig).toFixed(1) + "배"], ["섬", Q4.isl + "개"]] };
+      }
+      if (v === 5) {
+        var Q5 = TB.Q; t = TB.st.t;
+        s = t < 0.03 ? ["앞바다에 섬이 있는 모래 해안이다", "섬에 막힌 파랑은 섬 양쪽으로 휘어 돌아 들어가 섬 뒤에서 약해진다. 「재생」을 누른다.", "calm", "처음"]
+          : !Q5.joined ? ["섬 뒤쪽으로 모래가 쌓여 사주가 자란다", "양쪽에서 휘어 든 파랑과 연안류가 섬 뒤에서 만나 힘이 약해지므로, 모래가 쌓여 해안에서 섬 쪽으로 사주가 길어진다.", "", "사주 자람"]
+          : ["사주로 섬이 육지와 이어졌다(육계도)", "섬과 육지를 이은 사주를 육계 사주, 사주로 이어진 섬을 육계도라고 한다. 제주 성산 일출봉이 이렇게 육지와 이어졌다.", "good", "육계도"];
+        return { h: "육계 사주 · 육계도", s: s, n: "블록 가로를 약 2km로 본 예시 모형이다. 높이를 크게 늘려 그렸다.", k: [["사주 길이", Q5.L < 0.01 ? "없음" : "약 " + mR(Q5.L * 1000, 10) + "m"], ["섬과 육지", Q5.joined ? "이어짐(육계도)" : "떨어져 있음"], ["섬 뒤쪽의 파랑", "섬에 막혀 약함"], ["섬까지 거리", "약 360m"]] };
+      }
+      if (v === 6) {
+        var Q6 = LS.Q; t = LS.st.t;
+        s = t < 0.02 ? ["파랑이 해안에 비스듬히 밀려온다", "비스듬히 밀려온 파랑이 부서지면 해안을 따라 흐르는 물, 연안류가 생긴다. 파랑이 밀려오는 쪽을 고른 뒤 「재생」을 누른다.", "calm", "처음"]
+          : t < 0.3 ? ["연안류가 모래를 해안을 따라 옮긴다", "모래는 파랑에 밀려 비스듬히 올라갔다가 곧장 내려오기를 되풀이하며 지그재그로 옮겨 간다.", "", "옮겨 감"]
+          : ["돌제에 막힌 쪽은 모래가 쌓이고 반대쪽은 깎인다", "연안류가 오는 쪽은 모래가 막혀 사빈이 넓어지고, 반대쪽은 모래가 모자라 해안이 깎인다. 연안류는 사빈 · 사주를 만드는 중요한 힘이다.", "good", "쌓이고 깎임"];
+        return { h: "연안류", s: s, n: "블록 가로를 약 2km로 본 예시 모형이다. 시간 막대 끝은 수십 년이다.", k: [["파랑이 밀려오는 쪽", Q6.s > 0 ? "왼쪽 앞바다" : "오른쪽 앞바다"], ["연안류 방향", Q6.s > 0 ? "왼쪽 → 오른쪽" : "오른쪽 → 왼쪽"], ["돌제 앞에 쌓인 폭", "약 " + mR(Q6.acc * 1000, 5) + "m"], ["반대쪽 깎인 폭", "약 " + mR(Q6.ero * 1000, 5) + "m"]] };
+      }
+      if (v === 7) {
+        var Q7 = BD.Q, m7 = BD.st.mode; t = BD.st.t;
+        if (m7 === "wind") s = t < 0.04 ? ["바다에서 육지 쪽으로 바람이 분다", "사빈의 마른 모래는 바람에 날리기 쉽다. 바람 세기를 고른 뒤 「재생」을 누른다.", "calm", "처음"]
+          : t < 0.4 ? ["바닷바람이 사빈의 모래를 육지 쪽으로 날린다", "모래 알갱이는 바람을 타고 통통 튀듯이 옮겨 가다가, 풀이나 언덕에 바람이 막히는 곳에 쌓인다.", "", "모래가 날림"]
+          : ["사빈 뒤에 모래 언덕(해안 사구)이 자란다", "바람이 셀수록 사구가 높아지고, 조금씩 육지 쪽으로 옮겨 간다. 사구 뒤의 숲(방풍림)은 날리는 모래를 막아 준다.", "good", "사구가 자람"];
+        else if (m7 === "beach") s = t < 0.03 ? ["모래사장이 좁은 해안이다", "파랑과 연안류, 하천이 모래를 실어 온다. 「재생」을 누른다.", "calm", "처음"]
+          : t < 0.45 ? ["파랑과 연안류가 모래를 쌓아 사빈이 넓어진다", "파랑이 바닷속 모래를 해안으로 밀어 올리고, 연안류가 하천이 실어 온 모래를 해안을 따라 퍼뜨려 모래사장(사빈)이 넓어진다.", "", "사빈이 넓어짐"]
+          : ["사빈 뒤에 바람이 모래를 쌓아 해안 사구가 생긴다", "사빈의 마른 모래가 바닷바람에 날려 뒤쪽에 쌓이면 해안 사구가 된다. 사구는 바닷물이 육지로 스며드는 것을 막고, 아래에 지하수(민물)를 담아 둔다.", "good", "해안 사구"];
+        else s = t < 0.03 ? ["모래가 넉넉한 모래 해안이다", "파랑 · 연안류 · 바람이 모래를 쌓아 만든 해안이다. 「재생」을 누른다.", "calm", "처음"]
+          : t < 0.5 ? ["모래가 계속 쌓여 사빈과 사구가 넓어진다", "하천과 바다에서 모래가 많이 공급되면 사빈이 넓어지고 해안선이 바다 쪽으로 나아간다.", "", "모래가 쌓임"]
+          : ["넓은 사빈과 해안 사구가 이어진 모래 해안이다", "모래가 많이 공급되는 해안에는 넓은 사빈과 해안 사구가 발달한다. 우리나라 동해안의 해수욕장, 브라질의 코파카바나 해변이 대표적이다.", "good", "모래 해안"];
+        var k7 = [["사빈 폭", "약 " + mR(Q7.W * 1000, 5) + "m"], ["해안 사구 높이", Q7.dune < 0.004 ? "거의 없음" : "약 " + Math.max(1, Math.round(BD.duneM())) + "m"], ["바닷바람", ["약함", "보통", "강함"][BD.st.wind - 1]]];
+        k7.push(m7 === "wind" ? ["사구가 옮겨 간 거리", "약 " + mR(Q7.mig * 1000, 5) + "m"] : m7 === "sand" ? ["해안선이 나아간 거리", "약 " + mR(Q7.prog * 1000, 5) + "m"] : ["사구 아래 지하수", Q7.dune > 0.01 ? "있음(민물)" : "—"]);
+        return { h: m7 === "wind" ? "바람" : m7 === "beach" ? "사빈 · 해안 사구" : "모래 해안", s: s, n: "블록 가로를 약 2km로 본 예시 모형이다. 높이를 크게 늘려 그렸다.", k: k7 };
+      }
+      if (v === 8) {
+        var Q8 = CL.Q; t = CL.st.t;
+        if (Q8.ter) s = t < 0.02 ? ["파랑이 부딪히는 바위 해안이다", "파랑은 절벽 아랫부분을 집중해서 깎는다. 「재생」을 누른다.", "calm", "처음"]
+          : Q8.stage === 0 ? ["파랑에 깎인 해안 절벽, 해식애가 생긴다", "파랑이 절벽 아랫부분을 깎아 홈이 파이고, 윗부분이 무너지면서 가파른 해식애가 육지 쪽으로 물러난다.", "", "해식애"]
+          : Q8.stage === 1 ? ["절벽의 약한 곳이 파여 해식동이 생긴다", "파랑이 바위의 갈라진 틈처럼 약한 곳을 집중해서 깎아 동굴(해식동)이 생긴다.", "", "해식동"]
+          : Q8.stage === 2 ? ["절벽이 물러난 자리에 평평한 파식대가 남는다", "해식애가 물러나면 그 앞에 파랑에 깎인 평평한 바위 바닥(파식대)이 넓어진다. 썰물 때 드러나기도 한다.", "", "파식대"]
+          : ["땅이 솟아올라 파식대가 해안 단구가 되었다", "땅이 솟아오르거나(융기) 해수면이 낮아지면 옛 파식대가 바다 위로 올라와 계단 모양의 해안 단구가 된다. 평평해 마을 · 밭 · 도로가 들어선다(강릉 정동진).", "good", "해안 단구"];
+        else s = t < 0.02 ? ["바위로 이루어진 해안이다", "파랑 에너지가 큰 바위 해안이다. 「재생」을 누른다.", "calm", "처음"]
+          : Q8.stage === 0 ? ["해식애가 물러나며 넓은 파식대가 생긴다", "파랑이 절벽 아래를 깎아 해식애가 물러나고, 그 앞에 파식대가 넓어진다.", "", "해식애가 물러남"]
+          : ["단단한 바위는 시 스택으로 남는다", "약한 바위는 깎여 나가고 단단한 바위만 바다 위에 기둥처럼 남는다. 암석 해안은 경치가 뛰어나 관광지가 된다(부산 태종대, 오스트레일리아의 12사도 바위).", "good", "시 스택"];
+        return { h: Q8.ter ? "해식애 · 파식대 · 해안 단구" : "암석 해안", s: s, n: "블록 가로를 약 1km로 본 예시 모형이다. 높이를 크게 늘려 그렸고, 시간 막대 끝은 수만 년 이상이다.", k: [["파도 높이", "약 " + WAVE_H[CL.st.wave - 1] + "m"], ["해식애가 물러난 거리", "약 " + CL.platM() + "m"], [Q8.ter ? "땅이 솟아오른 높이" : "시 스택", Q8.ter ? (Q8.U < 0.002 ? "아직 없음" : "약 " + mR(Q8.U * 500, 5) + "m") : (Q8.R > 0.12 ? "3개" : "아직 없음")], ["지금 모습", s[3]]] };
+      }
+      if (v === 9) {
+        var Q9 = CR.Q; t = CR.st.t;
+        s = t < 0.02 ? ["따뜻하고 얕은 바다의 화산섬이다", "산호는 바닷물이 따뜻하고 맑으며 얕은 바다에서 자란다. 「재생」을 눌러 섬이 조금씩 가라앉을 때 산호초가 어떻게 되는지 본다.", "calm", "처음"]
+          : Q9.stage === 0 ? ["섬 가장자리에 산호초가 붙어 자란다(거초)", "섬 바로 둘레의 얕은 바다에 산호초가 붙어 자란다. 이를 거초라고 한다.", "", "거초"]
+          : Q9.stage === 1 ? ["섬과 산호초 사이에 초호가 생겼다(보초)", "섬은 조금씩 가라앉지만 산호는 햇빛을 받으려 위로 자라 바다 높이를 지킨다. 섬과 산호초 사이에 얕은 바다(초호)가 생긴 것을 보초라고 한다(오스트레일리아 그레이트배리어리프).", "", "보초"]
+          : ["섬이 잠기고 고리 모양 산호초만 남았다(환초)", "가운데 섬이 물에 잠기고 고리 모양의 산호초와 그 안의 초호만 남은 것을 환초라고 한다. 산호초 위에 모래가 쌓인 작은 섬에 사람이 살기도 한다(몰디브).", "good", "환초"];
+        return { h: "산호초 해안", s: s, n: "블록 가로를 약 4km로 본 예시 모형이다. 높이를 크게 늘려 그렸고, 실제로는 수십만 년 이상 걸린다.", k: [["섬 꼭대기", 0.24 - Q9.S > 0.003 ? "약 " + mR((0.24 - Q9.S) * 1000, 10) + "m" : "바다 아래"], ["섬이 가라앉은 깊이", "약 " + mR(Q9.S * 1000, 10) + "m"], ["산호초", ["거초", "보초", "환초"][Q9.stage]], ["초호 폭", Q9.stage === 0 ? "거의 없음" : "약 " + mR((0.555 - Q9.rs) * 2000, 10) + "m"]] };
+      }
+      if (v === 10) {
+        var Q10 = FJ.Q; t = FJ.st.t;
+        s = t < 0.02 ? ["빙기: 두꺼운 빙하가 골짜기를 채우고 있다", "빙하는 천천히 흘러내리며 골짜기 바닥과 옆을 깎아 단면이 U자 모양인 골짜기를 만든다. 「재생」을 누른다.", "calm", "빙기"]
+          : t < 0.35 ? ["빙하가 골짜기를 U자 모양으로 깊게 깎았다", "빙하는 하천보다 훨씬 넓고 깊게 깎아, 바닥이 넓고 옆이 가파른 U자 골짜기를 만든다. 골짜기 바닥은 지금 해수면보다 깊다.", "", "U자 골짜기"]
+          : t < 0.7 ? ["기후가 따뜻해져 빙하가 녹아 물러난다", "빙기가 끝나자 빙하가 녹아 골짜기 안쪽으로 물러나고, 녹은 물로 해수면이 높아진다.", "", "빙하가 녹음"]
+          : ["바닷물이 U자 골짜기에 들어와 피오르가 되었다", "좁고 길며 깊은 만이 양쪽 높은 절벽 사이로 육지 깊숙이 들어온다. 노르웨이 · 뉴질랜드 남섬 · 칠레 남부처럼 빙하가 있던 높은 위도의 해안에 발달한다. V자 골짜기가 잠긴 리아스 해안과 비교해 본다.", "good", "피오르"];
+        return { h: "피오르 해안", s: s, n: "블록 가로를 약 10km로 본 예시 모형이다. 높이를 크게 늘려 그렸고, 해수면 차이(약 120m)도 크게 그렸다.", k: [["해수면(지금과 비교)", Q10.ys > -0.004 ? "지금 높이" : "약 " + mR(-Q10.ys * 1000, 10) + "m 낮음"], ["빙하 길이", FJ.iceKm() < 0.1 ? "없음" : "약 " + FJ.iceKm().toFixed(1) + "km"], ["피오르 길이", FJ.fjordKm() < 0.1 ? "아직 없음" : "약 " + FJ.fjordKm().toFixed(1) + "km"], ["입구 쪽 물 깊이", "약 " + FJ.depthM() + "m"]] };
+      }
+      return null;
     }
     /* 품질 다듬기(정확하게): 한 지형에 맞춘 장면은 위 설명 줄을 그 장면의 요점으로 */
     /* 품질(10-20): 화면 읽기 — 캔버스 설명에 지금 장면 · 위 설명 줄을 넣고, 무대에 보이는 이름표를 숨은 글로 둠 */
@@ -2019,56 +2944,15 @@
     }
     function updRead0() {
       var s;
-      if (view === 1) {
-        var Q = CA.Q; s = stageA();
-        setText(elReadH, "읽은 값 · 곶과 만");
-        stat(0, "파도 높이", "약 " + WAVE_H[CA.st.wave - 1] + "m");
-        stat(1, "곶이 물러난 거리", "약 " + Math.round(Q.r0 * 500 / 5) * 5 + "m");
-        stat(2, "만의 모래사장 폭", "약 " + Math.round(Q.bw * 500 / 5) * 5 + "m");
-        stat(3, "곶 끝의 모습", ["해안 절벽", "동굴", "아치", "시 스택"][Q.stage]);
+      if (view !== 3) {
+        var r = readOf(view); s = r.s;
+        setText(elReadH, "읽은 값 · " + r.h);
+        r.k.forEach(function (kv, i) { stat(i, kv[0], kv[1]); });
         result(s[0], s[1], s[2]);
-        setText(elNote, "블록 가로를 약 1km로 본 예시 모형이다. 높이를 크게 늘려 그렸고, 시간 막대 끝은 수천 년이다.");
-        setText($(".co-tval[data-for=\"1\"]"), s[3]);
-        $(".co-trange[data-for=\"1\"]").setAttribute("aria-valuetext", s[3] + " · " + s[0]);
-      } else if (view === 2) {
-        var Q2 = SP.Q; s = stageB();
-        setText(elReadH, "읽은 값 · 사주와 석호");
-        stat(0, "사주 길이", "약 " + Math.round(Q2.L * 1000 / 10) * 10 + "m");
-        stat(1, "만 입구 폭", Q2.closed ? "막힘" : "약 " + Math.round((1 - Q2.L) * 1000 / 10) * 10 + "m");
-        stat(2, "석호", Q2.closed ? "약 " + SP.lagoonArea().toFixed(2) + "km²" : "아직 없음");
-        stat(3, "모래가 옮겨 가는 쪽", SP.st.drift === "R" ? "오른쪽" : "왼쪽");
-        result(s[0], s[1], s[2]);
-        setText(elNote, "블록 가로를 약 2km로 본 예시 모형이다. 시간 막대 끝은 수백 ~ 수천 년이다.");
-        setText($(".co-tval[data-for=\"2\"]"), Q2.closed ? "석호" : SP.st.t < 0.02 ? "처음" : "자라는 중");
-        $(".co-trange[data-for=\"2\"]").setAttribute("aria-valuetext", s[0]);
-      } else if (view === 5) {
-        var Q5 = TB.Q, t5 = TB.st.t;
-        setText(elReadH, "읽은 값 · 육계도 · 해안 사구");
-        stat(0, "사주 길이", Q5.L < 0.01 ? "없음" : "약 " + Math.round(Q5.L * 1000 / 10) * 10 + "m");
-        stat(1, "섬과 육지", Q5.joined ? "이어짐(육계도)" : "떨어져 있음");
-        stat(2, "해안 사구 높이", Q5.dune < 0.004 ? "거의 없음" : "약 " + Math.round(Q5.dune * 300) + "m");
-        stat(3, "바닷바람", ["약함", "보통", "강함"][TB.st.wind - 1]);
-        s = t5 < 0.03 ? ["앞바다에 섬이 있는 모래 해안이다", "섬 뒤쪽 바다는 파랑이 섬에 막혀 약해진다. 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm", "처음"]
-          : !Q5.joined ? ["섬 뒤쪽으로 모래가 쌓여 사주가 자란다", "파랑이 약한 섬 뒤쪽에 모래가 쌓여 해안에서 섬 쪽으로 사주가 길어진다. 해안 뒤에서는 바닷바람이 모래를 날라 언덕을 쌓기 시작한다.", "", "쌓이는 중"]
-          : ["사주로 섬이 육지와 이어졌다(육계도)", "사주로 육지와 이어진 섬을 육계도, 이 사주를 육계 사주라고 한다. 제주 성산 일출봉이 이렇게 이어졌다. 해안 뒤에 바람이 쌓은 모래 언덕은 해안 사구로, 충남 태안 신두리에 넓게 발달했다.", "", "육계도"];
-        result(s[0], s[1], s[2]);
-        setText(elNote, "블록 가로를 약 2km로 본 예시 모형이다. 사구 뒤의 숲은 날리는 모래를 막아 준다.");
-        setText($(".co-tval[data-for=\"5\"]"), s[3]);
-        $(".co-trange[data-for=\"5\"]").setAttribute("aria-valuetext", s[3] + " · " + s[0]);
-      } else if (view === 4) {
-        var Q4 = RI.Q, t4 = RI.st.t;
-        setText(elReadH, "읽은 값 · 리아스 해안");
-        stat(0, "해수면(지금과 비교)", Q4.ys > -0.004 ? "지금 높이" : "약 " + Math.round(-Q4.ys * 1000 / 10) * 10 + "m 낮음");
-        stat(1, "바닷물이 들어온 골짜기 길이", Q4.bay < 0.05 ? "없음" : "약 " + Q4.bay.toFixed(1) + "km");
-        stat(2, "해안선의 꾸불꾸불한 정도", "곧은 해안의 약 " + Math.max(1, Q4.wig).toFixed(1) + "배");
-        stat(3, "섬", Q4.isl + "개");
-        s = t4 < 0.03 ? ["빙기: 해수면이 낮아 하천이 깎은 V자 골짜기가 드러나 있다", "빙기에는 바닷물이 빙하로 많이 얼어 해수면이 지금보다 약 120m 낮았다. 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm", "빙기"]
-          : t4 < 0.7 ? ["해수면이 오르며 골짜기에 바닷물이 들어온다", "빙기가 끝나고 빙하가 녹아 해수면이 높아지자, 바다 가까이의 V자 골짜기부터 바닷물에 잠긴다.", "", "오르는 중"]
-          : ["해안선이 복잡한 리아스 해안이 되었다", "하천이 깎은 V자 골짜기에 바닷물이 들어와 만과 곶이 번갈아 나타나고, 낮은 산꼭대기는 섬으로 남았다. 우리나라 서 · 남해안처럼 해안선이 복잡하고 섬이 많다. 빙하가 깎은 U자 골짜기에 바닷물이 들어온 피오르와 비교해 본다.", "", "지금"];
-        result(s[0], s[1], s[2]);
-        setText(elNote, "블록 가로를 약 4km로 본 예시 모형이다. 실제 해수면 상승은 약 1만 8천 년 전부터 수천 년에 걸쳐 일어났다.");
-        setText($(".co-tval[data-for=\"4\"]"), s[3]);
-        $(".co-trange[data-for=\"4\"]").setAttribute("aria-valuetext", s[3] + " · " + s[0]);
+        setText(elNote, r.n);
+        var tv = $(".co-tval[data-for=\"" + view + "\"]"), rg = rangeOf(view);
+        if (tv) setText(tv, s[3] || "");
+        if (rg) rg.setAttribute("aria-valuetext", (s[3] ? s[3] + " · " : "") + s[0]);
       } else {
         var Q3 = TD.Q, hh = Math.floor(Q3.h), mm = Math.round((Q3.h - hh) * 60), nh = TD.nextHigh();
         if (mm === 60) { hh++; mm = 0; }
@@ -2114,37 +2998,71 @@
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
       pinEls[pl.id] = g;
     });
+    /* 개편(11-02): 장면마다 닮은 곳 표시 · 이용 글 */
+    var USE = {
+      capebay: "곶의 해식애와 시 스택은 경치가 뛰어나 관광지가 되고, 만의 사빈은 해수욕장으로 이용된다.",
+      wave: "파랑이 센 겨울철이나 태풍 때는 해안이 많이 깎이므로, 해안 도로 · 마을을 지키려고 방파제나 테트라포드를 쌓기도 한다.",
+      drift: "연안류를 가로막는 방파제나 돌제를 쌓으면 한쪽에는 모래가 쌓이지만 반대쪽 해수욕장은 모래가 줄어들 수 있다. 해안 구조물은 신중하게 설치해야 한다.",
+      wind: "해안 사구의 모래가 날려 논밭과 마을을 덮지 않도록 사구 뒤에 해송 숲(방풍림)을 가꾼다(충남 태안 신두리).",
+      cliff: "해안 단구는 평평하고 바닷물에 잠기지 않아 마을 · 밭 · 도로가 들어선다. 동해안의 강릉 정동진 등에서 볼 수 있다.",
+      stack: "추암 촛대바위처럼 시 스택과 해식애가 어우러진 해안은 이름난 관광지가 된다.",
+      beach: "사빈은 해수욕장으로 이용된다. 해안 사구는 바닷물이 육지로 스며드는 것을 막고 지하수를 담아 두며 독특한 동식물이 살아 보호 구역으로 지킨다(태안 신두리 해안 사구).",
+      spit: "경포호 · 영랑호 같은 석호는 철새가 찾아오는 곳이자 관광지가 된다. 석호는 시간이 지나면 메워지므로, 하천에서 흘러드는 흙과 오염 물질을 줄여 보전한다.",
+      tombolo: "육계도는 사주를 따라 걸어서 섬에 갈 수 있어 관광지가 된다(제주 성산 일출봉).",
+      sandy: "모래 해안은 해수욕장 · 휴양지로 이용된다. 우리나라 동해안의 해수욕장, 브라질 리우데자네이루의 코파카바나 해변이 대표적이다.",
+      rocky: "암석 해안은 해식애와 시 스택이 어우러져 경치가 뛰어나다. 부산 태종대, 오스트레일리아의 12사도 바위가 대표적이다.",
+      coral: "산호초 해안은 맑은 바다와 다양한 생물로 관광지가 되지만, 바닷물 온도가 오르면 산호가 하얗게 죽는 백화 현상이 일어나 보호가 필요하다(오스트레일리아 그레이트배리어리프, 몰디브).",
+      ria: "리아스 해안은 물결이 잔잔하고 만이 깊어 굴 · 김 · 전복 양식장과 항구가 발달했고, 섬과 바다가 어우러진 경치가 관광지가 된다(한려 해상 국립 공원).",
+      fjord: "피오르는 물이 깊어 큰 배가 드나들 수 있고, 높은 절벽과 폭포가 어우러진 경치로 관광객이 많이 찾는다(노르웨이 송네 피오르, 뉴질랜드 밀퍼드 사운드).",
+      tide: "조차가 큰 서 · 남해안은 갯벌이 발달해 해산물을 채취하거나 양식장 · 염전을 만들어 이용한다. 동해안의 모래사장은 해수욕장으로 많은 사람이 찾는다.",
+      flat: "갯벌은 조개 · 게 등 많은 생물이 사는 곳이고, 오염 물질을 걸러 내며 큰 물결을 약하게 해 준다. 우리나라 서해안 갯벌과 유럽의 와덴해 갯벌은 세계 자연 유산이다."
+    };
     function updMap() {
-      var hk = view === 3 ? [TD.st.coast] : [view];
+      var hk = [curScene];
       PLACES.forEach(function (pl) { pinEls[pl.id].classList.toggle("hot", pl.k.some(function (k) { return hk.indexOf(k) >= 0; })); pinEls[pl.id].classList.toggle("on", placeOn === pl.id); });
       var pl = PLACES.filter(function (q) { return q.id === placeOn; })[0];
-      setText(elPlace, pl ? pl.text : "파란 점은 지금 보기와 닮은 곳이다. 점을 누르면 설명이 나온다.");
-      if (view === 5) { setText(elUse, "해안 사구는 바닷물이 육지로 스며드는 것을 막고 지하수를 담아 두며, 독특한 동식물이 사는 곳이라 보호 구역으로 지킨다(태안 신두리 해안 사구). 육계도는 이어진 모래 길로 걸어서 섬에 갈 수 있어 관광지가 된다."); return; }
-      if (view === 4) { setText(elUse, "리아스 해안은 물결이 잔잔하고 만이 깊어 굴 · 김 · 전복 양식장과 항구가 발달했고, 섬과 바다가 어우러진 경치가 관광지가 된다(한려 해상 국립 공원)."); return; }
-      setText(elUse, view === 1 ? "파랑이 깎은 해안 절벽과 시 스택은 경치가 뛰어나 관광지가 되고, 만의 모래사장은 해수욕장으로 이용된다."
-        : view === 2 ? "동해안에는 해안선을 따라 모래사장이 발달했고, 경포호 · 영랑호 같은 석호는 철새가 찾아오는 곳이자 관광지가 된다."
-        : "조차가 큰 서 · 남해안은 갯벌이 발달해 해산물을 채취하거나 양식장 · 염전을 만들어 이용한다. 동해안의 모래사장은 해수욕장으로 많은 사람이 찾는다.");
+      setText(elPlace, pl ? pl.text : "파란 점은 지금 장면과 닮은 우리나라의 장소다. 점을 누르면 설명이 나온다.");
+      setText(elUse, USE[curScene] || USE.capebay);
     }
 
     /* ================= 무대 글 · 범례 ================= */
     var LEG = {
-      1: [["#76b2de", "바다"], ["#e4ce96", "모래사장"], ["#8a8074", "해안 절벽 · 바위"], ["#769a56", "육지"], ["#a0a8a0", "깎여 평평해진 바닥"]],
-      2: [["#76b2de", "바다"], ["#60a8a8", "석호"], ["#e4ce96", "모래사장 · 사주"], ["#769a56", "육지"], ["#c4a060", "옮겨 가는 모래", true]],
-      3: [["#76b2de", "바다"], ["#82705a", "갯벌"], ["#e4ce96", "모래사장"], ["#769a56", "육지"], ["#e8eaea", "염전"]],
-      5: [["#76b2de", "바다"], ["#e4ce96", "모래사장 · 사주"], ["#d6c69c", "해안 사구"], ["#7e7464", "섬(바위)"], ["#769a56", "육지 · 숲"]],
-      4: [["#76b2de", "바다(바닷물이 들어온 골짜기)"], ["#80a45c", "낮은 땅"], ["#56804a", "산지(숲)"], ["#e4ce96", "물가"]]
+      1: [["#76b2de", "바다"], ["#e4ce96", "사빈"], ["#8a8074", "해식애 · 바위"], ["#769a56", "육지"], ["#a0a8a0", "파식대(깎여 평평해진 바닥)"]],
+      capebay: [["#76b2de", "바다"], ["#e4ce96", "사빈"], ["#8a8074", "해식애"], ["#769a56", "육지"], ["#e8590c", "파랑 에너지(바다 → 해안)", true], ["#ffffff", "물결 줄(해안으로 다가옴)", true]],
+      wave: [["#76b2de", "바다"], ["#e4ce96", "사빈"], ["#8a8074", "해식애"], ["#769a56", "육지"], ["#e8590c", "파랑 에너지(바다 → 해안)", true], ["#ffffff", "물결 줄(해안으로 다가옴)", true]],
+      2: [["#76b2de", "바다"], ["#60a8a8", "석호"], ["#e4ce96", "사빈 · 사주"], ["#5a96c8", "하천"], ["#9cb664", "메워진 땅(습지 · 논)"], ["#c4a060", "연안류에 옮겨 가는 모래", true], ["#7a5638", "하천이 실어 온 흙", true]],
+      3: [["#76b2de", "바다"], ["#82705a", "갯벌"], ["#e4ce96", "모래사장"], ["#769a56", "육지"], ["#e8eaea", "염전"], ["#1971c2", "조류", true]],
+      4: [["#76b2de", "바다(바닷물이 들어온 골짜기)"], ["#80a45c", "낮은 땅"], ["#56804a", "산지(숲)"], ["#e4ce96", "물가"]],
+      5: [["#76b2de", "바다"], ["#e4ce96", "사빈 · 사주"], ["#7e7464", "섬(바위)"], ["#769a56", "육지"], ["#e8590c", "파랑 에너지", true]],
+      6: [["#76b2de", "바다"], ["#e4ce96", "사빈"], ["#96928c", "돌제"], ["#1c7ed6", "연안류", true], ["#be9650", "옮겨 가는 모래", true], ["#e8590c", "파랑 에너지", true]],
+      7: [["#76b2de", "바다"], ["#e4ce96", "사빈"], ["#decb96", "해안 사구"], ["#467048", "숲(방풍림)"], ["#e8590c", "바닷바람", true], ["#ba9656", "날리는 모래", true]],
+      8: [["#76b2de", "바다"], ["#8a8074", "해식애"], ["#9c907c", "파식대"], ["#c4b880", "해안 단구(밭)"], ["#769a56", "육지"]],
+      9: [["#245ca0", "깊은 바다"], ["#5cc8ce", "초호"], ["#e8dcc4", "산호초"], ["#62524a", "화산섬"], ["#60904e", "숲"]],
+      10: [["#76b2de", "바다"], ["#e2eef6", "빙하"], ["#7c7876", "바위 절벽"], ["#56764c", "숲"], ["#f4f6f8", "눈"]]
     };
-    var MODEL = { 5: "예시 모형이다 · 높이를 크게 늘려 그렸다", 4: "예시 모형이다 · 높이를 크게 늘렸고 해수면 차이는 실제(약 120m)와 비슷하게 그렸다", 1: "예시 모형이다 · 높이를 크게 늘려 그렸다", 2: "예시 모형이다 · 실제 속도와 크기는 다르다", 3: "예시 모형이다 · 조차는 사리 때 값(해양환경정보포털) · 조금은 그 절반쯤" };
-    var legKey = 0;
+    var MODEL = { 1: "예시 모형이다 · 높이를 크게 늘려 그렸다", 2: "예시 모형이다 · 실제 속도와 크기는 다르다", 3: "예시 모형이다 · 조차는 사리 때 값(해양환경정보포털) · 조금은 그 절반쯤", 4: "예시 모형이다 · 높이를 크게 늘렸고 해수면 차이는 실제(약 120m)와 비슷하게 그렸다", 5: "예시 모형이다 · 높이를 크게 늘려 그렸다", 6: "예시 모형이다 · 실제 속도와 크기는 다르다", 7: "예시 모형이다 · 높이를 크게 늘려 그렸다", 8: "예시 모형이다 · 높이를 크게 늘려 그렸다", 9: "예시 모형이다 · 높이를 크게 늘려 그렸다", 10: "예시 모형이다 · 높이를 크게 늘려 그렸다" };
+    var legKey = "";
     function updLegend() {
-      if (legKey === view) return;
-      legKey = view; legend.textContent = "";
-      LEG[view].forEach(function (it) { var s = E("span", "co-lg", legend), c = E("span", it[2] ? "co-chip dot" : "co-chip", s); c.style.background = it[0]; E("span", "", s, it[1]); });
+      var S0 = SCENES[curScene], k = S0 && S0.view === view && LEG[curScene] ? curScene : String(view);
+      if (legKey === k) return;
+      legKey = k; legend.textContent = "";
+      (LEG[k] || LEG[view]).forEach(function (it) { var s2 = E("span", "co-lg", legend), c = E("span", it[2] ? "co-chip dot" : "co-chip", s2); c.style.background = it[0]; if (it[0] === "#ffffff") c.style.boxShadow = "inset 0 0 0 1px #adb5bd"; E("span", "", s2, it[1]); });
       E("span", "co-model", legend, MODEL[view]);
     }
-    var TITLES = { 1: "곶과 만", 2: "사주와 석호", 3: "밀물과 썰물", 4: "리아스 해안", 5: "육계도 · 해안 사구" };
+    var TITLES = { 1: "곶과 만", 2: "사주 · 석호", 3: "조류(밀물과 썰물)", 4: "리아스 해안", 5: "육계 사주 · 육계도", 6: "연안류", 7: "바람 · 사빈 · 해안 사구", 8: "해식애 · 파식대 · 해안 단구", 9: "산호초 해안", 10: "피오르 해안" };
     var KEYS = "끌어서 돌릴 수 있다. 왼쪽 · 오른쪽 화살표 키로 돌리고, 위아래 화살표 키로 시간을 옮기며, Page Up · Page Down 키로 내려다보는 각도를 바꾼다. 스페이스 키로 재생하거나 멈춘다.";
-    var LABELS = { 5: "3D 해안 블록. 앞바다의 섬 뒤로 모래가 쌓여 사주가 자라 섬이 육지와 이어지고(육계도), 해안 뒤에는 바닷바람이 모래를 쌓아 해안 사구가 생긴다. " + KEYS, 4: "3D 해안 블록. 해수면이 오르며 하천이 깎은 V자 골짜기에 바닷물이 들어와 리아스 해안이 되는 과정이다. " + KEYS, 1: "3D 해안 블록. 곶이 파랑에 깎여 해안 절벽 · 동굴 · 아치 · 시 스택이 되고, 만에 모래사장이 생긴다. " + KEYS, 2: "3D 해안 블록. 해안을 따라 흐르는 물이 모래를 옮겨 사주가 자라고 석호가 생긴다. " + KEYS, 3: "3D 해안 블록. 하루 동안 밀물과 썰물로 물 높이가 바뀌고 갯벌이 드러난다. " + KEYS };
+    var LABELS = {
+      1: "3D 해안 블록. 바다에서 밀려온 파랑의 에너지가 곶에 모여 곶은 깎이고, 만에는 모래가 쌓인다. " + KEYS,
+      2: "3D 해안 블록. 연안류가 옮긴 모래로 사주가 자라 만을 막아 석호가 생기고, 하천이 실어 온 흙으로 석호가 메워진다. " + KEYS,
+      3: "3D 해안 블록. 하루 동안 밀물과 썰물로 물 높이가 바뀌고 조류가 갯골을 따라 드나들며 갯벌이 드러난다. " + KEYS,
+      4: "3D 해안 블록. 해수면이 오르며 하천이 깎은 V자 골짜기에 바닷물이 들어와 리아스 해안이 되는 과정이다. " + KEYS,
+      5: "3D 해안 블록. 섬 뒤쪽은 파랑이 약해 모래가 쌓이고, 사주가 자라 섬이 육지와 이어져 육계도가 된다. " + KEYS,
+      6: "3D 해안 블록. 비스듬히 밀려온 파랑이 만든 연안류가 모래를 해안을 따라 옮겨, 돌제 한쪽에는 모래가 쌓이고 반대쪽은 깎인다. " + KEYS,
+      7: "3D 해안 블록. 파랑이 모래를 쌓아 사빈이 생기고, 바닷바람이 사빈의 모래를 날려 뒤쪽에 해안 사구를 쌓는다. " + KEYS,
+      8: "3D 해안 블록. 파랑에 깎인 해식애가 물러나며 해식동과 파식대가 생기고, 땅이 솟아오르면 해안 단구가 된다. " + KEYS,
+      9: "3D 해안 블록. 화산섬이 가라앉는 동안 산호초가 위로 자라 거초에서 보초, 환초로 바뀐다. " + KEYS,
+      10: "3D 해안 블록. 빙하가 깎은 U자 골짜기에 빙하가 녹은 뒤 바닷물이 들어와 피오르가 된다. " + KEYS
+    };
 
     /* ================= 조작 ================= */
     var ranges = $$(".co-trange"), plays = $$(".co-play");
@@ -2152,36 +3070,43 @@
       var sc = scene();
       sc.st.t = clamp(t, 0, 1);
       if (!fromPlay && sc.st.play) { sc.st.play = false; sc.setLod(false); syncPlay(); }
-      ranges[view - 1].value = String(Math.round(sc.st.t * 100));
+      var rg = rangeOf(view); if (rg) rg.value = String(Math.round(sc.st.t * 100));
       sc.update(); updRead(); updStages(); requestRender();
       if (!fromPlay) kick();
     }
     function syncPlay() {
-      $$(".co-play[data-for]").forEach(function (b) { var sc = [CA, SP, TD, RI, TB][Number(b.getAttribute("data-for")) - 1], on = !!(sc && sc.st.play), tx = on ? "멈춤" : "재생"; if (b.textContent !== tx) { b.textContent = tx; b.setAttribute("aria-label", on ? "멈춤" : "재생"); } });
+      $$(".co-play[data-for]").forEach(function (b) { var sc = MODS[Number(b.getAttribute("data-for")) - 1], on = !!(sc && sc.st.play), tx = on ? "멈춤" : "재생"; if (b.textContent !== tx) { b.textContent = tx; b.setAttribute("aria-label", on ? "멈춤" : "재생"); } });
       updStages();
     }
-    /* 개편(10-26): 재생 단계 — 보기마다 모형 시간 경계(1단계, 2단계, …). 단계 단추는 그 단계 처음부터 끝까지만 재생하고 멈춤 */
-    var STGV = {1: [0, 0.12, 0.3, 0.51, 1], 2: [0, 0.72, 1], 4: [0, 0.7, 1], 5: [0, 0.66, 1]}, stopAt = null, stgSel = -1, stgBtns = null;
+    /* 개편(10-26): 재생 단계 — 보기마다 모형 시간 경계(1단계, 2단계, …). 단계 단추는 그 단계 처음부터 끝까지만 재생하고 멈춤
+       개편(11-02): 장면마다 경계 · 이름이 다를 수 있음(SCENES의 stg · stn). 사주 · 석호는 모래 양에 따라 석호가 생기는 시간이 달라 그때그때 셈 */
+    var STGV = {1: [0, 0.12, 0.3, 0.51, 1], 2: [0, 0.5, 0.62, 1], 4: [0, 0.7, 1], 5: [0, 0.66, 1], 6: [0, 0.3, 1], 7: [0, 0.4, 1], 8: [0, 0.22, 0.48, 0.75, 1], 9: [0, 0.28, 0.75, 1], 10: [0, 0.35, 0.7, 1]}, stopAt = null, stgSel = -1, stgBtns = null;
     /* 업그레이드(10-29): 무대 왼쪽 위 「N단계 · 이름」(예시의 「1단계 · 도시 형성」처럼). 표지 · 확인 문제에서는 제목 줄째 숨음 */
     var hudEl = $(".co-hud");
     function hud(k, nm) { if (!hudEl) return; var tx = k >= 0 && nm ? (k + 1) + "단계 · " + nm : ""; if (hudEl.textContent !== tx) hudEl.textContent = tx; if (hudEl.hidden === !!tx) hudEl.hidden = !tx; }
-    var STGN = {"1": ["해안 절벽", "동굴", "아치", "시 스택"], "2": ["사주 자람", "석호"], "4": ["해수면 오름", "리아스 해안"], "5": ["사주 자람", "육계도"]}, STGNS = {};
-    function stgName(v, k) { var S = SCENES[curScene], L = (S && String(S.view) === String(v) && STGNS[curScene]) || STGN[v] || []; return L[k] || ((k + 1) + "단계"); }
+    var STGN = {"1": ["해식애", "해식동", "시 아치", "시 스택"], "2": ["사주 자람", "석호 생김", "석호 메워짐"], "4": ["해수면 오름", "리아스 해안"], "5": ["사주 자람", "육계도"], "6": ["모래가 옮겨 감", "쌓이고 깎임"], "7": ["모래가 날림", "사구가 자람"], "8": ["해식애", "해식동", "파식대", "해안 단구"], "9": ["거초", "보초", "환초"], "10": ["U자 골짜기", "빙하가 녹음", "피오르"]};
+    function curS(v) { var S = SCENES[curScene]; return S && String(S.view) === String(v) ? S : null; }
+    function stgB(v) { var S = curS(v); if (S && S.stg) return S.stg; if (String(v) === "2") { var tc = SP.tc(); return [0, tc, Math.min(0.95, tc + 0.12), 1]; } return STGV[v]; }
+    function stgName(v, k) { var S = curS(v), L = (S && S.stn) || STGN[v] || []; return L[k] || ((k + 1) + "단계"); }
     function updStages() {
-      if (!stgBtns) { stgBtns = {}; Object.keys(STGV).forEach(function (v) { var el = $(".co-stages[data-for=\"" + v + "\"]"), b = STGV[v]; if (!el) return; el.style.gridTemplateColumns = "repeat(" + (b.length - 1) + ",minmax(0,1fr))"; stgBtns[v] = b.slice(0, -1).map(function (x, k) { var bt = E("button", "co-stg", el, (k + 1) + "단계"); bt.type = "button"; bt.addEventListener("click", function () { playStage(k); }); return bt; }); }); }
-      /* 보기마다 그 모형의 시간으로 표시(장면을 열 때 보기가 바뀌기 전에 불려도 맞게) */
-      Object.keys(stgBtns).forEach(function (v) {
-        var b = STGV[v], L = stgBtns[v], sc = [CA, SP, TD, RI, TB][Number(v) - 1]; if (!b || !L || !sc) return;
+      if (!stgBtns) stgBtns = {};
+      Object.keys(STGV).forEach(function (v) {
+        var el = $(".co-stages[data-for=\"" + v + "\"]"), b = stgB(v); if (!el || !b) return;
+        if (!stgBtns[v] || stgBtns[v].length !== b.length - 1) {
+          el.textContent = ""; el.style.gridTemplateColumns = "repeat(" + (b.length - 1) + ",minmax(0,1fr))";
+          stgBtns[v] = b.slice(0, -1).map(function (x, k) { var bt = E("button", "co-stg", el, (k + 1) + "단계"); bt.type = "button"; bt.addEventListener("click", function () { playStage(k); }); return bt; });
+        }
+        var L = stgBtns[v], sc = MODS[Number(v) - 1]; if (!sc) return;
         var t = sc.st.t, cur = 0;
         for (var j = 0; j < b.length - 1; j++) if (t > b[j] + 1e-6) cur = j;
-        if (String(view) === v) { if (stgSel >= 0 && t >= b[stgSel] - 1e-6 && t <= b[stgSel + 1] + 1e-6) cur = stgSel; else stgSel = -1; }
+        if (String(view) === v) { if (stgSel >= 0 && b[stgSel + 1] != null && t >= b[stgSel] - 1e-6 && t <= b[stgSel + 1] + 1e-6) cur = stgSel; else stgSel = -1; }
         L.forEach(function (bt, j) { var nm = stgName(v, j); if (bt.textContent !== nm) { bt.textContent = nm; bt.setAttribute("aria-label", (j + 1) + "단계 " + nm); } var on = j === cur ? "true" : "false"; if (bt.getAttribute("aria-pressed") !== on) bt.setAttribute("aria-pressed", on); });
         if (String(view) === v) hud(cur, stgName(v, cur));
       });
       if (!stgBtns[view]) hud(-1);
     }
     function playStage(k) {
-      var b = STGV[view]; if (!b) return;
+      var b = stgB(view); if (!b || b[k + 1] == null) return;
       setTime(b[k]);
       stopAt = b[k + 1]; stgSel = k;
       var sc = scene(); sc.st.play = true; sc.setLod(true); syncPlay(); requestRender(); kick();
@@ -2208,11 +3133,13 @@
     var markSand = seg(".co-sandseg", "data-sand", function (v) { SP.st.sand = v === "1" ? 1 : 2; markSand(SP.st.sand); refresh(SP); });
     var markCoast = seg(".co-coastseg", "data-coast", function (v) { TD.st.coast = TIDE[v] ? v : "W"; markCoast(TD.st.coast); refresh(TD); });
     var markMoon = seg(".co-moonseg", "data-moon", function (v) { TD.st.moon = v === "neap" ? "neap" : "spring"; markMoon(TD.st.moon); refresh(TD); });
-    var markTbWind = seg(".co-tbwindseg", "data-tbwind", function (v) { TB.st.wind = Number(v) || 2; markTbWind(TB.st.wind); refresh(TB); });
+    var markLs = seg(".co-lsseg", "data-lsdir", function (v) { LS.st.dir = v === "L" ? "L" : "R"; markLs(LS.st.dir); refresh(LS); });
+    var markBdWind = seg(".co-bdwindseg", "data-bdwind", function (v) { BD.st.wind = clamp(Number(v) || 2, 1, 3); markBdWind(BD.st.wind); refresh(BD); });
+    var markClWave = seg(".co-clwaveseg", "data-clwave", function (v) { CL.st.wave = clamp(Number(v) || 2, 1, 3); markClWave(CL.st.wave); refresh(CL); });
 
     var vbtns = $$(".co-vbtn"), vctls = $$(".co-vctl");
     function setView(v) {
-      v = v >= 2 && v <= 5 ? v : 1;
+      v = v >= 1 && v <= MODS.length ? Math.round(v) : 1;
       var old = scene();
       if (old.st.play && v !== view) { old.st.play = false; old.setLod(false); old.update(); syncPlay(); }
       view = v;
@@ -2316,16 +3243,27 @@
 
     /* ================= ver02: 목록 → 하위 목록 → 장면 (하천 · 빙하 ver02와 같은 틀) =================
        장면은 기존 보기를 그대로 쓰고, 정해 둔 값으로 맞춘 뒤 필요 없는 조작 · 이름표만 숨김 */
+    /* 개편(11-02): 목차 = 1 개요(곶과 만 · 형성 기구 넷) · 2 해안 침식 지형 · 3 해안 퇴적 지형 · 4 세계 해안의 유형.
+       장면은 보기(모형)를 쓰고 set으로 모형의 모습(mode)을 맞춤. stg · stn = 그 장면의 재생 단계 경계 · 이름 */
     var SCENES = {
-      ria: { view: 4, title: "리아스 해안", list: "home" },
-      tide: { view: 3, title: "밀물과 썰물", list: "home", t: 0.25 },
-      cape: { view: 1, title: "곶과 해안 절벽 · 시 스택", list: "home", lab: ["해안 절벽", "파도가", "구멍이", "시 스택", "곶", "깎여"] },
-      bay: { view: 1, title: "만의 모래사장", list: "deposit", sub: "파랑이 흩어지는 만에는 모래가 쌓여 모래사장이 된다", lab: ["만"], t: 0.8, cam: [-50, 34, 1.4] },
-      spit: { view: 2, title: "사주 · 석호", list: "deposit" },
-      tombolo: { view: 5, title: "육계도 · 해안 사구", list: "deposit" },
-      flat: { view: 3, title: "갯벌(서해안)", list: "deposit", hide: ["coast"], t: 0.25, set: function () { TD.st.coast = "W"; markCoast("W"); } }
+      capebay: { view: 1, title: "곶과 만", set: function () { CA.setMode("sys"); }, stg: [0, 0.25, 0.6, 1], stn: ["에너지 모임", "깎이고 쌓임", "단조로워짐"] },
+      wave: { view: 1, title: "형성 기구 ① 파랑", set: function () { CA.setMode("wave"); }, stg: [0, 0.3, 0.65, 1], stn: ["부서짐", "곶이 깎임", "만에 쌓임"] },
+      drift: { view: 6, title: "형성 기구 ② 연안류" },
+      tide: { view: 3, title: "형성 기구 ③ 조류(밀물과 썰물)", t: 0.25, set: function () { TD.setMode("tide"); } },
+      wind: { view: 7, title: "형성 기구 ④ 바람", set: function () { BD.setMode("wind"); } },
+      cliff: { view: 8, title: "해식애 · 해식동 · 파식대 · 해안 단구", set: function () { CL.setMode("terrace"); } },
+      stack: { view: 1, title: "시 아치 · 시 스택", set: function () { CA.setMode("stack"); } },
+      beach: { view: 7, title: "사빈 · 해안 사구", set: function () { BD.setMode("beach"); }, stg: [0, 0.45, 1], stn: ["사빈이 넓어짐", "해안 사구"] },
+      spit: { view: 2, title: "사주 · 석호" },
+      tombolo: { view: 5, title: "육계 사주 · 육계도" },
+      sandy: { view: 7, title: "모래 해안", set: function () { BD.setMode("sand"); }, stg: [0, 0.5, 1], stn: ["모래가 쌓임", "해안선이 나아감"] },
+      rocky: { view: 8, title: "암석 해안", set: function () { CL.setMode("rock"); }, stg: [0, 0.45, 1], stn: ["해식애가 물러남", "시 스택이 남음"] },
+      flat: { view: 3, title: "갯벌", hide: ["coast"], t: 0.25, set: function () { TD.st.coast = "W"; markCoast("W"); TD.setMode("flat"); } },
+      coral: { view: 9, title: "산호초 해안" },
+      ria: { view: 4, title: "리아스 해안" },
+      fjord: { view: 10, title: "피오르 해안" }
     };
-    var GOMAP = {"erosion": "cape"}, VIEWSCENE = {"1": "cape", "2": "spit", "3": "tide", "4": "ria", "5": "tombolo"}, HIDES = ["coast"];
+    var GOMAP = {}, VIEWSCENE = {"1": "capebay", "2": "spit", "3": "tide", "4": "ria", "5": "tombolo", "6": "drift", "7": "wind", "8": "cliff", "9": "coral", "10": "fjord"}, HIDES = ["coast"];
     var scrEls = {}; $$(".co-scr[data-scr]").forEach(function (e) { scrEls[e.getAttribute("data-scr")] = e; });
     var backBtn = $(".co-back"), sName = $(".co-sname"), ovSeg = $(".co-ovseg");
     var curScr = "home", curScene = "", backTo = "home", inOpen = false;
@@ -2362,11 +3300,13 @@
       if (ovSeg) { ovSeg.hidden = !inOv; if (inOv) markOv(k); }
       setText(sName, S.title); updStep(k); firstHint(); if (!helpC.hidden) { helpC.hidden = true; helpB.setAttribute("aria-expanded", "false"); }
       setText(elTitle, S.title);
+      if (mechEl) mechEl.hidden = k !== "capebay";
+      updLegend(); updRead();
     }
     function openScene(k, from) {
       INTRO = !RM;
       var S = SCENES[k]; if (!S) return;
-      var sc = [CA, SP, TD, RI, TB][S.view - 1];
+      var sc = MODS[S.view - 1];
       if (sc.st && sc.st.play) { sc.st.play = false; if (sc.setLod) sc.setLod(false); if (typeof syncPlay === "function") syncPlay(); }
       inOpen = true;
       if (S.set) S.set();
@@ -2386,6 +3326,9 @@
       if (SCENES[curScene] && SCENES[curScene].view === v) return;
       sceneUI(VIEWSCENE[v]);
     }
+    /* 개편(11-02): 「곶과 만」에서 형성 기구 넷으로 바로 가는 단추 */
+    var mechEl = $(".co-mechs");
+    $$(".co-mechseg [data-go]").forEach(function (b) { b.addEventListener("click", function () { openScene(b.getAttribute("data-go"), "home"); }); });
     var markOv = ovSeg ? seg(".co-ovseg", "data-ov", function (v) { openScene(v, "home"); }) : function () {};
     $$(".co-item[data-go], .co-toci[data-go]").forEach(function (b) { b.addEventListener("click", function () { go(b.getAttribute("data-go")); }); });
     /* 키보드(10-30): 표지 카드 · 시작 단추를 누르면 초점을 패널의 장면 이름으로(화면 읽기 프로그램이 새 장면을 읽음) */
@@ -2571,7 +3514,7 @@
     $$(".co-posseg .co-segb").forEach(function (b) { b.addEventListener("click", function () { closeMenu(); }); });
 
     /* ================= 확인 문제 (ver02: 무대 안 카드 · 한 문제씩 · 번호 점 · 결과 요약 · 장면에서 확인) ================= */
-    var QSCENE = ["cape", "spit", "flat", "cape", "tide", "ria"];
+    var QSCENE = ["capebay", "drift", "tide", "wind", "cliff", "stack", "spit", "tombolo", "coral", "fjord"];
     var answered = QUIZ.map(function () { return null; });
     var quizEl = $(".co-quiz"), qDots = $(".co-qdots"), qTitle = $(".co-qtitle"), dQ = $(".co-dq"), dOpts = $(".co-dopts"), dFb = $(".co-dfb");
     var qRes = $(".co-qres"), qScore = $(".co-qscore"), qRows = $(".co-qrows"), qBody = $(".co-qbody");
@@ -2634,25 +3577,23 @@
       else if (qCur < QUIZ.length - 1) qCur++; else showRes = true;
       renderQuiz();
     });
-    dGo.addEventListener("click", function () { openScene(QSCENE[qCur] || "overview1", "quiz"); });
+    dGo.addEventListener("click", function () { openScene(QSCENE[qCur] || "capebay", "quiz"); });
     $(".co-qback").addEventListener("click", function () { go("home"); });
 
     /* ================= 처음 상태: ?view=1&wave=1~3&time=0~100 · ?view=2&drift=L|R&sand=1|2&time= · ?view=3&coast=W|S|E&time=0~100(하루 0 ~ 24시) · &play=1 · &panel=float ================= */
     var qs = new URLSearchParams(location.search);
     if (qs.get("lite") === "1") setLite(true);
-    var qv = qs.get("view") === "2" ? 2 : qs.get("view") === "3" ? 3 : 1, qt = parseInt(qs.get("time"), 10);
+    var qt = parseInt(qs.get("time"), 10);
     var qw = parseInt(qs.get("wave"), 10); if (qw >= 1 && qw <= 3) CA.st.wave = qw;
     if (qs.get("drift") === "L") SP.st.drift = "L";
     if (qs.get("sand") === "1") SP.st.sand = 1;
     if (TIDE[qs.get("coast")]) TD.st.coast = qs.get("coast");
-    if (qs.get("moon") === "neap") { TD.st.moon = "neap"; markMoon("neap"); }
-    markWave(CA.st.wave); markDrift(SP.st.drift); markSand(SP.st.sand); markCoast(TD.st.coast);
-    if (isFinite(qt)) (qv === 1 ? CA : qv === 2 ? SP : TD).st.t = clamp(qt / 100, 0, 1);
-    ranges[0].value = String(Math.round(CA.st.t * 100)); ranges[1].value = String(Math.round(SP.st.t * 100)); ranges[2].value = String(Math.round(TD.st.t * 100));
-    CA.update(); SP.update(); TD.update();
+    if (qs.get("moon") === "neap") TD.st.moon = "neap";
+    markWave(CA.st.wave); markDrift(SP.st.drift); markSand(SP.st.sand); markCoast(TD.st.coast); markMoon(TD.st.moon); markLs(LS.st.dir); markBdWind(BD.st.wind); markClWave(CL.st.wave);
+    MODS.forEach(function (m, i) { m.update(); var rg = rangeOf(i + 1); if (rg) rg.value = String(Math.round(m.st.t * 100)); });
     setPanel(qs.get("panel") || "right");
     updateQuizList();
-    setView(qv);
+    setView(1);
     /* ver02: ?scene=…(+ time) · ?quiz=1 · 없으면 목록 */
     var qscene = qs.get("scene");
     if (SCENES[qscene]) { openScene(qscene); if (isFinite(qt)) setTime(clamp(qt / 100, 0, 1)); }

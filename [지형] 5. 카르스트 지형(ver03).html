@@ -690,9 +690,9 @@
             <button type="button" class="ks-segb" data-use="1" aria-pressed="false">광산 · 공장</button>
           </div>
         </div>
-        <span class="ks-sub">땅속 자르는 위치</span>
+        <span class="ks-sub">단면 위치</span>
         <div class="ks-rangerow">
-          <input class="ks-range ks-cut" type="range" min="0" max="100" step="1" value="0" aria-label="블록을 자르는 위치(앞 가장자리에서 안쪽으로)">
+          <input class="ks-range ks-cut" type="range" min="0" max="100" step="1" value="0" aria-label="단면 위치(앞 가장자리에서 안쪽으로)">
           <span class="ks-rv ks-cutv"></span>
         </div>
         <div class="ks-row">
@@ -718,10 +718,10 @@
 
       <div class="ks-vctl ks-off" data-for="4">
         <div class="ks-line2">
-          <span class="ks-sub">바닷물</span>
-          <div class="ks-seg two ks-seaseg" role="group" aria-label="바닷물이 들어오는지">
-            <button type="button" class="ks-segb" data-sea="0" aria-pressed="true">없음</button>
-            <button type="button" class="ks-segb" data-sea="1" aria-pressed="false">들어옴</button>
+          <span class="ks-sub">낮은 땅을<br>채우는 물</span>
+          <div class="ks-seg two ks-seaseg" role="group" aria-label="낮은 땅을 채우는 물">
+            <button type="button" class="ks-segb" data-sea="0" aria-pressed="true">하천</button>
+            <button type="button" class="ks-segb" data-sea="1" aria-pressed="false">바닷물로</button>
           </div>
         </div>
       </div>
@@ -1270,7 +1270,7 @@
         var img = GLR.ok ? GLR.draw(T, cam) : null;
         if (img) {
           ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(img, 0, 0); ctx.restore();
-          edgeGlow();
+          edgeGlow(cam);
           return;
         }
         var st = T.lod ? SL : 1, ord = T.lod ? order2 : order;
@@ -1303,12 +1303,17 @@
             clipFill(lcol(k, c2), LY[k].line);
           }
         }
-        edgeGlow();
+        edgeGlow(cam);
       };
-      /* 세 번째 다듬기: 블록 위 가장자리에 옅은 빛 테두리(모형이 또렷해 보임) */
-      function edgeGlow() {
+      /* 세 번째 다듬기: 블록 위 가장자리에 옅은 빛 테두리(모형이 또렷해 보임)
+         개편(11-02): 카메라를 향한 옆면의 위 가장자리에만(뒤쪽 가장자리 빛이 봉우리 앞에 떠 보이던 문제) */
+      function edgeGlow(cam) {
         ctx.save(); ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.4;
-        [0, 1, 2, 3].forEach(function (w) { var ed = T.edge(w); ctx.beginPath(); ed.forEach(function (n, i) { if (i) ctx.lineTo(px[n], py[n]); else ctx.moveTo(px[n], py[n]); }); ctx.stroke(); });
+        [0, 1, 2, 3].forEach(function (w) {
+          var ed = T.edge(w), a = ed[0], b = ed[ed.length - 1];
+          if (cam) { var lo = Math.min(wy[a], wy[b]) - 0.3, C = cam.P(wx[b], lo, wz[b]), D2 = cam.P(wx[a], lo, wz[a]); if (!faceOn([px[a], py[a]], [px[b], py[b]], C, D2, w)) return; }
+          ctx.beginPath(); ed.forEach(function (n, i) { if (i) ctx.lineTo(px[n], py[n]); else ctx.moveTo(px[n], py[n]); }); ctx.stroke();
+        });
         ctx.restore();
       }
       /* 업그레이드(10-20): 풀 · 숲 색인 땅 위에만 나무를 심음(물 · 눈 · 모래 · 바위 · 밭 층은 뺌). 재생 · 끄는 동안은 그리지 않음 */
@@ -1455,6 +1460,16 @@
     }
     function poly(pts) { ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.closePath(); }
 
+    /* 개편(11-02): 블록 옆면이 카메라를 향하는지 — 화면에 비친 네 모서리(위 왼 · 위 오른 · 아래 오른 · 아래 왼)의 감기는 방향으로 판정.
+       앞(z−) · 오른쪽(x+) 면은 시계 방향, 뒤(z+) · 왼쪽(x−) 면은 반시계 방향일 때 보임. 원근에서도 정확(1차본은 블록 가운데와 깊이를 비교해 돌리는 각도에 따라 안쪽 면이 보였음) */
+    var FACE_SG = [1, -1, -1, 1];
+    function faceOn(A, B, C, D2, w) {
+      var ar = (A[0] * B[1] - B[0] * A[1]) + (B[0] * C[1] - C[0] * B[1]) + (C[0] * D2[1] - D2[0] * C[1]) + (D2[0] * A[1] - A[0] * D2[1]);
+      return ar * FACE_SG[w] > 0;
+    }
+    function frac(v) { return v - Math.floor(v); }
+    function sm(a, b, t) { var u = clamp((t - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); }
+
     /* ================= 보기 ① 석회암이 녹다 (예시 모형) =================
        블록: 가로 · 세로 x, z ∈ [−1, 1](약 1km로 봄), 땅 위 y ≈ 0.06, 바닥 y = −0.85
        갈라진 틈: x = JX, z = JZ 세 줄씩. 틈이 만나는 9곳이 더 많이 녹아 돌리네가 됨
@@ -1544,9 +1559,8 @@
       function topAt(w, u) { var p = wallPt(w, u, 0); return hf(p[0], p[2]); }
       var walls = [];
       function facing() {
-        var mid = cam.P(0, -0.4, 0)[2], out = [];
         var zm = (ZC + 1) / 2;
-        [[0, -0.4, ZC], [0, -0.4, 1], [-1, -0.4, zm], [1, -0.4, zm]].forEach(function (c, w) { if (cam.P(c[0], c[1], c[2])[2] < mid) out.push(w); });
+        var out = [0, 1, 2, 3].filter(function (w) { return faceOn(WP(w, U0(w), 0), WP(w, 1, 0), WP(w, 1, -BASE), WP(w, U0(w), -BASE), w); });
         out.sort(function (a, b) { var A = wallPt(a, a < 2 ? 0 : zm, -0.4), B = wallPt(b, b < 2 ? 0 : zm, -0.4); return cam.P(B[0], B[1], B[2])[2] - cam.P(A[0], A[1], A[2])[2]; });
         return out;
       }
@@ -1599,7 +1613,11 @@
             if (yy >= Y_W) { L.push(a); R.push(b); } else { L2.push(a); R2.push(b); }
             if (yy >= Y_W && s < 14) { var nx = yt + (-0.8 - yt) * (s + 1) / 14; if (nx < Y_W) { var aw = WP(w, J.u - hw, Y_W), bw = WP(w, J.u + hw, Y_W); L.push(aw); R.push(bw); L2.push(aw); R2.push(bw); } }
           }
-          if (L.length > 1) { poly(L.concat(R.reverse())); ctx.fillStyle = lime ? "#5d5042" : "#6f6964"; ctx.fill(); }
+          if (L.length > 1) {
+            poly(L.concat(R.reverse())); ctx.fillStyle = lime ? "#5d5042" : "#6f6964"; ctx.fill();
+            /* 개편(11-02): 빗물에 젖어 녹는 틈의 가장자리(푸른빛) */
+            if (lime && Sv > 0.03) { ctx.strokeStyle = "rgba(90,160,230," + clamp(Sv * 1.5, 0.2, 0.6).toFixed(3) + ")"; ctx.lineWidth = 2.2; ctx.stroke(); }
+          }
           if (L2.length > 1) { poly(L2.concat(R2.reverse())); ctx.fillStyle = lime ? "#3f6f9e" : "#5f7183"; ctx.fill(); }
         });
         ctx.setLineDash([6, 5]); ctx.strokeStyle = "rgba(29,99,180,.75)"; ctx.lineWidth = 1.4;
@@ -1747,9 +1765,9 @@
         ctext(lime ? "석회암" : "화강암", p[0], p[1], { pill: true, bold: true, size: 13, align: "center" });
         p = WP(fw, fw < 2 ? -0.66 : ZC + 0.17 * (1 - ZC), Y_W - 0.1);
         ctext("땅속 물(지하수)", p[0], p[1], { pill: true, size: 12.5, align: "center", color: "#1858a0" });
-        if (!lime || Sv < 0.35) {
+        if (!lime || Sv < 0.6) {
           var J = (fw < 2 ? JX : JZ)[2], a = WP(fw, J, topAt(fw, J) - 0.16), l = WP(fw, J + 0.22, -0.2);
-          callout("갈라진 틈", a[0], a[1], l[0] + 6, l[1]);
+          callout(lime && Sv > 0.02 ? "빗물이 틈을 따라 스며들며 석회암을 녹인다" : "갈라진 틈", a[0], a[1], l[0] + 6, l[1], { color: lime && Sv > 0.02 ? "#1858a0" : undefined });
         }
         /* 하천 이름표: 뒤쪽 줄기에 */
         var sq = stream();
@@ -1810,14 +1828,19 @@
         ctx.beginPath(); sq.pts.forEach(function (q, i) { var p = cam.P(q[0], hf(q[0], q[1]) + 0.008, q[1]); if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke();
         ctx.setLineDash([]); ctx.lineDashOffset = 0;
         if (st.rock !== "lime") return;
-        ctx.setLineDash([3, 9]); ctx.lineDashOffset = -phase * 26; ctx.strokeStyle = "rgba(40,120,220,.85)"; ctx.lineWidth = 2;
+        /* 개편(11-02): 틈 속을 따라 굽이치며 내려가는 물방울(빗물이 틈으로 파고듦) → 땅속 물에 닿으면 퍼짐 */
         walls.forEach(function (w) {
-          jointsOn(w).forEach(function (J) {
-            var a = WP(w, J.u, topAt(w, J.u) - 0.03), b = WP(w, J.u, Y_W);
-            ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+          jointsOn(w).forEach(function (J, ji) {
+            var y0 = topAt(w, J.u) - 0.03;
+            ctx.strokeStyle = "rgba(60,140,230,.35)"; ctx.lineWidth = 3; ctx.beginPath(); var a0 = WP(w, J.u, y0), b0 = WP(w, J.u, Y_W); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(b0[0], b0[1]); ctx.stroke();
+            for (var k3 = 0; k3 < 6; k3++) {
+              var f = frac(phase * 0.45 + k3 / 6 + ji * 0.13), y = y0 + (Y_W - y0) * f, xo = 0.006 * Math.sin(f * 18 + k3), p = WP(w, J.u + xo, y), r = (2 + 1.2 * f) * TS;
+              ctx.fillStyle = "rgba(70,150,235," + (0.95 - 0.4 * f).toFixed(3) + ")"; ctx.beginPath(); ctx.ellipse(p[0], p[1], r * 0.8, r * 1.15, 0, 0, 2 * Math.PI); ctx.fill();
+            }
+            var fw2 = frac(phase * 0.45 + ji * 0.13), m = WP(w, J.u, Y_W), rr = (4 + 14 * fw2) * TS;
+            ctx.strokeStyle = "rgba(70,150,235," + (0.7 * (1 - fw2)).toFixed(3) + ")"; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.ellipse(m[0], m[1], rr, rr * 0.3, 0, 0, 2 * Math.PI); ctx.stroke();
           });
         });
-        ctx.setLineDash([]); ctx.lineDashOffset = 0;
       };
       /* 업그레이드 C: 옆면의 동굴 단면을 누르면 동굴 안(보기 2)으로 들어감 */
       function inPoly(x, y, ps) {
@@ -2009,26 +2032,15 @@
         ctx.restore();
         cLabels(rect);
       };
+      /* 개편(11-02): 자라는 동안에는 이름표를 숨기고, 다 자란 뒤(시간 0.95 이상)에 종유석 · 석순 · 석주를 한꺼번에 */
       function cLabels(rect) {
-        var p = PAIRS[st.sel - 1];
-        if (!p) return;
-        var dx = 46 * TS, a, l;
-        if (p.join) {
-          a = cam.P(p.x, p.bot + p.lm * p.gap, p.z);
-          ctext("석주", a[0] + dx, a[1], { pill: true, bold: true, size: 13.5, ring: "#1f6feb" });
-          ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(a[0] + 8, a[1]); ctx.lineTo(a[0] + dx - 8, a[1]); ctx.stroke();
-          return;
-        }
-        if (p.lt > 0.04) {
-          a = cam.P(p.x, p.top - p.lt * p.gap * 0.55, p.z);
-          ctext("종유석", a[0] + dx, a[1], { pill: true, bold: true, size: 13.5, ring: "#1f6feb" });
-          ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(a[0] + 6, a[1]); ctx.lineTo(a[0] + dx - 8, a[1]); ctx.stroke();
-        }
-        if (p.lm > 0.04) {
-          l = cam.P(p.x, p.bot + p.lm * p.gap * 0.45, p.z);
-          ctext("석순", l[0] + dx, l[1], { pill: true, bold: true, size: 13.5, ring: "#1f6feb" });
-          ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(l[0] + 6, l[1]); ctx.lineTo(l[0] + dx - 8, l[1]); ctx.stroke();
-        }
+        if (st.t < 0.95 || G <= 0) return;
+        var dep = function (p) { return cam.P(p.x, 0, p.z)[2]; };
+        var col = PAIRS.filter(function (p) { return p.join; }).sort(function (a, b) { return dep(a) - dep(b); })[0];
+        var one = PAIRS.filter(function (p) { return !p.join && p.lt > 0.08 && p.lm > 0.08; }).sort(function (a, b) { return dep(a) - dep(b); })[0];
+        var T = function (txt, x, y, z, side) { var a = cam.P(x, y, z); callout(txt, a[0], a[1], a[0] + side * 70 * TS, a[1] + (side > 0 ? -10 : 10) * TS, { size: 13.5, ring: "#1f6feb" }); };
+        if (one) { T("종유석(천장에서 아래로)", one.x, one.top - one.lt * one.gap * 0.5, one.z, -1); T("석순(바닥에서 위로)", one.x + 0.02, one.bot + one.lm * one.gap * 0.45, one.z, -1); }
+        if (col) T("석주(종유석과 석순이 이어진 기둥)", col.x, col.bot + col.lm * col.gap, col.z, 1);
       }
       var clock = 0;
       C0.step = function (dt) { clock += dt / 1000; };
@@ -2066,22 +2078,23 @@
       return C0;
     })();
 
-    /* ================= 보기 ③ 석회 동굴과 용암 동굴 (예시 모형, 업그레이드) =================
+    /* ================= 보기 ③ 석회 동굴과 용암 동굴 (예시 모형, 업그레이드 · 11-02 개편) =================
        교과서 151쪽 활동(고수 동굴 · 만장굴 비교)과 이어짐. 블록 두 개: 왼쪽 석회암 x ∈ [−1.1, −0.08], 오른쪽 현무암 x ∈ [0.08, 1.1], z ∈ [−0.45, 0.45], 땅 위 y = 0.1, 바닥 y = −0.7
-       시간 t ∈ [0, 1]
-       석회 동굴: 땅속 물(y = −0.4) 바로 위에서 반지름 0.02 + 0.2 × (t를 0.1~0.85로 늘인 값)만큼 커짐. t > 0.6부터 종유석 · 석순
-       용암 동굴: t < 0.3 용암이 뒤에서 앞으로 흐름 → 0.3~0.55 겉이 식어 굳음(굴 안은 녹은 용암) → 0.55~0.85 녹은 용암이 빠져나감 → 빈 굴, 평평한 바닥. 땅 겉 가까이(y ≈ −0.05)에 생김 */
+       석회 동굴: 비가 내리고 빗물이 틈을 따라 스며들어 땅속 물(y = −0.4)로 흘러듦. 땅속 물 바로 위에서 반지름 0.02 + 0.2 × (t를 0.1~0.85로 늘인 값)만큼 커짐. t > 0.6부터 종유석 · 석순
+       용암 동굴(「화산 지형」 3-3과 같은 순서): 0~0.25 골짜기(깊이 0.2 · 반폭 0.3)를 따라 용암이 뒤에서 앞으로 흐름
+         → 0.22~0.5 공기와 닿는 위층부터 식어 굳음(천장) → 0.5~0.75 아래쪽 용암이 빠져나감 → 빈 굴(용암 동굴). 땅 겉 가까이에 생김 */
     var CMP = (function () {
       var st = { t: 0, play: false };
       var cam = Cam(-20, 20), yaw0 = -20, pitch0 = 20, lod = false;
       var TOP = 0.1, BOT = -0.7, Z0 = -0.45, Z1 = 0.45, LXA = -1.1, LXB = -0.08, RXA = 0.08, RXB = 1.1, LC = -0.59, RC = 0.59, YW = -0.4;
+      var VW = 0.3, VD = 0.2, CRMAX = 0.045;
       var C3 = { st: st, cam: cam, yaw0: yaw0, pitch0: pitch0 };
       function sm(a, b, t) { var u = clamp((t - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); }
       C3.update = function () {};
       C3.setLod = function (v) { lod = v; };
       C3.lod = function () { return lod; };
       C3.skey = function () { return st.t.toFixed(4); };
-      C3.stage = function () { var t = st.t; return t < 0.05 ? 0 : t < 0.3 ? 1 : t < 0.55 ? 2 : t < 0.85 ? 3 : 4; };
+      C3.stage = function () { var t = st.t; return t < 0.05 ? 0 : t < 0.25 ? 1 : t < 0.5 ? 2 : t < 0.75 ? 3 : 4; };
       C3.limeR = function () { return 0.02 + 0.2 * sm(0.1, 0.85, st.t); };
       function quad(a, b, c, d, fill) { poly([cam.P(a[0], a[1], a[2]), cam.P(b[0], b[1], b[2]), cam.P(c[0], c[1], c[2]), cam.P(d[0], d[1], d[2])]); ctx.fillStyle = fill; ctx.fill(); }
       function FP(x, y) { return cam.P(x, y, Z0); }
@@ -2090,34 +2103,52 @@
         for (var k = 0; k < n; k++) { var a = k / n * 2 * Math.PI, m = 1 + (wob || 0) * (Math.sin(3 * a + 1) * 0.6 + Math.sin(5 * a) * 0.4); out.push(FP(cx + rx * m * Math.cos(a), cy + ry * m * Math.sin(a))); }
         return out;
       }
-      /* 블록 한 개: 윗면 · 오른쪽이나 왼쪽 옆면 · 앞면(단면) */
+      /* 화산 지대의 골짜기 · 용암 */
+      function vground(x) { var u = Math.abs(x - RC) / VW; return u < 1 ? TOP - VD * (1 - u * u) : TOP; }
+      function reach(z) { var zf = Z1 + 0.05 - (Z1 - Z0 + 0.15) * sm(0, 0.25, st.t); return sm(zf, zf + 0.08, z); }   /* 흐름 앞끝 zf보다 뒤쪽에 용암 */
+      function lavaTop(x) { var u = Math.abs(x - RC) / (VW * 1.05); return u >= 1 ? -9 : TOP + 0.03 * (1 - u * u); }
+      function lavaTh(x, z) { var tp = lavaTop(x); return tp <= -9 ? 0 : Math.max(0, tp - vground(x)) * reach(z); }
+      function cr() { return CRMAX * sm(0.22, 0.5, st.t); }
+      var TW = VW * 0.78;
+      function roofB(x, z) { var q = (x - RC) / TW; return vground(x) + lavaTh(x, z) - cr() - 0.045 * q * q * (cr() / CRMAX); }
+      function floorT(x, z) { var q = (x - RC) / TW; return vground(x) + 0.01 * sm(0.3, 0.6, st.t) + 0.03 * q * q * (cr() / CRMAX); }
+      function drainK() { return sm(0.5, 0.75, st.t); }
+      /* 블록 한 개: 윗면 · 옆면 · 앞면(단면) */
       function block(x0, x1, lime) {
         var tc = cam.toCam(), sx = tc[0] > 0 ? x1 : x0;
         quad([sx, BOT, Z0], [sx, BOT, Z1], [sx, TOP, Z1], [sx, TOP, Z0], lime ? "#c3b9a3" : "#4f5257");
-        quad([x0, TOP, Z0], [x1, TOP, Z0], [x1, TOP, Z1], [x0, TOP, Z1], lime ? "#93b46a" : "#6b6f62");
+        if (lime) quad([x0, TOP, Z0], [x1, TOP, Z0], [x1, TOP, Z1], [x0, TOP, Z1], "#93b46a");
+        else {
+          /* 윗면: 골짜기 양쪽의 평평한 땅 + 골짜기 비탈(여러 조각) */
+          quad([x0, TOP, Z0], [RC - VW, TOP, Z0], [RC - VW, TOP, Z1], [x0, TOP, Z1], "#6b6f62");
+          quad([RC + VW, TOP, Z0], [x1, TOP, Z0], [x1, TOP, Z1], [RC + VW, TOP, Z1], "#6b6f62");
+          for (var i = 0; i < 12; i++) { var xa = RC - VW + 2 * VW * i / 12, xb = RC - VW + 2 * VW * (i + 1) / 12, sh = 0.8 + 0.25 * (xa - RC) / VW; quad([xa, vground(xa), Z0], [xb, vground(xb), Z0], [xb, vground(xb), Z1], [xa, vground(xa), Z1], rgb([107, 111, 98], sh)); }
+        }
         /* 앞면 */
-        var face = [FP(x0, TOP), FP(x1, TOP), FP(x1, BOT), FP(x0, BOT)];
+        var face = lime ? [FP(x0, TOP), FP(x1, TOP), FP(x1, BOT), FP(x0, BOT)] : (function () { var o = [FP(x0, TOP)]; for (var i = 0; i <= 24; i++) { var x = RC - VW + 2 * VW * i / 24; o.push(FP(x, vground(x))); } o.push(FP(x1, TOP), FP(x1, BOT), FP(x0, BOT)); return o; })();
         poly(face); ctx.fillStyle = lime ? "#d6cdb9" : "#5c5f64"; ctx.fill();
         ctx.save(); poly(face); ctx.clip();
         var y, k;
         if (lime) {
           for (k = 0, y = TOP; y > BOT; y -= 0.08, k++) { poly([FP(x0, y), FP(x1, y), FP(x1, y - 0.08), FP(x0, y - 0.08)]); ctx.fillStyle = k % 2 ? "#cfc5ae" : "#dbd3c0"; ctx.fill(); }
-          poly([FP(x0, YW), FP(x1, YW), FP(x1, BOT), FP(x0, BOT)]); ctx.fillStyle = "rgba(61,143,214,.14)"; ctx.fill();
+          poly([FP(x0, YW), FP(x1, YW), FP(x1, BOT), FP(x0, BOT)]); ctx.fillStyle = "rgba(61,143,214,.16)"; ctx.fill();
         } else {
-          /* 현무암: 용암이 여러 번 흘러 굳은 층과 구멍(기공) */
           [-0.22, -0.48].forEach(function (yy) { var a = FP(x0, yy), b = FP(x1, yy); ctx.strokeStyle = "rgba(30,30,34,.5)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
           for (k = 0; k < 90; k++) { var p = FP(x0 + (x1 - x0) * rnd(k + 900), BOT + (TOP - BOT) * rnd(k + 1300)); ctx.fillStyle = "rgba(30,30,34,.45)"; ctx.beginPath(); ctx.arc(p[0], p[1], 1.2 + 1.6 * rnd(k + 1700), 0, 2 * Math.PI); ctx.fill(); }
         }
         ctx.restore();
         poly(face); ctx.strokeStyle = lime ? "rgba(80,64,44,.5)" : "rgba(20,20,24,.6)"; ctx.lineWidth = 1; ctx.stroke();
       }
+      var JU = [LC - 0.28, LC + 0.24, LC - 0.02];
       function limeCave() {
         var t = st.t, r = C3.limeR(), cy = YW + r * 0.75;
-        /* 갈라진 틈: 위가 넓고, 시간이 지날수록 넓어짐 */
-        [LC - 0.28, LC + 0.24].forEach(function (u) {
-          var w = 0.004 + 0.025 * sm(0.05, 0.7, t), L = [], R = [];
+        /* 갈라진 틈: 빗물이 스며들며 위쪽부터 넓어짐. 가장자리는 물에 젖어 푸른빛 */
+        JU.forEach(function (u, i) {
+          var w = 0.004 + 0.025 * sm(0.05, 0.7, t) * (i === 2 ? 0.6 : 1), L = [], R = [];
           for (var s = 0; s <= 8; s++) { var yy = TOP - (TOP - YW) * s / 8, hw = w * (1 - s / 9); L.push(FP(u - hw, yy)); R.push(FP(u + hw, yy)); }
-          poly(L.concat(R.reverse())); ctx.fillStyle = "#5d5042"; ctx.fill();
+          var pg = L.concat(R.reverse());
+          poly(pg); ctx.fillStyle = "#5d5042"; ctx.fill();
+          if (t > 0.03) { ctx.strokeStyle = "rgba(90,160,230," + (0.55 * sm(0.03, 0.2, t)).toFixed(3) + ")"; ctx.lineWidth = 2; ctx.stroke(); }
         });
         if (t >= 0.08) {
           var cp = ell(LC, cy, r * 1.45, r, 30, 0.12);
@@ -2140,42 +2171,42 @@
         ctx.setLineDash([6, 5]); ctx.strokeStyle = "rgba(29,99,180,.75)"; ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.moveTo(w1[0], w1[1]); ctx.lineTo(w2[0], w2[1]); ctx.stroke(); ctx.setLineDash([]);
       }
-      var TUBE = { y: -0.06, rx: 0.17, ry: 0.1 };
-      function lavaTop() {
-        /* 윗면을 흐르는 용암 줄기: 뒤(z1)에서 앞(z0)으로 */
-        var t = st.t, reach = sm(0, 0.3, t), zf = Z1 - (Z1 - Z0) * reach, hw = 0.13;
-        if (reach <= 0.001) return;
-        var hot = 1 - sm(0.3, 0.55, t), c = mix([90, 88, 84], [236, 92, 30], hot);
-        quad([RC - hw, TOP + 0.003, zf], [RC + hw, TOP + 0.003, zf], [RC + hw, TOP + 0.003, Z1], [RC - hw, TOP + 0.003, Z1], rgb(c));
-        if (hot > 0.05) { quad([RC - hw * 0.45, TOP + 0.004, zf + 0.02], [RC + hw * 0.45, TOP + 0.004, zf + 0.02], [RC + hw * 0.45, TOP + 0.004, Z1], [RC - hw * 0.45, TOP + 0.004, Z1], rgb([255, 196, 80], 1, hot)); }
-        /* 겉이 굳은 뒤: 볼록한 굳은 겉(약간 높은 띠) */
-        if (t >= 0.3) quad([RC - hw, TOP + 0.02, Z0], [RC + hw, TOP + 0.02, Z0], [RC + hw, TOP + 0.02, Z1], [RC - hw, TOP + 0.02, Z1], rgb([96, 94, 90], 1, sm(0.3, 0.55, t)));
+      /* 용암: 골짜기를 따라 흐르는 줄기(윗면)와 앞면 단면 */
+      function lavaSurf() {
+        var t = st.t; if (t <= 0.001) return;
+        var cool = sm(0.22, 0.38, t), c = mix([240, 112, 34], [92, 88, 84], cool), n = 14;
+        for (var i = 0; i < n; i++) {
+          var xa = RC - VW * 1.05 + 2.1 * VW * i / n, xb = RC - VW * 1.05 + 2.1 * VW * (i + 1) / n, ya = Math.max(vground(xa), lavaTop(xa)), yb = Math.max(vground(xb), lavaTop(xb));
+          if (lavaTop(xa) <= vground(xa) + 0.001 && lavaTop(xb) <= vground(xb) + 0.001) continue;
+          var zf = Z1 + 0.05 - (Z1 - Z0 + 0.15) * sm(0, 0.25, t); zf = Math.max(Z0, zf);
+          quad([xa, ya + 0.002, zf], [xb, yb + 0.002, zf], [xb, yb + 0.002, Z1], [xa, ya + 0.002, Z1], rgb(c, 0.92 + 0.12 * Math.cos((i / n - 0.5) * 2)));
+        }
       }
       function lavaFace() {
-        var t = st.t;
-        if (t < 0.3) {
-          /* 용암 줄기가 앞면까지 오면 단면에 얇은 렌즈 */
-          if (t > 0.27) { poly(ell(RC, TOP - 0.01, 0.13, 0.03, 20)); ctx.fillStyle = "#ec5c1e"; ctx.fill(); }
-          return;
+        var t = st.t, xs = [], i;
+        for (i = 0; i <= 60; i++) xs.push(RC - VW * 1.05 + 2.1 * VW * i / 60);
+        var bands = { hot: [], roof: [], void: [], floor: [] };
+        xs.forEach(function (x) {
+          var g = vground(x), th = lavaTh(x, Z0); if (th < 0.002) { bands.hot.push(null); bands.roof.push(null); bands.void.push(null); bands.floor.push(null); return; }
+          var top = g + th, inT = Math.abs(x - RC) < TW;
+          if (!inT) { var sd = sm(0.25, 0.55, t), sb = top - th * sd; bands.roof.push(sd > 0.001 ? [x, top, sb] : null); bands.hot.push(sd < 0.999 ? [x, sb, g] : null); bands.void.push(null); bands.floor.push(null); return; }
+          var rb = roofB(x, Z0), fl = floorT(x, Z0), lv = rb - (rb - fl) * drainK();
+          bands.roof.push(cr() > 0.0005 ? [x, top, rb] : null); bands.floor.push(t > 0.3 ? [x, fl, g] : null); bands.hot.push([x, lv, fl]); bands.void.push([x, rb, lv]);
+        });
+        function fill(list, col) {
+          var run = [];
+          function flush() { if (run.length > 1) { var pts = run.map(function (q) { return FP(q[0], q[1]); }).concat(run.slice().reverse().map(function (q) { return FP(q[0], q[2]); })); poly(pts); ctx.fillStyle = col; ctx.fill(); } run = []; }
+          list.forEach(function (q) { if (!q || q[1] <= q[2] + 1e-4) flush(); else run.push(q); });
+          flush();
         }
-        var tube = ell(RC, TUBE.y, TUBE.rx, TUBE.ry, 30, 0.05);
-        poly(tube); ctx.fillStyle = "#2a2826"; ctx.fill();
-        ctx.save(); poly(tube); ctx.clip();
-        var lev = t < 0.55 ? 1 : 1 - sm(0.55, 0.85, t), ytop = TUBE.y - TUBE.ry + 2 * TUBE.ry * lev;
-        if (lev > 0.01) {
-          var a = FP(RC - 0.3, ytop), b = FP(RC + 0.3, ytop), g = ctx.createLinearGradient(0, a[1], 0, FP(RC, TUBE.y - TUBE.ry)[1]);
-          g.addColorStop(0, "#ffb347"); g.addColorStop(1, "#d9480f");
-          poly([a, b, FP(RC + 0.3, TUBE.y - TUBE.ry - 0.05), FP(RC - 0.3, TUBE.y - TUBE.ry - 0.05)]); ctx.fillStyle = g; ctx.fill();
-        }
-        if (t >= 0.85) {
-          /* 용암이 빠져나간 뒤의 평평한 바닥 */
-          var fy = TUBE.y - TUBE.ry * 0.62;
-          poly([FP(RC - 0.3, fy), FP(RC + 0.3, fy), FP(RC + 0.3, fy - 0.2), FP(RC - 0.3, fy - 0.2)]); ctx.fillStyle = "#8a8378"; ctx.fill();
-          var f1p = FP(RC - 0.3, fy), f2p = FP(RC + 0.3, fy); ctx.strokeStyle = "rgba(240,230,210,.7)"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(f1p[0], f1p[1]); ctx.lineTo(f2p[0], f2p[1]); ctx.stroke();
-        }
-        ctx.restore();
-        poly(tube); ctx.strokeStyle = "rgba(15,15,18,.85)"; ctx.lineWidth = 1.5; ctx.stroke();
+        fill(bands.hot, "#f2761f");
+        fill(bands.hot.map(function (q) { if (!q) return null; var h = q[1] - q[2]; return [q[0], q[1] - h * 0.3, q[2] + h * 0.35]; }), "rgba(255,196,90,.85)");
+        fill(bands.void, "#1f1a18");
+        fill(bands.void.map(function (q) { if (!q) return null; var h = q[1] - q[2]; return [q[0], q[2] + h * 0.35, q[2]]; }), "rgba(70,60,54,.75)");
+        fill(bands.roof, rgb(mix([240, 112, 34], [86, 82, 80], sm(0.22, 0.32, t))));
+        fill(bands.floor, "#3a3532");
       }
+      C3.tubeMid = function () { return [RC, (roofB(RC, Z0) + floorT(RC, Z0)) / 2]; };
       C3.renderStatic = function (rect) {
         backdrop(rect);
         var corners = [];
@@ -2183,14 +2214,12 @@
         cam.fit(rect, corners, -40, 40, 0.92, 0.56);
         var sh = cam.P(0, BOT, 0);
         ctx.save(); ctx.filter = "blur(" + Math.round(10 * TS) + "px)"; ctx.fillStyle = "rgba(30,40,60,.15)"; ctx.beginPath(); ctx.ellipse(sh[0], sh[1] + 8, 1.35 * cam.k * 0.8, Math.max(8, 0.5 * cam.k * Math.sin(cam.pitch * RAD)), 0, 0, 2 * Math.PI); ctx.fill(); ctx.restore();
-        /* 먼 블록부터 */
         var order = [[LXA, LXB, true, LC], [RXA, RXB, false, RC]];
         order.sort(function (a, b) { return cam.P(b[3], -0.3, 0)[2] - cam.P(a[3], -0.3, 0)[2]; });
         order.forEach(function (b) {
           block(b[0], b[1], b[2]);
-          if (b[2]) limeCave(); else { lavaTop(); lavaFace(); }
+          if (b[2]) limeCave(); else { lavaSurf(); lavaFace(); }
         });
-        /* 이름표 */
         var h1 = cam.P(LC, TOP + 0.2, 0), h2 = cam.P(RC, TOP + 0.2, 0);
         ctext("석회암 지대", h1[0], h1[1], { pill: true, bold: true, size: 14, align: "center" });
         ctext("화산 지대", h2[0], h2[1], { pill: true, bold: true, size: 14, align: "center" });
@@ -2201,33 +2230,50 @@
         p = FP(LXA + 0.2, YW - 0.07);
         ctext("땅속 물", p[0], p[1], { pill: true, size: 12, align: "center", color: "#1858a0" });
         var t = st.t, r = C3.limeR();
+        if (t > 0.03 && t < 0.5) { var ja = FP(JU[0], -0.12), jl = FP(LXA + 0.08, -0.02); callout("빗물이 틈을 따라 스며듦", ja[0], ja[1], jl[0], jl[1], { align: "center", color: "#1858a0" }); }
         if (t >= 0.25) {
           var a = FP(LC + r * 1.2, YW + r * 0.9), l = FP(LC + 0.18, YW + 0.32);
-          callout(t >= 0.85 ? "석회 동굴(종유석 · 석순)" : "석회 동굴", a[0], a[1], l[0], l[1], { align: "center" });
+          callout(t >= 0.85 ? "석회 동굴(종유석 · 석순)" : "석회 동굴(땅속 물이 녹임)", a[0], a[1], l[0], l[1], { align: "center" });
         }
-        if (t > 0.02 && t < 0.3) { var lv = cam.P(RC, TOP + 0.01, Z1 - (Z1 - Z0) * sm(0, 0.3, t) * 0.6), ll = FP(RC + 0.12, TOP + 0.36); callout("흐르는 용암", lv[0], lv[1], ll[0], ll[1], { align: "center" }); }
-        if (t >= 0.3) {
-          var ca = FP(RC + TUBE.rx * 0.9, TUBE.y + TUBE.ry * 0.5), cl = FP(RC + 0.2, -0.36);
-          callout(t >= 0.85 ? "용암 동굴(평평한 바닥)" : t >= 0.55 ? "용암이 빠져나감" : "굳은 겉 아래 흐르는 용암", ca[0], ca[1], cl[0], cl[1], { align: "center" });
+        if (t < 0.05) { var v0 = cam.P(RC, vground(RC) + 0.01, 0), v1 = FP(RC + 0.12, TOP + 0.36); callout("골짜기", v0[0], v0[1], v1[0], v1[1], { align: "center" }); }
+        else if (t < 0.25) { var lv = cam.P(RC, TOP + 0.03, Z1 - (Z1 - Z0) * sm(0, 0.25, t) * 0.6), ll = FP(RC + 0.12, TOP + 0.36); callout("골짜기를 따라 흐르는 용암", lv[0], lv[1], ll[0], ll[1], { align: "center", color: "#c2410c" }); }
+        if (t >= 0.25) {
+          var m = C3.tubeMid(), ca = FP(m[0] + TW * 0.6, m[1]), cl = FP(RC + 0.25, -0.36);
+          callout(t >= 0.75 ? "용암 동굴(빈 굴)" : t >= 0.5 ? "아래쪽 용암이 빠져나감" : "먼저 굳은 겉(천장) 아래 흐르는 용암", ca[0], ca[1], cl[0], cl[1], { align: "center" });
         }
       };
-      var phase = 0;
+      var phase = 0, drops = [];
+      for (var k = 0; k < 40; k++) drops.push([LXA + 0.05 + (LXB - LXA - 0.1) * rnd(k + 8100), Z0 + (Z1 - Z0) * rnd(k + 8200), rnd(k + 8300)]);
       C3.step = function (dt) { phase += dt / 1000; };
       C3.renderDynamic = function () {
         var t = st.t;
-        if (st.play && t < 0.85) {
-          /* 틈을 따라 스며드는 빗물 */
-          ctx.setLineDash([3, 9]); ctx.lineDashOffset = -phase * 26; ctx.strokeStyle = "rgba(40,120,220,.85)"; ctx.lineWidth = 2;
-          [LC - 0.28, LC + 0.24].forEach(function (u) { var a = FP(u, TOP - 0.02), b = FP(u, YW); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
+        if (RM) return;
+        if (st.play && t < 0.95) {
+          /* 석회암 지대에 내리는 비 */
+          ctx.strokeStyle = "rgba(52,120,200,.6)"; ctx.lineWidth = 1.3; ctx.lineCap = "round"; ctx.beginPath();
+          drops.forEach(function (d) { var f = frac(d[2] + phase * 0.9), y = TOP + 0.5 * (1 - f), a = cam.P(d[0], y, d[1]), b = cam.P(d[0], y + 0.05, d[1]); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); });
+          ctx.stroke(); ctx.lineCap = "butt";
+          /* 틈을 따라 스며드는 빗물 → 땅속 물로 흘러들어 동굴 쪽으로 */
+          ctx.setLineDash([3, 9]); ctx.lineDashOffset = -phase * 26; ctx.strokeStyle = "rgba(40,120,220,.9)"; ctx.lineWidth = 2;
+          JU.forEach(function (u) { var a = FP(u, TOP - 0.02), b = FP(u, YW); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
+          [[LXA + 0.04, LC - 0.12], [LXB - 0.04, LC + 0.12]].forEach(function (s) { var a = FP(s[0], YW - 0.04), b = FP(s[1], YW - 0.04); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); });
           ctx.setLineDash([]); ctx.lineDashOffset = 0;
         }
-        if (!RM && t > 0.02 && t < 0.55) {
-          /* 흐르는 용암의 반짝임: 뒤에서 앞으로 */
-          var reach = sm(0, 0.3, t), zf = Z1 - (Z1 - Z0) * reach;
-          ctx.setLineDash([6, 10]); ctx.lineDashOffset = -phase * 30; ctx.strokeStyle = "rgba(255,220,120,.85)"; ctx.lineWidth = 2;
-          var a = cam.P(RC, TOP + 0.006, Z1), b = cam.P(RC, TOP + 0.006, zf);
-          if (t < 0.3) { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+        /* 흐르는 용암: 윗면(굳기 전) · 단면 속(굳은 천장 아래) */
+        if (t > 0.01 && t < 0.3) {
+          ctx.setLineDash([6, 10]); ctx.lineDashOffset = -phase * 30; ctx.strokeStyle = "rgba(255,226,130," + (1 - sm(0.22, 0.3, t)).toFixed(3) + ")"; ctx.lineWidth = 2;
+          var zf = Math.max(Z0, Z1 + 0.05 - (Z1 - Z0 + 0.15) * sm(0, 0.25, t)), a2 = cam.P(RC, TOP + 0.035, Z1), b2 = cam.P(RC, TOP + 0.035, zf);
+          ctx.beginPath(); ctx.moveTo(a2[0], a2[1]); ctx.lineTo(b2[0], b2[1]); ctx.stroke();
           ctx.setLineDash([]); ctx.lineDashOffset = 0;
+        }
+        if (t > 0.25 && t < 0.78) {
+          var lvl = drainK();
+          for (var k2 = 0; k2 < 8; k2++) {
+            var u = frac(phase * 0.35 + k2 / 8), x = RC - TW * 0.8 + 1.6 * TW * rnd(k2 + 40), fl = floorT(x, Z0), rb = roofB(x, Z0), lv = rb - (rb - fl) * lvl;
+            if (lv - fl < 0.006) continue;
+            var y = fl + (lv - fl) * (0.3 + 0.4 * u), p = FP(x, y), rr = 3.5 * TS, gg = ctx.createRadialGradient(p[0], p[1], 0, p[0], p[1], rr);
+            gg.addColorStop(0, "rgba(255,248,210,.9)"); gg.addColorStop(1, "rgba(255,170,60,0)"); ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(p[0], p[1], rr, 0, 2 * Math.PI); ctx.fill();
+          }
         }
       };
       C3.hit = function () { return "rot"; };
@@ -2238,27 +2284,47 @@
        석회암 대지가 아주 오랫동안 녹으면 둘레가 낮아지고, 덜 녹은 부분이 가파른 봉우리로 남음. 낮아진 땅에 바닷물이 들어오면 할롱베이 같은 경관
        평지 높이 = 0.42 − 0.62 × t. 봉우리 k: 반지름 r_k, 꼭대기 = 0.42 − 0.07 × t × e_k(덜 녹는 정도에 따라 조금 낮아짐)
        봉우리 모양 = 평지 + (꼭대기 − 평지) × (1 − (d/r)^2.4)^0.35 (옆면이 가파르고 위가 둥긂). 높이 = max(평지, 봉우리들)
-       바닷물: 평지보다 0.07 높은 곳까지 물이 참. 블록 가로를 약 1km로 보고 높이는 1 = 400m로 읽음 */
+       바닷물: 평지보다 0.07 높은 곳까지 물이 참. 블록 가로를 약 1km로 보고 높이는 1 = 400m로 읽음
+       개편(11-02) 형성 기구: 0~0.3 비가 내리고 빗물이 틈(x, z = −0.48 · 0 · 0.48)을 따라 스며들어 틈이 만나는 곳에 돌리네
+         → 0.12~1 땅이 낮아짐(L = 시간을 0.12~1로 늘인 값, 평지 = 0.42 − 0.62L). 0.14부터 하천(x ≈ 0.02 + 0.07 sin(2.6z))이 봉우리 사이를 흐르며 녹이고 깎아 실어 감, 하천은 끝까지 흐름
+         「바닷물로」를 고르면 낮은 땅에 바닷물이 차 하천 대신 바다(할롱베이) */
     var TK = (function () {
       var st = { t: 0, play: false, sea: false };
       var cam = Cam(-30, 32), yaw0 = -30, pitch0 = 32;
-      var TOP0 = 0.42, BASEY = -0.5, TW = [];
+      var TOP0 = 0.42, BASEY = -0.5, TW = [], GAPS = [-0.48, 0, 0.48];
+      /* 하천: 봉우리 사이 골(x ≈ 0)을 따라 굽이쳐 흐름. 봉우리는 하천에서 비켜 둠 */
+      function rx(z) { return 0.02 + 0.07 * Math.sin(2.6 * z + 0.4); }
       (function () {
         var k = 0;
         for (var gi = 0; gi < 4; gi++) for (var gj = 0; gj < 4; gj++, k++) {
           if (rnd(k + 3100) < 0.18) continue;
           /* 완성본(10-19 개선): 봉우리가 블록 끝에 걸려 잘리지 않게 안쪽으로 */
           var rr = 0.11 + 0.08 * rnd(k + 3400);
-          TW.push({ x: clamp(-0.72 + gi * 0.48 + (rnd(k + 3200) - 0.5) * 0.26, -0.93 + rr, 0.93 - rr), z: clamp(-0.72 + gj * 0.48 + (rnd(k + 3300) - 0.5) * 0.26, -0.93 + rr, 0.93 - rr), r: rr, e: rnd(k + 3500) });
+          var w = { x: clamp(-0.72 + gi * 0.48 + (rnd(k + 3200) - 0.5) * 0.26, -0.93 + rr, 0.93 - rr), z: clamp(-0.72 + gj * 0.48 + (rnd(k + 3300) - 0.5) * 0.26, -0.93 + rr, 0.93 - rr), r: rr, e: rnd(k + 3500) };
+          var dx = w.x - rx(w.z); if (Math.abs(dx) < rr + 0.08) w.x = clamp(rx(w.z) + (dx < 0 ? -1 : 1) * (rr + 0.08), -0.93 + rr, 0.93 - rr);
+          TW.push(w);
         }
       })();
-      function plain() { return TOP0 - 0.62 * st.t; }
-      function seaY() { return plain() + 0.07; }
-      function topOf(w) { return TOP0 - 0.07 * st.t * w.e; }
-      /* 높이와 함께, 그 높이를 만든 봉우리의 가운데로부터의 비율 u(0 가운데 ~ 1 둘레)를 돌려줌. u는 색(절벽 · 숲)에 씀 */
+      /* 개편(11-02): 낮아지는 정도 L = 시간 0.12 ~ 1. 그 전(0 ~ 0.3)에는 빗물이 틈을 따라 스며들어 돌리네가 생김 */
+      function Lw() { return sm(0.12, 1, st.t); }
+      function plain() { return TOP0 - 0.62 * Lw(); }
+      /* 바다 높이는 그대로(다 낮아진 땅 + 0.07). 땅이 낮아질수록 바닷물이 차오름 */
+      function seaY() { return TOP0 - 0.62 + 0.07; }
+      function topOf(w) { return TOP0 - 0.07 * Lw() * w.e; }
+      function rivW() { return 0.045 + 0.035 * Lw(); }
+      function rivOn() { return st.t > 0.14 && !(st.sea && plain() < seaY()); }
+      function rivDepth() { return 0.045 * sm(0.14, 0.4, st.t); }
+      /* 틈이 만나는 곳의 돌리네(초기). 땅이 낮아지면 사라짐 */
+      function doline(x, z) {
+        var d0 = 0.06 * sm(0.03, 0.3, st.t) * (1 - sm(0.45, 0.8, st.t)), m = 0;
+        if (d0 <= 0) return 0;
+        for (var i = 0; i < 3; i++) for (var j = 0; j < 3; j++) { var dx = x - GAPS[i], dz = z - GAPS[j], q = (dx * dx + dz * dz) / 0.012; if (q < 1) m = Math.max(m, d0 * (1 - q) * (1 - q)); }
+        return m;
+      }
       var lastU = 2;
       function rawH(x, z) {
-        var p = plain(), h = p + 0.012 * Math.sin(4 * x + 1) * Math.cos(3.3 * z) + 0.006 * Math.sin(9 * x - 4 * z);
+        var p = plain(), h = p + 0.012 * Math.sin(4 * x + 1) * Math.cos(3.3 * z) + 0.006 * Math.sin(9 * x - 4 * z) - doline(x, z);
+        if (rivOn()) { var d = Math.abs(x - rx(z)) / (rivW() * 1.6); if (d < 1) h -= rivDepth() * (1 - d * d); }
         lastU = 2;
         for (var k = 0; k < TW.length; k++) {
           var w = TW[k], dx = x - w.x, dz = z - w.z, d2 = dx * dx + dz * dz;
@@ -2267,16 +2333,18 @@
         return h;
       }
       var RAW_ = 0;
-      function hf(x, z) { var h = rawH(x, z); RAW_ = h; return st.sea ? Math.max(h, seaY()) : h; }
-      var LIME = [200, 194, 180], FOREST = [104, 146, 82], FIELD = [176, 158, 104], SEA = [78, 146, 188];
+      function rivLv() { return plain() - rivDepth() + 0.016; }
+      function hf(x, z) { var h = rawH(x, z); RAW_ = h; if (st.sea) return Math.max(h, seaY()); if (rivOn() && Math.abs(x - rx(z)) < rivW() * 1.2) return Math.max(h, rivLv()); return h; }
+      var LIME = [200, 194, 180], FOREST = [104, 146, 82], FIELD = [176, 158, 104], SEA = [78, 146, 188], RIV = [74, 146, 210], PLAT = [150, 172, 104];
       function color(h, x, z) {
         rawH(x, z);
-        /* 봉우리 둘레 쪽(u가 큼)은 가파른 석회암 절벽, 가운데 위쪽은 숲 */
+        /* 봉우리 둘레 쪽(u가 큼)은 가파른 석회암 절벽, 가운데 위쪽은 숲. 아직 낮아지지 않은 대지는 풀밭 */
+        if (lastU > 1.5) return mix(PLAT, FIELD, sm(0.15, 0.4, st.t));
         return mix(FOREST, LIME, clamp((lastU - 0.55) / 0.25, 0, 1));
       }
-      /* 완성본(10-19 개선): 낮아진 땅 · 바닷물 경계를 층으로(봉우리 둘레 톱니), 격자 64 → 80 */
-      var surf = makeSurf({ nx: 80, nz: 80, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: [
-        { s: function () { return RAW_ - plain() - 0.03; }, c: function () { return FIELD; } },
+      var surf = makeSurf({ nx: 84, nz: 84, x0: -1, x1: 1, z0: -1, z1: 1, hf: hf, color: color, layers: [
+        { s: function () { return Lw() < 0.08 ? 1 : RAW_ - plain() - 0.03; }, c: function () { return FIELD; } },
+        { s: function (x, z) { return rivOn() ? Math.abs(x - rx(z)) - rivW() : 1; }, c: function () { return RIV; }, flat: true, line: "rgba(255,255,255,.6)" },
         { s: function () { return st.sea ? RAW_ - seaY() : 1; }, c: function () { return SEA; }, flat: true, line: "rgba(255,255,255,.7)" }
       ] });
       var T4 = { st: st, cam: cam, yaw0: yaw0, pitch0: pitch0 };
@@ -2285,17 +2353,20 @@
       T4.lod = function () { return surf.lod; };
       T4.skey = function () { return [st.t.toFixed(4), st.sea].join(","); };
       T4.plain = plain;
+      T4.lowM = function () { return 0.62 * Lw() * 400; };
       T4.towers = function () { var p = plain(); return TW.filter(function (w) { return topOf(w) - p > 0.15; }); };
       T4.highest = function () { var p = plain(); return TW.reduce(function (m, w) { return Math.max(m, topOf(w) - p); }, 0); };
-      T4.stage = function () { return st.t < 0.05 ? 0 : st.t < 0.38 ? 1 : st.sea ? 3 : 2; };
+      T4.stage = function () { return st.t < 0.05 ? 0 : st.t < 0.3 ? 1 : st.t < 0.62 ? 2 : st.sea && plain() < seaY() + 0.02 ? 4 : 3; };
       function wallPt(w, u, y) { return w === 0 ? [u, y, -1] : w === 1 ? [u, y, 1] : w === 2 ? [-1, y, u] : [1, y, u]; }
       function WP(w, u, y) { var q = wallPt(w, u, y); return cam.P(q[0], q[1], q[2]); }
+      /* 개편(11-02): 옆면은 카메라를 향할 때만(화면 위 감기는 방향으로 판정 — 원근에서도 정확) */
       function facing() {
-        var mid = cam.P(0, -0.2, 0)[2], out = [];
-        [[0, -0.2, -1], [0, -0.2, 1], [-1, -0.2, 0], [1, -0.2, 0]].forEach(function (c, w) { if (cam.P(c[0], c[1], c[2])[2] < mid) out.push(w); });
+        var out = [0, 1, 2, 3].filter(function (w) { return faceOn(WP(w, -1, 0), WP(w, 1, 0), WP(w, 1, BASEY), WP(w, -1, BASEY), w); });
         out.sort(function (a, b) { var A = wallPt(a, 0, -0.2), B = wallPt(b, 0, -0.2); return cam.P(B[0], B[1], B[2])[2] - cam.P(A[0], A[1], A[2])[2]; });
         return out;
       }
+      function gw() { return plain() - 0.07; }
+      var walls = [];
       function drawWall(w) {
         var ed = surf.edge(w), top = ed.map(function (n) { return [surf.px[n], surf.py[n]]; }), b0 = WP(w, -1, BASEY), b1 = WP(w, 1, BASEY);
         var outline = top.concat([[b1[0], b1[1]], [b0[0], b0[1]]]);
@@ -2304,14 +2375,35 @@
         for (var k = 0, y = TOP0 + 0.02; y > BASEY; y -= 0.07, k++) {
           poly([WP(w, -1, y), WP(w, 1, y), WP(w, 1, y - 0.07), WP(w, -1, y - 0.07)]); ctx.fillStyle = k % 2 ? "#cfc5ae" : "#dbd3c0"; ctx.fill();
         }
+        /* 땅속 물(지하수) */
+        var g1 = WP(w, -1, gw()), g2 = WP(w, 1, gw());
+        poly([g1, g2, b1, b0]); ctx.fillStyle = "rgba(61,143,214,.14)"; ctx.fill();
+        ctx.setLineDash([6, 5]); ctx.strokeStyle = "rgba(29,99,180,.7)"; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.moveTo(g1[0], g1[1]); ctx.lineTo(g2[0], g2[1]); ctx.stroke(); ctx.setLineDash([]);
+        /* 갈라진 틈(절리): 빗물이 스며들며 넓어짐 */
+        GAPS.forEach(function (u) {
+          var th = 0.004 + 0.012 * sm(0.03, 0.4, st.t), yt = TOP0 + 0.02, pts = [], pts2 = [];
+          for (var s = 0; s <= 10; s++) { var yy = yt + (BASEY - yt) * s / 10, hw = th * (1.4 - s / 10); pts.push(WP(w, u - hw, yy)); pts2.push(WP(w, u + hw, yy)); }
+          poly(pts.concat(pts2.reverse())); ctx.fillStyle = "rgba(93,80,66,.8)"; ctx.fill();
+        });
         if (st.sea) {
-          /* 옆면의 바닷물: 물 높이와 땅 사이 */
           var sy = seaY(), topW = [], botW = [];
           ed.forEach(function (n) { var raw = rawH(surf.wx[n], surf.wz[n]); topW.push(cam.P(surf.wx[n], sy, surf.wz[n])); botW.push(cam.P(surf.wx[n], Math.min(raw, sy), surf.wz[n])); });
           poly(topW.concat(botW.reverse())); ctx.fillStyle = "rgba(70,140,190,.75)"; ctx.fill();
         }
         ctx.restore();
         poly(outline); ctx.strokeStyle = "rgba(80,64,44,.5)"; ctx.lineWidth = 1; ctx.stroke();
+      }
+      /* 지표의 틈(초기): 땅이 낮아지면 사라짐 */
+      function surfJoints() {
+        var al = 0.7 * (1 - sm(0.25, 0.45, st.t)); if (al <= 0.02) return;
+        ctx.strokeStyle = "rgba(70,58,44," + al.toFixed(3) + ")"; ctx.lineWidth = 1.4 * TS;
+        GAPS.forEach(function (g) {
+          [0, 1].forEach(function (dir) {
+            ctx.beginPath(); var on = false;
+            for (var s = -0.98; s <= 0.98; s += 0.04) { var x = dir ? s : g, z = dir ? g : s; if (rawH(x, z) > plain() + 0.03) { on = false; continue; } var p = cam.P(x, hf(x, z) + 0.003, z); if (on) ctx.lineTo(p[0], p[1]); else { ctx.moveTo(p[0], p[1]); on = true; } }
+            ctx.stroke();
+          });
+        });
       }
       T4.renderStatic = function (rect) {
         backdrop(rect);
@@ -2322,31 +2414,50 @@
         ctx.save(); ctx.filter = "blur(" + Math.round(10 * TS) + "px)"; ctx.fillStyle = "rgba(30,40,60,.15)";
         ctx.beginPath(); ctx.ellipse(sh[0], sh[1] + 10, 1.25 * cam.k * 0.8, Math.max(8, 1.2 * cam.k * Math.sin(cam.pitch * RAD) * 0.75), 0, 0, 2 * Math.PI); ctx.fill(); ctx.restore();
         surf.draw(cam);
-        surf.trees(cam, { dens: 0.6, size: 0.028, broad: 0.35 });
-        facing().forEach(drawWall);
+        surfJoints();
+        surf.trees(cam, { dens: 0.6, size: 0.028, broad: 0.35, ok: function (x, z) { return rawH(x, z) > plain() + 0.05 || st.t < 0.1; } });
+        walls = facing();
+        walls.forEach(drawWall);
         /* 이름표 */
-        var t = st.t, p = plain();
-        if (t >= 0.3) {
+        var t = st.t, p = plain(), L = function (txt, x, z, dy, o) { var a = cam.P(x, hf(x, z) + 0.008, z), b = cam.P(x, hf(x, z) + dy, z); callout(txt, a[0], a[1], b[0], b[1], Object.assign({ align: "center" }, o || {})); };
+        if (t < 0.05) L("넓은 석회암 대지(땅속에 갈라진 틈)", 0.24, 0.24, 0.25);
+        else if (t < 0.32) { L("빗물이 틈을 따라 스며들어 녹임", GAPS[2], GAPS[0], 0.28, { color: "#1858a0" }); if (doline(GAPS[1], GAPS[1]) > 0.02) L("돌리네", GAPS[0], GAPS[2], 0.22); }
+        if (rivOn() && t > 0.2) { var zr = -0.55; L(t < 0.62 ? "하천(석회암을 녹이고 깎아 실어 감)" : "봉우리 사이를 흐르는 하천", rx(zr), zr, 0.3, { color: "#1858a0" }); }
+        if (t >= 0.45) {
           var hi = TW.slice().sort(function (a, b) { return (topOf(b) - p) * (b.r) - (topOf(a) - p) * (a.r); })[0], h0 = cam.P(hi.x, topOf(hi) + 0.01, hi.z), h1 = cam.P(hi.x, topOf(hi) + 0.3, hi.z);
-          callout("탑처럼 솟은 봉우리(탑 카르스트)", h0[0], h0[1], h1[0], h1[1], { align: "center" });
+          callout("덜 녹아 남은 봉우리(탑 카르스트)", h0[0], h0[1], h1[0], h1[1], { align: "center" });
         }
-        if (t >= 0.2) {
-          /* 봉우리 사이의 낮은 곳 하나 */
-          /* 완성본(10-19 개선): 봉우리에서 떨어진 곳 가운데 가장 앞쪽(가려지지 않는 곳)을 고름 */
+        if (t >= 0.3) {
           var best = null, bd = 1e9;
           for (var gx2 = -0.85; gx2 <= 0.86; gx2 += 0.17) for (var gz2 = -0.85; gz2 <= 0.86; gz2 += 0.17) {
             if (!TW.every(function (w) { return Math.hypot(gx2 - w.x, gz2 - w.z) > w.r + 0.1; })) continue;
+            if (Math.abs(gx2 - rx(gz2)) < 0.15) continue;
             var dd = cam.P(gx2, 0, gz2)[2]; if (dd < bd) { bd = dd; best = [gx2, gz2]; }
           }
-          if (best) {
-            var l0 = cam.P(best[0], hf(best[0], best[1]) + 0.005, best[1]), l1 = cam.P(-0.85, TOP0 + 0.22, -0.9);
-            callout(st.sea ? "바닷물이 들어온 낮은 땅" : "녹아 낮아진 땅", l0[0], l0[1], l1[0], l1[1], { align: "center", color: st.sea ? "#1858a0" : "#1d2126" });
-          }
+          if (best) L(st.sea ? "바닷물이 들어온 낮은 땅" : "녹아 낮아진 땅", best[0], best[1], 0.25, { color: st.sea ? "#1858a0" : "#1d2126" });
         }
-        if (t < 0.05) { var c0 = cam.P(0, TOP0, 0), c1 = cam.P(0, TOP0 + 0.25, 0); callout("넓은 석회암 대지", c0[0], c0[1], c1[0], c1[1], { align: "center" }); }
       };
-      T4.step = function () {};
-      T4.renderDynamic = function () {};
+      /* 빗방울 · 하천 흐름 · 틈을 따라 스며드는 물 */
+      var drops = [], phase = 0;
+      for (var k = 0; k < 60; k++) drops.push([-0.95 + 1.9 * rnd(k + 7100), -0.95 + 1.9 * rnd(k + 7200), rnd(k + 7300)]);
+      T4.step = function (dt) { phase += dt / 1000; };
+      T4.renderDynamic = function () {
+        if (RM) return;
+        if (st.play) {
+          ctx.strokeStyle = "rgba(52,120,200,.55)"; ctx.lineWidth = 1.3; ctx.lineCap = "round"; ctx.beginPath();
+          drops.forEach(function (d) { var f = frac(d[2] + phase * 0.9), gy = hf(d[0], d[1]), y = gy + 0.55 * (1 - f), a = cam.P(d[0], y, d[1]), b = cam.P(d[0], y + 0.05, d[1]); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); });
+          ctx.stroke(); ctx.lineCap = "butt";
+          /* 옆면의 틈을 따라 스며드는 물 */
+          ctx.setLineDash([3, 9]); ctx.lineDashOffset = -phase * 26; ctx.strokeStyle = "rgba(40,120,220,.85)"; ctx.lineWidth = 2;
+          walls.forEach(function (w) { GAPS.forEach(function (u) { var a = WP(w, u, Math.min(TOP0, plain() + 0.01)), b = WP(w, u, gw()); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }); });
+          ctx.setLineDash([]); ctx.lineDashOffset = 0;
+        }
+        if (rivOn()) {
+          ctx.setLineDash([5, 10]); ctx.lineDashOffset = -phase * 28; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = 1.6; ctx.beginPath();
+          for (var z = 0.98, s0 = true; z >= -0.98; z -= 0.04) { var x = rx(z), q = cam.P(x, rivLv() + 0.003, z); if (s0) { ctx.moveTo(q[0], q[1]); s0 = false; } else ctx.lineTo(q[0], q[1]); }
+          ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
+        }
+      };
       T4.hit = function () { return "rot"; };
       return T4;
     })();
@@ -2490,19 +2601,20 @@
     }
     function stageT() {
       return [
-        ["넓은 석회암 대지다", "석회암이 아주 오랫동안 빗물에 녹는 모습을 본다. 「재생」을 누르거나 시간 막대를 옮겨 본다.", "처음"],
-        ["둘레가 녹아 낮아진다", "석회암은 갈라진 틈과 둘레부터 녹아 낮아지고, 덜 녹은 부분이 남는다.", "낮아짐"],
-        ["봉우리가 탑처럼 솟아 남았다", "둘레가 깊이 녹아 낮아지면서 남은 석회암이 가파른 봉우리가 되었다. 이런 지형을 탑 카르스트라고 한다.", "탑 카르스트"],
-        ["바닷물이 들어와 봉우리만 남았다", "녹아 낮아진 땅에 바닷물이 들어오면 바다 위로 석회암 봉우리가 솟은 경관이 된다. 베트남 할롱베이가 대표적이다.", "할롱베이"]
+        ["넓은 석회암 대지다", "땅속 석회암에는 갈라진 틈이 있다. 덥고 비가 많이 오는 곳에서 석회암이 아주 오랫동안 녹는 모습을 본다. 「재생」을 누른다.", "처음"],
+        ["빗물이 틈을 따라 스며들어 석회암을 녹인다", "이산화 탄소가 녹은 빗물이 갈라진 틈을 따라 스며들며 석회암을 녹인다. 틈이 만나는 곳은 더 많이 녹아 돌리네가 생긴다.", "빗물이 녹임"],
+        ["하천이 낮은 곳을 녹이고 깎아 실어 간다", "낮아진 곳을 따라 하천이 흐르며 둘레의 석회암을 녹이고 깎아 실어 간다. 틈이 많아 잘 녹는 곳은 빨리 낮아지고, 틈이 적고 단단한 곳은 남는다.", "하천이 깎음"],
+        ["덜 녹은 석회암이 탑처럼 솟아 남았다", "둘레가 깊이 낮아지면서 남은 석회암이 가파른 봉우리가 되었다. 이런 지형을 탑 카르스트라고 한다. 봉우리 사이 낮은 땅에는 하천이 흐른다(중국 구이린).", "탑 카르스트"],
+        ["낮은 땅에 바닷물이 차 봉우리만 바다 위에 솟았다", "녹아 낮아진 땅에 바닷물이 들어오면 바다 위로 석회암 봉우리가 솟은 경관이 된다. 베트남 할롱베이가 대표적이다.", "할롱베이"]
       ][TK.stage()];
     }
     function stageX() {
       return [
         ["두 지역의 땅속을 비교한다", "왼쪽은 석회암 지대, 오른쪽은 화산 지대다. 「재생」을 누르거나 시간 막대를 옮겨 본다.", "처음"],
-        ["빗물이 스며들고, 용암이 흐른다", "석회암 지대에서는 빗물이 갈라진 틈으로 스며들어 석회암을 녹인다. 화산 지대에서는 뜨거운 용암이 땅 위를 흘러간다.", "스며듦 · 흐름"],
-        ["석회암은 녹고, 용암은 겉부터 굳는다", "석회암은 녹은 만큼 빈 공간이 넓어진다. 흐르는 용암은 공기에 닿는 겉이 먼저 식어 굳고, 그 아래로 속의 용암이 계속 흐른다.", "녹음 · 굳음"],
-        ["동굴이 커지고, 속의 용암이 빠져나간다", "석회 동굴은 땅속 물 가까이에서 점점 커진다. 굳은 겉 아래의 용암이 빠져나가면 빈 굴이 남는다.", "커짐 · 빠져나감"],
-        ["두 동굴이 생겼다", "석회 동굴은 석회암이 물에 녹아 생겨 종유석과 석순이 자란다. 용암 동굴은 용암이 빠져나가 생겨 바닥이 평평하고 땅 겉 가까이에 있다.", "완성"]
+        ["비가 스며들고, 골짜기로 용암이 흐른다", "석회암 지대에서는 비가 내리고 빗물이 갈라진 틈을 따라 스며들어 땅속 물로 흘러든다. 화산 지대에서는 뜨거운 용암이 골짜기를 따라 흐른다.", "스며듦 · 흐름"],
+        ["석회암은 녹고, 용암은 위층부터 굳는다", "땅속 물이 석회암을 녹여 빈 공간이 넓어진다. 흐르는 용암은 공기와 닿는 위층이 먼저 식어 굳어 천장이 되고, 그 아래로 용암이 계속 흐른다.", "녹음 · 굳음"],
+        ["동굴이 커지고, 아래쪽 용암이 빠져나간다", "석회 동굴은 땅속 물 가까이에서 점점 커진다. 굳은 천장 아래의 용암이 비탈 아래쪽으로 빠져나가며 그 자리가 빈다.", "커짐 · 빠져나감"],
+        ["두 동굴이 생겼다", "석회 동굴은 땅속 깊은 곳에서 물이 석회암을 녹여 생기고(수만 년 이상) 종유석과 석순이 자란다. 용암 동굴은 땅 겉 가까이에서 용암이 빠져나가 생기며(비교적 짧은 시간) 바닥이 평평하다.", "완성"]
       ][CMP.stage()];
     }
     function pct(v) { return Math.round(clamp(v, 0, 1) * 100) + "%"; }
@@ -2549,18 +2661,18 @@
         var hiT = TK.highest();
         setText(elReadH, "읽은 값 · 석회암 대지");
         /* 품질(10-20): 단위 없는 숫자(0~100) 대신 높이 눈금(1 = 400m)으로 녹아 낮아진 깊이를 m로 */
-        stat(0, "녹아 낮아진 깊이", TK.st.t > 0.005 ? "약 " + Math.round(0.62 * TK.st.t * 400 / 10) * 10 + "m" : "아직 없음");
+        stat(0, "녹아 낮아진 깊이", TK.lowM() > 4 ? "약 " + Math.round(TK.lowM() / 10) * 10 + "m" : "아직 없음");
         stat(1, "솟은 봉우리", TK.towers().length + "개");
         stat(2, "가장 높은 봉우리(둘레 땅에서)", hiT > 0.05 ? "약 " + Math.round(hiT * 400 / 10) * 10 + "m" : "없음");
-        stat(3, "경관", ["석회암 대지", "봉우리가 드러남", "탑 카르스트", "바다 위 봉우리"][TK.stage()]);
+        stat(3, "경관", ["석회암 대지", "돌리네가 생김", "봉우리가 드러남", "탑 카르스트(하천)", "바다 위 봉우리"][TK.stage()]);
         result(s[0], s[1], "");
         setText(elNote, "블록 가로를 약 1km로 본 예시 모형이다. 탑 카르스트는 석회암이 아주 오랫동안 녹아야 생긴다.");
       } else if (view === 3) {
         s = stageX();
         var ks = CMP.stage();
         setText(elReadH, "읽은 값 · 두 동굴");
-        stat(0, "석회 동굴", ["처음", "틈으로 스며듦", "녹아 넓어짐", "동굴이 커짐", "종유석 · 석순"][ks]);
-        stat(1, "용암 동굴", ["처음", "용암이 흐름", "겉이 굳음", "속이 빠져나감", "빈 굴 · 평평한 바닥"][ks]);
+        stat(0, "석회 동굴", ["처음", "비가 틈으로 스며듦", "땅속 물이 녹임", "동굴이 커짐", "종유석 · 석순"][ks]);
+        stat(1, "용암 동굴", ["처음", "골짜기로 용암이 흐름", "위층부터 굳음", "아래쪽 용암이 빠져나감", "빈 굴 · 평평한 바닥"][ks]);
         stat(2, "석회 동굴이 생긴 곳", "땅속 물 가까이");
         stat(3, "용암 동굴이 생긴 곳", "땅 겉 가까이");
         result(s[0], s[1], "");
@@ -2673,11 +2785,11 @@
       updStages();
     }
     /* 개편(10-26): 재생 단계 — 보기마다 모형 시간 경계(1단계, 2단계, …). 단계 단추는 그 단계 처음부터 끝까지만 재생하고 멈춤 */
-    var STGV = {1: [0, 0.33, 1], 2: [0, 0.77, 0.91, 1], 3: [0, 0.3, 0.55, 0.85, 1], 4: [0, 0.38, 1]}, stopAt = null, stgSel = -1, stgBtns = null;
+    var STGV = {1: [0, 0.33, 1], 2: [0, 0.77, 0.91, 1], 3: [0, 0.25, 0.5, 0.75, 1], 4: [0, 0.3, 0.62, 1]}, stopAt = null, stgSel = -1, stgBtns = null;
     /* 업그레이드(10-29): 무대 왼쪽 위 「N단계 · 이름」(예시의 「1단계 · 도시 형성」처럼). 표지 · 확인 문제에서는 제목 줄째 숨음 */
     var hudEl = $(".ks-hud");
     function hud(k, nm) { if (!hudEl) return; var tx = k >= 0 && nm ? (k + 1) + "단계 · " + nm : ""; if (hudEl.textContent !== tx) hudEl.textContent = tx; if (hudEl.hidden === !!tx) hudEl.hidden = !tx; }
-    var STGN = {"1": ["스며듦", "돌리네"], "2": ["자람", "하나 이어짐", "둘 이어짐"], "3": ["스며듦", "녹음 · 굳음", "커짐", "완성"], "4": ["낮아짐", "탑 카르스트"]}, STGNS = {};
+    var STGN = {"1": ["스며듦", "돌리네"], "2": ["자람", "하나 이어짐", "둘 이어짐"], "3": ["스며듦 · 흐름", "녹음 · 굳음", "커짐 · 빠져나감", "완성"], "4": ["빗물이 녹임", "하천이 깎음", "탑 카르스트"]}, STGNS = {};
     function stgName(v, k) { var S = SCENES[curScene], L = (S && String(S.view) === String(v) && STGNS[curScene]) || STGN[v] || []; return L[k] || ((k + 1) + "단계"); }
     function updStages() {
       if (!stgBtns) { stgBtns = {}; Object.keys(STGV).forEach(function (v) { var el = $(".ks-stages[data-for=\"" + v + "\"]"), b = STGV[v]; if (!el) return; el.style.gridTemplateColumns = "repeat(" + (b.length - 1) + ",minmax(0,1fr))"; stgBtns[v] = b.slice(0, -1).map(function (x, k) { var bt = E("button", "ks-stg", el, (k + 1) + "단계"); bt.type = "button"; bt.addEventListener("click", function () { playStage(k); }); return bt; }); }); }

@@ -574,10 +574,10 @@
     <div class="ar-covin">
       <p class="ar-coveye">중학 사회 ① · 대륙별 자연환경</p>
       <p class="ar-covt">건조 지형</p>
-      <p class="ar-covs">비가 적게 오는 건조한 곳에서는 바람과 가끔 내리는 비가 땅의 모습을 만든다. 모래 언덕 · 버섯 바위 · 선상지 같은 건조 지형과 사막화를 3D 모형으로 살펴본다.</p>
+      <p class="ar-covs">비가 적게 오는 건조한 곳에서는 바람과 가끔 내리는 큰비가 땅의 모습을 만든다. 사구 · 버섯바위 · 와디 · 선상지 같은 건조 지형이 처음부터 완성되기까지 어떻게 생기는지 3D 모형으로 살펴본다.</p>
       <div class="ar-covl">
         <button type="button" class="ar-covc" data-go="dune"><b class="ar-covn">1</b>바람이 만든 지형</button>
-        <button type="button" class="ar-covc" data-go="rain"><b class="ar-covn">2</b>물이 만든 지형</button>
+        <button type="button" class="ar-covc" data-go="wadi"><b class="ar-covn">2</b>물이 만든 지형</button>
         <button type="button" class="ar-covc" data-go="desert"><b class="ar-covn">3</b>사막화와 생활</button>
       </div>
       <button type="button" class="ar-btn main ar-covgo" data-go="dune">바람이 만든 지형부터 시작한다</button>
@@ -639,9 +639,14 @@
     <nav class="ar-scr ar-toc" data-scr="home" aria-label="건조 지형 목차">
       <p class="ar-toch">index</p>
       <p class="ar-tocg"><span class="ar-tocn">1</span>바람이 만든 지형</p>
-      <button type="button" class="ar-toci sub" data-go="dune"><span class="ar-tocn">1-1</span><span class="ar-toct">모래 언덕</span><span class="ar-arr" aria-hidden="true">›</span></button>
-      <button type="button" class="ar-toci sub" data-go="rock"><span class="ar-tocn">1-2</span><span class="ar-toct">버섯 바위 · 오아시스</span><span class="ar-arr" aria-hidden="true">›</span></button>
-      <button type="button" class="ar-toci" data-go="rain"><span class="ar-tocn">2</span><span class="ar-toct">물이 만든 지형</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="ar-toci sub" data-go="dune"><span class="ar-tocn">1-1</span><span class="ar-toct">사구</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="ar-toci sub" data-go="mush"><span class="ar-tocn">1-2</span><span class="ar-toct">버섯바위</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="ar-toci sub" data-go="vent"><span class="ar-tocn">1-3</span><span class="ar-toct">삼릉석</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="ar-toci sub" data-go="pave"><span class="ar-tocn">1-4</span><span class="ar-toct">사막포도</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <p class="ar-tocg"><span class="ar-tocn">2</span>물이 만든 지형</p>
+      <button type="button" class="ar-toci sub" data-go="wadi"><span class="ar-tocn">2-1</span><span class="ar-toct">와디</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="ar-toci sub" data-go="playa"><span class="ar-tocn">2-2</span><span class="ar-toct">플라야</span><span class="ar-arr" aria-hidden="true">›</span></button>
+      <button type="button" class="ar-toci sub" data-go="fan"><span class="ar-tocn">2-3</span><span class="ar-toct">선상지 · 바하다</span><span class="ar-arr" aria-hidden="true">›</span></button>
       <button type="button" class="ar-toci" data-go="desert"><span class="ar-tocn">3</span><span class="ar-toct">사막화와 생활</span><span class="ar-arr" aria-hidden="true">›</span></button>
       <button type="button" class="ar-toci quiz" data-go="quiz"><span class="ar-tocn">?</span><span class="ar-toct">확인 문제</span><span class="ar-arr" aria-hidden="true">›</span></button>
     </nav>
@@ -655,25 +660,6 @@
           <span class="ar-zbtns"><button type="button" class="ar-mini ar-zin" aria-label="확대">＋</button><button type="button" class="ar-mini ar-zout" aria-label="축소">－</button><button type="button" class="ar-mini ar-resetview">처음 시점으로</button></span>
         </div>
       <div class="ar-vctl" data-for="1">
-        <span class="ar-sub">바람이 불어오는 쪽</span>
-        <div class="ar-seg four ar-dirseg" role="group" aria-label="바람이 불어오는 쪽">
-          <button type="button" class="ar-segb" data-dir="N" aria-pressed="false">북쪽</button>
-          <button type="button" class="ar-segb" data-dir="E" aria-pressed="false">동쪽</button>
-          <button type="button" class="ar-segb" data-dir="S" aria-pressed="false">남쪽</button>
-          <button type="button" class="ar-segb" data-dir="W" aria-pressed="true">서쪽</button>
-        </div>
-        <div class="ar-rangerow">
-          <input class="ar-range ar-angrange" type="range" min="0" max="355" step="5" value="270" aria-label="바람이 불어오는 쪽(북쪽 0°에서 시계 방향)">
-          <span class="ar-rv ar-angval"></span>
-        </div>
-        <div class="ar-line2">
-          <span class="ar-sub">바람 세기</span>
-          <div class="ar-seg ar-windseg" role="group" aria-label="바람 세기">
-            <button type="button" class="ar-segb" data-wind="1" aria-pressed="false">약함</button>
-            <button type="button" class="ar-segb" data-wind="2" aria-pressed="true">보통</button>
-            <button type="button" class="ar-segb" data-wind="3" aria-pressed="false">강함</button>
-          </div>
-        </div>
         <div class="ar-line2">
           <span class="ar-sub">모래 양</span>
           <div class="ar-seg two ar-sandseg" role="group" aria-label="모래 양">
@@ -681,41 +667,9 @@
             <button type="button" class="ar-segb" data-sand="many" aria-pressed="false">많음</button>
           </div>
         </div>
-        <div class="ar-line2">
-          <span class="ar-sub">사막을 지나는 강</span>
-          <div class="ar-seg two ar-riverseg" role="group" aria-label="사막을 지나는 강">
-            <button type="button" class="ar-segb" data-river="0" aria-pressed="true">없음</button>
-            <button type="button" class="ar-segb" data-river="1" aria-pressed="false">외래 하천</button>
-          </div>
-        </div>
-        <span class="ar-sub">단면 자르는 위치</span>
-        <div class="ar-rangerow">
-          <input class="ar-range ar-cutr" data-for="1" type="range" min="0" max="100" step="1" value="0" aria-label="블록을 앞에서부터 자르는 위치(0 = 자르지 않음, 100 = 가운데)">
-          <span class="ar-rv ar-cutv" data-for="1">자르지 않음</span>
-        </div>
-        <p class="ar-hint2">모래 언덕을 잘라 보면 바람 맞는 쪽은 완만하고 반대쪽은 가파른 단면을 볼 수 있다.</p>
+        <p class="ar-hint2">모래가 적으면 초승달 모양 사구(바르한), 많으면 바람과 직각으로 길게 이어진 사구(횡사구)가 된다.</p>
       </div>
-
-      <div class="ar-vctl ar-off" data-for="2">
-        <div class="ar-line2">
-          <span class="ar-sub">비의 양</span>
-          <div class="ar-seg ar-rainseg" role="group" aria-label="비의 양">
-            <button type="button" class="ar-segb" data-rain="1" aria-pressed="false">조금</button>
-            <button type="button" class="ar-segb" data-rain="2" aria-pressed="true">보통</button>
-            <button type="button" class="ar-segb" data-rain="3" aria-pressed="false">큰비</button>
-          </div>
-        </div>
-        <div class="ar-line2">
-          <span class="ar-sub">이런 비가<br>온 횟수</span>
-          <div class="ar-seg ar-yrsseg" role="group" aria-label="이런 비가 온 횟수">
-            <button type="button" class="ar-segb" data-yrs="1" aria-pressed="true">한 번</button>
-            <button type="button" class="ar-segb" data-yrs="10" aria-pressed="false">10번</button>
-            <button type="button" class="ar-segb" data-yrs="50" aria-pressed="false">50번</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="ar-vctl ar-off" data-for="3">
+      <div class="ar-vctl ar-off" data-for="8">
         <div class="ar-line2">
           <span class="ar-sub">비</span>
           <div class="ar-seg two ar-dryseg" role="group" aria-label="비">
@@ -758,6 +712,7 @@
           <input class="ar-range ar-trange" data-for="1" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
           <span class="ar-rv ar-tval" data-for="1"></span>
         </div>
+        <div class="ar-stages" data-for="1" role="group" aria-label="재생 단계"></div>
       </section>
       <section class="ar-card ar-vctl ar-playcard ar-off" data-for="2">
         <h3 class="ar-h">재생</h3>
@@ -766,7 +721,7 @@
           <button type="button" class="ar-btn ar-reset" data-for="2">처음으로</button>
         </div>
         <div class="ar-rangerow">
-          <input class="ar-range ar-trange" data-for="2" type="range" min="0" max="100" step="1" value="0" aria-label="비가 온 뒤 흐른 시간">
+          <input class="ar-range ar-trange" data-for="2" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
           <span class="ar-rv ar-tval" data-for="2"></span>
         </div>
         <div class="ar-stages" data-for="2" role="group" aria-label="재생 단계"></div>
@@ -780,6 +735,66 @@
         <div class="ar-rangerow">
           <input class="ar-range ar-trange" data-for="3" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
           <span class="ar-rv ar-tval" data-for="3"></span>
+        </div>
+        <div class="ar-stages" data-for="3" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="ar-card ar-vctl ar-playcard ar-off" data-for="4">
+        <h3 class="ar-h">재생</h3>
+        <div class="ar-row ar-prow">
+          <button type="button" class="ar-btn main ar-play" data-for="4" aria-label="재생">재생</button>
+          <button type="button" class="ar-btn ar-reset" data-for="4">처음으로</button>
+        </div>
+        <div class="ar-rangerow">
+          <input class="ar-range ar-trange" data-for="4" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="ar-rv ar-tval" data-for="4"></span>
+        </div>
+        <div class="ar-stages" data-for="4" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="ar-card ar-vctl ar-playcard ar-off" data-for="5">
+        <h3 class="ar-h">재생</h3>
+        <div class="ar-row ar-prow">
+          <button type="button" class="ar-btn main ar-play" data-for="5" aria-label="재생">재생</button>
+          <button type="button" class="ar-btn ar-reset" data-for="5">처음으로</button>
+        </div>
+        <div class="ar-rangerow">
+          <input class="ar-range ar-trange" data-for="5" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="ar-rv ar-tval" data-for="5"></span>
+        </div>
+        <div class="ar-stages" data-for="5" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="ar-card ar-vctl ar-playcard ar-off" data-for="6">
+        <h3 class="ar-h">재생</h3>
+        <div class="ar-row ar-prow">
+          <button type="button" class="ar-btn main ar-play" data-for="6" aria-label="재생">재생</button>
+          <button type="button" class="ar-btn ar-reset" data-for="6">처음으로</button>
+        </div>
+        <div class="ar-rangerow">
+          <input class="ar-range ar-trange" data-for="6" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="ar-rv ar-tval" data-for="6"></span>
+        </div>
+        <div class="ar-stages" data-for="6" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="ar-card ar-vctl ar-playcard ar-off" data-for="7">
+        <h3 class="ar-h">재생</h3>
+        <div class="ar-row ar-prow">
+          <button type="button" class="ar-btn main ar-play" data-for="7" aria-label="재생">재생</button>
+          <button type="button" class="ar-btn ar-reset" data-for="7">처음으로</button>
+        </div>
+        <div class="ar-rangerow">
+          <input class="ar-range ar-trange" data-for="7" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대">
+          <span class="ar-rv ar-tval" data-for="7"></span>
+        </div>
+        <div class="ar-stages" data-for="7" role="group" aria-label="재생 단계"></div>
+      </section>
+      <section class="ar-card ar-vctl ar-playcard ar-off" data-for="8">
+        <h3 class="ar-h">재생</h3>
+        <div class="ar-row ar-prow">
+          <button type="button" class="ar-btn main ar-play" data-for="8" aria-label="재생">재생</button>
+          <button type="button" class="ar-btn ar-reset" data-for="8">처음으로</button>
+        </div>
+        <div class="ar-rangerow">
+          <input class="ar-range ar-trange" data-for="8" type="range" min="0" max="100" step="1" value="0" aria-label="시간 막대(30년)">
+          <span class="ar-rv ar-tval" data-for="8"></span>
         </div>
       </section>
 
@@ -805,14 +820,18 @@
       <p class="ar-p">건조 지역은 비가 적고 증발이 많아 풀과 나무가 잘 자라지 못한다. 그래서 땅이 드러나 바람과 드물게 내리는 큰비가 지형을 만든다.</p>
       <p class="ar-p ar-use"></p>
       <div class="ar-more">
-        <p class="ar-mterm">바람이 깎은 지형</p>
-        <p class="ar-mdesc">모래를 실은 바람이 바위 아래쪽을 깎아 버섯 모양 바위가 되고, 여러 방향에서 깎인 돌은 모서리가 날카로운 삼릉석이 된다. 고운 흙이 날아가고 자갈만 남은 땅을 사막 포도(자갈 사막)라고 한다.</p>
-        <p class="ar-mterm">탁자 모양 언덕(메사 · 뷰트)</p>
-        <p class="ar-mdesc">수평으로 쌓인 지층이 오랫동안 깎일 때 단단한 윗층이 남아 꼭대기가 평평한 언덕이 된다. 미국 그랜드 캐니언 주변 고원에서 볼 수 있다.</p>
-        <p class="ar-mterm">우유니 소금 사막</p>
-        <p class="ar-mdesc">원래 바다였던 곳이 솟아오른 뒤 바닷물이 증발해 소금이 남은 곳이다. 우기에 빗물이 얕게 고이면 하늘을 비춰 「세상에서 가장 큰 거울」이라고도 불린다.</p>
-        <p class="ar-mterm">바닷가의 모래 언덕(해안 사구)</p>
-        <p class="ar-mdesc">사막이 아니어도 바닷바람이 모래를 쌓아 모래 언덕이 생긴다. 피지의 시가토카 사구가 그 예이다.</p>
+        <p class="ar-mterm" data-k="dune">사구의 종류</p>
+        <p class="ar-mdesc" data-k="dune">모래가 적고 바람 방향이 일정하면 초승달 모양 사구(바르한), 모래가 많으면 바람과 직각으로 이어진 횡사구, 바람이 두 방향에서 불면 바람과 나란히 길게 뻗은 사구가 생긴다. 바닷가에서도 바닷바람이 모래를 쌓아 해안 사구가 생긴다.</p>
+        <p class="ar-mterm" data-k="mush vent pave">바람이 깎은 지형</p>
+        <p class="ar-mdesc" data-k="mush vent pave">모래를 실은 바람이 바위와 돌을 사포처럼 깎는다. 바위 아래쪽이 깎이면 버섯바위, 돌이 여러 방향에서 깎이면 삼릉석이 된다. 고운 흙이 날아가고 자갈만 남은 땅은 사막포도(자갈 사막)라고 한다.</p>
+        <p class="ar-mterm" data-k="wadi">와디</p>
+        <p class="ar-mdesc" data-k="wadi">평소에는 물이 흐르지 않다가 큰비가 올 때만 물이 흐르는 마른 골짜기다. 아랍어로 「골짜기」라는 뜻이며, 아라비아반도와 북아프리카에 많다.</p>
+        <p class="ar-mterm" data-k="playa">플라야 · 소금 사막</p>
+        <p class="ar-mdesc" data-k="playa">물이 바다로 빠져나가지 못하는 분지에서 호수가 생겼다 마르기를 되풀이하며 생긴 평평한 바닥이다. 우유니 소금 사막은 원래 호수였던 곳이 말라 소금이 남은 곳으로, 우기에 빗물이 얕게 고이면 하늘을 비춰 「세상에서 가장 큰 거울」이라고도 불린다.</p>
+        <p class="ar-mterm" data-k="fan">선상지와 바하다</p>
+        <p class="ar-mdesc" data-k="fan">골짜기 출구에 부채 모양으로 쌓인 땅이 선상지, 이웃한 선상지가 이어진 산기슭의 완만한 비탈이 바하다다. 선상지는 건조한 곳뿐 아니라 습윤한 곳의 산기슭에도 생긴다.</p>
+        <p class="ar-mterm" data-k="desert">오아시스와 사막화</p>
+        <p class="ar-mdesc" data-k="desert">오아시스는 사막에서 땅속 물이 솟거나 고인 곳으로, 마을이 생기고 대추야자 · 밀 등을 기른다. 사막 가장자리에서는 가뭄과 지나친 땅 이용으로 사막이 넓어지는 사막화가 일어난다.</p>
       </div>
       </details>
       <button type="button" class="ar-btn ar-snap">지금 화면을 그림(PNG)으로 저장</button>
@@ -841,54 +860,81 @@
 
     /* 사례 장소(위경도는 대략): 중학 사회 ① 44 · 68 · 69 · 74 · 88쪽 */
     var PLACES = [
-      { id: "sh", name: "사하라 사막", lon: 12, lat: 24, dx: 0, dy: -5, anchor: "middle", k: [1, 2], text: "사하라 사막: 아프리카 북부에 펼쳐진 세계에서 가장 넓은 사막으로, 모래 언덕이 바다처럼 이어진 곳이 많다." },
-      { id: "rk", name: "룹알할리 사막", lon: 50, lat: 20, dx: 4, dy: 4, anchor: "start", k: [1], text: "룹알할리 사막: 아라비아반도 남쪽의 넓은 모래 사막으로, 큰 모래 언덕이 줄지어 있다." },
-      { id: "gb", name: "고비 사막", lon: 105, lat: 43, dx: 0, dy: -5, anchor: "middle", k: [1], text: "고비 사막: 몽골과 중국에 걸친 사막으로, 모래보다 자갈과 돌이 덮인 땅이 넓다." },
-      { id: "mo", name: "모로코의 오아시스", lon: -5, lat: 31, dx: -4, dy: -3, anchor: "end", k: [1], text: "모로코의 오아시스: 오아시스의 물을 이용해 밀, 대추야자 등을 기르는 오아시스 농업이 이루어진다." },
-      { id: "uy", name: "우유니 소금 사막", lon: -67.5, lat: -20.2, dx: 4, dy: 3, anchor: "start", k: [2], text: "볼리비아 우유니 소금 사막: 우기에 빗물이 고여 얕은 호수가 되고, 물이 마르면 하얀 소금 평원이 된다." },
-      { id: "sl", name: "사헬 지대", lon: 3, lat: 14.5, dx: 0, dy: 7, anchor: "middle", k: [3], text: "사헬 지대: 사하라 사막 남쪽 가장자리로, 가뭄과 지나친 방목 · 땔감 채취로 사막화가 진행되었다. 여러 나라가 함께 숲을 만드는 그레이트 그린 월 사업을 하고 있다." }
+      { id: "sh", name: "사하라 사막", lon: 12, lat: 24, dx: 0, dy: -5, anchor: "middle", k: [1], text: "사하라 사막: 아프리카 북부에 펼쳐진 세계에서 가장 넓은 사막으로, 사구가 바다처럼 이어진 「모래 바다」가 많다." },
+      { id: "rk", name: "룹알할리 사막", lon: 50, lat: 20, dx: 4, dy: 4, anchor: "start", k: [1], text: "룹알할리 사막: 아라비아반도 남쪽의 넓은 모래 사막으로, 큰 사구가 줄지어 있다." },
+      { id: "ws", name: "이집트 백사막", lon: 28, lat: 27.3, dx: -3, dy: 9, anchor: "end", k: [2, 3], text: "이집트 백사막: 하얀 석회암이 모래바람에 깎여 버섯 모양 바위가 곳곳에 서 있다." },
+      { id: "gb", name: "고비 사막", lon: 105, lat: 43, dx: 0, dy: -5, anchor: "middle", k: [3, 4], text: "고비 사막: 몽골과 중국에 걸친 사막으로, 모래보다 자갈이 덮인 땅(사막포도)이 넓고 삼릉석도 볼 수 있다." },
+      { id: "wr", name: "와디 럼", lon: 35.4, lat: 29.6, dx: 4, dy: -2, anchor: "start", k: [5], text: "요르단 와디 럼: 바닥이 평평하고 양옆이 가파른 마른 골짜기(와디)가 이어진 사막으로, 관광지로 유명하다." },
+      { id: "uy", name: "우유니 소금 사막", lon: -67.5, lat: -20.2, dx: 4, dy: 3, anchor: "start", k: [6], text: "볼리비아 우유니 소금 사막: 우기에 빗물이 고여 얕은 호수가 되고, 물이 마르면 하얀 소금 평원이 된다." },
+      { id: "dv", name: "데스밸리", lon: -117, lat: 36.5, dx: -4, dy: 3, anchor: "end", k: [6, 7], text: "미국 데스밸리: 산지로 둘러싸인 분지로, 산기슭에는 선상지가 이어진 바하다가, 분지 바닥에는 소금이 덮인 플라야가 있다." },
+      { id: "mo", name: "모로코의 오아시스", lon: -5, lat: 31, dx: -4, dy: -3, anchor: "end", k: [8], text: "모로코의 오아시스: 오아시스의 물을 이용해 밀, 대추야자 등을 기르는 오아시스 농업이 이루어진다." },
+      { id: "sl", name: "사헬 지대", lon: 3, lat: 14.5, dx: 0, dy: 7, anchor: "middle", k: [8], text: "사헬 지대: 사하라 사막 남쪽 가장자리로, 가뭄과 지나친 방목 · 땔감 채취로 사막화가 진행되었다. 여러 나라가 함께 숲을 만드는 그레이트 그린 월 사업을 하고 있다." }
     ];
 
     var QUIZ = [
       {
-        title: "모래 언덕의 모양",
-        q: "바람이 쌓은 모래 언덕(사구)의 모양으로 알맞은 것은 무엇일까?",
-        opts: ["양쪽 모두 똑같이 가파르다.", "바람을 맞는 쪽은 완만하고, 반대쪽은 가파르다.", "바람을 맞는 쪽은 가파르고, 반대쪽은 완만하다."],
+        title: "사구의 모양",
+        q: "바람이 쌓은 사구(모래 언덕)의 모양으로 알맞은 것은 무엇일까?",
+        opts: ["양쪽 비탈이 똑같이 가파르다.", "바람을 맞는 쪽은 완만하고, 반대쪽은 가파르다.", "바람을 맞는 쪽은 가파르고, 반대쪽은 완만하다."],
         ans: 1,
-        ok: "정답이다. 바람이 모래를 완만한 비탈 위로 밀어 올리고, 꼭대기를 넘은 모래는 반대쪽 가파른 비탈로 흘러내린다. 그래서 모래 언덕은 바람이 부는 쪽으로 옮겨 간다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 읽은 값에서 「바람 맞는 쪽」과 「반대쪽」 경사를 비교해 본다."
+        ok: "정답이다. 바람이 모래를 바람받이 비탈 위로 밀어 올려 완만해지고, 꼭대기를 넘은 모래는 바람그늘 쪽으로 미끄러져 내려 가파른 비탈이 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 3단계에서 두 비탈의 경사를 비교해 본다."
       },
       {
-        title: "사막의 마른 골짜기",
-        q: "사막에서 평소에는 말라 있다가 비가 올 때만 물이 흐르는 골짜기(와디)에 대한 설명으로 알맞은 것은 무엇일까?",
-        opts: ["빙하가 녹은 물이 늘 흐른다.", "일 년 내내 물이 흘러 배가 다닌다.", "드물게 큰비가 오면 갑자기 급류가 흐르고, 평소에는 길로 쓰이기도 한다."],
-        ans: 2,
-        ok: "정답이다. 사막의 비는 드물지만 짧고 세게 내려, 마른 골짜기에 갑자기 급류가 흐른다. 평소에는 바닥이 평평해 길로 이용되기도 한다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 시간 막대를 옮기며 골짜기에 물이 언제 흐르는지 확인해 본다."
+        title: "버섯바위",
+        q: "사막의 버섯바위가 위는 넓고 아래쪽이 가늘게 깎인 까닭으로 알맞은 것은 무엇일까?",
+        opts: ["빗물이 바위 꼭대기부터 녹였기 때문이다.", "모래를 실은 바람이 땅 가까이로만 불어 바위 아래쪽을 깎았기 때문이다.", "사람들이 길을 내려고 아래쪽을 깎았기 때문이다."],
+        ans: 1,
+        ok: "정답이다. 모래알은 무거워 땅 가까이로만 날리므로, 모래를 실은 바람이 바위의 아래쪽만 깎아 버섯 모양이 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 모래가 날리는 높이(점선)와 깎이는 곳을 비교해 본다."
+      },
+      {
+        title: "삼릉석",
+        q: "삼릉석에 평평한 면 여러 개와 날카로운 모서리가 생긴 까닭으로 알맞은 것은 무엇일까?",
+        opts: ["강물에 굴러 둥글게 다듬어졌기 때문이다.", "여러 방향에서 불어온 모래바람이 돌의 여러 면을 깎았기 때문이다.", "화산이 폭발할 때 돌이 깨졌기 때문이다."],
+        ans: 1,
+        ok: "정답이다. 바람 방향이 바뀌거나 돌이 굴러 여러 쪽이 모래바람에 깎이면, 평평한 면들이 만나 날카로운 모서리가 생긴다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 단계마다 바람 방향과 깎이는 면을 살펴본다."
+      },
+      {
+        title: "사막포도",
+        q: "자갈이 땅을 촘촘히 덮은 사막포도는 어떻게 생겼을까?",
+        opts: ["바람이 가벼운 모래와 흙을 날려 보내고 무거운 자갈만 남았다.", "강물이 자갈을 실어 와 고르게 깔았다.", "사람들이 길을 만들려고 자갈을 깔았다."],
+        ans: 0,
+        ok: "정답이다. 바람이 모래와 흙만 날려 보내 땅이 낮아지면서 섞여 있던 자갈이 겉에 모였고, 자갈이 땅을 덮자 더는 날리지 않게 되었다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 처음 땅 높이(점선)와 자갈이 늘어나는 모습을 본다."
+      },
+      {
+        title: "와디",
+        q: "사막의 와디에 대한 설명으로 알맞은 것은 무엇일까?",
+        opts: ["1년 내내 맑은 물이 흐르는 큰 강이다.", "평소에는 말라 있다가 큰비가 올 때만 물이 흐르는 골짜기다.", "바닷물이 들어와 생긴 좁고 긴 만이다."],
+        ans: 1,
+        ok: "정답이다. 와디는 평소에는 말라 있어 길로 이용되지만, 드물게 큰비가 오면 갑자기 흙탕물이 흐르며 골짜기를 깎는다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 2단계와 3단계의 물을 비교해 본다."
+      },
+      {
+        title: "플라야",
+        q: "플라야(소금 바닥)가 생기는 곳과 까닭으로 알맞은 것은 무엇일까?",
+        opts: ["바닷가 모래밭에 바람이 소금을 실어 와 쌓았다.", "물이 바다로 빠져나가지 못하는 분지에 호수가 생겼다 마르기를 되풀이하며 소금과 진흙이 남았다.", "빙하가 녹은 물이 고여 생겼다."],
+        ans: 1,
+        ok: "정답이다. 막힌 분지에 고인 빗물이 강한 증발로 마르면 소금과 진흙이 남는다. 이 일이 되풀이되어 평평하고 하얀 플라야가 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 호수가 생겼다 마르는 과정을 본다."
+      },
+      {
+        title: "선상지와 바하다",
+        q: "건조한 산기슭에서 바하다가 생기는 과정으로 알맞은 것은 무엇일까?",
+        opts: ["바람이 모래를 쌓아 길게 이어진 언덕을 만든다.", "골짜기 출구마다 생긴 선상지가 커져 서로 이어진다.", "빙하가 산기슭을 깎아 넓은 골짜기를 만든다."],
+        ans: 1,
+        ok: "정답이다. 큰비 때 골짜기 물이 흙과 자갈을 산기슭에 부채 모양으로 쌓아 선상지가 되고, 이웃한 선상지가 커져 이어지면 바하다가 된다.",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 3단계와 4단계의 선상지를 비교해 본다."
       },
       {
         title: "사막화를 막으려면",
         q: "사헬 지대처럼 사막화가 진행되는 곳에서 사막이 넓어지는 것을 막는 방법으로 알맞은 것은 무엇일까?",
-        opts: ["나무를 심어 숲 띠를 만들고 가축 수를 알맞게 조절한다.", "남은 풀을 모두 베어 낸다.", "가축을 더 많이 기르고 나무를 땔감으로 더 많이 쓴다."],
-        ans: 0,
-        ok: "정답이다. 풀과 나무가 땅을 덮으면 모래가 덜 날리고 흙이 지켜진다. 사하라 사막 남쪽에서는 숲 띠를 만드는 그레이트 그린 월 사업을 하고 있다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「가축 · 땔감 · 너무 많이」와 「나무 심기 · 숲 띠 만들기」를 바꾸어 비교해 본다."
-      },
-      {
-        title: "버섯 바위",
-        q: "사막의 버섯 바위가 아래쪽이 가늘게 깎인 까닭으로 알맞은 것은 무엇일까?",
-        opts: ["빗물이 바위 위쪽부터 녹이기 때문이다.", "빙하가 바위 아래를 밀고 지나갔기 때문이다.", "모래를 실은 바람이 땅 가까이에서 바위를 깎기 때문이다."],
+        opts: ["가축을 더 많이 길러 풀을 뜯게 한다.", "땔감으로 쓰려고 나무를 더 많이 벤다.", "나무를 심어 숲 띠를 만들고 가축 수를 알맞게 한다."],
         ans: 2,
-        ok: "정답이다. 바람에 날리는 모래는 대부분 땅 가까이에서 움직여, 바위의 아래쪽이 더 많이 깎여 버섯 모양이 된다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 바람 세기를 「강함」으로 두고 시간을 끝까지 옮겨 버섯 바위를 본다."
-      },
-      {
-        title: "오아시스와 농업",
-        q: "사막의 오아시스에서 사람들이 마을을 이루고 농사를 지을 수 있는 까닭으로 알맞은 것은 무엇일까?",
-        opts: ["모래 언덕이 바람을 모두 막아 주기 때문이다.", "땅속의 물이 솟아 물을 얻을 수 있기 때문이다.", "1년 내내 비가 많이 오기 때문이다."],
-        ans: 1,
-        ok: "정답이다. 오아시스는 땅속의 물이 솟거나 고인 곳이라 물을 얻을 수 있어, 대추야자 등을 기르며 마을이 생긴다.",
-        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 오아시스 둘레를 보고, 「모래 양 · 많음」에서 오아시스가 어떻게 되는지 확인해 본다."
+        ok: "정답이다. 나무를 심고 가축 수를 알맞게 하면 풀과 나무가 흙을 붙잡아 사막이 넓어지는 것을 막을 수 있다(그레이트 그린 월).",
+        no: "다시 생각해 보자. 「장면에서 확인」을 눌러 「숲 띠 만들기」를 고르고 재생해 본다."
       }
     ];
 
@@ -1515,299 +1561,749 @@
     }
     var SAND = [228, 192, 132], SAND_D = [214, 172, 110], GRAVEL = [178, 150, 116], ROCK = [150, 112, 84], WATER = [84, 146, 198];
 
-    /* ================= 보기 ① 바람과 모래 언덕 (예시 모형) =================
-       블록 가로 약 2km(1 = 1km), 모래 언덕 높이는 3배로 늘려 그림. 북쪽 = 블록 뒤(z +)
-       바람: 약함 6 · 보통 10 · 강함 15m/s. 모래 언덕이 옮겨 가는 빠르기 = 0.25 · 0.8 · 1.7(시간 끝, km) × (기준 높이 ÷ 언덕 높이). 시간 끝 = 약 20년
-       모래 적음: 초승달 모양 언덕(바르한) 다섯 개. 바람 맞는 쪽 길이 0.22 · 반대쪽 0.05(높이 30m 기준 약 8° · 31°), 양 끝(뿔)이 바람 부는 쪽으로 0.12 뻗음
-       모래 많음: 물결 모양 언덕이 바람과 직각으로 줄지어 이어짐(간격 0.4)
-       버섯 바위: 모래를 실은 바람이 아래쪽(높이 0~0.04)을 깎음. 깎인 정도 = 0.12 + 0.5 × 바람(0.33 · 0.67 · 1) × 시간(최대 75%) */
-    var DIRS = { N: [0, -1], S: [0, 1], E: [-1, 0], W: [1, 0] }, DIR_NAME = { N: "북쪽", S: "남쪽", E: "동쪽", W: "서쪽" };
-    /* 완성본: 바람이 불어오는 쪽을 각도(북쪽 0° · 동쪽 90° · 남쪽 180° · 서쪽 270°)로. 바람이 부는 쪽 = −(sin θ, cos θ) */
-    var DIR_ANG = { N: 0, E: 90, S: 180, W: 270 }, NAME8 = ["북쪽", "북동쪽", "동쪽", "남동쪽", "남쪽", "남서쪽", "서쪽", "북서쪽"];
-    function angName(a) { return NAME8[Math.round((((a % 360) + 360) % 360) / 45) % 8]; }
-    var WIND_MS = [6, 10, 15], DUNE_V = [0.25, 0.8, 1.7];
-    var DU = (function () {
-      var st = { dir: "W", ang: 270, wind: 2, sand: "few", t: 0, play: false, cv: 0, river: false };
-      var cam = Cam(-26, 34), BOT = -0.18, H0 = 0.09;
-      var Q = {};
-      var BAR = [[-0.75, -0.32, 0.09], [-0.3, 0.3, 0.07], [0.15, -0.12, 0.1], [-1.05, 0.5, 0.06], [0.45, 0.42, 0.075]];
-      var OASIS = [0.55, -0.42], ROCKP = [-0.72, 0.48];
+    /* ================= 개편(11-02) 건조 지형 형성 시뮬레이터 =================
+       모든 보기는 「처음 → 단계 → 완성」으로 지형이 생기는 과정을 보여 줌(지형이 옮겨 가는 모습은 다루지 않음)
+       바람은 늘 서쪽(x −)에서 불어 동쪽(x +)으로(삼릉석만 단계마다 바람 방향이 바뀜). 보기마다 STG(단계 경계) · STN(단계 이름) · stage() · info()를 가짐 */
+    function drawArrow(a, b, col, w) {
+      var ang = Math.atan2(b[1] - a[1], b[0] - a[0]), hs = 14 * TS;
+      ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = w + 4; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+      ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0] - Math.cos(ang) * hs * 0.5, b[1] - Math.sin(ang) * hs * 0.5); ctx.stroke(); ctx.lineCap = "butt";
+      ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(b[0] - Math.cos(ang - 0.45) * hs, b[1] - Math.sin(ang - 0.45) * hs); ctx.lineTo(b[0] - Math.cos(ang + 0.45) * hs, b[1] - Math.sin(ang + 0.45) * hs); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    }
+    /* 바람 화살표(땅 위 높이 y) */
+    function windArrow(cam, x0, z0, x1, z1, y, txt) {
+      var a = cam.P(x0, y, z0), b = cam.P(x1, y, z1);
+      drawArrow(a, b, "#e8590c", 5);
+      if (txt) callout(txt, a[0], a[1], a[0], a[1] - 16 * TS, { size: 12, color: "#c2410c", bg: "rgba(255,255,255,.8)" });
+    }
+    function stIdx(B, t) { var k = 0; for (var j = 0; j < B.length - 1; j++) if (t > B[j] + 1e-6) k = j; return k; }
+    function dashLine(pts, col, w, dash) { ctx.setLineDash(dash || [6, 4]); ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }); ctx.stroke(); ctx.setLineDash([]); }
+    /* 이름표: 땅 높이 함수 hfun 위의 점에서 (dx, dy)만큼 떨어진 곳에 */
+    function labeler(cam, hfun) { return function (t, x, z, dx, dy, o) { var y = hfun(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); }; }
+    /* 비 · 구름 */
+    function rainDraw(cam, clock, n, x0, x1, z0, z1, ytop) {
+      ctx.strokeStyle = "rgba(90,120,160,.5)"; ctx.lineWidth = 1.2;
+      for (var i = 0; i < n; i++) { var x = x0 + (x1 - x0) * rnd(i), z = z0 + (z1 - z0) * rnd(i + 3), ph = frac(clock * 1.6 + rnd(i + 7)), y = ytop - ph * ytop * 0.85, a = cam.P(x, y, z), b = cam.P(x - 0.01, y - 0.06, z); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+      ctx.fillStyle = "rgba(120,128,140,.55)";
+      [[-0.5, 0.1], [0, -0.1], [0.5, 0.15]].forEach(function (c) { var p = cam.P(c[0], ytop + 0.04, c[1]), r = 0.12 * cam.k * p[3]; [[0, 0, 1.2, 0.45], [-0.8, 0.12, 0.8, 0.35], [0.85, 0.1, 0.8, 0.38]].forEach(function (e) { ctx.beginPath(); ctx.ellipse(p[0] + e[0] * r, p[1] + e[1] * r, e[2] * r, e[3] * r, 0, 0, 2 * Math.PI); ctx.fill(); }); });
+    }
+    /* 블록 옆면: 가로 줄무늬 바위 층(y0 ~ y1, 두께 dh) */
+    function wallBands(P, r, y0, y1, dh, cols) {
+      for (var y = y0, i = 0; y < y1; y += dh, i++) { var a = P(r[0], y), b = P(r[1], y), c = P(r[1], y + dh), d = P(r[0], y + dh); quad(a, b, c, d, cols[i % cols.length]); }
+    }
+
+    /* ================= 보기 ① 사구가 생기는 과정 (예시 모형) =================
+       블록 가로 약 2km(1 = 1km), 사구 높이는 3배로 늘려 그림. 바람은 서쪽 → 동쪽(x +)
+       1단계(0~0.2) 얇게 덮인 모래가 바람에 튀며 날림 → 2단계(0.2~0.45) 작은 바위 · 덤불 뒤에 모래 더미 → 3단계(0.45~0.75) 바람받이 완만 · 바람그늘 가파르게 자람
+       → 4단계(0.75~1) 모래 적음: 양 끝(뿔)이 바람 부는 쪽으로 뻗은 초승달 모양 사구(바르한) / 모래 많음: 더미가 옆으로 이어진 횡사구
+       사구 모양: 바람받이 길이 0.24 · 바람그늘 0.055(높이 0.1 기준, 약 8° · 31°), 다 자라기 전에는 두 비탈이 비슷함(asym 0 → 1). 둘째 사구는 블록 앞면에 걸쳐 단면이 보임 */
+    var DN = (function () {
+      var st = { t: 0, play: false, sand: "few" };
+      var cam = Cam(-26, 32), BOT = -0.14, Z0 = -0.55, Z1 = 0.7;
+      var Q = {}, STG = [0, 0.2, 0.45, 0.75, 1], STN = ["모래가 날림", "모래가 쌓이기 시작", "언덕이 자람", "사구 완성"];
+      var FEW = [[-0.7, 0.1, 0.12], [-0.02, Z0, 0.1], [0.38, 0.38, 0.08]];
+      var MANY = [];
+      (function () { for (var i = 0; i < 5; i++) for (var j = 0; j < 4; j++) MANY.push([-0.95 + 0.42 * i + 0.1 * (rnd(i * 7 + j) - 0.5), Z0 + 0.05 + 0.36 * j + 0.08 * (rnd(i * 3 + j * 5 + 1) - 0.5), 0.045 + 0.025 * rnd(i + j * 9)]); })();
       function prm() {
-        var d = [-Math.sin(st.ang * RAD), -Math.cos(st.ang * RAD)]; Q.d = d; Q.v = DUNE_V[st.wind - 1]; Q.t = st.t;
-        Q.bars = BAR.map(function (b) { var s = b[2] / H0, mv = Q.v * st.t / s, u = b[0] + mv; u = ((u + 1.5) % 3 + 3) % 3 - 1.5; return [u, b[1], b[2] * sm(1.5, 1.12, Math.abs(u)), mv]; });
-        Q.ero = clamp(0.12 + 0.5 * (st.wind / 3) * st.t * 1.4, 0, 0.75);
-        Q.oasisSand = sand(OASIS[0], OASIS[1]);
+        var t = st.t, few = st.sand === "few";
+        Q.sheet = (few ? 0.012 : 0.022) * (1 - 0.85 * sm(0.22, 0.9, t));
+        Q.g = 0.3 * sm(0.18, 0.45, t) + 0.7 * sm(0.45, 0.8, t);
+        Q.asym = sm(0.42, 0.75, t); Q.horn = few ? sm(0.68, 0.97, t) : 0; Q.merge = few ? 0 : sm(0.7, 0.97, t);
       }
-      /* 업그레이드(10-20): 외래 하천 — 사막 밖 비가 많은 곳에서 흘러와 사막을 지나는 강(나일강). 강가는 물을 끌어 쓴 농경지 */
-      function rx(z) { return 0.8 + 0.05 * Math.sin(3 * z + 0.5); }
-      function rd(x, z) { return st.river ? Math.abs(x - rx(z)) : 9; }
-      function riverW(x, z) { return rd(x, z) < 0.032 ? 0.012 : -9; }
-      function waterAll(x, z) { return Math.max(oasisWater(x, z), riverW(x, z)); }
-      function fieldCol(x, z) { return mix([92, 146, 66], [146, 172, 92], (Math.floor((z + 1) * 14) % 2) * 0.6 + 0.2 * n2(9 * x, 9 * z)); }
-      /* 바람 좌표: u = 바람 부는 쪽, w = 옆 */
-      function toUW(x, z) { var d = Q.d; return [x * d[0] + z * d[1], -x * d[1] + z * d[0]]; }
-      function barchan(du, dw, H) {
-        var s = H / H0, L = 0.22 * s, Sl = 0.05 * s, W = 0.16 * s, a = 0.12 * s, q = dw / W;
+      /* 모래 더미 하나: du = 바람 부는 쪽 거리, dw = 옆 거리 */
+      function dshape(du, dw, H, W0) {
+        if (H <= 0.0005) return 0;
+        var s = H / 0.1, L = 0.28 * s, W = (W0 || 0.2) * s, a = 0.16 * s * Q.horn, q = dw / W;
         if (Math.abs(q) >= 1) return 0;
-        var Hc = H * Math.pow(1 - q * q, 0.8), up = du - a * q * q;
+        var Hc = H * Math.pow(1 - q * q, 0.8), up = du - a * q * q, Sl = L + (0.065 * s - L) * Q.asym;
         if (up < -L || up > Sl) return 0;
-        return up <= 0 ? Hc * (0.5 - 0.5 * Math.cos(Math.PI * (1 + up / L))) : Hc * (1 - up / Sl);
+        if (up <= 0) return Hc * (0.5 - 0.5 * Math.cos(Math.PI * (1 + up / L)));
+        var cs = 0.5 + 0.5 * Math.cos(Math.PI * up / Sl);
+        return Hc * (cs + (1 - up / Sl - cs) * Q.asym);
       }
+      function cxOf(d) { var H = d[2] * Q.g; return d[0] + 0.06 + 1.2 * H; }
       function sand(x, z) {
-        var uw = toUW(x, z), u = uw[0], w = uw[1], h = 0, i;
-        if (st.sand === "few") { for (i = 0; i < Q.bars.length; i++) { var b = Q.bars[i]; h = Math.max(h, barchan(u - b[0], w - b[1], b[2])); } }
+        var h = Q.sheet * (0.6 + 0.4 * n2(3 * x, 3 * z)) * (0.8 + 0.2 * Math.sin(60 * x + 4 * Math.sin(5 * z))), i, d;
+        if (st.sand === "few") for (i = 0; i < FEW.length; i++) { d = FEW[i]; h = Math.max(h, dshape(x - cxOf(d), z - d[1], d[2] * Q.g)); }
         else {
-          var up = u - Q.v * st.t * 0.6 + 0.06 * Math.sin(5 * w + 0.7), ph = frac(up / 0.4), env = 0.75 + 0.25 * Math.sin(3 * w + 1.3);
-          h = 0.075 * env * (ph < 0.8 ? Math.pow(ph / 0.8, 1.2) : 1 - (ph - 0.8) / 0.2);
-          if (Math.hypot(x - ROCKP[0], z - ROCKP[1]) < 0.14) h *= sm(0.06, 0.14, Math.hypot(x - ROCKP[0], z - ROCKP[1]));
+          var b = 0;
+          for (i = 0; i < MANY.length; i++) { d = MANY[i]; b = Math.max(b, dshape(x - d[0] - 0.05 - d[2] * Q.g, z - d[1], d[2] * Q.g, 0.2)); }
+          if (Q.merge > 0) { var u = x + 0.05 * Math.sin(4 * z + 1), k = Math.round((u + 0.75) / 0.42), xr = -0.75 + 0.42 * k + 0.03; b = Math.max(b, Q.merge * dshape(u - xr, 0, 0.065 * Q.g * (0.85 + 0.15 * Math.sin(3 * z + k)))); }
+          h = Math.max(h, b);
         }
-        if (st.river) h *= sm(0.11, 0.2, rd(x, z));
         return h;
       }
-      function ground(x, z) { return 0.02 + 0.006 * n2(x, z) + 0.03 * Math.exp(-(Math.pow(x - ROCKP[0], 2) + Math.pow(z - ROCKP[1], 2)) / 0.02) - (st.river ? 0.022 * Math.exp(-Math.pow(rd(x, z) / 0.035, 2)) : 0); }
-      function oasisWater(x, z) { var r = Math.hypot(x - OASIS[0], z - OASIS[1]); return r < 0.065 && Q.oasisSand < 0.02 ? 0.018 : -9; }
-      var S_ = 0;
-      function rock(x, z) { var g = ground(x, z), r = Math.hypot(x - OASIS[0], z - OASIS[1]); if (r < 0.065) g -= 0.008 * (1 - r / 0.065); S_ = sand(x, z); return g + S_; }
-      function hf(x, z) { return Math.max(rock(x, z), oasisWater(x, z), riverW(x, z)); }
-      function color(h, x, z) {
-        var s = sand(x, z), r = Math.hypot(x - OASIS[0], z - OASIS[1]);
-        if (oasisWater(x, z) > rock(x, z)) return WATER;
-        if (st.river && rd(x, z) < 0.13) return riverW(x, z) > rock(x, z) ? WATER : fieldCol(x, z);
-        if (s > 0.004) return mix(SAND, SAND_D, clamp(s / 0.1, 0, 1) * 0.4);
-        if (r < 0.15) return mix([118, 156, 84], GRAVEL, sm(0.08, 0.15, r));
-        if (Math.abs(x - 0.2) < 0.012) return [128, 124, 120];
-        if (Math.hypot(x - ROCKP[0], z - ROCKP[1]) < 0.14) return mix(ROCK, GRAVEL, sm(0.05, 0.14, Math.hypot(x - ROCKP[0], z - ROCKP[1])));
-        return mix(GRAVEL, [200, 172, 130], 0.5 + 0.5 * n2(3 * x, 3 * z));
-      }
-      /* 완성본: 길 · 모래 언덕 · 오아시스 물 경계를 층으로(톱니) */
-      var surfOpt = { nx: 130, nz: 91, x0: -1, x1: 1, z0: -0.7, z1: 0.7, hf: function (x, z) { var h = hf(x, z); return h; }, color: color, layers: [
-        { s: function (x) { return Math.abs(x - 0.2) - 0.012; }, c: function () { return [128, 124, 120]; } },
-        { s: function () { return 0.004 - S_; }, c: function (x, z) { return mix(SAND, SAND_D, clamp(sand(x, z) / 0.1, 0, 1) * 0.4); } },
-        { s: function (x, z) { return Q.oasisSand < 0.02 ? Math.hypot(x - OASIS[0], z - OASIS[1]) - 0.06 : 1; }, c: function () { return WATER; }, flat: true, line: "rgba(255,255,255,.7)" },
-        { s: function (x, z) { return rd(x, z) - 0.13; }, c: fieldCol },
-        { s: function (x, z) { return rd(x, z) - 0.03; }, c: function () { return WATER; }, flat: true, line: "rgba(255,255,255,.7)" }
-      ] };
-      var full = makeSurf(surfOpt), surf = full, half = null, halfZ = null;
-      /* 단면: 앞에서부터 자른 블록은 높이 격자를 다시 만듦(자르는 위치가 바뀔 때만) */
-      function curSurf() {
-        if (!st.cv || st.cv < 0.005) return full;
-        var z = -0.7 + (0 - -0.7) * st.cv;
-        if (!half || halfZ !== z) { var o2 = Object.assign({}, surfOpt, { z0: z, nz: Math.max(8, Math.round(91 * (0.7 - z) / 1.4)) }); half = makeSurf(o2); half.lod = full.lod; halfZ = z; half.reshape(); }
-        return half;
-      }
-      var M = { st: st, cam: cam, yaw0: -26, pitch0: 34, Q: Q };
-      M.update = function () { surf = curSurf(); prm(); surf.reshape(); };
-      M.setLod = function (v) { full.lod = v; if (half) half.lod = v; };
+      function ground(x, z) { return 0.02 + 0.004 * n2(x, z); }
+      function rock(x, z) { return ground(x, z) + sand(x, z); }
+      function color(h, x, z) { var s = sand(x, z), gv = mix([164, 146, 122], [182, 162, 134], 0.5 + 0.5 * n2(3 * x, 3 * z)); return mix(gv, mix(SAND, SAND_D, clamp(s / 0.1, 0, 1) * 0.45), sm(0.0015, 0.007, s)); }
+      var surf = makeSurf({ nx: 130, nz: 82, x0: -1, x1: 1, z0: Z0, z1: Z1, hf: rock, color: color });
+      var M = { st: st, cam: cam, yaw0: -26, pitch0: 32, Q: Q, STG: STG, STN: STN, title: "사구가 생기는 과정", label: "3D 사막 블록. 바람에 날린 모래가 쌓여 사구가 생기고 자라는 과정을 보여 준다.",
+        leg: [["#e4c084", "모래(사구)"], ["#b29674", "자갈이 덮인 땅"], ["#c4965a", "날리는 모래", true], ["#e8590c", "바람", true]], model: "예시 모형이다 · 사구 높이 3배" };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
-      M.skey = function () { return [st.t.toFixed(4), st.ang, st.wind, st.sand, st.cv.toFixed(3), st.river].join(","); };
-      M.moved = function () { return st.sand === "few" ? Q.v * st.t : Q.v * st.t * 0.6; };
-      M.roadCover = function () { var n = 0, c = 0; for (var z = -0.68; z <= 0.68; z += 0.02) { n++; if (sand(0.2, z) > 0.01) c++; } return c / n; };
-      function mushroom() {
-        var e = Q.ero, Hr = 0.19, R = 0.058, rings = [], i;
-        for (i = 0; i <= 18; i++) {
-          var y = Hr * i / 18, cut = e * Math.exp(-Math.pow((y - 0.035) / 0.05, 2)), cap = y > Hr * 0.62 ? 1 + 0.18 * sm(Hr * 0.62, Hr * 0.75, y) : 1;
-          var top = y > Hr * 0.85 ? Math.sqrt(Math.max(0, 1 - Math.pow((y - Hr * 0.85) / (Hr * 0.15), 2))) : 1;
-          rings.push([y, Math.max(0.006, R * (1 - cut) * cap * top)]);
-        }
-        lathe(cam, ROCKP[0], ROCKP[1], ground(ROCKP[0], ROCKP[1]) - 0.01, rings, [168, 120, 86]);
-      }
-      M.renderStatic = function (rect) {
-        surf = curSurf();
-        backdrop(rect);
-        fitBlock(cam, rect, full, 0.3, BOT);
-        surf.draw(cam);
-        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWallSoil(cam, surf, w, BOT, rock, function (x, z) { return 0.02 + sand(x, z); }, function (x, z) { return sand(x, z) > 0.003 ? SAND : GRAVEL; }, waterAll); crossBeds(w); });
-        var gy = function (x, z) { return hf(x, z); };
-        var items = [];
-        for (var i = 0; i < 7; i++) { var a = i / 7 * 2 * Math.PI, x = OASIS[0] + 0.1 * Math.cos(a), z = OASIS[1] + 0.1 * Math.sin(a); items.push([cam.P(x, 0, z)[2], function (x, z) { return function () { if (sand(x, z) < 0.03 && z > surf.z0 + 0.02) palm(cam, x, gy(x, z), z, 1); }; }(x, z)]); }
-        items.push([cam.P(ROCKP[0], 0, ROCKP[1])[2], mushroom]);
-        items.sort(function (a, b) { return b[0] - a[0]; }).forEach(function (it) { it[1](); });
-        /* 업그레이드(10-20): 오아시스 곁 천막과 길을 따라 걷는 낙타 행렬(대상) */
-        (function () {
-          function camel(x, z, s) {
-            var y = hf(x, z), b = cam.P(x, y, z), t = cam.P(x, y + s, z), h = b[1] - t[1]; if (h < 3) return;
-            var w = h * 1.3; ctx.fillStyle = "#8a5f3c"; ctx.strokeStyle = "#6e4a2e"; ctx.lineWidth = Math.max(1, h * 0.08);
-            ctx.beginPath(); ctx.ellipse(b[0], b[1] - h * 0.62, w * 0.42, h * 0.2, 0, 0, 2 * Math.PI); ctx.fill();
-            ctx.beginPath(); ctx.ellipse(b[0] - w * 0.08, b[1] - h * 0.8, w * 0.16, h * 0.14, 0, 0, 2 * Math.PI); ctx.fill();
-            ctx.beginPath(); ctx.moveTo(b[0] + w * 0.36, b[1] - h * 0.66); ctx.lineTo(b[0] + w * 0.5, b[1] - h * 0.95); ctx.stroke();
-            ctx.beginPath(); ctx.ellipse(b[0] + w * 0.55, b[1] - h * 0.97, w * 0.09, h * 0.07, 0, 0, 2 * Math.PI); ctx.fill();
-            [-0.3, -0.12, 0.14, 0.3].forEach(function (u) { ctx.beginPath(); ctx.moveTo(b[0] + w * u, b[1] - h * 0.5); ctx.lineTo(b[0] + w * u, b[1]); ctx.stroke(); });
-          }
-          function tent(x, z, s) {
-            var y = hf(x, z), b = cam.P(x, y, z), t = cam.P(x, y + s, z), h = b[1] - t[1]; if (h < 3) return;
-            ctx.fillStyle = "#efe2c6"; ctx.beginPath(); ctx.moveTo(b[0] - h, b[1]); ctx.lineTo(b[0], t[1]); ctx.lineTo(b[0] + h, b[1]); ctx.closePath(); ctx.fill();
-            ctx.fillStyle = "#d4c19c"; ctx.beginPath(); ctx.moveTo(b[0], t[1]); ctx.lineTo(b[0] + h, b[1]); ctx.lineTo(b[0] + h * 0.35, b[1]); ctx.closePath(); ctx.fill();
-          }
-          var items = [];
-          [[0.7, -0.3], [0.74, -0.52], [0.4, -0.5]].forEach(function (q) { if (sand(q[0], q[1]) < 0.02 && q[1] > surf.z0 + 0.04) items.push([q[0], q[1], "t"]); });
-          for (var k = 0; k < 4; k++) { var cz = -0.2 + 0.13 * k, cx = 0.27; if (sand(cx, cz) < 0.03 && cz > surf.z0 + 0.04) items.push([cx, cz, "c"]); }
-          items.sort(function (A, B) { return cam.P(B[0], 0, B[1])[2] - cam.P(A[0], 0, A[1])[2]; }).forEach(function (q) { if (q[2] === "t") tent(q[0], q[1], 0.05); else camel(q[0], q[1], 0.055); });
-          if (items.some(function (q) { return q[2] === "c"; })) { var cq = items.filter(function (q) { return q[2] === "c"; })[0], cp = cam.P(cq[0], hf(cq[0], cq[1]) + 0.03, cq[1]), cl = cam.P(cq[0] + 0.25, hf(cq[0], cq[1]) + 0.2, cq[1]); callout("낙타를 타고 다니는 사람들(대상)", cp[0], cp[1], cl[0], cl[1], { size: 11.5, bold: false }); }
-        })();
-        /* 나침반 · 바람 화살표 */
-        var c0 = cam.P(0.85, 0.06, 0.58), c1 = cam.P(0.85, 0.06, 0.7);
-        ctx.strokeStyle = "#495057"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(c0[0], c0[1]); ctx.lineTo(c1[0], c1[1]); ctx.stroke();
-        ctext("북", c1[0], c1[1] - 9, { size: 12, bold: true, align: "center" });
-        var d = Q.d, a0 = cam.P(-d[0] * 0.75, 0.3, -d[1] * 0.55), a1 = cam.P(-d[0] * 0.35, 0.3, -d[1] * 0.2);
-        drawArrow(a0, a1, "#e8590c", 5);
-        callout("바람(" + angName(st.ang) + "에서)", a0[0], a0[1], a0[0], a0[1] - 16 * TS, { size: 12, color: "#c2410c", bg: "rgba(255,255,255,.8)" });
-        if (BEDL && st.cv > 0.005) callout("비스듬한 모래 층(바람에 실려 와 쌓임)", BEDL[0], BEDL[1], BEDL[0] + (BEDL[0] > rect.x + rect.w / 2 ? 60 : -60) * TS, BEDL[1] + 46 * TS, { size: 12 });
-        /* 이름표 */
-        var L = function (t, x, z, dx, dy) { if (z < surf.z0 + 0.02) return; var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], { size: 12.5 }); };
-        var big = st.sand === "few" ? Q.bars.filter(function (b) { return Math.abs(b[0]) < 0.75 && Math.abs(b[1]) < 0.55; }).sort(function (a, b) { return b[2] - a[2]; })[0] : null;
-        if (big) { var bx = big[0] * d[0] - big[1] * d[1], bz = big[0] * d[1] + big[1] * d[0]; L("초승달 모양 모래 언덕", bx, bz, 0.05, 0.25); }
-        else if (st.sand === "many") L("물결 모양 모래 언덕", 0.1, -0.05, 0.05, 0.25);
-        L(Q.oasisSand > 0.02 ? "모래에 덮인 오아시스" : "오아시스", OASIS[0], OASIS[1], 0.15, 0.2);
-        L("버섯 바위", ROCKP[0], ROCKP[1] - 0.05, -0.2, 0.3);
-        if (st.river) { L("외래 하천(사막 밖에서 흘러온 강)", rx(0.15), 0.15, -0.3, 0.26); L("강가 농경지", rx(-0.3) - 0.09, -0.3, -0.25, 0.2); }
-      };
-      /* 업그레이드(10-20): 모래 언덕 단면의 비스듬한 층(사층리) — 바람 부는 쪽으로 기울어진 가는 줄. 앞면을 자르면 이름표 */
-      var BEDL = null;
+      M.skey = function () { return [st.t.toFixed(4), st.sand].join(","); };
+      /* 사구 단면의 비스듬한 모래 층(바람그늘 쪽으로 기울어짐) */
       function crossBeds(w) {
-        var T = surf, r = wallRange(T, w), n = 90, us = [], top = [], bot = [], i, best = 0, bi = -1;
+        if (w > 1 || Q.g < 0.3) return;
+        var T = surf, r = wallRange(T, w), n = 90, us = [], top = [], bot = [], i, best = 0;
         var P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); };
-        for (i = 0; i <= n; i++) { var u = r[0] + (r[1] - r[0]) * i / n, p = wallPt(T, w, u, 0), g = ground(p[0], p[2]), sd = sand(p[0], p[2]); us.push(u); top.push(g + sd); bot.push(g); if (sd > best) { best = sd; bi = i; } }
-        if (w === 0) BEDL = null;
-        if (best < 0.012) return;
+        for (i = 0; i <= n; i++) { var u = r[0] + (r[1] - r[0]) * i / n, p = wallPt(T, w, u, 0), g = ground(p[0], p[2]), sd = sand(p[0], p[2]); us.push(u); top.push(g + sd); bot.push(g); if (sd > best) best = sd; }
+        if (best < 0.015) return;
         ctx.save(); ctx.beginPath();
         for (i = 0; i <= n; i++) { var q = P(us[i], top[i]); if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); }
         for (i = n; i >= 0; i--) { var q2 = P(us[i], bot[i]); ctx.lineTo(q2[0], q2[1]); }
         ctx.closePath(); ctx.clip();
-        var p0 = wallPt(T, w, r[0], 0), p1 = wallPt(T, w, r[1], 0), ax = [p1[0] - p0[0], p1[2] - p0[2]], al = Math.hypot(ax[0], ax[1]) || 1, sg = (ax[0] * Q.d[0] + ax[1] * Q.d[1]) / al >= 0 ? 1 : -1;
-        ctx.strokeStyle = "rgba(140,94,40,.6)"; ctx.lineWidth = 1.3;
-        for (var u0 = r[0] - 0.4; u0 <= r[1] + 0.4; u0 += 0.028) {
+        ctx.strokeStyle = "rgba(140,94,40,.55)"; ctx.lineWidth = 1.2;
+        for (var u0 = r[0] - 0.4; u0 <= r[1] + 0.4; u0 += 0.03) {
           ctx.beginPath();
-          for (var k = 0; k <= 12; k++) { var uu = u0 - 0.3 + 0.6 * k / 12, yy = 0.02 + 0.32 * (u0 - uu) * sg + 0.004 * Math.sin(uu * 40); var q3 = P(uu, yy); if (k) ctx.lineTo(q3[0], q3[1]); else ctx.moveTo(q3[0], q3[1]); }
+          for (var k = 0; k <= 12; k++) { var uu = u0 - 0.3 + 0.6 * k / 12, yy = 0.02 + 0.32 * (u0 - uu) * -1 + 0.004 * Math.sin(uu * 40); var q3 = P(uu, yy); if (k) ctx.lineTo(q3[0], q3[1]); else ctx.moveTo(q3[0], q3[1]); }
           ctx.stroke();
         }
         ctx.restore();
-        if (w === 0) { var qm = P(us[bi], bot[bi] + best * 0.5); BEDL = [qm[0], qm[1]]; }
       }
-      function drawArrow(a, b, col, w) {
-        var ang = Math.atan2(b[1] - a[1], b[0] - a[0]), hs = 14 * TS;
-        ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = w + 4; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
-        ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0] - Math.cos(ang) * hs * 0.5, b[1] - Math.sin(ang) * hs * 0.5); ctx.stroke(); ctx.lineCap = "butt";
-        ctx.beginPath(); ctx.moveTo(b[0], b[1]); ctx.lineTo(b[0] - Math.cos(ang - 0.45) * hs, b[1] - Math.sin(ang - 0.45) * hs); ctx.lineTo(b[0] - Math.cos(ang + 0.45) * hs, b[1] - Math.sin(ang + 0.45) * hs); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
-      }
-      /* 모래 알갱이: 바람 방향으로 땅 위를 튀며 날아감 */
-      var grains = [], clock = 0;
-      for (var g = 0; g < 70; g++) grains.push([rnd(g) * 2 - 1, rnd(g + 9) * 1.4 - 0.7, rnd(g + 21)]);
-      M.step = function (dt) {
-        var sec = dt / 1000, sp = [0.08, 0.2, 0.38][st.wind - 1];
-        clock += sec;
-        grains.forEach(function (p) { p[0] += Q.d[0] * sp * sec; p[1] += Q.d[1] * sp * sec; p[2] = (p[2] + sec * 1.6) % 1; if (p[0] > 1) p[0] -= 2; if (p[0] < -1) p[0] += 2; if (p[1] > 0.7) p[1] -= 1.4; if (p[1] < -0.7) p[1] += 1.4; });
+      var walls = [];
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.3, BOT);
+        surf.draw(cam);
+        walls = facingWalls(cam, surf, -0.05);
+        walls.forEach(function (w) { drawWallSoil(cam, surf, w, BOT, rock, function (x, z) { return sand(x, z) + 0.004; }, function (x, z) { return sand(x, z) > 0.003 ? SAND : GRAVEL; }, null); crossBeds(w); });
+        /* 모래가 쌓이기 시작한 작은 바위 · 덤불 */
+        if (st.sand === "few") FEW.forEach(function (d) { var z = Math.max(d[1], Z0 + 0.03), y = rock(d[0], z); if (y - ground(d[0], z) < 0.03) tree(cam, d[0], y, z, 0.55, "#8f8a4e"); });
+        windArrow(cam, -0.98, 0.5, -0.55, 0.5, 0.26, "바람(서쪽에서 불어옴)");
+        var L = labeler(cam, rock), t = st.t, k = stIdx(STG, t), A = FEW[0];
+        if (t > 0.02 && k === 0) L("바람에 튀며 날리는 모래알", -0.1, 0.1, 0.1, 0.22);
+        if (st.sand === "few") {
+          var H = A[2] * Q.g, s = H / 0.1, cx = cxOf(A);
+          if (k === 1) L("바위 · 덤불 뒤에 모래가 쌓임", cx, A[1], 0.1, 0.2);
+          if (k === 2) { L("바람받이: 완만한 비탈", cx - 0.13 * s, A[1], -0.15, 0.2); L("바람그늘: 가파른 비탈", cx + 0.035 * s, A[1] - 0.03, 0.2, 0.16); }
+          if (k === 3) {
+            L("초승달 모양 사구(바르한)", cx, A[1], -0.05, 0.24);
+            L("바람받이: 완만한 비탈", cx - 0.15 * s, A[1] - 0.05, -0.2, 0.14, { size: 12 });
+            L("바람그늘: 가파른 비탈", cx + 0.03 * s, A[1] + 0.03, 0.25, 0.16, { size: 12 });
+            var hz = A[1] + 0.2 * s * 0.85, hx = cx + 0.16 * s * Q.horn * 0.72 + 0.01;
+            L("뿔: 바람이 부는 쪽으로 뻗음", hx, hz, 0.22, 0.12, { size: 12 });
+          }
+        } else {
+          if (k === 1) L("여기저기 모래 더미가 생김", MANY[6][0] + 0.06, MANY[6][1], 0.1, 0.2);
+          if (k === 2) L("바람받이는 완만, 바람그늘은 가파름", MANY[6][0] + 0.06, MANY[6][1], 0.1, 0.2);
+          if (k === 3) L("횡사구(바람과 직각으로 길게 이어진 사구)", -0.33 + 0.03, 0.1, -0.1, 0.24);
+        }
+        if (walls.indexOf(0) >= 0 && Q.g > 0.3 && st.sand === "few") { var B = FEW[1], bx = cxOf(B), p0 = cam.P(bx - 0.04, ground(bx, Z0) + sand(bx - 0.04, Z0) * 0.5, Z0); callout("사구 단면: 비스듬한 모래 층", p0[0], p0[1], p0[0] + 40 * TS, p0[1] + 48 * TS, { size: 12 }); }
       };
+      var grains = [];
+      for (var g = 0; g < 80; g++) grains.push([rnd(g) * 2 - 1, Z0 + 0.02 + rnd(g + 9) * (Z1 - Z0 - 0.04), rnd(g + 21)]);
+      M.step = function (dt) { var sec = dt / 1000; grains.forEach(function (p) { p[0] += 0.22 * sec; p[2] = (p[2] + sec * 1.6) % 1; if (p[0] > 1) p[0] -= 2; }); };
       M.renderDynamic = function () {
         if (RM) return;
-        var n = [25, 45, 70][st.wind - 1];
+        var n = st.t > 0.85 ? 40 : 80;
         ctx.fillStyle = "rgba(196,150,90,.85)";
-        for (var i = 0; i < n; i++) { var p = grains[i]; if (p[1] < surf.z0) continue; var hop = Math.sin(p[2] * Math.PI) * 0.025 * st.wind, q = cam.P(p[0], hf(p[0], p[1]) + 0.004 + hop, p[1]); ctx.beginPath(); ctx.arc(q[0], q[1], 1.6 * TS, 0, 2 * Math.PI); ctx.fill(); }
+        for (var i = 0; i < n; i++) { var p = grains[i], hop = Math.sin(p[2] * Math.PI) * 0.03, q = cam.P(p[0], rock(p[0], p[1]) + 0.004 + hop, p[1]); ctx.beginPath(); ctx.arc(q[0], q[1], 1.6 * TS, 0, 2 * Math.PI); ctx.fill(); }
+      };
+      M.stage = function () {
+        var t = st.t, few = st.sand === "few", k = stIdx(STG, t);
+        if (t < 0.02) return ["모래가 얇게 덮인 사막이다", "서쪽에서 바람이 분다. 「재생」을 누르거나 단계 단추를 눌러 사구가 생기는 과정을 본다." + (few ? " 「모래 양」을 「많음」으로 바꾸면 모래가 많은 곳의 사구를 볼 수 있다." : ""), "calm", "처음"];
+        if (k === 0) return ["바람이 모래알을 튀기며 실어 나른다", "바람이 세게 불면 모래알이 땅 위를 튀듯이 날아가며 옮겨진다. 모래알은 무거워 땅 가까이로만 날린다.", "", STN[0]];
+        if (k === 1) return ["바위 · 덤불 뒤에 모래가 쌓이기 시작한다", "바람이 작은 바위나 덤불에 막혀 약해지는 곳에 날아온 모래가 떨어져 작은 모래 더미가 생긴다. 더미가 생기면 그 뒤에 모래가 더 잘 쌓인다.", "", STN[1]];
+        if (k === 2) return ["모래 더미가 언덕으로 자란다", "바람을 맞는 쪽(바람받이)으로 모래가 밀려 올라가 완만한 비탈이 되고, 꼭대기를 넘은 모래는 반대쪽(바람그늘)으로 미끄러져 내려 가파른 비탈이 된다.", "", STN[2]];
+        return few ? ["초승달 모양 사구(바르한)가 완성되었다", "모래가 적은 곳에서는 언덕의 양 끝(뿔)이 바람이 부는 쪽으로 뻗어 초승달 모양 사구가 된다. 바람받이는 완만하고 바람그늘은 가파르다. 앞쪽 단면에서 비스듬한 모래 층을 볼 수 있다.", "", STN[3]]
+          : ["바람과 직각으로 길게 이어진 사구가 완성되었다", "모래가 많은 곳에서는 모래 더미들이 옆으로 이어져, 바람과 직각 방향으로 길게 줄지은 사구(횡사구)가 된다. 사하라 사막의 「모래 바다」에서 볼 수 있다.", "", STN[3]];
+      };
+      M.info = function () {
+        var few = st.sand === "few", Hm = (few ? 0.12 : 0.065) * Q.g;
+        return { h: "사구", s: [
+          ["바람", "서쪽 → 동쪽"],
+          ["사구 높이", Hm > 0.004 ? "약 " + Math.max(5, Math.round(Hm * 1000 / 3 / 5) * 5) + "m" : "—"],
+          ["경사(바람받이 · 바람그늘)", Q.g < 0.1 ? "—" : Q.asym < 0.25 ? "비슷함" : "약 8° · 약 " + Math.round(12 + 20 * Q.asym) + "°"],
+          ["모양", Q.g < 0.05 ? "얇게 덮인 모래" : Q.asym < 0.3 ? "둥근 모래 더미" : few ? (Q.horn > 0.5 ? "초승달 모양(바르한)" : "한쪽이 가파른 언덕") : (Q.merge > 0.5 ? "길게 이어진 줄(횡사구)" : "한쪽이 가파른 언덕")]
+        ], note: "블록 가로를 약 2km로 보고 사구 높이를 3배로 늘려 그린 예시 모형이다. 실제로 사구가 자라는 데에는 수십~수백 년이 걸린다." };
       };
       return M;
     })();
 
-    /* ================= 보기 ② 사막에 비가 오면 (예시 모형) =================
-       블록 가로 약 20km(1 = 10km). 뒤쪽(z +)은 산지, 앞쪽은 분지. 산지 골짜기 세 줄기(와디)가 분지로 이어지고, 골짜기 입구에 부채 모양 땅(선상지), 분지의 가장 낮은 곳(x 0.15, z −0.45)에 평평한 바닥
-       시간 0 ~ 1 = 비가 온 뒤 몇 주. 비 0.04 ~ 0.12, 골짜기 물은 산 위부터 차례로 흐름(위치마다 0.1 늦게), 호수는 0.1 ~ 0.3에 차오름
-       비의 양 조금 · 보통 · 큰비 → 호수 가장 깊은 곳 0.006 · 0.018 · 0.03(약 0.3 · 0.9 · 1.5m), 마르는 데 걸리는 시간 0.2 · 0.4 · 0.55
-       물이 마르면 바닥에 소금이 남음(물이 많았을수록 두꺼움). 선상지는 비의 양만큼 조금씩 자람 */
-    var RAIN = [[0.006, 0.2, 0.4], [0.018, 0.4, 1], [0.03, 0.55, 1.8]];
-    var RN = (function () {
-      var st = { rain: 2, t: 0, play: false, yrs: 1 };
-      var cam = Cam(-24, 34), BOT = -0.2, PL = [0.15, -0.45], PR = 0.45;
-      var CH = [[-0.55, 0], [0.05, 1.3], [0.6, 2.4]];
-      var Q = {};
-      function prm() {
-        if (RC) RC.clear();
-        var r = RAIN[st.rain - 1], t = st.t; Q.r = r;
-        Q.raining = t > 0.04 && t < 0.12;
-        Q.D = r[0] * sm(0.1, 0.3, t) * (1 - sm(0.3, 0.3 + r[1], t));
-        /* 업그레이드(10-20): 여러 해 반복 — 비가 올 때마다 선상지가 자라고 호수 바닥에 소금이 겹겹이 쌓임(앞선 비의 몫을 더함) */
-        var before = st.yrs - 1, gr = 1 + 0.55 * Math.log(st.yrs);
-        Q.salt = Math.min(1, 0.3 + 0.7 * (r[0] / 0.03) * (sm(0.3, 0.3 + r[1], t) + before * 0.35));
-        Q.saltM = (before + sm(0.3, 0.3 + r[1], t)) * r[0] * 0.25;
-        Q.fan = r[2] * (gr - 1 + sm(0.12, 0.3, t));
+    /* ================= 보기 ② 버섯바위가 생기는 과정 (예시 모형) =================
+       바위 높이 0.42(약 8m), 1 ≈ 19m. 아래쪽(높이 0.2 아래)은 무른 층, 위쪽은 단단한 층
+       모래를 실은 바람은 땅 가까이(높이 0.1, 약 2m 아래)로만 불어 바위 아래쪽을 깎음. 깎인 정도 = E × (0.08 + 0.66 × e^−((y−0.05)/0.085)²) × (단단한 층 0.3)
+       E = 0.15 ~ 0.95에 0 → 1. 처음 바위 모습은 점선 */
+    function latheC(cam, cx, cz, y0, rings, colOf) {
+      var N = 26, qs = [], i, k;
+      for (i = 0; i < rings.length - 1; i++) for (k = 0; k < N; k++) {
+        var a0 = k / N * 2 * Math.PI, a1 = (k + 1) / N * 2 * Math.PI, r0 = rings[i], r1 = rings[i + 1], am = (a0 + a1) / 2;
+        var pts = [[r0[1], r0[0], a0], [r0[1], r0[0], a1], [r1[1], r1[0], a1], [r1[1], r1[0], a0]].map(function (q) { return cam.P(cx + q[0] * Math.cos(q[2]), y0 + q[1], cz + q[0] * Math.sin(q[2])); });
+        var dr = r1[1] - r0[1], dy = r1[0] - r0[0], nx = Math.cos(am) * dy, ny = -dr, nz = Math.sin(am) * dy, nl = Math.hypot(nx, ny, nz) || 1;
+        var lam = Math.max(0, (nx * LIGHT[0] + ny * LIGHT[1] + nz * LIGHT[2]) / nl);
+        qs.push([(pts[0][2] + pts[1][2] + pts[2][2] + pts[3][2]) / 4, pts, lam, colOf((r0[0] + r1[0]) / 2, am)]);
       }
-      function cx(k, z) { var c = CH[k]; return c[0] + 0.05 * Math.sin(6 * z + c[1]) + (c[0] < PL[0] ? 1 : -1) * 0.0 + (PL[0] - c[0]) * sm(0.3, -0.45, z) * 0.75; }
-      function chanDist(x, z) { var b = 9, kb = 0; for (var k = 0; k < 3; k++) { var d = Math.abs(x - cx(k, z)); if (d < b) { b = d; kb = k; } } return [b, kb]; }
-      /* 재생 속도(10-29): 같은 장(prm 한 번) 안에서는 같은 자리의 바위 높이를 한 번만 계산 */
-      var RC = new Map();
-      function rock(x, z) { var k = Math.round(x * 1e5) * 1e6 + Math.round(z * 1e5), v = RC.get(k); if (v === undefined) { v = rock0(x, z); RC.set(k, v); } return v; }
-      function rock0(x, z) {
-        var mt = 0.32 * sm(0.28, 0.65, z) * (0.75 + 0.25 * n2(1.5 * x, 1.5 * z)), r = Math.hypot((x - PL[0]) / 1.3, z - PL[1]);
-        var basin = 0.012 + 0.07 * sm(0, 1.2, r) + 0.02 * sm(-0.2, 0.4, z), cd = chanDist(x, z);
-        var h = basin + mt;
-        if (z > 0.3) h -= 0.07 * sm(0.3, 0.45, z) * Math.exp(-Math.pow(cd[0] / 0.06, 2));
-        else h -= 0.006 * Math.exp(-Math.pow(cd[0] / 0.03, 2));
-        for (var k = 0; k < 3; k++) { var ax = cx(k, 0.3), d = Math.hypot(x - ax, (z - 0.3) * 1.2); if (z < 0.33 && d < 0.32) h += (0.05 + 0.006 * Q.fan) * Math.pow(1 - d / 0.32, 1.3); }
-        if (r < PR) h = Math.min(h, 0.012 + 0.03 * Math.pow(r / PR, 2)) + Math.min(0.006, Q.saltM * 0.02) * (1 - r / PR);
-        return h + 0.004 * n2(x, z);
-      }
-      function lakeLv() { return 0.012 + Q.D; }
-      function flowAt(z) { var s = clamp((0.75 - z) / 1.25, 0, 1), t = st.t, a = 0.05 + 0.1 * s; return sm(a, a + 0.03, t) * (1 - sm(a + 0.08 + 0.03 * st.rain, a + 0.14 + 0.04 * st.rain, t)); }
-      function water(x, z) {
-        var r = Math.hypot((x - PL[0]) / 1.3, z - PL[1]), rk = rock(x, z);
-        if (Q.D > 0.0005 && r < PR && rk < lakeLv()) return lakeLv();
-        var cd = chanDist(x, z), f = flowAt(z), w = 0.012 + 0.012 * Q.r[2];
-        if (f > 0.02 && cd[0] < w) return rk + 0.004 + 0.01 * f * Q.r[2];
-        return -9;
-      }
-      var R_ = 0;
-      function hf(x, z) { var rk = rock(x, z); R_ = rk; return Math.max(rk, water(x, z)); }
-      function color(h, x, z) {
-        var rk = rock(x, z), wt = water(x, z), r = Math.hypot((x - PL[0]) / 1.3, z - PL[1]);
-        if (wt > rk + 0.0003) return r < PR ? [96, 160, 206] : [150, 120, 84];
-        if (r < PR * 0.85) return mix([214, 200, 170], [246, 246, 240], Q.salt * sm(PR * 0.85, PR * 0.2, r));
-        var cd = chanDist(x, z);
-        if (cd[0] < 0.03 && z < 0.3) return [200, 176, 140];
-        if (z > 0.3) return mix([176, 128, 92], [150, 106, 80], sm(0.3, 0.7, z));
-        for (var k = 0; k < 3; k++) { var d = Math.hypot(x - cx(k, 0.3), (z - 0.3) * 1.2); if (d < 0.3) return mix([170, 150, 126], [206, 178, 136], d / 0.3); }
-        return mix([214, 182, 136], [196, 164, 124], 0.5 + 0.5 * n2(2 * x, 2 * z));
-      }
-      /* 완성본: 호수 물가를 층으로(톱니) */
-      var surf = makeSurf({ nx: 96, nz: 80, x0: -1, x1: 1, z0: -0.8, z1: 0.8, hf: hf, color: color, layers: [
-        { s: function (x, z) { var r = Math.hypot((x - PL[0]) / 1.3, z - PL[1]); return Q.D > 0.0005 && r < PR ? R_ - lakeLv() : 1; }, c: function () { return [96, 160, 206]; }, flat: true, line: "rgba(255,255,255,.75)" }
-      ] });
-      var M = { st: st, cam: cam, yaw0: -24, pitch0: 34, Q: Q };
+      qs.sort(function (a, b) { return b[0] - a[0]; });
+      qs.forEach(function (q) { var f = rgb(q[3], 0.55 + 0.5 * q[2]); poly(q[1]); ctx.fillStyle = f; ctx.fill(); ctx.strokeStyle = f; ctx.lineWidth = 0.6; ctx.stroke(); });
+    }
+    var MR = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-24, 18), BOT = -0.1, HR = 0.42, SB = 0.1, HARD = 0.2;
+      var Q = {}, STG = [0, 0.15, 0.5, 0.85, 1], STN = ["바위가 서 있음", "모래바람이 아래를 깎음", "아래가 가늘어짐", "버섯바위 완성"];
+      function prm() { Q.E = sm(0.15, 0.95, st.t); }
+      function R0(y) { var r = 0.13 + 0.012 * Math.exp(-Math.max(0, y) / 0.03); if (y > HR - 0.06) r *= Math.sqrt(Math.max(0, 1 - Math.pow((y - (HR - 0.06)) / 0.06, 2))); return Math.max(0.004, r); }
+      function cut(y) { return Q.E * (0.08 + 0.66 * Math.exp(-Math.pow((y - 0.05) / 0.085, 2)) * (y < HARD ? 1 : 0.3)); }
+      function R(y) { return Math.max(0.012, R0(y) * (1 - cut(y))); }
+      function ground(x, z) { return 0.004 * n2(2 * x, 2 * z) + 0.014 * Q.E * Math.exp(-(Math.pow(x - 0.3, 2) / 0.02 + z * z / 0.012)); }
+      function color(h, x, z) { return mix([214, 184, 140], [196, 166, 124], 0.5 + 0.5 * Math.sin(50 * x + 3 * Math.sin(6 * z))); }
+      var surf = makeSurf({ nx: 70, nz: 50, x0: -0.5, x1: 0.5, z0: -0.36, z1: 0.36, hf: ground, color: color });
+      var M = { st: st, cam: cam, yaw0: -24, pitch0: 18, Q: Q, STG: STG, STN: STN, title: "버섯바위가 생기는 과정", label: "3D 사막 바위. 모래를 실은 바람이 바위 아래쪽을 깎아 버섯 모양 바위가 되는 과정을 보여 준다.",
+        leg: [["#b8845e", "단단한 층"], ["#dcb282", "무른 층"], ["#d6b88c", "모래 · 자갈 땅"], ["#c4965a", "날리는 모래", true], ["#e8590c", "바람", true]], model: "예시 모형이다 · 실제 속도와 크기는 다르다" };
       M.update = function () { prm(); surf.reshape(); };
       M.setLod = function (v) { surf.lod = v; };
       M.lod = function () { return surf.lod; };
-      M.skey = function () { return [st.t.toFixed(4), st.rain, st.yrs].join(","); };
-      M.flowNow = function () { return Math.max(flowAt(0.5), flowAt(0.1), flowAt(-0.3)); };
-      M.lakeR = function () { return Q.D > 0.0005 ? PR * Math.sqrt(Math.min(1, Q.D / 0.03)) : 0; };
+      M.skey = function () { return st.t.toFixed(4); };
+      function colOf(y) { if (y >= HARD) return mix([178, 126, 92], [194, 140, 102], 0.5 + 0.5 * Math.sin(y * 80)); return mix([226, 186, 138], [212, 168, 122], 0.5 + 0.5 * Math.sin(y * 120)); }
       M.renderStatic = function (rect) {
         backdrop(rect);
-        fitBlock(cam, rect, surf, 0.45, BOT);
+        fitBlock(cam, rect, surf, HR + 0.05, BOT);
         surf.draw(cam);
-        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWallSoil(cam, surf, w, BOT, rock, function (x, z) { return z > 0.35 ? 0.01 : 0.03; }, function (x, z) { return z > 0.35 ? [176, 128, 92] : [214, 186, 142]; }, water); });
-        var L = function (t, x, z, dx, dy, o) { var y = hf(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
-        var f = M.flowNow();
-        L(f > 0.05 ? (st.rain === 3 ? "와디에 흐르는 급류" : "와디에 흐르는 물") : "마른 골짜기(와디) · 평소에는 길", cx(1, 0.45), 0.45, -0.3, 0.32);
-        L("부채 모양 땅(선상지)", cx(2, 0.3) + 0.05, 0.18, 0.3, 0.25);
-        if (Q.D > 0.0005) L("얕은 호수", PL[0], PL[1], 0.25, 0.25, { color: "#1864ab" });
-        else L(Q.salt > 0.5 ? "하얀 소금이 덮인 바닥" : "마른 분지 바닥", PL[0] + 0.1, PL[1], 0.3, 0.25);
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWallSoil(cam, surf, w, BOT, ground, function () { return 0.02; }, function () { return [206, 176, 132]; }, null); });
+        /* 모래가 날리는 높이(바람이 오는 쪽) */
+        var b0 = cam.P(-0.48, SB, 0), b1 = cam.P(-0.16, SB, 0);
+        dashLine([b0, b1], "rgba(194,65,12,.8)", 1.6);
+        callout("모래가 날리는 높이(땅에서 약 2m)", b0[0], b0[1], b0[0], b0[1] - 22 * TS, { size: 11.5, color: "#c2410c" });
+        var rings = [], i;
+        for (i = 0; i <= 34; i++) { var y = -0.02 + (HR + 0.02) * i / 34; rings.push([y, R(y)]); }
+        latheC(cam, 0, 0, 0, rings, colOf);
+        /* 처음 바위 모습(점선): 화면에서 바위 양옆 윤곽 */
+        if (Q.E > 0.03) {
+          var cY = Math.cos(cam.yaw * RAD), sY = Math.sin(cam.yaw * RAD);
+          [-1, 1].forEach(function (sg) { var pts = []; for (var j = 0; j <= 30; j++) { var yy = HR * j / 30, r0 = R0(yy); pts.push(cam.P(sg * r0 * cY, yy, -sg * r0 * sY)); } dashLine(pts, "rgba(29,99,180,.85)", 1.6); });
+        }
+        windArrow(cam, -0.49, -0.26, -0.25, -0.26, 0.06, "바람(모래를 싣고 불어옴)");
+        var t = st.t, k = stIdx(STG, t), P = function (txt, y, dx, dy, o) { var cy = Math.cos(cam.yaw * RAD), sy = Math.sin(cam.yaw * RAD), rr = R(Math.max(0, Math.min(HR - 0.01, y))), a = cam.P(rr * cy, Math.min(y, HR - 0.005), -rr * sy), c = cam.P(0, y + dy, 0); callout(txt, a[0], a[1], a[0] + dx * TS, c[1], Object.assign({ size: 12.5 }, o || {})); };
+        if (k === 0 && t > 0.02) P("층이 있는 바위", HR * 0.6, 80, 0.12);
+        if (k === 1 || k === 2) P("모래를 실은 바람이 아래쪽을 깎음", 0.05, 90, 0.12, { color: "#c2410c" });
+        if (k === 3) { P("버섯바위", HR, 70, 0.08); P("단단한 윗부분(덜 깎임)", HR * 0.68, 110, 0.04, { size: 12 }); P("무른 아랫부분(많이 깎임)", 0.08, 110, 0.06, { size: 12 }); }
+        if (Q.E > 0.03) { var g0 = cam.P(0.13 * cY0(), HR * 0.4, -0.13 * sY0()), g1 = g0; callout("처음 바위 모습(점선)", g0[0], g0[1], g1[0] - 90 * TS, g1[1] + 10 * TS, { size: 11.5, color: "#1858a0" }); }
+        function cY0() { return Math.cos(cam.yaw * RAD); }
+        function sY0() { return Math.sin(cam.yaw * RAD); }
+      };
+      var grains = [], clock = 0;
+      for (var g = 0; g < 60; g++) grains.push([-0.5 + rnd(g) * 1.0, -0.3 + rnd(g + 9) * 0.6, 0.006 + rnd(g + 21) * (SB - 0.01)]);
+      M.step = function (dt) { var sec = dt / 1000; clock += sec; grains.forEach(function (p) { p[0] += 0.3 * sec; var r = R(p[2]); if ((Math.abs(p[1]) < r && p[0] > -r && p[0] < 0) || p[0] > 0.5) { p[0] = -0.5; p[1] = -0.3 + rnd(p[1] * 99 + clock) * 0.6; } }); };
+      M.renderDynamic = function () {
+        if (RM || st.t < 0.1) return;
+        ctx.fillStyle = "rgba(196,150,90,.9)";
+        grains.forEach(function (p) { var q = cam.P(p[0], p[2], p[1]); ctx.beginPath(); ctx.arc(q[0], q[1], 1.6 * TS, 0, 2 * Math.PI); ctx.fill(); });
+      };
+      M.stage = function () {
+        var t = st.t, k = stIdx(STG, t);
+        if (t < 0.02) return ["사막에 층이 있는 바위가 서 있다", "아래쪽은 무른 층, 위쪽은 단단한 층으로 된 바위다. 「재생」을 누르거나 단계 단추를 눌러 바위가 깎이는 과정을 본다.", "calm", "처음"];
+        if (k === 0) return ["사막에 층이 있는 바위가 서 있다", "건조한 사막에는 풀과 나무가 거의 없어, 바람이 모래를 싣고 바위에 세게 부딪친다.", "", STN[0]];
+        if (k === 1) return ["모래를 실은 바람이 바위 아래쪽을 깎는다", "모래알은 무거워 땅 가까이(약 2m 아래)로만 날린다. 그래서 바위의 아래쪽만 모래에 부딪혀 사포로 문지르듯 깎인다.", "", STN[1]];
+        if (k === 2) return ["바위 아래쪽이 점점 가늘어진다", "모래가 닿지 않는 위쪽은 거의 그대로 남고, 무른 아래쪽은 더 빨리 깎여 기둥처럼 가늘어진다.", "", STN[2]];
+        return ["버섯바위가 완성되었다", "위는 넓고 아래는 가는 버섯 모양 바위가 되었다. 점선은 처음 바위 모습이다. 이집트의 백사막 등에서 볼 수 있다.", "", STN[3]];
+      };
+      M.info = function () {
+        return { h: "버섯바위", s: [["아래쪽이 깎인 정도", Math.round(cut(0.05) * 100) + "%"], ["바위 높이", "약 8m"], ["모래가 날리는 높이", "땅에서 약 2m 아래"], ["윗부분", Q.E > 0.5 ? "넓게 남음" : "거의 그대로"]],
+          note: "바위 높이를 약 8m로 본 예시 모형이다. 실제로 버섯바위가 만들어지는 데에는 아주 오랜 시간이 걸린다." };
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ③ 삼릉석이 생기는 과정 (예시 모형) =================
+       자갈 하나를 크게 그림(긴 지름 0.6 ≈ 30cm). 타원체(0.3 · 0.16 · 0.22)를 위로 30° 기운 평면 세 개로 깎음
+       바람: 1~2단계 서쪽 → 3단계 앞부분 북동쪽, 뒷부분 남동쪽 → 4단계 여러 방향(세 면이 조금씩 더 깎여 모서리가 날카로워짐)
+       면이 깎인 깊이 = 그 방향 지름의 40%(+ 마지막 10%). 처음 둥근 자갈은 점선 */
+    var VT = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-30, 26), BOT = -0.1, A = 0.3, B = 0.16, C = 0.22, Y0 = 0.15, BASE = -0.13, E30 = Math.PI / 6;
+      var NF = [[-Math.cos(E30), Math.sin(E30), 0], [Math.cos(E30) * 0.5, Math.sin(E30), Math.cos(E30) * 0.866], [Math.cos(E30) * 0.5, Math.sin(E30), -Math.cos(E30) * 0.866]];
+      var FNM = ["서쪽", "북동쪽", "남동쪽"];
+      var SUP = NF.map(function (n) { return Math.sqrt(A * A * n[0] * n[0] + B * B * n[1] * n[1] + C * C * n[2] * n[2]); });
+      var Q = {}, STG = [0, 0.15, 0.45, 0.75, 1], STN = ["둥근 자갈", "한 면이 깎임", "다른 면도 깎임", "삼릉석 완성"];
+      function prm() {
+        var t = st.t, k4 = sm(0.75, 1, t);
+        Q.k = [sm(0.15, 0.45, t), sm(0.45, 0.6, t), sm(0.6, 0.75, t)];
+        Q.d = Q.k.map(function (k, i) { return SUP[i] * (1 - 0.4 * k - 0.1 * k4); });
+        Q.wind = t < 0.15 ? -2 : t < 0.45 ? 0 : t < 0.6 ? 1 : t < 0.75 ? 2 : -1;
+        Q.nf = Q.k.filter(function (k) { return k > 0.3; }).length;
+      }
+      function vtx(th, ph) {
+        var p = [A * Math.sin(ph) * Math.cos(th), B * Math.cos(ph), C * Math.sin(ph) * Math.sin(th)], f = -1;
+        for (var rep = 0; rep < 2; rep++) for (var i = 0; i < 3; i++) { var n = NF[i], dd = p[0] * n[0] + p[1] * n[1] + p[2] * n[2] - Q.d[i]; if (dd > 0) { p = [p[0] - dd * n[0], p[1] - dd * n[1], p[2] - dd * n[2]]; f = i; } }
+        if (p[1] < BASE) p[1] = BASE;
+        return [p, f];
+      }
+      function ground(x, z) { return 0.01 + 0.003 * n2(3 * x, 3 * z); }
+      function color(h, x, z) { return mix([200, 172, 132], [182, 152, 116], 0.5 + 0.5 * n2(6 * x, 6 * z)); }
+      var surf = makeSurf({ nx: 60, nz: 46, x0: -0.62, x1: 0.62, z0: -0.46, z1: 0.46, hf: ground, color: color });
+      var PEB = [];
+      for (var pi = 0; pi < 70; pi++) { var px = rnd(pi * 3 + 1) * 1.18 - 0.59, pz = rnd(pi * 5 + 2) * 0.86 - 0.43; if (Math.hypot(px / 0.45, pz / 0.35) > 1) PEB.push([px, pz, 0.01 + 0.02 * rnd(pi + 7), rnd(pi + 11)]); }
+      var M = { st: st, cam: cam, yaw0: -30, pitch0: 26, Q: Q, STG: STG, STN: STN, title: "삼릉석이 생기는 과정", label: "3D 자갈 모형. 모래바람이 여러 방향에서 자갈을 깎아 세 면과 날카로운 모서리를 가진 삼릉석이 되는 과정을 보여 준다.",
+        leg: [["#9e8870", "자갈(돌)"], ["#7e6656", "바람에 깎인 면"], ["#d8c8a8", "모서리", true], ["#e8590c", "바람", true]], model: "예시 모형이다 · 돌 하나를 크게 그렸다" };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return st.t.toFixed(4); };
+      function stone() {
+        var NU = 48, NV = 24, V = [], i, j;
+        for (j = 0; j <= NV; j++) { V.push([]); for (i = 0; i <= NU; i++) V[j].push(vtx(i / NU * 2 * Math.PI, j / NV * Math.PI)); }
+        var qs = [];
+        for (j = 0; j < NV; j++) for (i = 0; i < NU; i++) {
+          var vs = [V[j][i], V[j][i + 1], V[j + 1][i + 1], V[j + 1][i]], w = vs.map(function (v) { return [v[0][0], v[0][1] + Y0, v[0][2]]; });
+          var e1 = [w[2][0] - w[0][0], w[2][1] - w[0][1], w[2][2] - w[0][2]], e2 = [w[3][0] - w[1][0], w[3][1] - w[1][1], w[3][2] - w[1][2]];
+          var n = [e1[1] * e2[2] - e1[2] * e2[1], e1[2] * e2[0] - e1[0] * e2[2], e1[0] * e2[1] - e1[1] * e2[0]], nl = Math.hypot(n[0], n[1], n[2]); if (nl < 1e-9) continue;
+          var c = [(w[0][0] + w[2][0]) / 2, (w[0][1] + w[2][1]) / 2 - Y0, (w[0][2] + w[2][2]) / 2];
+          if (n[0] * c[0] + n[1] * c[1] + n[2] * c[2] < 0) { n = [-n[0], -n[1], -n[2]]; }
+          var lam = Math.max(0, (n[0] * LIGHT[0] + n[1] * LIGHT[1] + n[2] * LIGHT[2]) / nl);
+          var fs = vs.map(function (v) { return v[1]; }), allF = fs.every(function (f) { return f === fs[0] && f >= 0; }), cutAny = fs.some(function (f) { return f >= 0; }), mixd = cutAny && !allF && fs.filter(function (f) { return f >= 0; }).some(function (f, q, arr) { return f !== arr[0]; });
+          var col = mixd ? [236, 224, 200] : allF ? [150, 120, 96] : mix([184, 164, 138], [170, 150, 126], 0.5 + 0.5 * Math.sin(i * 1.3 + j));
+          var pts = w.map(function (q) { return cam.P(q[0], q[1], q[2]); });
+          qs.push([(pts[0][2] + pts[1][2] + pts[2][2] + pts[3][2]) / 4, pts, lam, col, allF]);
+        }
+        qs.sort(function (a, b) { return b[0] - a[0]; });
+        qs.forEach(function (q) { var f = rgb(q[3], 0.66 + (q[4] ? 0.6 : 0.42) * q[2]); poly(q[1]); ctx.fillStyle = f; ctx.fill(); ctx.strokeStyle = f; ctx.lineWidth = 0.6; ctx.stroke(); });
+      }
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.4, BOT);
+        surf.draw(cam);
+        facingWalls(cam, surf, -0.05).forEach(function (w) { drawWallSoil(cam, surf, w, BOT, ground, function () { return 0.02; }, function () { return [196, 168, 128]; }, null); });
+        PEB.forEach(function (q) { var p = cam.P(q[0], ground(q[0], q[1]) + 0.003, q[1]), rx = q[2] * cam.k * p[3]; ctx.fillStyle = rgb(mix([150, 132, 112], [120, 100, 84], q[3])); ctx.beginPath(); ctx.ellipse(p[0], p[1], rx, rx * 0.55, 0, 0, 2 * Math.PI); ctx.fill(); });
+        stone();
+        /* 처음 둥근 자갈(점선) */
+        if (st.t > 0.17) {
+          var ring = [], mer = [], i;
+          for (i = 0; i <= 48; i++) { var a = i / 48 * 2 * Math.PI; ring.push(cam.P(A * Math.cos(a), Y0, C * Math.sin(a))); }
+          for (i = 0; i <= 24; i++) { var ph = i / 24 * Math.PI, yy = Math.max(BASE, B * Math.cos(ph)); mer.push(cam.P(-A * Math.sin(ph), Y0 + yy, 0)); }
+          dashLine(ring, "rgba(29,99,180,.7)", 1.3); dashLine(mer, "rgba(29,99,180,.7)", 1.3);
+        }
+        if (Q.wind >= 0) { var n = NF[Q.wind], hl = Math.hypot(n[0], n[2]), hx = n[0] / hl, hz = n[2] / hl; windArrow(cam, hx * 0.62, hz * 0.45, hx * 0.36, hz * 0.28, 0.2, "바람(" + FNM[Q.wind] + "에서)"); }
+        var t = st.t, k = stIdx(STG, t);
+        Q.k.forEach(function (kk, i) {
+          if (kk < 0.3) return;
+          var n = NF[i], c = [n[0] * Q.d[i], n[1] * Q.d[i] + Y0, n[2] * Q.d[i]], p = cam.P(c[0], c[1], c[2]), q = cam.P(c[0] + n[0] * 0.35, c[1] + 0.12, c[2] + n[2] * 0.35);
+          callout("깎인 면 " + (i + 1) + "(" + FNM[i] + " 바람)", p[0], p[1], q[0], q[1], { size: 12 });
+        });
+        if (k === 3) { var tp = cam.P(0.02, Y0 + B * 0.55, 0), tq = cam.P(0.1, Y0 + 0.36, 0.1); callout("삼릉석: 세 면 사이 날카로운 모서리", tp[0], tp[1], tq[0], tq[1], { size: 13 }); }
+        if (st.t > 0.17) { var gp = cam.P(0, Y0, -C), gq = cam.P(0.05, 0.05, -C - 0.25); callout("처음 둥근 자갈(점선)", gp[0], gp[1], gq[0], gq[1], { size: 11.5, color: "#1858a0" }); }
+        if (k === 0 && t > 0.02) { var sp = cam.P(0, Y0 + B, 0), sq = cam.P(-0.1, Y0 + 0.36, 0); callout("물에 굴러 둥글어진 자갈", sp[0], sp[1], sq[0], sq[1]); }
+      };
+      var grains = [], clock = 0;
+      for (var g = 0; g < 50; g++) grains.push([rnd(g + 3), rnd(g + 5) * 2 - 1, 0.02 + rnd(g + 8) * 0.2]);
+      M.step = function (dt) { var sec = dt / 1000; clock += sec; grains.forEach(function (p) { p[0] -= 0.5 * sec; if (p[0] < 0) { p[0] += 1; p[1] = rnd(p[1] * 31 + clock) * 2 - 1; } }); };
+      M.renderDynamic = function () {
+        if (RM) return;
+        var dirs = Q.wind >= 0 ? [Q.wind] : Q.wind === -1 ? [0, 1, 2] : [];
+        ctx.fillStyle = "rgba(196,150,90,.9)";
+        dirs.forEach(function (wi, di) {
+          var n = NF[wi], hl = Math.hypot(n[0], n[2]), hx = n[0] / hl, hz = n[2] / hl;
+          grains.forEach(function (p, gi) {
+            if (dirs.length > 1 && gi % 3 !== di) return;
+            var s = 0.3 + 0.32 * p[0], x = hx * s - hz * p[1] * 0.2, z = hz * s + hx * p[1] * 0.2, q = cam.P(x, p[2], z);
+            ctx.beginPath(); ctx.arc(q[0], q[1], 1.5 * TS, 0, 2 * Math.PI); ctx.fill();
+          });
+        });
+      };
+      M.stage = function () {
+        var t = st.t, k = stIdx(STG, t);
+        if (t < 0.02) return ["사막 바닥의 둥근 자갈이다", "옛날 물에 굴러 둥글어진 자갈이다. 「재생」을 누르거나 단계 단추를 눌러 모래바람에 깎이는 과정을 본다.", "calm", "처음"];
+        if (k === 0) return ["사막 바닥의 둥근 자갈이다", "자갈은 무거워 바람에 날아가지 않고 그 자리에 남는다. 그 위로 모래를 실은 바람이 분다.", "", STN[0]];
+        if (k === 1) return ["바람을 맞는 쪽이 평평하게 깎인다", "서쪽에서 모래를 실은 바람이 불어 와 자갈의 바람 맞는 쪽을 사포로 문지르듯 깎아 평평하고 매끈한 면을 만든다.", "", STN[1]];
+        if (k === 2) return ["바람 방향이 바뀌어 다른 면도 깎인다", "바람 방향이 바뀌거나 자갈이 굴러 다른 쪽이 바람을 맞으면, 그쪽에도 평평한 면이 생긴다.", "", STN[2]];
+        return ["삼릉석이 완성되었다", "여러 방향에서 깎인 세 면이 만나 날카로운 모서리(능)가 생긴 돌을 삼릉석이라고 한다. 점선은 처음 둥근 자갈의 모습이다.", "", STN[3]];
+      };
+      M.info = function () {
+        return { h: "삼릉석", s: [["깎인 면", Q.nf + "개"], ["지금 바람", Q.wind >= 0 ? FNM[Q.wind] + "에서" : Q.wind === -1 ? "여러 방향" : "—"], ["모서리", Q.nf < 2 ? "둥긂" : Q.nf < 3 ? "생기는 중" : "날카로움"], ["돌 크기", "약 30cm(크게 그림)"]],
+          note: "돌 하나를 크게 그린 예시 모형이다. 실제로 삼릉석이 만들어지는 데에는 아주 오랜 시간이 걸린다. 바람 방향이 바뀌는 대신 돌이 굴러 다른 면이 바람을 맞기도 한다." };
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ④ 사막포도가 생기는 과정 (예시 모형) =================
+       블록 가로 약 4m(1 = 2m), 높이는 크게 늘림. 처음 땅 높이 0.1, 모래 · 흙 · 자갈이 섞인 층
+       0.15 ~ 0.8에 바람이 가벼운 모래 · 흙만 날려 보내 땅이 0.045(약 30cm) 낮아짐. 자갈 600개는 섞여 있던 깊이(0 ~ 0.045)까지 땅이 낮아지면 겉에 드러남
+       0.8 ~ 1: 자갈이 겉을 촘촘히 덮어 더 날리지 않음, 자갈 겉이 검게 바뀜(사막 칠) */
+    var PV = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-26, 38), BOT = -0.14, X0 = -1, X1 = 1, Z0 = -0.6, Z1 = 0.6;
+      var Q = {}, STG = [0, 0.15, 0.5, 0.8, 1], STN = ["섞여 있는 땅", "모래 · 흙이 날아감", "자갈이 겉에 모임", "사막포도 완성"];
+      var PEB = [];
+      for (var i0 = 0; i0 < 600; i0++) PEB.push([X0 + 0.03 + rnd(i0 * 1.7 + 1) * (X1 - X0 - 0.06), Z0 + 0.03 + rnd(i0 * 2.3 + 2) * (Z1 - Z0 - 0.06), 0.018 + 0.018 * rnd(i0 + 5), rnd(i0 * 3.1 + 3) * 0.045, rnd(i0 + 9), rnd(i0 + 13) * Math.PI]);
+      function prm() { var t = st.t; Q.L = 0.045 * sm(0.15, 0.8, t); Q.S = 0.1 - Q.L; Q.var = sm(0.78, 1, t); Q.dust = sm(0.12, 0.2, t) * (1 - sm(0.7, 0.82, t)); }
+      function rock(x, z) { return Q.S + 0.002 * n2(4 * x, 4 * z); }
+      function color(h, x, z) { return mix(mix([216, 186, 142], [200, 168, 126], 0.5 + 0.5 * n2(5 * x, 5 * z)), [170, 136, 100], 0.6 * sm(0.3, 0.9, st.t)); }
+      var surf = makeSurf({ nx: 70, nz: 44, x0: X0, x1: X1, z0: Z0, z1: Z1, hf: rock, color: color });
+      var M = { st: st, cam: cam, yaw0: -26, pitch0: 38, Q: Q, STG: STG, STN: STN, title: "사막포도가 생기는 과정", label: "3D 사막 땅 블록. 바람이 가벼운 모래와 흙을 날려 보내고 무거운 자갈만 남아 땅을 덮는 과정을 보여 준다.",
+        leg: [["#d8ba8e", "모래 · 흙"], ["#8c7462", "자갈"], ["#c4965a", "날리는 모래 · 흙", true], ["#c2410c", "처음 땅 높이(점선)", true]], model: "예시 모형이다 · 높이를 크게 늘려 그렸다" };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return st.t.toFixed(4); };
+      function pebCol(q) { return mix(mix([168, 148, 124], [130, 112, 96], q[4]), [78, 58, 48], 0.75 * Q.var); }
+      M.cover = function () { var a = 0; PEB.forEach(function (q) { if (q[3] <= Q.L + 0.003) a += Math.PI * q[2] * q[2]; }); return Math.min(0.95, a / ((X1 - X0) * (Z1 - Z0)) * 1.15); };
+      function drawWallPV(w) {
+        var T = surf, r = wallRange(T, w), ol = wallOutline(cam, T, w, BOT), P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); }, i;
+        ctx.save(); poly(ol); ctx.clip();
+        poly(ol); ctx.fillStyle = "#cfae82"; ctx.fill();
+        for (i = 0; i < 170; i++) { var u = r[0] + (r[1] - r[0]) * rnd(i * 3 + w * 17), y = BOT + (Q.S - BOT - 0.012) * rnd(i * 5 + 7 + w * 13), p = P(u, y); ctx.fillStyle = rgb(mix([150, 128, 104], [118, 98, 82], rnd(i + 31))); ctx.beginPath(); ctx.ellipse(p[0], p[1], (2 + 2.5 * rnd(i + 3)) * TS, (1.4 + 1.6 * rnd(i + 4)) * TS, 0, 0, 2 * Math.PI); ctx.fill(); }
+        var cov = M.cover(), n = 60;
+        for (i = 0; i < n; i++) { if (rnd(i * 7 + w * 3) > cov * 1.1) continue; var u2 = r[0] + (r[1] - r[0]) * (i + 0.5) / n, p2 = P(u2, Q.S - 0.006); ctx.fillStyle = rgb(mix([150, 130, 110], [78, 58, 48], 0.75 * Q.var)); ctx.beginPath(); ctx.ellipse(p2[0], p2[1], 3.4 * TS, 2.2 * TS, 0, 0, 2 * Math.PI); ctx.fill(); }
+        ctx.restore();
+        poly(ol); ctx.strokeStyle = "rgba(80,60,40,.5)"; ctx.lineWidth = 1; ctx.stroke();
+        if (Q.L > 0.004) dashLine([P(r[0], 0.1), P(r[1], 0.1)], "rgba(194,65,12,.85)", 1.6);
+      }
+      var walls = [];
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.18, BOT);
+        surf.draw(cam);
+        walls = facingWalls(cam, surf, -0.02);
+        walls.forEach(drawWallPV);
+        var vis = PEB.filter(function (q) { return q[3] <= Q.L + 0.003; }).map(function (q) { return [cam.P(q[0], 0, q[1])[2], q]; }).sort(function (a, b) { return b[0] - a[0]; });
+        var sp = Math.sin(cam.pitch * RAD);
+        vis.forEach(function (it) {
+          var q = it[1], y = rock(q[0], q[1]), p = cam.P(q[0], y + 0.004, q[1]), rx = q[2] * cam.k * p[3], c = pebCol(q);
+          ctx.fillStyle = "rgba(60,44,30,.25)"; ctx.beginPath(); ctx.ellipse(p[0] + rx * 0.15, p[1] + rx * 0.2, rx, rx * sp * 0.75, q[5], 0, 2 * Math.PI); ctx.fill();
+          ctx.fillStyle = rgb(c); ctx.beginPath(); ctx.ellipse(p[0], p[1] - rx * 0.12, rx, rx * sp * 0.7, q[5], 0, 2 * Math.PI); ctx.fill();
+          ctx.fillStyle = "rgba(255,255,255,.18)"; ctx.beginPath(); ctx.ellipse(p[0] - rx * 0.3, p[1] - rx * 0.28, rx * 0.35, rx * sp * 0.22, q[5], 0, 2 * Math.PI); ctx.fill();
+        });
+        windArrow(cam, -0.98, 0.4, -0.6, 0.4, 0.2, "바람(서쪽에서 불어옴)");
+        var t = st.t, k = stIdx(STG, t), L = labeler(cam, rock);
+        if (k === 0 && t > 0.02) L("모래 · 흙 · 자갈이 섞인 땅", 0.2, 0.1, 0.1, 0.12);
+        if (k === 1) L("가벼운 모래 · 흙이 바람에 날아감", 0.3, 0.2, 0.05, 0.16, { color: "#c2410c" });
+        if (k === 2) L("무거운 자갈은 남아 겉에 모임", 0.1, 0, 0.1, 0.14);
+        if (k === 3) L("사막포도(자갈이 겉을 덮은 땅)", 0.1, 0, 0.1, 0.15, { size: 13.5 });
+        if (walls.indexOf(0) >= 0) {
+          var P0 = function (u, y) { return cam.P(u, y, Z0); };
+          if (Q.L > 0.004) { var a = P0(-0.7, 0.1); callout("처음 땅 높이(점선)", a[0], a[1], a[0] - 20 * TS, a[1] - 26 * TS, { size: 12, color: "#c2410c" }); }
+          if (k === 3) { var b = P0(0.4, (Q.S + BOT) / 2); callout("아래는 처음처럼 모래 · 자갈이 섞여 있음", b[0], b[1], b[0] + 30 * TS, b[1] + 46 * TS, { size: 12 }); }
+        }
+      };
+      var dust = [], clock = 0;
+      for (var g = 0; g < 46; g++) dust.push([rnd(g + 2) * 2 - 1, Z0 + 0.05 + rnd(g + 4) * (Z1 - Z0 - 0.1), rnd(g + 6)]);
+      M.step = function (dt) { var sec = dt / 1000; clock += sec; dust.forEach(function (p) { p[0] += 0.3 * sec; p[2] = (p[2] + sec * 0.5) % 1; if (p[0] > 1) p[0] -= 2; }); };
+      M.renderDynamic = function () {
+        if (RM || Q.dust < 0.03) return;
+        dust.forEach(function (p, i) { var y = Q.S + 0.01 + p[2] * 0.12, q = cam.P(p[0], y, p[1]); ctx.fillStyle = "rgba(200,160,110," + (0.55 * Q.dust * (1 - p[2] * 0.7)).toFixed(3) + ")"; ctx.beginPath(); ctx.arc(q[0], q[1], (1.5 + 4 * p[2]) * TS, 0, 2 * Math.PI); ctx.fill(); });
+      };
+      M.stage = function () {
+        var t = st.t, k = stIdx(STG, t);
+        if (t < 0.02) return ["모래 · 흙 · 자갈이 섞인 땅이다", "풀과 나무가 거의 없어 땅이 그대로 드러나 있다. 「재생」을 누르거나 단계 단추를 눌러 바람이 땅을 바꾸는 과정을 본다.", "calm", "처음"];
+        if (k === 0) return ["모래 · 흙 · 자갈이 섞인 땅이다", "겉에는 자갈이 드문드문 보이고, 대부분은 가벼운 모래와 흙이다.", "", STN[0]];
+        if (k === 1) return ["바람이 가벼운 모래와 흙만 날려 보낸다", "바람은 가벼운 모래와 흙을 실어 가지만 무거운 자갈은 옮기지 못한다. 모래와 흙이 날아간 만큼 땅이 조금씩 낮아진다.", "", STN[1]];
+        if (k === 2) return ["자갈이 겉에 모여 촘촘해진다", "땅이 낮아질수록 땅속에 섞여 있던 자갈이 겉에 드러나 모인다.", "", STN[2]];
+        return ["사막포도(자갈 사막)가 완성되었다", "자갈이 겉을 촘촘히 덮어 아래의 모래와 흙이 더는 날리지 않는다. 길을 포장한 것처럼 보여 사막포도라고 한다. 고비 사막처럼 자갈 사막이 넓은 곳에서 볼 수 있다.", "", STN[3]];
+      };
+      M.info = function () {
+        return { h: "사막포도", s: [["낮아진 땅", Q.L > 0.002 ? "약 " + Math.round(Q.L / 0.045 * 30) + "cm" : "—"], ["겉을 덮은 자갈", Math.round(M.cover() * 100) + "%"], ["날리는 것", Q.dust > 0.1 ? "모래 · 흙" : st.t > 0.8 ? "거의 없음" : "—"], ["무거워서 남는 것", "자갈"]],
+          note: "블록 가로를 약 4m로 보고 높이를 크게 늘려 그린 예시 모형이다. 실제로는 아주 오랜 시간에 걸쳐 일어난다." };
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ⑤ 와디가 생기는 과정 (예시 모형) =================
+       블록 가로 약 2km(1 = 1km), 높이 2배. 고원을 지나는 골짜기(가운데 x = 0.1 sin(2.1z + 0.5))
+       1단계 평소 마른 얕은 골짜기 → 2단계 큰비(0.15~0.27) · 흙탕물 홍수(0.2~0.45)가 바닥을 깎음 → 3단계 금세 말라붙음 → 4단계 되풀이(0.72~0.97)되어 깊어지고 바닥은 평평 · 벽은 가파름
+       골짜기 깊이 D 0.05 → 0.2, 바닥 반폭 W 0.03 → 0.11, 벽 너비 S 0.32 → 0.06. 처음 골짜기는 앞 단면에 점선 */
+    var WD = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-30, 34), BOT = -0.2, Z0 = -0.8, Z1 = 0.8;
+      var Q = {}, STG = [0, 0.15, 0.45, 0.7, 1], STN = ["마른 골짜기", "큰비 · 홍수", "다시 말라붙음", "와디 완성"];
+      function xc(z) { return 0.1 * Math.sin(2.1 * z + 0.5); }
+      function plat(x, z) { return 0.26 + 0.035 * z + 0.012 * n2(1.4 * x, 1.4 * z); }
+      function geo(t) { var f1 = sm(0.22, 0.42, t), f2 = sm(0.72, 0.97, t); return { D: 0.05 + 0.04 * f1 + 0.15 * f2, W: 0.03 + 0.015 * f1 + 0.09 * f2, S: 0.32 - 0.06 * f1 - 0.2 * f2 }; }
+      function prm() {
+        var t = st.t; Q.g = geo(t); Q.g0 = geo(0);
+        Q.flood = sm(0.2, 0.26, t) * (1 - sm(0.36, 0.45, t)) + 0.6 * sm(0.76, 0.79, t) * (1 - sm(0.84, 0.9, t));
+        Q.rain = (t > 0.15 && t < 0.27) || (t > 0.73 && t < 0.8);
+        Q.wet = sm(0.22, 0.3, t) * (1 - sm(0.45, 0.68, t));
+      }
+      function prof(x, z, g) { var dx = Math.abs(x - xc(z)), P0 = plat(x, z), F = plat(xc(z), z) - g.D, u = clamp((dx - g.W) / g.S, 0, 1); return F + (P0 - F) * (0.5 - 0.5 * Math.cos(Math.PI * u)) + 0.002 * n2(6 * x, 6 * z) * (1 - u); }
+      function rock(x, z) { return prof(x, z, Q.g); }
+      function wlv(z) { return plat(xc(z), z) - Q.g.D + 0.014 * Q.flood; }
+      function water(x, z, r) { if (Q.flood < 0.02) return -9; var lv = wlv(z); return (r == null ? rock(x, z) : r) < lv ? lv : -9; }
+      var R_ = 0, W_ = -9;
+      function hf(x, z) { var r = rock(x, z), w = water(x, z, r); R_ = r; W_ = w; return Math.max(r, w); }
+      function color(h, x, z) {
+        var dx = Math.abs(x - xc(z)), g = Q.g;
+        if (dx < g.W + 0.012) return mix(mix([204, 178, 138], [188, 160, 122], 0.5 + 0.5 * n2(8 * x, 8 * z)), [140, 112, 84], 0.6 * Q.wet);
+        var u = clamp((dx - g.W) / g.S, 0, 1);
+        if (u > 0.97) return mix([206, 162, 116], [194, 148, 104], 0.5 + 0.5 * n2(3 * x, 3 * z));
+        return mix([186, 122, 84], [214, 160, 112], 0.5 + 0.5 * Math.sin(h * 95));
+      }
+      var surf = makeSurf({ nx: 96, nz: 90, x0: -1, x1: 1, z0: Z0, z1: Z1, hf: hf, color: color, layers: [
+        { s: function () { return W_ > -9 ? R_ - W_ : 1; }, c: function () { return [156, 118, 78]; }, flat: true, line: "rgba(255,255,255,.55)" }
+      ] });
+      var M = { st: st, cam: cam, yaw0: -30, pitch0: 34, Q: Q, STG: STG, STN: STN, title: "와디가 생기는 과정", label: "3D 사막 골짜기 블록. 드물게 큰비가 오면 마른 골짜기에 홍수가 흐르고 다시 마르는 일이 되풀이되며 와디가 되는 과정을 보여 준다.",
+        leg: [["#c88a5e", "바위 층"], ["#ccb28a", "골짜기 바닥(자갈)"], ["#9c764e", "흙탕물(홍수)"], ["#1d63b4", "처음 골짜기(점선)", true]], model: "예시 모형이다 · 높이 2배" };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return st.t.toFixed(4); };
+      function drawWallWD(w) {
+        var T = surf, r = wallRange(T, w), ol = wallOutline(cam, T, w, BOT), P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); }, N = 80, i;
+        ctx.save(); poly(ol); ctx.clip();
+        wallBands(P, r, BOT, 0.36, 0.035, ["#b9805a", "#cd9a6c", "#c08a60", "#d6a878"]);
+        var us = [], rs = [], ws = [];
+        for (i = 0; i <= N; i++) { var u = r[0] + (r[1] - r[0]) * i / N, p = wallPt(T, w, u, 0); us.push(u); rs.push(rock(p[0], p[2])); ws.push(water(p[0], p[2])); }
+        for (i = 0; i < N; i++) { var p0 = wallPt(T, w, us[i], 0), dx = Math.abs(p0[0] - xc(p0[2])); if (dx < Q.g.W + 0.02) quad(P(us[i], rs[i]), P(us[i + 1], rs[i + 1]), P(us[i + 1], rs[i + 1] - 0.014), P(us[i], rs[i] - 0.014), "#c9ad84"); }
+        for (i = 0; i < N; i++) if (ws[i] > rs[i] && ws[i + 1] > rs[i + 1]) quad(P(us[i], ws[i]), P(us[i + 1], ws[i + 1]), P(us[i + 1], rs[i + 1]), P(us[i], rs[i]), "rgb(156,118,78)");
+        ctx.restore();
+        poly(ol); ctx.strokeStyle = "rgba(80,60,40,.5)"; ctx.lineWidth = 1; ctx.stroke();
+        if (w === 0 && st.t > 0.2) { var pts = []; for (i = 0; i <= N; i++) pts.push(P(us[i], prof(us[i], Z0, Q.g0))); dashLine(pts, "rgba(29,99,180,.9)", 1.8); }
+      }
+      var walls = [];
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.4, BOT);
+        surf.draw(cam);
+        walls = facingWalls(cam, surf, 0.05);
+        walls.forEach(drawWallWD);
+        var t = st.t, k = stIdx(STG, t), L = labeler(cam, hf), zl = 0.25;
+        if (t > 0.9) {
+          var pts = []; for (var z = Z1 - 0.02; z >= Z0 + 0.02; z -= 0.04) pts.push(cam.P(xc(z) + 0.03, rock(xc(z) + 0.03, z) + 0.003, z));
+          dashLine(pts, "rgba(120,92,64,.75)", 1.4, [8, 6]);
+          var cz = -0.15, cx = xc(cz) + 0.03, cy = rock(cx, cz), s = 0.016, b = [cam.P(cx - s * 1.6, cy, cz - s), cam.P(cx + s * 1.6, cy, cz - s), cam.P(cx + s * 1.6, cy, cz + s), cam.P(cx - s * 1.6, cy, cz + s)], tp = [cam.P(cx - s * 1.6, cy + s * 1.2, cz - s), cam.P(cx + s * 1.6, cy + s * 1.2, cz - s), cam.P(cx + s * 1.6, cy + s * 1.2, cz + s), cam.P(cx - s * 1.6, cy + s * 1.2, cz + s)];
+          poly([b[0], b[1], tp[1], tp[0]]); ctx.fillStyle = "#d4552a"; ctx.fill(); poly([b[1], b[2], tp[2], tp[1]]); ctx.fillStyle = "#b8441e"; ctx.fill(); poly(tp); ctx.fillStyle = "#e8714a"; ctx.fill();
+          L("평소에는 길로 이용함", cx, cz, 0.3, 0.16, { size: 12 });
+        }
+        if (k === 0 && t > 0.02) L("물이 흐르지 않는 마른 골짜기", xc(zl), zl, -0.35, 0.3);
+        if (k === 1) L(Q.flood > 0.05 ? "갑자기 쏟아진 비로 흙탕물이 흐름(홍수)" : "드물게 큰비가 짧고 세게 내림", xc(zl), zl, -0.4, 0.3, { color: Q.flood > 0.05 ? "#8a4b12" : undefined });
+        if (k === 2) L("물이 금세 빠지고 말라붙음", xc(zl), zl, -0.35, 0.3);
+        if (k === 3) L("와디(바닥이 평평하고 양옆이 가파른 마른 골짜기)", xc(zl), zl, -0.4, 0.32, { size: 13.5 });
+        if (walls.indexOf(0) >= 0 && t > 0.2) { var a = cam.P(xc(Z0) + Q.g0.W + 0.12, prof(xc(Z0) + Q.g0.W + 0.12, Z0, Q.g0), Z0); callout("처음 골짜기(점선)", a[0], a[1], a[0] + 40 * TS, a[1] + 40 * TS, { size: 12, color: "#1858a0" }); }
       };
       var clock = 0;
       M.step = function (dt) { clock += dt / 1000; };
       M.renderDynamic = function () {
         if (RM) return;
-        if (Q.raining) {
-          ctx.strokeStyle = "rgba(90,120,160,.45)"; ctx.lineWidth = 1.2;
-          var n = [30, 70, 130][st.rain - 1];
-          for (var i = 0; i < n; i++) { var x = rnd(i) * 1.9 - 0.95, z = rnd(i + 3) * 0.9 - 0.15, ph = frac(clock * 1.6 + rnd(i + 7)), y = 0.65 - ph * 0.55, a = cam.P(x, y, z), b = cam.P(x - 0.01, y - 0.06, z); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+        if (Q.rain) rainDraw(cam, clock, 110, -0.9, 0.9, -0.7, 0.7, 0.62);
+        if (Q.flood > 0.05) {
+          ctx.setLineDash([5, 9]); ctx.lineDashOffset = -clock * 40; ctx.strokeStyle = "rgba(255,236,206,.9)"; ctx.lineWidth = 1.6; ctx.beginPath();
+          for (var z = Z1 - 0.02, f = true; z >= Z0 + 0.02; z -= 0.03) { var p = cam.P(xc(z), wlv(z) + 0.003, z); if (f) { ctx.moveTo(p[0], p[1]); f = false; } else ctx.lineTo(p[0], p[1]); }
+          ctx.stroke(); ctx.setLineDash([]); ctx.lineDashOffset = 0;
         }
-        ctx.setLineDash([4, 8]); ctx.lineDashOffset = -clock * 30; ctx.strokeStyle = "rgba(255,240,215,.9)"; ctx.lineWidth = 1.5;
-        for (var k = 0; k < 3; k++) {
-          ctx.beginPath(); var on = false;
-          for (var j = 0; j <= 40; j++) { var z2 = 0.75 - 1.15 * j / 40, x2 = cx(k, z2), fl = flowAt(z2); if (fl > 0.05) { var p = cam.P(x2, hf(x2, z2) + 0.003, z2); if (on) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); on = true; } else on = false; }
-          ctx.stroke();
-        }
-        ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      };
+      M.stage = function () {
+        var t = st.t, k = stIdx(STG, t);
+        if (t < 0.02) return ["물이 흐르지 않는 마른 골짜기다", "건조한 땅의 얕은 골짜기로, 평소에는 물이 흐르지 않는다. 「재생」을 누르거나 단계 단추를 눌러 와디가 생기는 과정을 본다.", "calm", "처음"];
+        if (k === 0) return ["평소에는 말라 있는 골짜기다", "비가 거의 오지 않아 골짜기 바닥에는 자갈과 모래만 있다.", "", STN[0]];
+        if (k === 1) return Q.flood > 0.05 ? ["마른 골짜기에 갑자기 흙탕물이 흐른다(홍수)", "풀과 나무가 거의 없어 빗물이 땅에 스며들기 전에 골짜기로 한꺼번에 모인다. 세찬 물이 흙과 자갈을 실어 나르며 골짜기 바닥을 깎는다.", "warn", STN[1]]
+          : ["드물게 큰비가 짧고 세게 내린다", "사막에도 몇 년에 한 번쯤 짧고 세찬 비(소나기)가 내린다.", "", STN[1]];
+        if (k === 2) return ["물이 금세 빠지고 골짜기가 말라붙는다", "증발이 강하고 물이 땅에 스며들어, 며칠 안에 골짜기는 다시 마른 땅이 된다.", "", STN[2]];
+        return ["와디가 완성되었다", "큰비와 홍수가 오랫동안 되풀이되며 골짜기가 깊어지고, 바닥은 평평하며 양옆은 가파른 마른 골짜기(와디)가 되었다. 평소에는 길로 이용하지만 큰비가 오면 위험하다. 점선은 처음 골짜기다.", "", STN[3]];
+      };
+      M.info = function () {
+        var g = Q.g;
+        return { h: "와디", s: [["골짜기 깊이", "약 " + Math.round(g.D * 1000 / 2 / 5) * 5 + "m"], ["물", Q.flood > 0.05 ? "흙탕물이 흐름(홍수)" : Q.wet > 0.1 ? "말라붙는 중" : "없음(마름)"], ["골짜기 바닥", g.W < 0.05 ? "좁음" : g.W < 0.1 ? "넓어지는 중" : "평평하고 넓음"], ["골짜기 벽", g.S > 0.24 ? "완만함" : g.S > 0.15 ? "가팔라지는 중" : "가파름"]],
+          note: "블록 가로를 약 2km로 보고 높이를 2배로 늘려 그린 예시 모형이다. 4단계는 큰비와 홍수가 오랫동안 되풀이된 뒤의 모습이다." };
       };
       return M;
     })();
 
-    /* ================= 보기 ③ 사막이 넓어지면(사막화) (예시 모형) =================
+    /* ================= 보기 ⑥ 플라야가 생기는 과정 (예시 모형) =================
+       블록 가로 약 20km(1 = 10km), 높이를 크게 늘림. 산지로 둘러싸인 분지(가운데 z 0.36), 블록 앞면이 분지 바닥을 지나 단면이 보임
+       1단계 물이 바다로 나가지 못하는 분지 → 2단계 비(0.2~0.3) · 빗물이 가장 낮은 곳으로 모여 얕은 호수(0.24~0.42) → 3단계 강한 증발로 마름(0.48~0.74) · 소금 · 진흙이 남음
+       → 4단계 되풀이되어 평평한 소금 바닥(플라야). 소금층 두께 = 0.012 × 소금(0 → 1) */
+    var PY = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-24, 36), BOT = -0.18, Z0 = 0.02, Z1 = 1.0, CZ = 0.36;
+      var Q = {}, STG = [0, 0.2, 0.45, 0.75, 1], STN = ["막힌 분지", "비 · 호수가 생김", "증발 · 소금이 남음", "플라야 완성"];
+      function rr(x, z) { return Math.hypot(x / 1.15, z - CZ); }
+      function prm() {
+        var t = st.t; Q.wet = sm(0.24, 0.42, t) * (1 - sm(0.48, 0.74, t)); Q.lv = 0.02 + 0.016 * Q.wet;
+        Q.flat = sm(0.75, 1, t); Q.salt = 0.55 * sm(0.5, 0.74, t) + 0.45 * sm(0.75, 1, t);
+        Q.rain = t > 0.2 && t < 0.3; Q.inflow = sm(0.22, 0.26, t) * (1 - sm(0.36, 0.44, t)); Q.evap = sm(0.46, 0.5, t) * (1 - sm(0.7, 0.75, t));
+      }
+      function rock(x, z) {
+        var r = rr(x, z), fl = 0.02 + 0.026 * Math.pow(Math.min(r, 0.5) / 0.5, 2) * (1 - 0.75 * Q.flat) + 0.006 * Q.salt * Math.max(0, 1 - r / 0.42);
+        return fl + 0.34 * sm(0.48, 0.95, r) * (0.75 + 0.25 * n2(1.6 * x, 1.6 * z)) + 0.02 * sm(0.42, 0.6, r) + 0.0015 * n2(5 * x, 5 * z) * sm(0.3, 0.5, r);
+      }
+      function water(x, z, r0) { if (Q.wet < 0.01 || rr(x, z) > 0.5) return -9; return (r0 == null ? rock(x, z) : r0) < Q.lv ? Q.lv : -9; }
+      var R_ = 0, W_ = -9;
+      function hf(x, z) { var r = rock(x, z), w = water(x, z, r); R_ = r; W_ = w; return Math.max(r, w); }
+      function saltAt(r) { return Q.salt * sm(0.46, 0.3, r); }
+      function color(h, x, z) {
+        var r = rr(x, z);
+        if (r < 0.47) { var c = mix([196, 172, 138], [182, 158, 126], 0.5 + 0.5 * n2(6 * x, 6 * z)); c = mix(c, [246, 246, 240], saltAt(r)); return mix(c, [150, 130, 104], 0.5 * Q.wet * sm(0.2, 0.42, r)); }
+        return mix(mix([170, 120, 88], [196, 150, 108], 0.5 + 0.5 * n2(2 * x, 2 * z)), [204, 178, 140], sm(0.62, 0.47, r));
+      }
+      var surf = makeSurf({ nx: 110, nz: 66, x0: -1, x1: 1, z0: Z0, z1: Z1, hf: hf, color: color, layers: [
+        { s: function () { return W_ > -9 ? R_ - W_ : 1; }, c: function () { return [110, 172, 214]; }, flat: true, line: "rgba(255,255,255,.75)" }
+      ] });
+      var M = { st: st, cam: cam, yaw0: -24, pitch0: 36, Q: Q, STG: STG, STN: STN, title: "플라야가 생기는 과정", label: "3D 사막 분지 블록. 비가 오면 분지 바닥에 얕은 호수가 생기고, 물이 증발하며 소금과 진흙이 남는 일이 되풀이되어 플라야가 되는 과정을 보여 준다.",
+        leg: [["#b07858", "산지"], ["#c4ac8a", "분지 바닥(진흙)"], ["#6eacd6", "얕은 호수"], ["#f4f4ee", "소금"]], model: "예시 모형이다 · 높이를 크게 늘려 그렸다" };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return st.t.toFixed(4); };
+      function drawWallPY(w) {
+        var T = surf, r = wallRange(T, w), ol = wallOutline(cam, T, w, BOT), P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); }, N = 90, i;
+        ctx.save(); poly(ol); ctx.clip();
+        wallBands(P, r, BOT, 0.4, 0.045, ["#a8785a", "#b88a66", "#9e6e52"]);
+        var us = [], rs = [], rd = [], ws = [];
+        for (i = 0; i <= N; i++) { var u = r[0] + (r[1] - r[0]) * i / N, p = wallPt(T, w, u, 0); us.push(u); rs.push(rock(p[0], p[2])); rd.push(rr(p[0], p[2])); ws.push(water(p[0], p[2])); }
+        for (i = 0; i < N; i++) {
+          var a = rd[i], b = rd[i + 1]; if (a > 0.5 && b > 0.5) continue;
+          var s0 = 0.06 * Math.max(0, 1 - Math.pow(a / 0.5, 2)) + 0.004, s1 = 0.06 * Math.max(0, 1 - Math.pow(b / 0.5, 2)) + 0.004;
+          quad(P(us[i], rs[i]), P(us[i + 1], rs[i + 1]), P(us[i + 1], rs[i + 1] - s1), P(us[i], rs[i] - s0), "#c8b08c");
+          var t0 = 0.012 * saltAt(a), t1 = 0.012 * saltAt(b);
+          if (t0 > 0.0005 || t1 > 0.0005) { quad(P(us[i], rs[i]), P(us[i + 1], rs[i + 1]), P(us[i + 1], rs[i + 1] - t1), P(us[i], rs[i] - t0), "#f6f5ef"); if (t0 > 0.006) quad(P(us[i], rs[i] - t0 * 0.45), P(us[i + 1], rs[i + 1] - t1 * 0.45), P(us[i + 1], rs[i + 1] - t1 * 0.55), P(us[i], rs[i] - t0 * 0.55), "#d6cdb8"); }
+        }
+        for (i = 0; i < N; i++) if (ws[i] > rs[i] && ws[i + 1] > rs[i + 1]) quad(P(us[i], ws[i]), P(us[i + 1], ws[i + 1]), P(us[i + 1], rs[i + 1]), P(us[i], rs[i]), "rgb(110,172,214)");
+        ctx.restore();
+        poly(ol); ctx.strokeStyle = "rgba(80,60,40,.5)"; ctx.lineWidth = 1; ctx.stroke();
+      }
+      var walls = [];
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.42, BOT);
+        surf.draw(cam);
+        walls = facingWalls(cam, surf, 0.05);
+        walls.forEach(drawWallPY);
+        var t = st.t, k = stIdx(STG, t), L = labeler(cam, hf);
+        if (k === 0 && t > 0.02) L("바다로 나가는 물길이 없는 분지", 0, CZ, 0.1, 0.3);
+        if (k === 1) L(Q.wet > 0.05 ? "빗물이 가장 낮은 곳에 모여 얕은 호수가 됨" : "빗물이 비탈을 따라 분지 바닥으로 모임", 0, CZ, 0.1, 0.3, { color: "#1864ab" });
+        if (k === 2) L(Q.evap > 0.1 ? "강한 증발로 물이 빠르게 마름" : "물이 마른 자리에 소금 · 진흙이 남음", 0.05, CZ, 0.1, 0.3);
+        if (k === 3) L("플라야(평평한 소금 바닥)", 0, CZ, 0.1, 0.3, { size: 13.5 });
+        if (walls.indexOf(0) >= 0 && Q.salt > 0.3) { var a = cam.P(0, rock(0, Z0) - 0.004, Z0); callout("소금층(마를 때마다 쌓임)", a[0], a[1], a[0] - 30 * TS, a[1] + 50 * TS, { size: 12 }); }
+      };
+      var clock = 0;
+      M.step = function (dt) { clock += dt / 1000; };
+      M.renderDynamic = function () {
+        if (RM) return;
+        if (Q.rain) rainDraw(cam, clock, 110, -0.9, 0.9, Z0 + 0.1, Z1 - 0.05, 0.65);
+        if (Q.inflow > 0.05) {
+          ctx.setLineDash([5, 8]); ctx.lineDashOffset = -clock * 30; ctx.strokeStyle = "rgba(60,120,190,.85)"; ctx.lineWidth = 1.6;
+          for (var a = 0; a < 8; a++) { var an = a / 8 * 2 * Math.PI + 0.3; ctx.beginPath(); for (var j = 0, f = true; j <= 12; j++) { var rad = 0.8 - 0.45 * j / 12, x = Math.cos(an) * rad * 1.15, z = CZ + Math.sin(an) * rad; if (z < Z0 + 0.02 || z > Z1 - 0.02 || Math.abs(x) > 0.98) { f = true; continue; } var p = cam.P(x, rock(x, z) + 0.004, z); if (f) { ctx.moveTo(p[0], p[1]); f = false; } else ctx.lineTo(p[0], p[1]); } ctx.stroke(); }
+          ctx.setLineDash([]); ctx.lineDashOffset = 0;
+        }
+        if (Q.evap > 0.05) {
+          ctx.strokeStyle = "rgba(90,140,200," + (0.7 * Q.evap).toFixed(2) + ")"; ctx.lineWidth = 1.5;
+          for (var e = 0; e < 14; e++) { var ex = (rnd(e + 2) - 0.5) * 0.6, ez = CZ + (rnd(e + 5) - 0.5) * 0.4, ph = frac(clock * 0.5 + rnd(e)); ctx.beginPath(); for (var s = 0; s <= 8; s++) { var y = 0.04 + ph * 0.15 + s * 0.012, p2 = cam.P(ex + 0.012 * Math.sin(s * 1.4 + clock * 3), y, ez); if (s) ctx.lineTo(p2[0], p2[1]); else ctx.moveTo(p2[0], p2[1]); } ctx.stroke(); }
+        }
+      };
+      M.stage = function () {
+        var t = st.t, k = stIdx(STG, t);
+        if (t < 0.02) return ["산지로 둘러싸인 메마른 분지다", "분지에서 바다로 흘러 나가는 강이 없다. 「재생」을 누르거나 단계 단추를 눌러 플라야가 생기는 과정을 본다.", "calm", "처음"];
+        if (k === 0) return ["물이 바다로 나가지 못하는 분지다", "둘레가 산지로 막혀 있어 비가 와도 물이 바다로 빠져나가지 못하고 분지 안에 모인다.", "", STN[0]];
+        if (k === 1) return Q.wet > 0.05 ? ["분지의 가장 낮은 곳에 얕은 호수가 생긴다", "빗물이 비탈을 따라 흘러 내려와 분지 바닥에 고인다. 바닥이 평평해 물은 넓고 얕게 퍼진다.", "", STN[1]]
+          : ["드물게 내린 비가 분지로 모인다", "산지에 내린 빗물이 흙을 싣고 비탈을 따라 분지 바닥으로 흘러 내려온다.", "", STN[1]];
+        if (k === 2) return ["강한 증발로 호수가 마르고 소금이 남는다", "햇볕이 강하고 건조해 물이 빠르게 증발한다. 물에 녹아 있던 소금과 실려 온 진흙이 바닥에 남는다.", "", STN[2]];
+        return ["플라야가 완성되었다", "호수가 생겼다 마르는 일이 되풀이되며 진흙과 소금이 쌓여, 아주 평평하고 하얀 소금 바닥(플라야)이 되었다. 비가 올 때만 잠깐 물이 고인다. 볼리비아 우유니 소금 사막, 미국 데스밸리에서 볼 수 있다.", "", STN[3]];
+      };
+      M.info = function () {
+        var t = st.t;
+        return { h: "플라야", s: [["호수", Q.wet > 0.05 ? (t < 0.48 ? "생김" : "마르는 중") : t > 0.45 ? "말라 없어짐" : "없음"], ["물 깊이", Q.wet > 0.05 ? "약 " + (Q.wet * 1.0).toFixed(1) + "m" : "—"], ["소금층", Q.salt < 0.1 ? "거의 없음" : Q.salt < 0.6 ? "얇게 덮임" : "두껍게 쌓임"], ["바다로 빠지는 물", "없음(막힌 분지)"]],
+          note: "블록 가로를 약 20km로 보고 높이를 크게 늘려 그린 예시 모형이다. 4단계는 비가 오고 마르는 일이 수없이 되풀이된 뒤의 모습이다." };
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ⑦ 선상지 · 바하다가 생기는 과정 (예시 모형) =================
+       블록 가로 약 8km(1 = 5km), 높이를 크게 늘림. 뒤쪽(z > 0.3)은 산지, 골짜기 출구 넷(x −0.75 · −0.3 · 0.15 · 0.6, z 0.3), 앞쪽은 분지
+       오른쪽 옆면(x 0.6)이 넷째 선상지 가운데를 지나 단면(선정 굵은 자갈 → 선단 고운 흙)이 보임
+       비 · 홍수: 0.15~0.4, 0.45~0.66, 0.7~0.94. 선상지 반지름 = 최대(0.4~0.48) × 자람. 둘째 선상지가 먼저 자라고(2단계), 모두 자라(3단계), 서로 이어짐(4단계 바하다) */
+    var FN = (function () {
+      var st = { t: 0, play: false };
+      var cam = Cam(-32, 32), BOT = -0.16, X0 = -1, X1 = 0.6, Z0 = -0.8, Z1 = 0.8, ZA = 0.3;
+      var XV = [-0.75, -0.3, 0.15, 0.6], RMX = [0.4, 0.46, 0.42, 0.48];
+      var Q = {}, STG = [0, 0.15, 0.45, 0.7, 1], STN = ["골짜기 출구", "선상지가 생김", "선상지가 커짐", "바하다 완성"];
+      function prm() {
+        var t = st.t;
+        Q.gr = XV.map(function (x, i) { return i === 1 ? 0.5 * sm(0.17, 0.42, t) + 0.25 * sm(0.47, 0.68, t) + 0.25 * sm(0.72, 0.97, t) : 0.12 * sm(0.17, 0.42, t) + 0.45 * sm(0.47, 0.68, t) + 0.43 * sm(0.72, 0.97, t); });
+        Q.R = Q.gr.map(function (g, i) { return RMX[i] * g; });
+        Q.flood = sm(0.18, 0.22, t) * (1 - sm(0.36, 0.42, t)) + sm(0.47, 0.5, t) * (1 - sm(0.62, 0.67, t)) + sm(0.72, 0.75, t) * (1 - sm(0.9, 0.95, t));
+        Q.rain = (t > 0.15 && t < 0.24) || (t > 0.45 && t < 0.52) || (t > 0.7 && t < 0.77);
+      }
+      function base(x, z) {
+        var h = 0.02 + 0.025 * sm(-0.8, ZA, z) + 0.36 * sm(0.28, 0.62, z) * (0.85 + 0.15 * n2(1.3 * x, 1.3 * z));
+        if (z > 0.26) { var b = 9; for (var i = 0; i < 4; i++) b = Math.min(b, Math.abs(x - XV[i] - 0.03 * Math.sin(8 * z + i))); h -= 0.13 * sm(0.26, 0.45, z) * (1 - sm(0.66, 0.9, z)) * Math.exp(-Math.pow(b / 0.06, 2)); }
+        return h;
+      }
+      /* 선상지 i의 두께(꼭짓점 = 골짜기 출구) */
+      function fanT(i, x, z) { var R = Q.R[i]; if (R < 0.005) return 0; var d = Math.hypot(x - XV[i], (z - ZA) * 1.05); if (d >= R || z > ZA + 0.06) return 0; return 0.12 * (R / 0.45) * Math.pow(1 - d / R, 1.25) * (z > ZA ? 1 - (z - ZA) / 0.06 : 1); }
+      function sed(x, z) { var s = 0; for (var i = 0; i < 4; i++) s += fanT(i, x, z); return Math.min(s, 0.15); }
+      function rock(x, z) { return base(x, z) + sed(x, z); }
+      function grainAt(x, z) { var b = 1; for (var i = 0; i < 4; i++) { if (Q.R[i] < 0.005) continue; var d = Math.hypot(x - XV[i], (z - ZA) * 1.05) / Q.R[i]; if (d < b) b = d; } return b; }
+      function color(h, x, z) {
+        var s = sed(x, z);
+        if (s > 0.003) { var g = grainAt(x, z); return mix(mix([140, 128, 116], [210, 190, 152], g), [228, 208, 166], sm(0.01, 0.003, s)); }
+        if (z > 0.3) return mix(mix([168, 112, 80], [186, 132, 94], 0.5 + 0.5 * n2(2 * x, 2 * z)), [140, 96, 70], sm(0.4, 0.8, z) * 0.4);
+        return mix([232, 212, 170], [222, 200, 158], 0.5 + 0.5 * n2(3 * x, 3 * z));
+      }
+      var surf = makeSurf({ nx: 96, nz: 96, x0: X0, x1: X1, z0: Z0, z1: Z1, hf: rock, color: color });
+      var M = { st: st, cam: cam, yaw0: -32, pitch0: 32, Q: Q, STG: STG, STN: STN, title: "선상지와 바하다가 생기는 과정", label: "3D 산기슭 블록. 큰비 때 골짜기 물이 흙과 자갈을 싣고 나와 산기슭에 부채 모양으로 쌓아 선상지가 되고, 이웃한 선상지가 이어져 바하다가 되는 과정을 보여 준다.",
+        leg: [["#a87050", "산지"], ["#8c8074", "굵은 자갈(선정)"], ["#d2be98", "고운 모래 · 흙(선단)"], ["#e8d4aa", "분지 바닥"], ["#5a96cc", "흐르는 물", true]], model: "예시 모형이다 · 높이를 크게 늘려 그렸다" };
+      M.update = function () { prm(); surf.reshape(); };
+      M.setLod = function (v) { surf.lod = v; };
+      M.lod = function () { return surf.lod; };
+      M.skey = function () { return st.t.toFixed(4); };
+      M.nFan = function () { return Q.gr.filter(function (g) { return g > 0.1; }).length; };
+      M.joined = function () { return Q.R[0] + Q.R[1] > 0.47 && Q.R[1] + Q.R[2] > 0.47 && Q.R[2] + Q.R[3] > 0.47; };
+      function drawWallFN(w) {
+        var T = surf, r = wallRange(T, w), ol = wallOutline(cam, T, w, BOT), P = function (u, y) { var p = wallPt(T, w, u, y); return cam.P(p[0], p[1], p[2]); }, N = 90, i;
+        ctx.save(); poly(ol); ctx.clip();
+        wallBands(P, r, BOT, 0.42, 0.045, ["#a8785a", "#b88a66", "#9e6e52"]);
+        for (i = 0; i < N; i++) {
+          var u0 = r[0] + (r[1] - r[0]) * i / N, u1 = r[0] + (r[1] - r[0]) * (i + 1) / N, p0 = wallPt(T, w, u0, 0), p1 = wallPt(T, w, u1, 0);
+          var s0 = sed(p0[0], p0[2]), s1 = sed(p1[0], p1[2]); if (s0 < 0.001 && s1 < 0.001) continue;
+          var b0 = base(p0[0], p0[2]), b1 = base(p1[0], p1[2]), g = grainAt(p0[0], p0[2]);
+          quad(P(u0, b0 + s0), P(u1, b1 + s1), P(u1, b1), P(u0, b0), rgb(mix([176, 156, 130], [216, 194, 154], g)));
+          var nd = Math.round(3 + 4 * (1 - g)), rad = (1 + 2.6 * (1 - g)) * TS;
+          for (var k = 0; k < nd; k++) { var fu = rnd(i * 9 + k + w * 50), fy = rnd(i * 7 + k * 3 + 1), uu = u0 + (u1 - u0) * fu, bb = b0 + (b1 - b0) * fu, ss = s0 + (s1 - s0) * fu; if (ss < 0.004) continue; var q = P(uu, bb + ss * (0.1 + 0.8 * fy)); ctx.fillStyle = "rgba(110,92,74,.8)"; ctx.beginPath(); ctx.arc(q[0], q[1], rad, 0, 2 * Math.PI); ctx.fill(); }
+        }
+        ctx.restore();
+        poly(ol); ctx.strokeStyle = "rgba(80,60,40,.5)"; ctx.lineWidth = 1; ctx.stroke();
+      }
+      var walls = [];
+      M.renderStatic = function (rect) {
+        backdrop(rect);
+        fitBlock(cam, rect, surf, 0.42, BOT);
+        surf.draw(cam);
+        walls = facingWalls(cam, surf, 0.05);
+        walls.forEach(drawWallFN);
+        var t = st.t, k = stIdx(STG, t), L = labeler(cam, rock);
+        if (k === 0 && t > 0.02) L("골짜기 출구(산지 → 분지)", XV[1], ZA + 0.02, -0.25, 0.3);
+        if (k === 1) L(Q.R[1] > 0.08 ? "선상지(부채 모양으로 쌓인 땅)" : "골짜기 물이 흙 · 자갈을 싣고 나옴", XV[1], ZA - Q.R[1] * 0.4, -0.25, 0.25);
+        if (k === 2) L("이웃한 선상지도 커짐", XV[2], ZA - Q.R[2] * 0.4, -0.15, 0.25);
+        if (k === 3) { L("바하다(선상지가 이어진 산기슭 비탈)", (XV[1] + XV[2]) / 2, ZA - 0.22, -0.2, 0.26, { size: 13.5 }); L("선상지", XV[0], ZA - 0.15, -0.15, 0.2, { size: 12 }); }
+        if (walls.indexOf(3) >= 0 && Q.R[3] > 0.15) {
+          var a = cam.P(X1, base(X1, ZA - 0.04) + sed(X1, ZA - 0.04) * 0.5, ZA - 0.04), b = cam.P(X1, base(X1, ZA - Q.R[3] * 0.8) + sed(X1, ZA - Q.R[3] * 0.8) * 0.5, ZA - Q.R[3] * 0.8);
+          callout("선정: 굵은 자갈", a[0], a[1], a[0] + 50 * TS, a[1] - 20 * TS, { size: 12 });
+          callout("선단: 고운 모래 · 흙", b[0], b[1], b[0] + 40 * TS, b[1] + 36 * TS, { size: 12 });
+        }
+      };
+      var clock = 0;
+      M.step = function (dt) { clock += dt / 1000; };
+      M.renderDynamic = function () {
+        if (RM) return;
+        if (Q.rain) rainDraw(cam, clock, 100, X0 + 0.1, X1 - 0.05, 0.3, 0.75, 0.75);
+        if (Q.flood < 0.05) return;
+        ctx.setLineDash([5, 8]); ctx.lineDashOffset = -clock * 32; ctx.strokeStyle = "rgba(70,130,200,.9)"; ctx.lineWidth = 1.6;
+        XV.forEach(function (xv, i) {
+          ctx.beginPath(); for (var z = 0.75, f = true; z >= ZA; z -= 0.03) { var x = xv + 0.03 * Math.sin(8 * z + i), p = cam.P(x, rock(x, z) + 0.004, z); if (f) { ctx.moveTo(p[0], p[1]); f = false; } else ctx.lineTo(p[0], p[1]); } ctx.stroke();
+          var R = Math.max(0.06, Q.R[i]);
+          [-0.7, -0.25, 0.2, 0.65].forEach(function (an) {
+            ctx.beginPath(); for (var j = 0; j <= 8; j++) { var d = R * j / 8, x2 = xv + Math.sin(an) * d, z2 = ZA - Math.cos(an) * d / 1.05; if (x2 > X1 || x2 < X0) break; var p2 = cam.P(x2, rock(x2, z2) + 0.004, z2); if (j) ctx.lineTo(p2[0], p2[1]); else ctx.moveTo(p2[0], p2[1]); } ctx.stroke();
+          });
+        });
+        ctx.setLineDash([]); ctx.lineDashOffset = 0;
+      };
+      M.stage = function () {
+        var t = st.t, k = stIdx(STG, t);
+        if (t < 0.02) return ["산지에서 분지로 골짜기가 이어진다", "산지의 골짜기가 산기슭에서 넓고 평평한 분지로 나온다. 「재생」을 누르거나 단계 단추를 눌러 선상지와 바하다가 생기는 과정을 본다.", "calm", "처음"];
+        if (k === 0) return ["산지 골짜기의 출구가 분지와 만난다", "골짜기는 좁고 가파르지만, 산기슭을 벗어나면 땅이 갑자기 넓고 평평해진다.", "", STN[0]];
+        if (k === 1) return ["골짜기 물이 쌓은 부채 모양 땅(선상지)이 생긴다", "큰비가 오면 골짜기 물이 흙과 자갈을 싣고 빠르게 흘러 내려온다. 산기슭을 벗어나면 물이 퍼지며 느려져, 실어 온 것을 부채 모양으로 쌓는다.", "", STN[1]];
+        if (k === 2) return ["큰비가 올 때마다 선상지가 커진다", "비가 올 때마다 흙과 자갈이 더 쌓여 선상지가 넓어진다. 굵은 자갈은 골짜기 출구 가까이(선정)에, 고운 모래와 흙은 멀리(선단)까지 실려 가 쌓인다.", "", STN[2]];
+        return ["선상지가 이어져 바하다가 완성되었다", "이웃한 선상지들이 커지며 서로 이어져, 산기슭을 따라 길게 이어진 완만한 비탈(바하다)이 되었다. 미국 데스밸리 등 건조한 산기슭에서 볼 수 있다.", "", STN[3]];
+      };
+      M.info = function () {
+        var rm = Math.max.apply(null, Q.R);
+        return { h: "선상지 · 바하다", s: [["선상지", M.nFan() + "개"], ["가장 큰 선상지 반지름", rm > 0.02 ? "약 " + (rm * 5).toFixed(1) + "km" : "—"], ["선상지끼리", M.joined() ? "서로 이어짐(바하다)" : M.nFan() > 1 ? "따로따로" : "—"], ["쌓인 것", "선정 굵은 자갈 · 선단 고운 흙"]],
+          note: "블록 가로를 약 8km로 보고 높이를 크게 늘려 그린 예시 모형이다. 4단계는 큰비가 오랫동안 되풀이된 뒤의 모습이다." };
+      };
+      return M;
+    })();
+
+    /* ================= 보기 ⑧ 사막이 넓어지면(사막화) (예시 모형) =================
+       개편(11-02): 사막 안에 오아시스(x 0.6, z 0.46) — 땅속 물이 솟는 곳은 모래가 덮지 않고 대추야자가 자람
        블록 앞뒤 약 140km(1 = 50km). 뒤쪽(z +)은 사막, 앞쪽은 풀과 나무가 자라는 땅 · 마을 · 밭. 시간 0 ~ 1 = 30년
        사막을 미는 힘 p = 0.08(바탕) + 가뭄 0.55 + 지나친 이용 0.5 − 숲 띠 0.6. 사막 경계 = 0.35 − 0.9 × p × 시간(숲 띠가 있으면 z 0.12 뒤에서 멈춤)
        풀이 덮은 정도 = 1 − 지나친 이용 0.4 × (시간 0~0.7) − 가뭄 0.3 × (시간 0~0.5) + 숲 띠 0.2 × (시간 0.3~1) */
@@ -1839,7 +2335,8 @@
     var DS = (function () {
       var st = { dry: false, over: false, trees: false, t: 0, play: false };
       var cam = Cam(-28, 32), BOT = -0.15, Z0E = 0.35, BELT = 0.12;
-      var FIELD = { x0: 0.05, x1: 0.7, z0: -0.5, z1: -0.22 };
+      var FIELD = { x0: 0.05, x1: 0.7, z0: -0.5, z1: -0.22 }, OAS = [0.6, 0.46];
+      function oasR(x, z) { return Math.hypot(x - OAS[0], z - OAS[1]); }
       var Q = {};
       function prm() {
         var t = st.t, p = 0.08 + (st.dry ? 0.55 : 0) + (st.over ? 0.5 : 0) - (st.trees ? 0.6 : 0);
@@ -1850,12 +2347,14 @@
         Q.tg = st.trees ? sm(0, 0.5, t) : 0;
       }
       function dune(x, z) { var ph = frac((z * 1.6 + 0.07 * Math.sin(4 * x)) / 0.28); return ph < 0.8 ? Math.pow(ph / 0.8, 1.2) : 1 - (ph - 0.8) / 0.2; }
-      function sandAmt(x, z) { return sm(Q.E - 0.04, Q.E + 0.1, z + 0.03 * Math.sin(6 * x + 1)); }
-      function rock(x, z) { return 0.03 + 0.006 * n2(x, z) + 0.05 * sandAmt(x, z) * dune(x, z); }
+      function sandAmt(x, z) { return sm(Q.E - 0.04, Q.E + 0.1, z + 0.03 * Math.sin(6 * x + 1)) * sm(0.1, 0.2, oasR(x, z)); }
+      function rock(x, z) { return 0.03 + 0.006 * n2(x, z) + 0.05 * sandAmt(x, z) * dune(x, z) - 0.012 * Math.max(0, 1 - oasR(x, z) / 0.06); }
       function cover(x, z) { if (sandAmt(x, z) > 0.5) return 0; var far = sm(Q.E - 0.02, Q.E - 0.3, z); return clamp(far * Q.V * (0.85 + 0.15 * n2(4 * x, 4 * z)), 0, 1); }
       function inField(x, z) { return x > FIELD.x0 && x < FIELD.x1 && z > FIELD.z0 && z < FIELD.z1; }
       function color(h, x, z) {
-        var s = sandAmt(x, z), c = cover(x, z);
+        var s = sandAmt(x, z), c = cover(x, z), ro = oasR(x, z);
+        if (ro < 0.05) return WATER;
+        if (ro < 0.14) return mix([84, 140, 64], [150, 168, 96], sm(0.06, 0.14, ro));
         if (s > 0.4) return mix(SAND, SAND_D, dune(x, z) * 0.4);
         if (inField(x, z)) { var row = Math.floor((z - FIELD.z0) / 0.025) % 2; return c > 0.35 ? (row ? [150, 176, 86] : [176, 186, 96]) : mix([200, 168, 120], [214, 186, 136], row); }
         var bare = mix([206, 170, 122], [190, 150, 104], 0.5 + 0.5 * n2(5 * x, 5 * z));
@@ -1889,12 +2388,14 @@
         TREES.forEach(function (tq) { var x = tq[0], z = tq[1]; if (cover(x, z) > 0.25 + 0.6 * tq[2] * (1 - Q.V) && cover(x, z) > tq[2] * 0.5) items.push([cam.P(x, 0, z)[2], function () { tree(cam, x, rock(x, z), z, 0.9, "#5f8f3e"); }]); });
         if (Q.tg > 0.02) for (var i = 0; i < 26; i++) { (function (x, z) { items.push([cam.P(x, 0, z)[2], function () { tree(cam, x, rock(x, z), z, 0.4 + 0.8 * Q.tg, "#2f7d3a"); }]); })(-0.96 + i * 0.077, BELT + 0.02 * Math.sin(i * 1.7)); }
         HOUSES.forEach(function (hq) { items.push([cam.P(hq[0], 0, hq[1])[2], function () { var b = sandAmt(hq[0], hq[1]) > 0.5; house(cam, hq[0], rock(hq[0], hq[1]), hq[1], b); }]); });
+        for (var pa = 0; pa < 8; pa++) { (function (x, z) { items.push([cam.P(x, 0, z)[2], function () { palm(cam, x, rock(x, z), z, 1.1); }]); })(OAS[0] + 0.09 * Math.cos(pa / 8 * 6.283), OAS[1] + 0.08 * Math.sin(pa / 8 * 6.283)); }
         items.sort(function (a, b) { return b[0] - a[0]; }).forEach(function (it) { it[1](); });
         ctx.strokeStyle = "rgba(194,65,12,.85)"; ctx.lineWidth = 2; ctx.setLineDash([6, 4]); ctx.beginPath();
         for (var j = 0; j <= 40; j++) { var x = -1 + j / 20, z = Q.E - 0.02, p = cam.P(x, rock(x, z) + 0.006, z); if (j) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); }
         ctx.stroke(); ctx.setLineDash([]);
         var L = function (t, x, z, dx, dy, o) { var y = rock(x, z), p = cam.P(x, y + 0.004, z), q = cam.P(x + dx, y + dy, z); callout(t, p[0], p[1], q[0], q[1], Object.assign({ size: 12.5 }, o || {})); };
         L("사막", -0.3, 0.55, 0, 0.18);
+        L("오아시스(땅속 물이 솟는 곳 · 대추야자 재배)", OAS[0], OAS[1], -0.1, 0.2, { size: 12, color: "#1864ab" });
         L("사막의 가장자리", 0.75, Q.E - 0.02, 0.1, 0.22, { color: "#c2410c" });
         L(M.fieldPct() < 0.3 ? "말라 버린 밭" : "밭", 0.4, -0.36, 0.2, 0.2);
         L(M.villageBuried() ? "모래가 들어온 마을" : "마을", -0.45, -0.52, -0.2, 0.2);
@@ -1918,11 +2419,13 @@
       return M;
     })();
 
+    var MODS = [DN, MR, VT, PV, WD, PY, FN, DS];
+
     /* ================= 그리기 ================= */
     var stage = $(".ar-stage"), cap = $(".ar-cap"), legend = $(".ar-legend");
     var padL = 18;
     function drawRect() { var top = cap.offsetTop + cap.offsetHeight + 8, bot = legend.offsetHeight + 20; return { x: padL, y: top, w: Math.max(10, CW - padL - 18), h: Math.max(10, CH - top - bot) }; }
-    function scene() { return view === 1 ? DU : view === 2 ? RN : DS; }
+    function scene() { return MODS[view - 1] || DN; }
     var rq = 0, layer = document.createElement("canvas"), layerKey = "";
     /* 품질 다듬기: 장면을 바꾸거나 「처음 시점으로」를 누르면 시점이 부드럽게 옮겨 감(0.55초) */
     var camTween = 0, INTRO = false;
@@ -1998,34 +2501,25 @@
     var K_ = [1, 2, 3, 4].map(function (i) { return { k: $(".ar-k" + i), v: $(".ar-v" + i) }; });
     function stat(i, k, v) { setText(K_[i].k, k); setText(K_[i].v, v); }
     function result(head, text, cls) { var c = "ar-result" + (cls ? " " + cls : ""); if (elRes.className !== c) elRes.className = c; setText(elRk, head); setText(elRt, text); }
-    function stageA() {
-      var st = DU.st, Q = DU.Q;
-      if (st.t < 0.02) return ["바람이 모래를 실어 나르기 시작한다", "바람의 방향 · 세기와 모래 양을 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm"];
-      var s;
-      if (st.sand === "few") s = ["초승달 모양 모래 언덕이 바람이 부는 쪽으로 옮겨 간다", "바람이 완만한 비탈 위로 모래를 밀어 올리고, 꼭대기를 넘은 모래는 가파른 반대쪽으로 흘러내린다. 언덕의 양 끝은 바람이 부는 쪽으로 뾰족하게 뻗고, 작은 언덕일수록 빨리 움직인다.", ""];
-      else s = ["모래가 많으면 물결 모양 모래 언덕이 줄지어 생긴다", "모래 언덕이 바람과 직각으로 길게 이어지고, 바다의 물결처럼 바람이 부는 쪽으로 함께 옮겨 간다(사하라 사막의 「모래 바다」).", ""];
-      if (st.wind === 1) s[1] += " 바람이 약하면 모래가 조금만 움직인다.";
-      if (Q.oasisSand > 0.02) { s[0] = "옮겨 온 모래 언덕이 오아시스를 덮는다"; s[2] = "warn"; }
-      return s;
-    }
-    function stageB() {
-      var t = RN.st.t, Q = RN.Q, f = RN.flowNow();
-      if (t < 0.04) return ["비가 거의 오지 않는 메마른 땅이다", "골짜기(와디)는 말라 있고, 분지의 가장 낮은 곳은 소금이 하얗게 덮여 있다. 「재생」을 누르면 드물게 비가 내린다.", "calm", "비 오기 전"];
-      if (Q.raining) return ["드물게 비가 짧고 세게 쏟아진다", "풀과 나무가 거의 없어 빗물이 땅에 스며들기 전에 비탈을 따라 빠르게 모인다.", "", "비가 옴"];
-      if (f > 0.05 && Q.D < 0.004) return [RN.st.rain === 3 ? "마른 골짜기에 갑자기 급류가 흐른다" : "마른 골짜기(와디)에 물이 흐른다", "골짜기를 따라 흐르던 물이 산지를 벗어나면 느려져, 실어 온 자갈 · 모래를 부채 모양으로 쌓는다(선상지).", RN.st.rain === 3 ? "warn" : "", "물이 흐름"];
-      if (Q.D > 0.0005) return [t < 0.32 ? "분지의 가장 낮은 곳에 얕은 호수가 생긴다" : "강한 햇볕에 호수의 물이 빠르게 증발한다", "흘러온 물은 바다로 나가지 못하고 분지 바닥에 고인다. 우유니 소금 사막처럼 얕은 호수가 하늘을 비추기도 한다.", "", t < 0.32 ? "호수가 생김" : "물이 마르는 중"];
-      return ["물이 모두 마르고 하얀 소금이 남았다", "물에 녹아 있던 소금 성분이 바닥에 남아 하얀 소금 평원이 된다. 골짜기는 다시 마른 길이 된다.", "calm", "다시 마름"];
-    }
-    function stageC() {
+    /* 개편(11-02): 보기마다 모형이 단계 글(stage: 위 설명 줄 · 자세한 설명 · 꼴 · 시간 막대 글)과 읽은 값(info)을 돌려줌 */
+    DS.stage = function () {
       var st = DS.st, Q = DS.Q, km = DS.edgeKm();
-      if (st.t < 0.02) return ["사막의 가장자리에 풀과 나무가 자라는 땅이다", "비의 양 · 가축 기르기 · 나무 심기를 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 본다.", "calm"];
+      if (st.t < 0.02) return ["사막의 가장자리에 풀과 나무가 자라는 땅이다", "비의 양 · 가축 기르기 · 나무 심기를 고른 뒤 「재생」을 누르거나 시간 막대를 옮겨 본다. 사막 안쪽에는 땅속 물이 솟는 오아시스가 있다.", "calm"];
       if (st.trees && Q.p > 0.08 && Q.E <= 0.18) return ["숲 띠가 모래를 막아 사막이 더 넓어지지 않는다", "나무가 바람을 약하게 하고 뿌리가 흙을 붙잡아, 모래가 마을과 밭 쪽으로 들어오는 것을 막는다(그레이트 그린 월).", "good"];
       if (km < -1) return ["풀과 나무가 되살아나 사막이 물러난다", "나무를 심고 가축 수를 알맞게 하면 땅이 다시 풀로 덮인다.", "good"];
       if (km > 15) return [DS.villageBuried() ? "사막이 넓어지며 밭과 마을이 모래에 덮인다(사막화)" : "사막이 넓어지며 풀과 밭이 사라진다(사막화)", (st.dry ? "가뭄이 이어지고 " : "") + (st.over ? "가축을 너무 많이 기르고 땔감으로 나무를 베어 " : "") + "풀과 나무가 사라진 땅에 모래가 날아 들어온다. 사람들이 살던 곳을 떠나야 하기도 한다.", "warn"];
       if (Q.V < 0.75) return ["풀과 나무가 줄어 땅이 드러난다", "땅을 덮던 풀이 사라지면 비가 와도 흙이 쓸려 가고 바람에 모래가 날린다.", "warn"];
-      return ["사막의 가장자리가 크게 바뀌지 않는다", "비가 알맞게 오고 땅을 알맞게 이용하면 풀과 나무가 땅을 지킨다.", ""];
-    }
-    /* 품질 다듬기(정확하게): 한 지형에 맞춘 장면은 위 설명 줄을 그 장면의 요점으로 */
+      return ["사막의 가장자리가 크게 바뀌지 않는다", "비가 알맞게 오고 땅을 알맞게 이용하면 풀과 나무가 땅을 지킨다. 사막 안의 오아시스에서는 솟는 물로 대추야자 · 밀 등을 기른다(오아시스 농업).", ""];
+    };
+    DS.info = function () {
+      var km = DS.edgeKm();
+      return { h: "사막의 가장자리", s: [["풀과 나무가 덮은 땅(사막 밖)", Math.round(DS.coverPct() * 100) + "%"], ["사막 가장자리", km > 0.5 ? "약 " + Math.round(km) + "km 다가옴" : km < -0.5 ? "약 " + Math.round(-km) + "km 물러남" : "그대로"], ["농사지을 수 있는 밭", Math.round(DS.fieldPct() * 100) + "%"], ["마을", DS.villageBuried() ? "모래가 들어옴" : "괜찮음"]],
+        note: "블록 앞뒤를 약 140km로 본 예시 모형이다. 시간 막대 끝은 30년이다.", tv: Math.round(DS.st.t * 30) + "년" };
+    };
+    DS.title = "사막이 넓어지면(사막화)";
+    DS.label = "3D 사막 가장자리 블록. 가뭄과 땅 이용, 나무 심기에 따라 사막의 가장자리가 옮겨 간다. 사막 안에는 오아시스가 있다.";
+    DS.leg = [["#e4c084", "모래(사막)"], ["#789c4e", "풀과 나무"], ["#ceaa7a", "드러난 땅"], ["#5492c6", "오아시스"], ["#2f7d3a", "심은 나무", true], ["#5b4636", "가축", true]];
+    DS.model = "예시 모형이다 · 실제 속도와 크기는 다르다";
     /* 품질(10-20): 화면 읽기 — 캔버스 설명에 지금 장면 · 위 설명 줄을 넣고, 무대에 보이는 이름표를 숨은 글로 둠 */
     var LASTLAB = [], srEl = null, srKey = "";
     function srUpdate() {
@@ -2046,45 +2540,14 @@
       srUpdate();
     }
     function updRead0() {
-      var s;
-      if (view === 1) {
-        var st = DU.st, Q = DU.Q, mv = DU.moved();
-        s = stageA();
-        setText(elReadH, "읽은 값 · 모래 언덕");
-        stat(0, "바람", angName(st.ang) + "에서 약 " + WIND_MS[st.wind - 1] + "m/s");
-        setText($(".ar-angval"), st.ang + "° " + angName(st.ang));
-        stat(1, "모래 언덕이 옮겨 간 거리", "약 " + Math.round(mv * 1000 / 10) * 10 + "m");
-        stat(2, "경사(바람 맞는 쪽 · 반대쪽)", st.sand === "few" ? "약 8° · 약 31°" : "약 6° · 약 30°");
-        stat(3, "버섯 바위 아래쪽 깎임", Math.round(Q.ero * 100) + "%");
-        result(s[0], s[1], s[2]);
-        setText(elNote, "블록 가로를 약 2km로 보고 모래 언덕 높이를 3배로 늘려 그린 예시 모형이다. 시간 막대 끝은 약 20년이다.");
-        setText($(".ar-tval[data-for=\"1\"]"), Math.round(st.t * 20) + "년");
-        $(".ar-trange[data-for=\"1\"]").setAttribute("aria-valuetext", Math.round(st.t * 20) + "년 · " + s[0]);
-      } else if (view === 2) {
-        var Q2 = RN.Q, f = RN.flowNow(), r = RN.lakeR();
-        s = stageB();
-        setText(elReadH, "읽은 값 · 비가 온 뒤");
-        stat(0, "와디의 물", f > 0.05 ? (RN.st.rain === 3 ? "급류" : "흐름") : "없음(마름)");
-        stat(1, "호수 깊이", Q2.D > 0.0005 ? "약 " + (Q2.D * 50).toFixed(1) + "m" : "—");
-        stat(2, "호수 넓이", r > 0 ? "약 " + Math.round(Math.PI * r * r * 1.3 * 100) + "km²" : "—");
-        stat(3, "바닥의 소금", (Q2.salt > 0.75 ? "두꺼워짐" : Q2.salt > 0.45 ? "쌓이는 중" : "얇게 덮임") + (RN.st.yrs > 1 ? " · " + RN.st.yrs + "번 쌓임" : ""));
-        result(s[0], s[1], s[2]);
-        setText(elNote, (RN.st.yrs > 1 ? "같은 비가 " + RN.st.yrs + "번 온 뒤의 모습이다. 비가 올 때마다 선상지가 자라고, 호수가 마를 때마다 소금이 겹겹이 쌓여 소금 사막(우유니 등)이 된다. " : "") + "블록 가로를 약 20km로 본 예시 모형이다. 시간 막대 끝은 비가 온 뒤 몇 주이다.");
-        setText($(".ar-tval[data-for=\"2\"]"), s[3]);
-        $(".ar-trange[data-for=\"2\"]").setAttribute("aria-valuetext", s[3] + " · " + s[0]);
-      } else {
-        var km = DS.edgeKm();
-        s = stageC();
-        setText(elReadH, "읽은 값 · 사막의 가장자리");
-        stat(0, "풀과 나무가 덮은 땅(사막 밖)", Math.round(DS.coverPct() * 100) + "%");
-        stat(1, "사막 가장자리", km > 0.5 ? "약 " + Math.round(km) + "km 다가옴" : km < -0.5 ? "약 " + Math.round(-km) + "km 물러남" : "그대로");
-        stat(2, "농사지을 수 있는 밭", Math.round(DS.fieldPct() * 100) + "%");
-        stat(3, "마을", DS.villageBuried() ? "모래가 들어옴" : "괜찮음");
-        result(s[0], s[1], s[2]);
-        setText(elNote, "블록 앞뒤를 약 140km로 본 예시 모형이다. 시간 막대 끝은 30년이다.");
-        setText($(".ar-tval[data-for=\"3\"]"), Math.round(DS.st.t * 30) + "년");
-        $(".ar-trange[data-for=\"3\"]").setAttribute("aria-valuetext", Math.round(DS.st.t * 30) + "년 · " + s[0]);
-      }
+      var sc = scene(), s = sc.stage(), inf = sc.info();
+      setText(elReadH, "읽은 값 · " + inf.h);
+      inf.s.forEach(function (q, i) { stat(i, q[0], q[1]); });
+      result(s[0], s[1], s[2]);
+      setText(elNote, inf.note);
+      var tv = inf.tv || s[3] || "", tvEl = $(".ar-tval[data-for=\"" + view + "\"]"), tr = $(".ar-trange[data-for=\"" + view + "\"]");
+      if (tvEl) setText(tvEl, tv);
+      if (tr) tr.setAttribute("aria-valuetext", tv + " · " + s[0]);
       setText(elGuide, s[0]);
       updMap();
     }
@@ -2105,32 +2568,35 @@
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); } });
       pinEls[pl.id] = g;
     });
+    var USE = {
+      1: "사구는 바람이 강하고 모래가 많은 사막에 생긴다. 큰 사구가 모인 곳은 「모래 바다」라고 불리며, 사막 관광지가 되기도 한다.",
+      2: "버섯바위처럼 바람이 깎은 신기한 바위는 관광 명소가 된다. 이집트 백사막의 하얀 버섯바위가 유명하다.",
+      3: "삼릉석은 바람이 강한 사막이나 바닷가에서 볼 수 있다. 면이 향한 쪽을 보면 과거에 바람이 불어온 방향을 알 수 있다.",
+      4: "사막포도는 자갈이 땅을 덮고 있어 단단하다. 몽골의 고비 사막처럼 자갈 사막이 넓은 곳에서는 자동차가 다니기도 한다.",
+      5: "와디는 평소에는 바닥이 평평해 길로 이용되지만, 큰비가 오면 갑자기 홍수가 나기도 한다. 요르단의 와디 럼은 관광지로 유명하다.",
+      6: "플라야의 소금 바닥에서는 소금을 얻고, 넓고 평평한 하얀 땅은 관광지가 된다. 볼리비아 우유니 소금 사막은 비가 오면 하늘을 비추는 거울처럼 된다.",
+      7: "선상지와 바하다는 물이 땅속으로 스며들기 쉬워, 아래쪽 끝에서 솟는 물을 이용해 마을과 밭을 만들기도 한다.",
+      8: "사하라 사막 남쪽 사헬 지대에서는 가뭄과 지나친 방목 · 땔감 채취로 사막화가 진행되었다. 이를 막으려고 여러 나라가 함께 숲을 만드는 그레이트 그린 월 사업을 하고 있다. 사막 안의 오아시스에서는 솟는 물로 대추야자 · 밀 등을 기른다."
+    };
     function updMap() {
       PLACES.forEach(function (pl) { pinEls[pl.id].classList.toggle("hot", pl.k.indexOf(view) >= 0); pinEls[pl.id].classList.toggle("on", placeOn === pl.id); });
       var pl = PLACES.filter(function (q) { return q.id === placeOn; })[0];
       setText(elPlace, pl ? pl.text : "파란 점은 지금 보기와 닮은 곳이다. 점을 누르면 설명이 나온다.");
-      setText(elUse, view === 1 ? "사막의 사람들은 물이 솟는 오아시스 주변에 마을을 이루고, 그 물로 대추야자 · 밀 등을 기르는 오아시스 농업을 한다. 옮겨 오는 모래 언덕은 길과 마을을 덮기도 한다."
-        : view === 2 ? "와디는 평소에는 바닥이 평평해 길로 이용되지만, 큰비가 오면 갑자기 홍수가 나기도 한다. 소금 평원은 관광지가 되거나 소금을 얻는 곳이 된다."
-        : "사하라 사막 남쪽 사헬 지대에서는 가뭄과 지나친 방목 · 땔감 채취로 사막화가 진행되었다. 이를 막으려고 여러 나라가 함께 숲을 만드는 그레이트 그린 월 사업을 하고 있다.");
+      setText(elUse, USE[view] || "");
     }
 
     /* ================= 무대 글 · 범례 ================= */
-    var LEG = {
-      1: [["#e4c084", "모래 언덕"], ["#b29674", "자갈이 덮인 땅"], ["#a8785a", "바위"], ["#76a050", "오아시스"], ["#c4965a", "날리는 모래", true]],
-      2: [["#b0805c", "산지"], ["#c8b08c", "와디 · 선상지"], ["#60a0ce", "물"], ["#f4f4ee", "소금"]],
-      3: [["#e4c084", "모래(사막)"], ["#789c4e", "풀과 나무"], ["#ceaa7a", "드러난 땅"], ["#2f7d3a", "심은 나무", true], ["#5b4636", "가축", true]]
-    };
-    var MODEL = { 1: "예시 모형이다 · 모래 언덕 높이 3배", 2: "예시 모형이다 · 높이를 크게 늘려 그렸다", 3: "예시 모형이다 · 실제 속도와 크기는 다르다" };
     var legKey = 0;
     function updLegend() {
       if (legKey === view) return;
       legKey = view; legend.textContent = "";
-      LEG[view].forEach(function (it) { var s = E("span", "ar-lg", legend), c = E("span", it[2] ? "ar-chip dot" : "ar-chip", s); c.style.background = it[0]; E("span", "", s, it[1]); });
-      E("span", "ar-model", legend, MODEL[view]);
+      var sc = scene();
+      (sc.leg || []).forEach(function (it) { var s = E("span", "ar-lg", legend), c = E("span", it[2] ? "ar-chip dot" : "ar-chip", s); c.style.background = it[0]; E("span", "", s, it[1]); });
+      E("span", "ar-model", legend, sc.model || "예시 모형이다");
     }
-    var TITLES = { 1: "바람과 모래 언덕", 2: "사막에 비가 오면", 3: "사막이 넓어지면(사막화)" };
     var KEYS = "끌어서 돌릴 수 있다. 왼쪽 · 오른쪽 화살표 키로 돌리고, 위아래 화살표 키로 시간을 옮기며, Page Up · Page Down 키로 내려다보는 각도를 바꾼다. 스페이스 키로 재생하거나 멈춘다.";
-    var LABELS = { 1: "3D 사막 블록. 바람에 모래 언덕이 옮겨 가고 버섯 바위가 깎인다. " + KEYS, 2: "3D 사막 분지 블록. 드물게 비가 오면 와디에 물이 흐르고 분지에 호수가 생겼다 마른다. " + KEYS, 3: "3D 사막 가장자리 블록. 가뭄과 땅 이용, 나무 심기에 따라 사막의 가장자리가 옮겨 간다. " + KEYS };
+    var TITLES = {}, LABELS = {};
+    MODS.forEach(function (m, i) { TITLES[i + 1] = m.title; LABELS[i + 1] = m.label + " " + KEYS; });
 
     /* ================= 조작 ================= */
     var ranges = $$(".ar-trange"), plays = $$(".ar-play");
@@ -2143,21 +2609,21 @@
       if (!fromPlay) kick();
     }
     function syncPlay() {
-      $$(".ar-play[data-for]").forEach(function (b) { var sc = [DU, RN, DS][Number(b.getAttribute("data-for")) - 1], on = !!(sc && sc.st.play), tx = on ? "멈춤" : "재생"; if (b.textContent !== tx) { b.textContent = tx; b.setAttribute("aria-label", on ? "멈춤" : "재생"); } });
+      $$(".ar-play[data-for]").forEach(function (b) { var sc = MODS[Number(b.getAttribute("data-for")) - 1], on = !!(sc && sc.st.play), tx = on ? "멈춤" : "재생"; if (b.textContent !== tx) { b.textContent = tx; b.setAttribute("aria-label", on ? "멈춤" : "재생"); } });
       updStages();
     }
-    /* 개편(10-26): 재생 단계 — 보기마다 모형 시간 경계(1단계, 2단계, …). 단계 단추는 그 단계 처음부터 끝까지만 재생하고 멈춤 */
-    var STGV = {2: [0, 0.12, 0.32, 1]}, stopAt = null, stgSel = -1, stgBtns = null;
+    /* 개편(10-26 · 11-02): 재생 단계 — 보기마다 모형 시간 경계(STG)와 이름(STN). 단계 단추는 그 단계 처음부터 끝까지만 재생하고 멈춤 */
+    var STGV = {}, STGN = {}, STGNS = {}, stopAt = null, stgSel = -1, stgBtns = null;
+    MODS.forEach(function (m, i) { if (m.STG) { STGV[i + 1] = m.STG; STGN[i + 1] = m.STN; } });
     /* 업그레이드(10-29): 무대 왼쪽 위 「N단계 · 이름」(예시의 「1단계 · 도시 형성」처럼). 표지 · 확인 문제에서는 제목 줄째 숨음 */
     var hudEl = $(".ar-hud");
     function hud(k, nm) { if (!hudEl) return; var tx = k >= 0 && nm ? (k + 1) + "단계 · " + nm : ""; if (hudEl.textContent !== tx) hudEl.textContent = tx; if (hudEl.hidden === !!tx) hudEl.hidden = !tx; }
-    var STGN = {"2": ["비", "흐름 · 호수", "마름"]}, STGNS = {};
     function stgName(v, k) { var S = SCENES[curScene], L = (S && String(S.view) === String(v) && STGNS[curScene]) || STGN[v] || []; return L[k] || ((k + 1) + "단계"); }
     function updStages() {
       if (!stgBtns) { stgBtns = {}; Object.keys(STGV).forEach(function (v) { var el = $(".ar-stages[data-for=\"" + v + "\"]"), b = STGV[v]; if (!el) return; el.style.gridTemplateColumns = "repeat(" + (b.length - 1) + ",minmax(0,1fr))"; stgBtns[v] = b.slice(0, -1).map(function (x, k) { var bt = E("button", "ar-stg", el, (k + 1) + "단계"); bt.type = "button"; bt.addEventListener("click", function () { playStage(k); }); return bt; }); }); }
       /* 보기마다 그 모형의 시간으로 표시(장면을 열 때 보기가 바뀌기 전에 불려도 맞게) */
       Object.keys(stgBtns).forEach(function (v) {
-        var b = STGV[v], L = stgBtns[v], sc = [DU, RN, DS][Number(v) - 1]; if (!b || !L || !sc) return;
+        var b = STGV[v], L = stgBtns[v], sc = MODS[Number(v) - 1]; if (!b || !L || !sc) return;
         var t = sc.st.t, cur = 0;
         for (var j = 0; j < b.length - 1; j++) if (t > b[j] + 1e-6) cur = j;
         if (String(view) === v) { if (stgSel >= 0 && t >= b[stgSel] - 1e-6 && t <= b[stgSel + 1] + 1e-6) cur = stgSel; else stgSel = -1; }
@@ -2189,25 +2655,15 @@
       return function (v) { bs.forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute(attr) === String(v) ? "true" : "false"); }); };
     }
     function refresh(sc) { sc.update(); updRead(); requestRender(); }
-    function setAng(a) {
-      DU.st.ang = ((Math.round(a / 5) * 5) % 360 + 360) % 360;
-      var hit = ""; Object.keys(DIR_ANG).forEach(function (k) { if (DIR_ANG[k] === DU.st.ang) hit = k; });
-      DU.st.dir = hit; markDir(hit); $(".ar-angrange").value = String(DU.st.ang); refresh(DU);
-    }
-    var markDir = seg(".ar-dirseg", "data-dir", function (v) { setAng(DIR_ANG[v] != null ? DIR_ANG[v] : 270); });
-    $(".ar-angrange").addEventListener("input", function (e) { setAng(Number(e.target.value)); });
-    var markWind = seg(".ar-windseg", "data-wind", function (v) { DU.st.wind = clamp(Number(v) || 2, 1, 3); markWind(DU.st.wind); refresh(DU); });
-    var markSand = seg(".ar-sandseg", "data-sand", function (v) { DU.st.sand = v === "many" ? "many" : "few"; markSand(DU.st.sand); refresh(DU); });
-    var markRiver = seg(".ar-riverseg", "data-river", function (v) { DU.st.river = v === "1"; markRiver(DU.st.river ? 1 : 0); refresh(DU); });
-    var markRain = seg(".ar-rainseg", "data-rain", function (v) { RN.st.rain = clamp(Number(v) || 2, 1, 3); markRain(RN.st.rain); refresh(RN); });
-    var markYrs = seg(".ar-yrsseg", "data-yrs", function (v) { RN.st.yrs = [1, 10, 50].indexOf(Number(v)) >= 0 ? Number(v) : 1; markYrs(RN.st.yrs); refresh(RN); });
+    /* 개편(11-02): 바람 방향 · 세기 설정은 없앰. 사구의 모래 양(바르한 · 횡사구 비교)만 남김 */
+    var markSand = seg(".ar-sandseg", "data-sand", function (v) { DN.st.sand = v === "many" ? "many" : "few"; markSand(DN.st.sand); refresh(DN); });
     var markDry = seg(".ar-dryseg", "data-dry", function (v) { DS.st.dry = v === "1"; markDry(DS.st.dry ? 1 : 0); refresh(DS); });
     var markOver = seg(".ar-overseg", "data-over", function (v) { DS.st.over = v === "1"; markOver(DS.st.over ? 1 : 0); refresh(DS); });
     var markTree = seg(".ar-treeseg", "data-tree", function (v) { DS.st.trees = v === "1"; markTree(DS.st.trees ? 1 : 0); refresh(DS); });
 
     var vbtns = $$(".ar-vbtn"), vctls = $$(".ar-vctl");
     function setView(v) {
-      v = v === 2 || v === 3 ? v : 1;
+      v = v >= 1 && v <= MODS.length ? Math.round(v) : 1;
       var old = scene();
       if (old.st.play && v !== view) { old.st.play = false; old.setLod(false); old.update(); syncPlay(); }
       view = v;
@@ -2320,13 +2776,18 @@
 
     /* ================= ver02: 목록 → 하위 목록 → 장면 (하천 · 빙하 ver02와 같은 틀) =================
        장면은 기존 보기를 그대로 쓰고, 정해 둔 값으로 맞춘 뒤 필요 없는 조작 · 이름표만 숨김 */
+    /* 개편(11-02): 1 바람(사구 · 버섯바위 · 삼릉석 · 사막포도) · 2 물(와디 · 플라야 · 선상지 · 바하다) · 3 사막화와 생활(오아시스 포함) */
     var SCENES = {
-      dune: { view: 1, title: "모래 언덕", list: "wind", lab: ["초승달", "물결", "바람", "외래", "강가", "비스듬한"] },
-      rock: { view: 1, title: "버섯 바위 · 오아시스", list: "wind", sub: "모래를 실은 바람이 바위 아래쪽을 깎아 버섯 바위가 되고, 땅속 물이 솟는 곳에 오아시스가 있다", lab: ["버섯", "오아시스", "모래에", "바람", "낙타", "외래", "강가", "비스듬한"], cam: [-115, 30, 1.25] },
-      rain: { view: 2, title: "사막에 비가 오면", list: "home" },
-      desert: { view: 3, title: "사막화와 생활", list: "home" }
+      dune: { view: 1, title: "사구", list: "wind" },
+      mush: { view: 2, title: "버섯바위", list: "wind", cam: [-24, 18, 1.25] },
+      vent: { view: 3, title: "삼릉석", list: "wind", cam: [-30, 26, 1.2] },
+      pave: { view: 4, title: "사막포도", list: "wind" },
+      wadi: { view: 5, title: "와디", list: "water", cam: [-14, 30, 1.1] },
+      playa: { view: 6, title: "플라야", list: "water" },
+      fan: { view: 7, title: "선상지 · 바하다", list: "water", cam: [24, 40, 1.1] },
+      desert: { view: 8, title: "사막화와 생활", list: "home" }
     };
-    var GOMAP = {}, VIEWSCENE = {"1": "dune", "2": "rain", "3": "desert"}, HIDES = [];
+    var GOMAP = { rain: "wadi", rock: "mush" }, VIEWSCENE = {"1": "dune", "2": "mush", "3": "vent", "4": "pave", "5": "wadi", "6": "playa", "7": "fan", "8": "desert"}, HIDES = [];
     var scrEls = {}; $$(".ar-scr[data-scr]").forEach(function (e) { scrEls[e.getAttribute("data-scr")] = e; });
     var backBtn = $(".ar-back"), sName = $(".ar-sname"), ovSeg = $(".ar-ovseg");
     var curScr = "home", curScene = "", backTo = "home", inOpen = false;
@@ -2367,7 +2828,7 @@
     function openScene(k, from) {
       INTRO = !RM;
       var S = SCENES[k]; if (!S) return;
-      var sc = [DU, RN, DS][S.view - 1];
+      var sc = MODS[S.view - 1];
       if (sc.st && sc.st.play) { sc.st.play = false; if (sc.setLod) sc.setLod(false); if (typeof syncPlay === "function") syncPlay(); }
       inOpen = true;
       if (S.set) S.set();
@@ -2546,12 +3007,6 @@
       var last = elGuide.textContent;
       new MutationObserver(function () { if (elGuide.textContent === last) return; last = elGuide.textContent; elGuide.classList.remove("ar-gpop"); void elGuide.offsetWidth; elGuide.classList.add("ar-gpop"); }).observe(elGuide, { childList: true, characterData: true, subtree: true });
     })();
-    /* 업그레이드(10-20): 단면 자르는 위치 — 앞에서부터 블록을 잘라 속을 봄 */
-    $(".ar-cutr[data-for=\"1\"]").addEventListener("input", function (e) {
-      var v = clamp(Number(e.target.value) / 100, 0, 1); DU.st.cv = v;
-      setText($(".ar-cutv[data-for=\"1\"]"), v < 0.005 ? "자르지 않음" : v > 0.995 ? "가운데" : "안쪽 " + Math.round(v * 100) + "%");
-      DU.update(); updRead(); requestRender();
-    });
     var hMenu = $(".ar-hmenu"), hBtn = $(".ar-hmbtn");
     hBtn.addEventListener("click", function () {
       if (root.classList.contains("ar-collapsed")) { fold.click(); return; }
@@ -2578,7 +3033,7 @@
     $$(".ar-posseg .ar-segb").forEach(function (b) { b.addEventListener("click", function () { closeMenu(); }); });
 
     /* ================= 확인 문제 (ver02: 무대 안 카드 · 한 문제씩 · 번호 점 · 결과 요약 · 장면에서 확인) ================= */
-    var QSCENE = ["dune", "rain", "desert", "rock", "rock"];
+    var QSCENE = ["dune", "mush", "vent", "pave", "wadi", "playa", "fan", "desert"];
     var answered = QUIZ.map(function () { return null; });
     var quizEl = $(".ar-quiz"), qDots = $(".ar-qdots"), qTitle = $(".ar-qtitle"), dQ = $(".ar-dq"), dOpts = $(".ar-dopts"), dFb = $(".ar-dfb");
     var qRes = $(".ar-qres"), qScore = $(".ar-qscore"), qRows = $(".ar-qrows"), qBody = $(".ar-qbody");
@@ -2644,28 +3099,20 @@
     dGo.addEventListener("click", function () { openScene(QSCENE[qCur] || "overview1", "quiz"); });
     $(".ar-qback").addEventListener("click", function () { go("home"); });
 
-    /* ================= 처음 상태: ?view=1&dir=N|E|S|W&wind=1~3&sand=many&time=0~100 · ?view=2&rain=1~3&time=0~100 · ?view=3&dry=1&over=1&trees=1&time=0~100 · &play=1 · &panel=float ================= */
+    /* ================= 처음 상태: ?view=1~8&time=0~100 · ?sand=many(사구) · ?dry=1&over=1&trees=1(사막화) · ?scene=…(+ time) · &play=1 · &panel=float ================= */
     var qs = new URLSearchParams(location.search);
     if (qs.get("lite") === "1") setLite(true);
-    var qv = qs.get("view") === "2" ? 2 : qs.get("view") === "3" ? 3 : 1, qt = parseInt(qs.get("time"), 10);
-    if (DIRS[qs.get("dir")]) { DU.st.dir = qs.get("dir"); DU.st.ang = DIR_ANG[DU.st.dir]; }
-    var qang = parseInt(qs.get("ang"), 10); if (isFinite(qang)) { DU.st.ang = ((qang % 360) + 360) % 360; DU.st.dir = ""; }
-    $(".ar-angrange").value = String(DU.st.ang);
-    var qw = parseInt(qs.get("wind"), 10); if (qw >= 1 && qw <= 3) DU.st.wind = qw;
-    if (qs.get("sand") === "many") DU.st.sand = "many";
-    if (qs.get("river") === "1") { DU.st.river = true; markRiver(1); }
-    var qr = parseInt(qs.get("rain"), 10); if (qr >= 1 && qr <= 3) RN.st.rain = qr;
-    var qy = parseInt(qs.get("yrs"), 10); if (qy === 10 || qy === 50) { RN.st.yrs = qy; markYrs(qy); }
+    var qv = clamp(parseInt(qs.get("view"), 10) || 1, 1, MODS.length), qt = parseInt(qs.get("time"), 10);
+    if (qs.get("sand") === "many") DN.st.sand = "many";
     DS.st.dry = qs.get("dry") === "1"; DS.st.over = qs.get("over") === "1"; DS.st.trees = qs.get("trees") === "1";
-    markDir(DU.st.dir); markWind(DU.st.wind); markSand(DU.st.sand); markRain(RN.st.rain); markDry(DS.st.dry ? 1 : 0); markOver(DS.st.over ? 1 : 0); markTree(DS.st.trees ? 1 : 0);
-    if (isFinite(qt)) (qv === 1 ? DU : qv === 2 ? RN : DS).st.t = clamp(qt / 100, 0, 1);
-    ranges[0].value = String(Math.round(DU.st.t * 100)); ranges[1].value = String(Math.round(RN.st.t * 100)); ranges[2].value = String(Math.round(DS.st.t * 100));
-    DU.update(); RN.update(); DS.update();
+    markSand(DN.st.sand); markDry(DS.st.dry ? 1 : 0); markOver(DS.st.over ? 1 : 0); markTree(DS.st.trees ? 1 : 0);
+    if (isFinite(qt)) MODS[qv - 1].st.t = clamp(qt / 100, 0, 1);
+    MODS.forEach(function (m, i) { m.update(); var rg = $(".ar-trange[data-for=\"" + (i + 1) + "\"]"); if (rg) rg.value = String(Math.round(m.st.t * 100)); });
     setPanel(qs.get("panel") || "right");
     updateQuizList();
     setView(qv);
     /* ver02: ?scene=…(+ time) · ?quiz=1 · 없으면 목록 */
-    var qscene = qs.get("scene");
+    var qscene = qs.get("scene"); if (GOMAP[qscene]) qscene = GOMAP[qscene];
     if (SCENES[qscene]) { openScene(qscene); if (isFinite(qt)) setTime(clamp(qt / 100, 0, 1)); }
     else if (qs.get("quiz") === "1") go("quiz");
     else { showScr("home"); setText(elTitle, "건조 지형"); }
