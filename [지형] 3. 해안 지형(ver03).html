@@ -984,6 +984,115 @@
     function sizeCanvas() { var r = cv.getBoundingClientRect(); CW = Math.max(1, r.width); CH = Math.max(1, r.height); DPR = Math.min(DPRMAX, window.devicePixelRatio || 1); cv.width = Math.round(CW * DPR); cv.height = Math.round(CH * DPR); }
     var LIGHT = (function () { var v = [-0.5, 0.8, -0.35], l = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); return [v[0] / l, v[1] / l, v[2] / l]; })();
 
+    /* ================= 업그레이드(11-02): 지형 겉면을 WebGL로 그림 =================
+       칸마다 한 색으로 칠하던 2D 그리기 대신, 꼭짓점 색을 부드럽게 이어 칠하고 층(물 · 모래 · 논) 경계는 화면 점 단위로 매끄럽게 자름.
+       재생 중에도 칸을 성기게 하지 않아 움직이는 동안과 멈춘 뒤의 모습이 같음(동영상처럼).
+       만든 그림은 2D 무대에 한 장으로 옮겨 붙임 → 바탕 · 옆면 · 나무 · 이름표는 지금처럼 2D로 그 위에 그림.
+       WebGL을 쓸 수 없는 컴퓨터는 이전 2D 그리기를 그대로 씀 */
+    var GLR = (function () {
+      var R = { ok: false, canvas: null }, gl = null, cvs = document.createElement("canvas"), prog = null, A = {}, U = {};
+      try { gl = cvs.getContext("webgl", { antialias: true, alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: true }) || cvs.getContext("experimental-webgl", { antialias: true, alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: true }); } catch (e) { gl = null; }
+      if (!gl) return R;
+      var deriv = !!gl.getExtension("OES_standard_derivatives"), u32 = !!gl.getExtension("OES_element_index_uint");
+      var VS = [
+        "attribute vec3 aP; attribute vec3 aC; attribute vec3 aS; attribute vec3 aL0; attribute vec3 aL1; attribute vec3 aL2;",
+        "uniform vec4 uR; uniform vec4 uK; uniform vec4 uV;",
+        "varying vec3 vC; varying vec3 vS; varying vec3 vL0; varying vec3 vL1; varying vec3 vL2;",
+        "void main() {",
+        "  vec3 p = aP; p.z -= uK.x;",
+        "  float x1 = uR.x * p.x - uR.y * p.z, z1 = uR.y * p.x + uR.x * p.z;",
+        "  float up = p.y * uR.z + z1 * uR.w, d = z1 * uR.z - p.y * uR.w, s = uK.y / (uK.y + d);",
+        "  float sx = uV.x + x1 * s * uK.z, sy = uV.y - up * s * uK.z;",
+        "  gl_Position = vec4(sx / uK.w * 2.0 - 1.0, 1.0 - sy / uV.z * 2.0, clamp(d * 0.08, -0.99, 0.99), 1.0);",
+        "  vC = aC; vS = aS; vL0 = aL0; vL1 = aL1; vL2 = aL2;",
+        "}"].join("\n");
+      var FS = (deriv ? "#extension GL_OES_standard_derivatives : enable\n#define DER 1\n" : "") + [
+        "precision mediump float;",
+        "varying vec3 vC; varying vec3 vS; varying vec3 vL0; varying vec3 vL1; varying vec3 vL2;",
+        "uniform float uN; uniform vec4 uE0; uniform vec4 uE1; uniform vec4 uE2;",
+        "vec3 lay(vec3 c, float s, vec3 lc, vec4 e) {",
+        "#ifdef DER",
+        "  float w = clamp(fwidth(s) * 0.75, 1e-6, 0.012);",
+        "#else",
+        "  float w = 0.0025;",
+        "#endif",
+        "  c = mix(c, lc, 1.0 - smoothstep(-w, w, s));",
+        "  if (e.a > 0.0) c = mix(c, e.rgb, (1.0 - smoothstep(0.0, w * 2.2, abs(s))) * e.a);",
+        "  return c;",
+        "}",
+        "void main() {",
+        "  vec3 c = vC;",
+        "  if (uN > 0.5) c = lay(c, vS.x, vL0, uE0);",
+        "  if (uN > 1.5) c = lay(c, vS.y, vL1, uE1);",
+        "  if (uN > 2.5) c = lay(c, vS.z, vL2, uE2);",
+        "  gl_FragColor = vec4(c, 1.0);",
+        "}"].join("\n");
+      function sh(type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; }
+      var vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+      if (!vs || !fs) return R;
+      prog = gl.createProgram(); gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return R;
+      ["aP", "aC", "aS", "aL0", "aL1", "aL2"].forEach(function (n) { A[n] = gl.getAttribLocation(prog, n); });
+      ["uR", "uK", "uV", "uN", "uE0", "uE1", "uE2"].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
+      /* 「rgba(255,255,255,.6)」 같은 선 색 → [r, g, b, 투명도] (0~1) */
+      R.parse = function (s) {
+        if (!s) return [0, 0, 0, 0];
+        var m = /rgba?\(([^)]+)\)/.exec(s); if (!m) return [1, 1, 1, 0.6];
+        var v = m[1].split(",").map(Number);
+        return [v[0] / 255, v[1] / 255, v[2] / 255, v.length > 3 ? v[3] : 1];
+      };
+      cvs.addEventListener("webglcontextlost", function (e) { e.preventDefault(); R.ok = false; R.lost = true; });
+      R.ok = true; R.canvas = cvs;
+      /* T: makeSurf 겉면. T.gp(꼭짓점 자료)가 바뀐 뒤에만 다시 올림 */
+      R.draw = function (T, cam) {
+        if (!R.ok) return null;
+        var W = Math.max(1, Math.round(CW * DPR)), H = Math.max(1, Math.round(CH * DPR));
+        if (cvs.width !== W || cvs.height !== H) { cvs.width = W; cvs.height = H; }
+        var g = T.gp, b = T.glb;
+        if (!b) {
+          b = T.glb = { pos: gl.createBuffer(), col: gl.createBuffer(), s: gl.createBuffer(), l0: gl.createBuffer(), l1: gl.createBuffer(), l2: gl.createBuffer(), idx: gl.createBuffer(), n: 0, big: false, ver: -1 };
+          var NX = T.NX, NZ = T.NZ, VX = T.VX, big = VX * (NZ + 1) > 65535;
+          if (big && !u32) { R.ok = false; return null; }
+          var ix = big ? new Uint32Array(NX * NZ * 6) : new Uint16Array(NX * NZ * 6), q = 0;
+          for (var j = 0; j < NZ; j++) for (var i = 0; i < NX; i++) {
+            var a = j * VX + i, c = a + 1, d = a + VX, e = d + 1;
+            ix[q++] = a; ix[q++] = c; ix[q++] = d; ix[q++] = c; ix[q++] = e; ix[q++] = d;
+          }
+          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, b.idx); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, ix, gl.STATIC_DRAW);
+          b.n = q; b.big = big;
+        }
+        if (b.ver !== g.ver) {
+          [["pos", g.pos], ["col", g.col], ["s", g.s], ["l0", g.l[0]], ["l1", g.l[1]], ["l2", g.l[2]]].forEach(function (p) { gl.bindBuffer(gl.ARRAY_BUFFER, b[p[0]]); gl.bufferData(gl.ARRAY_BUFFER, p[1], gl.DYNAMIC_DRAW); });
+          b.ver = g.ver;
+        }
+        gl.viewport(0, 0, W, H);
+        gl.clearColor(0, 0, 0, 0); gl.clearDepth(1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL); gl.disable(gl.CULL_FACE);
+        gl.useProgram(prog);
+        [["aP", "pos"], ["aC", "col"], ["aS", "s"], ["aL0", "l0"], ["aL1", "l1"], ["aL2", "l2"]].forEach(function (p) {
+          var L = A[p[0]]; if (L < 0) return;
+          gl.bindBuffer(gl.ARRAY_BUFFER, b[p[1]]); gl.enableVertexAttribArray(L); gl.vertexAttribPointer(L, 3, gl.FLOAT, false, 0, 0);
+        });
+        cam.rot();
+        var cY = Math.cos(cam.yaw * RAD), sY = Math.sin(cam.yaw * RAD), cP = Math.cos(cam.pitch * RAD), sP = Math.sin(cam.pitch * RAD);
+        gl.uniform4f(U.uR, cY, sY, cP, sP);
+        gl.uniform4f(U.uK, cam.oz || 0, 5, cam.k, CW);
+        gl.uniform4f(U.uV, cam.cx, cam.cy, CH, 0);
+        gl.uniform1f(U.uN, g.nl);
+        for (var k = 0; k < 3; k++) { var e2 = g.lines[k] || [0, 0, 0, 0]; gl.uniform4f(U["uE" + k], e2[0], e2[1], e2[2], e2[3]); }
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, b.idx);
+        gl.drawElements(gl.TRIANGLES, b.n, b.big ? gl.UNSIGNED_INT : gl.UNSIGNED_SHORT, 0);
+        return cvs;
+      };
+      return R;
+    })();
+    /* 꼭짓점 색에 빛 · 그늘 입히기(2D의 shadeRGB와 같은 셈, 0~1 값으로) */
+    function shadeTo(c, k, cool, out, o) {
+      var r = c[0] * k, g = c[1] * k, b = c[2] * k, m = 0.16 * cool;
+      r = r * (1 - m) + r * 0.86 * m; g = g * (1 - m) + g * 0.95 * m; b = b * (1 - m) + Math.min(255, b * 1.12 + 6) * m;
+      out[o] = clamp(r, 0, 255) / 255; out[o + 1] = clamp(g, 0, 255) / 255; out[o + 2] = clamp(b, 0, 255) / 255;
+    }
+
     /* ================= 3D 부품: 「산지 지형」 1차본과 같음 ================= */
     function Cam(yaw, pitch) {
       var C = { yaw: yaw, pitch: pitch, k: 1, cx: 0, cy: 0, oz: 0 }, cY = 1, sY = 0, cP = 1, sP = 0, DP = 5;
@@ -1046,7 +1155,7 @@
       /* 품질(10-21): 성긴 칸(재생 · 끄는 동안)일 때는 그리는 꼭짓점(SL칸마다)과 블록 가장자리만 다시 셈. 끝나면 draw에서 한 번 전부 셈 */
       T.partial = false;
       T.reshape = function () {
-        var k, S = T.lod ? SL : 1;
+        var k, S = T.lod && !GLR.ok ? SL : 1;   /* WebGL이면 재생 중에도 늘 촘촘한 칸 */
         T.partial = S > 1;
         for (var j1 = 0; j1 <= NZ; j1++) {
           var rowL = j1 % S === 0, edgeR = j1 === 0 || j1 === NZ;
@@ -1079,7 +1188,34 @@
           col[cc] = shadeRGB(o.color((wy[a] + wy[b] + wy[d] + wy[e]) / 4, (wx[a] + wx[e]) / 2, (wz[a] + wz[e]) / 2), lamA[cc] * (0.977 + 0.046 * (((Math.sin(cc * 12.9898 + 78.233) * 43758.5453) % 1 + 1) % 1)), coolA[cc]);
           for (k = 0; k < NL; k++) lc[k][cc] = null;
         }
+        if (GLR.ok) glData();
       };
+      /* WebGL 꼭짓점 자료: 자리 · 빛을 입힌 땅 색 · 층마다 경계 값(s)과 층 색 */
+      function glData() {
+        var g = T.gp;
+        if (!g) {
+          g = T.gp = { pos: new Float32Array(N * 3), col: new Float32Array(N * 3), s: new Float32Array(N * 3), l: [new Float32Array(N * 3), new Float32Array(N * 3), new Float32Array(N * 3)], nl: Math.min(3, NL), lines: LY.slice(0, 3).map(function (L) { return GLR.parse(L.line); }), ver: 0 };
+          for (var q0 = 0; q0 < N * 3; q0++) g.s[q0] = 1;
+        }
+        var pos = g.pos, colA = g.col, sA = g.s, nl = g.nl;
+        for (var n = 0; n < N; n++) {
+          var o3 = n * 3, x = wx[n], y = wy[n], z = wz[n];
+          pos[o3] = x; pos[o3 + 1] = y; pos[o3 + 2] = z;
+          var lam = 0.51 + 0.5 * vS[n] + 0.06 * vU[n] - 1.2 * vO[n], cool = clamp(1 - vS[n], 0, 1);
+          lam *= 0.985 + 0.03 * (((Math.sin(n * 12.9898 + 78.233) * 43758.5453) % 1 + 1) % 1);
+          shadeTo(o.color(y, x, z), lam, cool, colA, o3);
+          for (var kk = 0; kk < nl; kk++) {
+            /* 경계에서 먼 값은 잘라 둠: 거리 셈이 멀리서 갑자기 바뀌어도 경계선이 생기지 않음 */
+            var sv = clamp(ls[kk][n], -0.15, 0.15), la = g.l[kk];
+            sA[o3 + kk] = sv;
+            /* 층 경계에서 멀리 떨어진 땅은 층 색이 쓰이지 않으므로 셈을 건너뜀 */
+            if (sv > 0.09) { la[o3] = colA[o3]; la[o3 + 1] = colA[o3 + 1]; la[o3 + 2] = colA[o3 + 2]; continue; }
+            var L = LY[kk];
+            shadeTo(L.c(x, z), L.flat ? 0.985 + 0.035 * Math.sin(x * 31 + z * 19) * Math.sin(x * 7 - z * 23) : 0.04 + lam, L.flat ? 0 : cool, la, o3);
+          }
+        }
+        g.ver++;
+      }
       function lcol(k, cc) {
         var v = lc[k][cc];
         if (v == null) {
@@ -1110,9 +1246,16 @@
       /* 재생 속도(10-29): 성긴 칸 꼭짓점을 칸 가운데에서 0.75px 밀어 냄 */
       function grow(n, mx, my, first) { var dx = px[n] - mx, dy = py[n] - my, k = 0.75 / (Math.sqrt(dx * dx + dy * dy) || 1); if (first) ctx.moveTo(px[n] + dx * k, py[n] + dy * k); else ctx.lineTo(px[n] + dx * k, py[n] + dy * k); }
       T.draw = function (cam) {
+        if (GLR.ok && !T.gp) T.reshape();
         if (!T.lod && T.partial) T.reshape();
         var q = [0, 0, 0, 1], nn, cc, k;
         for (nn = 0; nn < N; nn++) { cam.proj(wx[nn], wy[nn], wz[nn], q); px[nn] = q[0]; py[nn] = q[1]; pd[nn] = q[2]; }
+        var img = GLR.ok ? GLR.draw(T, cam) : null;
+        if (img) {
+          ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(img, 0, 0); ctx.restore();
+          edgeGlow();
+          return;
+        }
         var st = T.lod ? SL : 1, ord = T.lod ? order2 : order;
         for (var oi = 0; oi < ord.length; oi++) { cc = ord[oi]; var jj = (cc / NX) | 0, a = jj * VX + cc - jj * NX; cd[cc] = pd[a] + pd[a + st] + pd[a + st * VX] + pd[a + st * VX + st]; }
         ord.sort(function (A1, B1) { return cd[B1] - cd[A1]; });
@@ -1143,14 +1286,17 @@
             clipFill(lcol(k, c2), LY[k].line);
           }
         }
-        /* 세 번째 다듬기: 블록 위 가장자리에 옅은 빛 테두리(모형이 또렷해 보임) */
+        edgeGlow();
+      };
+      /* 세 번째 다듬기: 블록 위 가장자리에 옅은 빛 테두리(모형이 또렷해 보임) */
+      function edgeGlow() {
         ctx.save(); ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 1.4;
         [0, 1, 2, 3].forEach(function (w) { var ed = T.edge(w); ctx.beginPath(); ed.forEach(function (n, i) { if (i) ctx.lineTo(px[n], py[n]); else ctx.moveTo(px[n], py[n]); }); ctx.stroke(); });
         ctx.restore();
-      };
+      }
       /* 업그레이드(10-20): 풀 · 숲 색인 땅 위에만 나무를 심음(물 · 눈 · 모래 · 바위 · 밭 층은 뺌). 재생 · 끄는 동안은 그리지 않음 */
       T.trees = function (cam, o2) {
-        if (T.lod) return;
+        if (T.lod && (!GLR.ok || SLOW)) return;
         o2 = o2 || {};
         var dens = o2.dens || 0.3, size = o2.size || 0.03, sp = o2.step || 2, out = [], dxc = (o.x1 - o.x0) / NX, dzc = (o.z1 - o.z0) / NZ, shf = o2.shift, seen = {};
         function h2(v) { var q = Math.sin(v * 127.1 + 311.7) * 43758.5453; return q - Math.floor(q); }

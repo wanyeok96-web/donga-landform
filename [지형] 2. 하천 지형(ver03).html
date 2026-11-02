@@ -1114,7 +1114,7 @@
         cam.rot();
         var cY = Math.cos(cam.yaw * RAD), sY = Math.sin(cam.yaw * RAD), cP = Math.cos(cam.pitch * RAD), sP = Math.sin(cam.pitch * RAD);
         gl.uniform4f(U.uR, cY, sY, cP, sP);
-        gl.uniform4f(U.uK, cam.oz, 5, cam.k, CW);
+        gl.uniform4f(U.uK, cam.oz || 0, 5, cam.k, CW);
         gl.uniform4f(U.uV, cam.cx, cam.cy, CH, 0);
         gl.uniform1f(U.uN, g.nl);
         for (var k = 0; k < 3; k++) { var e2 = g.lines[k] || [0, 0, 0, 0]; gl.uniform4f(U["uE" + k], e2[0], e2[1], e2[2], e2[3]); }
